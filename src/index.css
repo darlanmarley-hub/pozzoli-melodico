@@ -101,11 +101,11 @@ input, textarea {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-start;
   background: #000000;
-  height: calc(100vh - 180px);
-  min-height: calc(100vh - 180px);
+  height: calc(100vh - 130px);
+  min-height: calc(100vh - 130px);
   position: relative;
   overflow: hidden;
   padding: 0;
@@ -677,14 +677,13 @@ input, textarea {
   gap: 4px;
 }
 
-/* Frame de Vídeo Vertical sem Moldura (Portrait 9:16 Full View sem cortes) */
 .vertical-video-frame {
   position: relative;
   width: 100%;
   max-width: 100%;
   flex: 1;
-  height: calc(100vh - 180px);
-  min-height: calc(100vh - 180px);
+  height: calc(100vh - 140px);
+  min-height: calc(100vh - 140px);
   margin: 0 auto;
   background: #000000;
   border: none;
@@ -692,9 +691,9 @@ input, textarea {
   overflow: hidden;
   box-shadow: none;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Alinha o vídeo a partir do topo seguro */
   justify-content: center;
-  padding-top: 24px; /* Desce o vídeo para não ser cortado no topo */
+  padding-top: max(env(safe-area-inset-top), 24px); /* Espaço seguro superior */
   padding-bottom: 12px;
 }
 
@@ -707,8 +706,8 @@ input, textarea {
 }
 
 .vertical-video-frame.mobile-mode .vertical-video-element {
-  transform: scale(1.25);
-  transform-origin: center center;
+  transform: scale(1.22);
+  transform-origin: center top; /* O zoom expande para baixo e lados, mantendo a borda superior visível */
 }
 
 .vertical-video-frame.desktop-mode .vertical-video-element {

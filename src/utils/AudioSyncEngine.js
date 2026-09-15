@@ -432,6 +432,49 @@ export class AudioSyncEngine {
     this.jumpToStep(this.currentIndex);
   }
 
+  scrollToCursorSafely() {
+    if (!this.osmd || !this.osmd.cursor || !this.osmd.cursor.cursorElement) return;
+
+    try {
+      const cursorEl = this.osmd.cursor.cursorElement;
+      const container = cursorEl.closest('.osmd-scroll-container') || cursorEl.closest('#osmd-container') || cursorEl.parentElement;
+      if (!container) return;
+
+      // Calcular a altura real de qualquer cabeçalho fixo no topo da tela
+      const headerEl = document.querySelector('.reader-top-header') || document.querySelector('.screen-header') || document.querySelector('.glass-panel');
+      const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+      const safeTopPadding = headerHeight + 24; // Margem de segurança de 24px abaixo do cabeçalho
+
+      const cursorRect = cursorEl.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      const relativeCursorTop = cursorRect.top - containerRect.top + container.scrollTop;
+
+      const currentScroll = container.scrollTop;
+      const visibleTopBoundary = currentScroll + safeTopPadding;
+      const visibleBottomBoundary = currentScroll + containerRect.height - 80;
+
+      // Se o cursor estiver posicionado acima da área segura visível, rola suavemente
+      if (relativeCursorTop < visibleTopBoundary) {
+        const targetScroll = Math.max(0, relativeCursorTop - safeTopPadding);
+        container.scrollTo({
+          top: targetScroll,
+          behavior: 'smooth'
+        });
+      } 
+      // Se o cursor avançar para a parte inferior
+      else if (relativeCursorTop > visibleBottomBoundary) {
+        const targetScroll = relativeCursorTop - safeTopPadding - 30;
+        container.scrollTo({
+          top: targetScroll,
+          behavior: 'smooth'
+        });
+      }
+    } catch (err) {
+      console.warn('Erro na rolagem automática da partitura:', err);
+    }
+  }
+
   jumpToStep(targetIndex) {
     if (!this.osmd || !this.osmd.cursor) return;
     const cursor = this.osmd.cursor;
@@ -443,6 +486,9 @@ export class AudioSyncEngine {
         cursor.next();
       }
       cursor.show();
+
+      // Garantir rolagem segura que nunca esconde a partitura atrás do cabeçalho
+      this.scrollToCursorSafely();
 
       const activeNote = this.scoreMap[targetIndex];
       if (activeNote && this.onNoteChangeCallback) {
