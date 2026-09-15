@@ -174,57 +174,66 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--bg-dock);
-  border-top: 1px solid var(--border-color);
-  padding: 12px 16px 16px 16px;
+  background: rgba(19, 25, 39, 0.96);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border-orange);
+  padding: 10px 12px 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   z-index: 90;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.7);
 }
 
 .player-info-row {
   text-align: center;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #e5e7eb;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.3px;
 }
 
 .player-actions-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .action-pill-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  user-select: none;
+}
+
+.action-pill-btn:active {
+  transform: scale(0.96);
 }
 
 .action-pill-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .action-pill-btn.green {
-  background: #059669;
+  background: rgba(16, 185, 129, 0.2);
   border-color: #10b981;
-  color: #ffffff;
+  color: #34d399;
 }
 
 .action-pill-btn.green:hover {
   background: #10b981;
+  color: #ffffff;
 }
 
 /* Scrubber / Seek slider */
@@ -233,13 +242,14 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 0 4px;
 }
 
 .scrubber-slider {
   flex: 1;
   -webkit-appearance: none;
   appearance: none;
-  height: 5px;
+  height: 6px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 3px;
   outline: none;
@@ -249,23 +259,30 @@ body {
 .scrubber-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: var(--accent-orange);
-  box-shadow: 0 0 10px var(--accent-orange);
+  box-shadow: 0 0 12px var(--accent-orange);
   cursor: pointer;
 }
 
-/* Dock Bottom Bar Buttons */
+/* Dock Bottom Bar Buttons (Mobile Optimized Overflow & Flex) */
 .controls-dock-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--bg-dock-inner);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 8px 12px;
-  gap: 8px;
+  padding: 6px 8px;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.controls-dock-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .dock-icon-btn {
