@@ -159,22 +159,22 @@ export default function AudioPlayerControls({
         />
       )}
 
-      {/* Row 1: Exercise Name & Series Info */}
-      <div className="player-info-row">
-        {currentSeries?.title || 'Exercício 001'} [{currentSeries?.timeSignature || '4/4'}]
+      {/* Row 1: Exercise Title & Info */}
+      <div className="player-info-row" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e5e7eb', textAlign: 'center' }}>
+        {currentSeries?.title || 'Exercício 01'} [{currentSeries?.timeSignature || '2/4'}] • {currentSeries?.moduleName || '1ª Série'}
         {audioError && <span style={{ color: '#fbbf24', marginLeft: '8px', fontSize: '0.75rem' }}>(Modo Metrônomo)</span>}
       </div>
 
-      {/* Row 2: Action Pill Buttons (Lado a Lado) */}
-      <div className="player-actions-row" style={{ display: 'flex', flexDirection: 'row', gap: '8px', width: '100%', maxWidth: '440px', margin: '0 auto' }}>
+      {/* Row 2: Side-by-side Action Buttons */}
+      <div className="player-actions-row" style={{ display: 'flex', flexDirection: 'row', gap: '10px', width: '100%', maxWidth: '380px', margin: '0 auto', justifyContent: 'center' }}>
         <button
           className="action-pill-btn"
           onClick={onToggleDesktopMode}
-          title="Alternar para Formato Computador"
-          style={{ flex: 1, justifyContent: 'center', whiteSpace: 'nowrap' }}
+          title="Alternar para Versão Computador"
+          style={{ flex: 1, justifyContent: 'center', whiteSpace: 'nowrap', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '20px', padding: '6px 12px' }}
         >
-          <Monitor size={15} />
-          <span>{isDesktopMode ? '📱 Modo Celular' : '💻 Modo PC'}</span>
+          <Monitor size={14} />
+          <span>{isDesktopMode ? 'Modo Celular' : 'Versão computador'}</span>
         </button>
 
         <button
@@ -183,15 +183,15 @@ export default function AudioPlayerControls({
             setIsOfflineSaved(true);
             alert('Partitura e áudio salvos com sucesso para uso offline!');
           }}
-          style={{ flex: 1, justifyContent: 'center', whiteSpace: 'nowrap' }}
+          style={{ flex: 1, justifyContent: 'center', whiteSpace: 'nowrap', background: '#059669', border: '1px solid #10b981', borderRadius: '20px', padding: '6px 12px', color: '#ffffff' }}
         >
-          <Download size={15} />
-          <span>{isOfflineSaved ? 'Salvo ✓' : 'Baixar Offline'}</span>
+          <Download size={14} />
+          <span>{isOfflineSaved ? 'Salvo offline ✓' : 'Baixar para offline'}</span>
         </button>
       </div>
 
       {/* Row 3: Scrubber Slider */}
-      <div className="scrubber-container">
+      <div className="scrubber-container" style={{ padding: '0 4px' }}>
         <input
           type="range"
           className="scrubber-slider"
@@ -203,15 +203,14 @@ export default function AudioPlayerControls({
         />
       </div>
 
-      {/* Row 4: Main Dock Controls Bar */}
-      <div className="controls-dock-bar">
-        {/* Home button */}
-        <button className="dock-icon-btn" onClick={onGoHome} title="Ir para Biblioteca">
-          <Home size={22} />
-        </button>
+      {/* Row 4: Main Controls Row */}
+      <div className="controls-dock-bar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
+        {/* Combined Home & BPM Control Pill */}
+        <div className="bpm-pill-control" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '14px', padding: '4px 10px' }}>
+          <button className="dock-icon-btn" onClick={onGoHome} title="Ir para Biblioteca" style={{ width: '28px', height: '28px', padding: 0 }}>
+            <Home size={18} />
+          </button>
 
-        {/* BPM Pill Control (- 1 em 1 BPM + com sensibilidade a toque e contínuo) */}
-        <div className="bpm-pill-control">
           <button
             className="bpm-step-btn"
             onMouseDown={() => startBpmChange(-1)}
@@ -221,11 +220,13 @@ export default function AudioPlayerControls({
             onTouchEnd={stopBpmChange}
             onClick={() => onBpmChange((prev) => Math.max(30, prev - 1))}
             title="Diminuir BPM (segure para diminuir rápido)"
-            style={{ padding: '4px 10px', fontSize: '1.2rem', fontWeight: 800, cursor: 'pointer' }}
+            style={{ padding: '0 4px', fontSize: '1.2rem', fontWeight: 800, cursor: 'pointer', color: 'var(--text-muted)' }}
           >
             -
           </button>
-          <span style={{ minWidth: '54px', textAlign: 'center' }}>{bpm} BPM</span>
+
+          <span style={{ fontSize: '0.85rem', fontWeight: 700, whiteSpace: 'nowrap' }}>{bpm} BPM</span>
+
           <button
             className="bpm-step-btn"
             onMouseDown={() => startBpmChange(1)}
@@ -235,29 +236,11 @@ export default function AudioPlayerControls({
             onTouchEnd={stopBpmChange}
             onClick={() => onBpmChange((prev) => Math.min(240, prev + 1))}
             title="Aumentar BPM (segure para aumentar rápido)"
-            style={{ padding: '4px 10px', fontSize: '1.2rem', fontWeight: 800, cursor: 'pointer' }}
+            style={{ padding: '0 4px', fontSize: '1.2rem', fontWeight: 800, cursor: 'pointer', color: 'var(--text-muted)' }}
           >
             +
           </button>
         </div>
-
-        {/* Botão para Resetar para o Tempo Original (60 BPM) */}
-        <button
-          className="dock-icon-btn"
-          onClick={() => onBpmChange(defaultBpm || 60)}
-          title={`Resetar para o Tempo Original (${defaultBpm || 60} BPM)`}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            width: 'auto',
-            padding: '0 8px',
-            color: bpm === (defaultBpm || 60) ? '#10b981' : 'var(--accent-orange)'
-          }}
-        >
-          <RotateCcw size={14} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>60 BPM</span>
-        </button>
 
         {/* Previous score button */}
         <button
@@ -272,12 +255,12 @@ export default function AudioPlayerControls({
 
         {/* Stop button */}
         <button className="dock-icon-btn" onClick={handleStop} title="Parar (Stop)">
-          <Square size={18} />
+          <Square size={18} fill="#9ca3af" />
         </button>
 
         {/* Large Orange Play Button */}
         <button className="orange-play-btn" onClick={togglePlayPause} title="Tocar / Pausar">
-          {isPlaying ? <Pause size={26} /> : <Play size={26} style={{ marginLeft: '3px' }} />}
+          {isPlaying ? <Pause size={24} fill="#ffffff" /> : <Play size={24} fill="#ffffff" style={{ marginLeft: '3px' }} />}
         </button>
 
         {/* Next score button */}
@@ -296,6 +279,7 @@ export default function AudioPlayerControls({
           className={`dock-icon-btn ${isStudied ? 'checked' : ''}`}
           onClick={onToggleStudied}
           title="Marcar como Estudado"
+          style={{ color: isStudied ? '#10b981' : 'var(--accent-orange)' }}
         >
           <CheckCircle2 size={22} />
         </button>
