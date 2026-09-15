@@ -159,35 +159,9 @@ export default function AudioPlayerControls({
         />
       )}
 
-      {/* Row 1: Exercise Title & Info */}
-      <div className="player-info-row" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e5e7eb', textAlign: 'center' }}>
-        {currentSeries?.title || 'Exercício 01'} [{currentSeries?.timeSignature || '2/4'}] • {currentSeries?.moduleName || '1ª Série'}
-        {audioError && <span style={{ color: '#fbbf24', marginLeft: '8px', fontSize: '0.75rem' }}>(Modo Metrônomo)</span>}
-      </div>
-
-      {/* Row 2: Side-by-side Action Buttons */}
-      <div className="player-actions-row" style={{ display: 'flex', flexDirection: 'row', gap: '10px', width: '100%', maxWidth: '380px', margin: '0 auto', justifyContent: 'center' }}>
-        <button
-          className="action-pill-btn"
-          onClick={onToggleDesktopMode}
-          title="Alternar para Versão Computador"
-          style={{ flex: 1, justifyContent: 'center', whiteSpace: 'nowrap', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '20px', padding: '6px 12px' }}
-        >
-          <Monitor size={14} />
-          <span>{isDesktopMode ? 'Modo Celular' : 'Versão computador'}</span>
-        </button>
-
-        <button
-          className="action-pill-btn green"
-          onClick={() => {
-            setIsOfflineSaved(true);
-            alert('Partitura e áudio salvos com sucesso para uso offline!');
-          }}
-          style={{ flex: 1, justifyContent: 'center', whiteSpace: 'nowrap', background: '#059669', border: '1px solid #10b981', borderRadius: '20px', padding: '6px 12px', color: '#ffffff' }}
-        >
-          <Download size={14} />
-          <span>{isOfflineSaved ? 'Salvo offline ✓' : 'Baixar para offline'}</span>
-        </button>
+      {/* Row 1: Title Info */}
+      <div className="player-info-row" style={{ fontSize: '0.9rem', fontWeight: 800, color: '#ffffff', textAlign: 'center', letterSpacing: '0.5px' }}>
+        POZZOLI - PRIMEIRA SÉRIE
       </div>
 
       {/* Row 3: Scrubber Slider */}
