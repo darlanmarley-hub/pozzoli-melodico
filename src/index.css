@@ -665,14 +665,14 @@ body {
   gap: 4px;
 }
 
-/* Frame de Vídeo Vertical sem Moldura (Portrait 9:16 Full Screen View) */
+/* Frame de Vídeo Vertical sem Moldura (Portrait 9:16 Full View sem cortes) */
 .vertical-video-frame {
   position: relative;
   width: 100%;
   max-width: 100%;
   flex: 1;
-  height: calc(100vh - 175px);
-  min-height: calc(100vh - 175px);
+  height: calc(100vh - 180px);
+  min-height: calc(100vh - 180px);
   margin: 0 auto;
   background: #000000;
   border: none;
@@ -682,12 +682,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 24px; /* Desce o vídeo para não ser cortado no topo */
+  padding-bottom: 12px;
 }
 
 .vertical-video-element {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Preenche 100% da tela do celular sem barras pretas */
+  object-fit: contain; /* Exibe 100% do vídeo sem cortar o topo nem o fundo */
   display: block;
 }
 
