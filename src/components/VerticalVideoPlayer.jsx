@@ -22,6 +22,7 @@ export default function VerticalVideoPlayer({
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
   const [useIframeFallback, setUseIframeFallback] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
 
   const defaultBpm = currentSeries?.defaultBpm || 90;
   const speedRatio = bpm / defaultBpm;
@@ -79,9 +80,34 @@ export default function VerticalVideoPlayer({
       <div
         className={`vertical-video-frame ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}
         onClick={handleContainerClick}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', position: 'relative' }}
         title="Toque na tela para Tocar / Pausar"
       >
+        {/* Overlay de Ícone Carregando Vídeo */}
+        {isVideoLoading && !useIframeFallback && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(11, 16, 29, 0.85)',
+              backdropFilter: 'blur(8px)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              zIndex: 30,
+              color: '#ffffff',
+              pointerEvents: 'none'
+            }}
+          >
+            <RefreshCw size={36} className="spin-icon" style={{ color: 'var(--accent-orange)' }} />
+            <span style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.5px' }}>
+              Carregando vídeo...
+            </span>
+          </div>
+        )}
+
         {!useIframeFallback ? (
           <video
             ref={videoRef}
@@ -90,6 +116,11 @@ export default function VerticalVideoPlayer({
             playsInline
             controls={false}
             preload="auto"
+            onLoadStart={() => setIsVideoLoading(true)}
+            onWaiting={() => setIsVideoLoading(true)}
+            onCanPlay={() => setIsVideoLoading(false)}
+            onPlaying={() => setIsVideoLoading(false)}
+            onLoadedData={() => setIsVideoLoading(false)}
             onTimeUpdate={() => {
               if (videoRef.current && onTimeUpdate) {
                 onTimeUpdate(videoRef.current.currentTime);
@@ -100,6 +131,7 @@ export default function VerticalVideoPlayer({
             }}
             onError={() => {
               console.log('Alternando para o player embed do Google Drive...');
+              setIsVideoLoading(false);
               setUseIframeFallback(true);
             }}
           />
@@ -120,8 +152,6 @@ export default function VerticalVideoPlayer({
             }}
           />
         )}
-
-
       </div>
     </div>
   );
