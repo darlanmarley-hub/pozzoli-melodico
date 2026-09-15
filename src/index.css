@@ -248,35 +248,62 @@ input, textarea {
   color: #ffffff;
 }
 
-/* Scrubber / Seek slider */
+/* Scrubber / Seek slider com alta sensibilidade para toque de dedo */
 .scrubber-container {
   width: 100%;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 4px;
+  padding: 8px 4px;
 }
 
 .scrubber-slider {
   flex: 1;
   -webkit-appearance: none;
   appearance: none;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 5px;
   outline: none;
   cursor: pointer;
+  touch-action: none;
+  transition: background 0.2s ease;
 }
 
 .scrubber-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: var(--accent-orange);
-  box-shadow: 0 0 12px var(--accent-orange);
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 16px var(--accent-orange), 0 2px 8px rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.scrubber-slider::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-orange);
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 16px var(--accent-orange), 0 2px 8px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.scrubber-slider:active::-webkit-slider-thumb {
+  transform: scale(1.25);
+  box-shadow: 0 0 24px var(--accent-orange), 0 4px 12px rgba(0, 0, 0, 0.6);
+  background: #ff771a;
+}
+
+.scrubber-slider:active::-moz-range-thumb {
+  transform: scale(1.25);
+  box-shadow: 0 0 24px var(--accent-orange), 0 4px 12px rgba(0, 0, 0, 0.6);
+  background: #ff771a;
 }
 
 /* Dock Bottom Bar Buttons (Mobile Optimized Overflow & Flex) */

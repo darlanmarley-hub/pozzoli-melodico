@@ -165,15 +165,16 @@ export default function AudioPlayerControls({
       </div>
 
       {/* Row 3: Scrubber Slider */}
-      <div className="scrubber-container" style={{ padding: '0 4px' }}>
+      <div className="scrubber-container" style={{ padding: '6px 4px' }}>
         <input
           type="range"
           className="scrubber-slider"
           min={0}
           max={duration || 100}
-          step={0.01}
+          step={0.001}
           value={currentTime}
           onChange={handleSeek}
+          onInput={handleSeek}
         />
       </div>
 
