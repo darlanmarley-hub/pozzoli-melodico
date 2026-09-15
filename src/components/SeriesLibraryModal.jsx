@@ -18,27 +18,27 @@ export default function SeriesLibraryView({
   const savedSeries = allSeries.filter((s) => favorites.includes(s.id));
 
   return (
-    <div className="library-view-container" style={{ paddingTop: '20px', paddingBottom: '40px' }}>
-      {/* Cabeçalho Moderno e Organizado da Tela Inicial */}
+    <div className="library-view-container" style={{ paddingTop: '12px', paddingBottom: '30px' }}>
+      {/* Cabeçalho Compacto da Tela Inicial */}
       <div
         style={{
           textAlign: 'center',
-          padding: '12px 16px 16px 16px',
+          padding: '8px 12px 10px 12px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '10px'
+          gap: '6px'
         }}
       >
         <h1
           style={{
-            fontSize: '1.7rem',
+            fontSize: '1.35rem',
             fontWeight: 900,
             fontFamily: 'var(--font-heading)',
             background: 'linear-gradient(135deg, #ffffff 40%, #ff944d 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            letterSpacing: '0.5px',
+            letterSpacing: '0.3px',
             lineHeight: 1.2
           }}
         >
@@ -50,32 +50,32 @@ export default function SeriesLibraryView({
             background: 'rgba(251, 191, 36, 0.08)',
             border: '1px solid rgba(251, 191, 36, 0.25)',
             color: '#fbbf24',
-            padding: '6px 14px',
+            padding: '4px 10px',
             borderRadius: 'var(--radius-full)',
-            fontSize: '0.78rem',
+            fontSize: '0.72rem',
             fontWeight: 600,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
-            maxWidth: '94%',
-            lineHeight: 1.3
+            gap: '4px',
+            maxWidth: '96%',
+            lineHeight: 1.2
           }}
         >
-          <Wifi size={14} style={{ flexShrink: 0 }} />
-          <span>Conecte-se ao Wi-Fi para economizar seus dados móveis</span>
+          <Wifi size={12} style={{ flexShrink: 0 }} />
+          <span>Conecte-se ao Wi-Fi para economizar dados</span>
         </div>
       </div>
 
-      <div style={{ padding: '0 16px', marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ padding: '0 12px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {/* Pasta Accordion: FAVORITOS (Acima da PRIMEIRA SÉRIE) */}
         <div
           className="accordion-card"
           style={{
             background: 'var(--bg-card)',
             border: '1px solid var(--border-orange)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+            borderRadius: 'var(--radius-md)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
             overflow: 'hidden',
             transition: 'border-color 0.2s ease'
           }}
@@ -85,45 +85,45 @@ export default function SeriesLibraryView({
             onClick={() => setIsFavExpanded(!isFavExpanded)}
             style={{
               cursor: 'pointer',
-              padding: '20px 24px',
+              padding: '12px 14px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between'
             }}
           >
-            <div className="header-left" style={{ gap: '16px' }}>
+            <div className="header-left" style={{ gap: '10px' }}>
               <div
                 className="icon-badge-box orange"
                 style={{
-                  width: '52px',
-                  height: '52px',
-                  borderRadius: '16px',
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '12px',
                   background: 'rgba(255, 102, 0, 0.2)',
                   border: '1px solid var(--accent-orange)'
                 }}
               >
-                <Heart size={26} fill="var(--accent-orange)" style={{ color: 'var(--accent-orange)' }} />
+                <Heart size={20} fill="var(--accent-orange)" style={{ color: 'var(--accent-orange)' }} />
               </div>
 
               <div className="card-title-group">
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
                   FAVORITOS
                 </h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '1px' }}>
                   {favCount === 0 ? 'Nenhum exercício salvo' : `${favCount} exercício(s) salvo(s)`}
                 </p>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span
                 style={{
                   background: 'rgba(255, 102, 0, 0.2)',
                   color: '#ff6600',
                   fontWeight: 800,
-                  fontSize: '0.85rem',
-                  padding: '4px 10px',
-                  borderRadius: '12px',
+                  fontSize: '0.78rem',
+                  padding: '2px 8px',
+                  borderRadius: '10px',
                   border: '1px solid var(--accent-orange)'
                 }}
               >
@@ -137,13 +137,14 @@ export default function SeriesLibraryView({
                   color: 'var(--text-muted)',
                   display: 'flex',
                   alignItems: 'center',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  padding: '2px'
                 }}
               >
                 {isFavExpanded ? (
-                  <ChevronUp size={24} color="var(--accent-orange)" />
+                  <ChevronUp size={20} color="var(--accent-orange)" />
                 ) : (
-                  <ChevronDown size={24} color="var(--accent-orange)" />
+                  <ChevronDown size={20} color="var(--accent-orange)" />
                 )}
               </button>
             </div>
@@ -153,17 +154,17 @@ export default function SeriesLibraryView({
           {isFavExpanded && (
             <div
               style={{
-                padding: '0 20px 20px 20px',
+                padding: '0 12px 12px 12px',
                 borderTop: '1px solid var(--border-color)',
                 background: 'rgba(0, 0, 0, 0.2)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '12px',
-                paddingTop: '16px'
+                gap: '8px',
+                paddingTop: '10px'
               }}
             >
               {savedSeries.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '16px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                <div style={{ textAlign: 'center', padding: '12px', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
                   Nenhum exercício salvo em Favoritos ainda.<br />
                   Toque no ícone de coração ♡ em qualquer exercício para salvá-lo aqui.
                 </div>
@@ -176,21 +177,21 @@ export default function SeriesLibraryView({
                       style={{
                         background: isSeriesStudied ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.04)',
                         border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--border-orange)',
-                        borderRadius: 'var(--radius-md)',
-                        padding: '14px 16px',
+                        borderRadius: 'var(--radius-sm)',
+                        padding: '10px 12px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        gap: '12px',
+                        gap: '8px',
                         transition: 'all 0.3s ease'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <div
                           style={{
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '12px',
+                            width: '34px',
+                            height: '34px',
+                            borderRadius: '10px',
                             background: isSeriesStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 102, 0, 0.15)',
                             display: 'flex',
                             alignItems: 'center',
@@ -198,31 +199,31 @@ export default function SeriesLibraryView({
                             color: isSeriesStudied ? '#10b981' : 'var(--accent-orange)'
                           }}
                         >
-                          {isSeriesStudied ? <CheckCircle2 size={22} /> : <Video size={20} />}
+                          {isSeriesStudied ? <CheckCircle2 size={18} /> : <Video size={16} />}
                         </div>
                         <div>
-                          <div style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '4px' }}>
                             <span>{series.title}</span>
                             {isSeriesStudied && (
-                              <span style={{ background: '#10b981', color: '#ffffff', fontSize: '0.7rem', fontWeight: 800, padding: '2px 6px', borderRadius: '10px' }}>
+                              <span style={{ background: '#10b981', color: '#ffffff', fontSize: '0.65rem', fontWeight: 800, padding: '1px 5px', borderRadius: '8px' }}>
                                 Estudado ✓
                               </span>
                             )}
                           </div>
-                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1px' }}>
                             {series.moduleName || series.subtitle}
                           </div>
                         </div>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <button
                           className="heart-toggle-btn"
                           onClick={() => onToggleFavorite && onToggleFavorite(series.id)}
                           title="Remover dos Salvos"
-                          style={{ padding: '6px' }}
+                          style={{ padding: '4px' }}
                         >
-                          <Trash2 size={18} color="#ef4444" />
+                          <Trash2 size={16} color="#ef4444" />
                         </button>
 
                         <button
@@ -230,13 +231,13 @@ export default function SeriesLibraryView({
                           onClick={() => onSelectSeries && onSelectSeries(series)}
                           title="Abrir Vídeo"
                           style={{
-                            width: '38px',
-                            height: '38px',
+                            width: '32px',
+                            height: '32px',
                             background: isSeriesStudied ? '#10b981' : 'var(--accent-orange)',
-                            boxShadow: isSeriesStudied ? '0 2px 10px rgba(16, 185, 129, 0.4)' : '0 2px 10px var(--accent-orange-glow)'
+                            boxShadow: isSeriesStudied ? '0 2px 8px rgba(16, 185, 129, 0.4)' : '0 2px 8px var(--accent-orange-glow)'
                           }}
                         >
-                          <Play size={18} style={{ marginLeft: '2px' }} />
+                          <Play size={14} style={{ marginLeft: '1px' }} />
                         </button>
                       </div>
                     </div>
@@ -253,7 +254,7 @@ export default function SeriesLibraryView({
           onClick={() => firstSeries && onSelectSeries && onSelectSeries(firstSeries)}
           style={{
             cursor: 'pointer',
-            padding: '20px 24px',
+            padding: '14px 16px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -261,32 +262,32 @@ export default function SeriesLibraryView({
               ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(19, 25, 39, 0.96) 100%)'
               : 'var(--bg-card)',
             border: isFirstStudied ? '2px solid #10b981' : '1px solid var(--border-orange)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: isFirstStudied ? '0 8px 24px rgba(16, 185, 129, 0.35)' : '0 8px 24px rgba(0,0,0,0.4)',
+            borderRadius: 'var(--radius-md)',
+            boxShadow: isFirstStudied ? '0 4px 16px rgba(16, 185, 129, 0.35)' : '0 4px 16px rgba(0,0,0,0.3)',
             transition: 'all 0.3s ease'
           }}
         >
-          <div className="header-left" style={{ gap: '16px' }}>
+          <div className="header-left" style={{ gap: '12px' }}>
             <div
               className="icon-badge-box"
               style={{
-                width: '52px',
-                height: '52px',
-                borderRadius: '16px',
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
                 background: isFirstStudied ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 102, 0, 0.2)',
                 border: isFirstStudied ? '1px solid #10b981' : '1px solid var(--accent-orange)'
               }}
             >
               {isFirstStudied ? (
-                <CheckCircle2 size={30} style={{ color: '#10b981' }} />
+                <CheckCircle2 size={24} style={{ color: '#10b981' }} />
               ) : (
-                <Music size={28} style={{ color: 'var(--accent-orange)' }} />
+                <Music size={22} style={{ color: 'var(--accent-orange)' }} />
               )}
             </div>
 
             <div className="card-title-group">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
                   PRIMEIRA SÉRIE
                 </h3>
                 {isFirstStudied && (
@@ -294,11 +295,11 @@ export default function SeriesLibraryView({
                     style={{
                       background: '#10b981',
                       color: '#ffffff',
-                      fontSize: '0.75rem',
+                      fontSize: '0.7rem',
                       fontWeight: 800,
-                      padding: '3px 10px',
-                      borderRadius: '12px',
-                      boxShadow: '0 2px 8px rgba(16, 185, 129, 0.4)'
+                      padding: '2px 8px',
+                      borderRadius: '10px',
+                      boxShadow: '0 2px 6px rgba(16, 185, 129, 0.4)'
                     }}
                   >
                     Estudado ✓
@@ -308,15 +309,15 @@ export default function SeriesLibraryView({
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
             <button
               className="heart-toggle-btn"
               onClick={() => onToggleFavorite && onToggleFavorite(firstSeries.id)}
               title={isFav ? 'Remover dos Favoritos' : 'Salvar nos Favoritos'}
-              style={{ padding: '8px' }}
+              style={{ padding: '6px' }}
             >
               <Heart
-                size={22}
+                size={20}
                 fill={isFav ? '#ff6600' : 'none'}
                 color={isFav ? '#ff6600' : '#ffffff'}
               />
@@ -327,13 +328,13 @@ export default function SeriesLibraryView({
               onClick={() => onSelectSeries && onSelectSeries(firstSeries)}
               title="Abrir Vídeo PRIMEIRA SÉRIE"
               style={{
-                width: '44px',
-                height: '44px',
+                width: '36px',
+                height: '36px',
                 background: isFirstStudied ? '#10b981' : 'var(--accent-orange)',
-                boxShadow: isFirstStudied ? '0 4px 14px rgba(16, 185, 129, 0.5)' : '0 4px 14px var(--accent-orange-glow)'
+                boxShadow: isFirstStudied ? '0 3px 10px rgba(16, 185, 129, 0.5)' : '0 3px 10px var(--accent-orange-glow)'
               }}
             >
-              <Play size={20} style={{ marginLeft: '2px' }} />
+              <Play size={18} style={{ marginLeft: '1px' }} />
             </button>
           </div>
         </div>

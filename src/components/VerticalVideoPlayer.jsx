@@ -103,7 +103,7 @@ export default function VerticalVideoPlayer({
           >
             <RefreshCw size={36} className="spin-icon" style={{ color: 'var(--accent-orange)' }} />
             <span style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.5px' }}>
-              Carregando vídeo...
+              Carregando exercício
             </span>
           </div>
         )}
