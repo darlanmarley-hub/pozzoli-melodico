@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Folder, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles } from 'lucide-react';
+import { Folder, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music } from 'lucide-react';
 
 export default function SeriesLibraryView({
   allSeries = [],
@@ -263,16 +263,13 @@ export default function SeriesLibraryView({
                 border: '1px solid var(--accent-orange)'
               }}
             >
-              <Folder size={28} style={{ color: 'var(--accent-orange)' }} />
+              <Music size={28} style={{ color: 'var(--accent-orange)' }} />
             </div>
 
             <div className="card-title-group">
               <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>
                 PRIMEIRA SÉRIE
               </h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                Toque para abrir o vídeo e os controles de reprodução
-              </p>
             </div>
           </div>
 
