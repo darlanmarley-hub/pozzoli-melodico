@@ -753,8 +753,6 @@ input, textarea {
   object-fit: contain;
   display: block;
   transition: transform 0.3s ease;
-  mix-blend-mode: multiply;
-  filter: contrast(105%) brightness(102%);
 }
 
 .vertical-video-frame.mobile-mode .vertical-video-element {
