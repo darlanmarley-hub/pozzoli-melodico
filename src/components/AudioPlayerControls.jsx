@@ -272,7 +272,7 @@ export default function AudioPlayerControls({
           className={`dock-icon-btn ${isStudied ? 'checked' : ''}`}
           onClick={onToggleStudied}
           title="Marcar como Estudado"
-          style={{ color: isStudied ? '#10b981' : 'var(--accent-orange)' }}
+          style={{ color: isStudied ? '#10b981' : '#9ca3af' }}
         >
           <CheckCircle2 size={22} />
         </button>
