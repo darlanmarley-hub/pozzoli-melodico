@@ -103,7 +103,7 @@ input, textarea {
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  background: #000000;
+  background: #ffffff;
   height: calc(100vh - 130px);
   min-height: calc(100vh - 130px);
   position: relative;
@@ -685,7 +685,7 @@ input, textarea {
   height: calc(100vh - 140px);
   min-height: calc(100vh - 140px);
   margin: 0 auto;
-  background: #000000;
+  background: #ffffff;
   border: none;
   border-radius: 0;
   overflow: hidden;

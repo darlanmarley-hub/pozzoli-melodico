@@ -147,7 +147,7 @@ export function MusicXMLViewer({
         width: width || '100%',
         height: 'calc(100vh - 175px)',
         minHeight: 'calc(100vh - 175px)',
-        background: '#0b101d',
+        background: '#ffffff',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -156,114 +156,38 @@ export function MusicXMLViewer({
         overflow: 'hidden'
       }}
     >
-      {/* Cabeçalho de Navegação e Alternância de Modo (Top Reader Header) */}
+      {/* Cabeçalho de Destaque no Topo */}
       <div
         className="reader-top-header"
         style={{
           width: '100%',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '8px 14px',
-          background: 'rgba(11, 16, 29, 0.95)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          justifyContent: 'center',
+          padding: '12px 16px',
+          background: 'rgba(19, 25, 39, 0.98)',
+          backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid var(--border-orange)',
           zIndex: 50,
-          flexShrink: 0
+          flexShrink: 0,
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#ffffff', letterSpacing: '0.3px' }}>
-            {currentSeries?.title || 'POZZOLI - PRIMEIRA SÉRIE'}
-          </span>
-        </div>
-
-        {/* Seletor de Modo: Vídeo Vertical vs Partitura Digital */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <button
-            onClick={() => setViewMode('video')}
-            title="Modo Vídeo Vertical"
-            style={{
-              background: viewMode === 'video' ? 'var(--accent-orange)' : 'rgba(255, 255, 255, 0.08)',
-              border: viewMode === 'video' ? 'none' : '1px solid rgba(255, 255, 255, 0.15)',
-              color: '#ffffff',
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-full)',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            <Video size={14} />
-            <span>Vídeo</span>
-          </button>
-
-          <button
-            onClick={() => setViewMode('osmd')}
-            title="Modo Partitura Digital (MusicXML SVG)"
-            style={{
-              background: viewMode === 'osmd' ? 'var(--accent-orange)' : 'rgba(255, 255, 255, 0.08)',
-              border: viewMode === 'osmd' ? 'none' : '1px solid rgba(255, 255, 255, 0.15)',
-              color: '#ffffff',
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-full)',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            <Music size={14} />
-            <span>Partitura</span>
-          </button>
-
-          {/* Controles de Zoom para Partitura Digital */}
-          {viewMode === 'osmd' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '6px' }}>
-              <button
-                onClick={handleZoomOut}
-                title="Diminuir Zoom Partitura"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  color: '#ffffff',
-                  width: '26px',
-                  height: '26px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer'
-                }}
-              >
-                <ZoomOut size={14} />
-              </button>
-              <button
-                onClick={handleZoomIn}
-                title="Aumentar Zoom Partitura"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  color: '#ffffff',
-                  width: '26px',
-                  height: '26px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer'
-                }}
-              >
-                <ZoomIn size={14} />
-              </button>
-            </div>
-          )}
-        </div>
+        <span
+          style={{
+            fontSize: '1.05rem',
+            fontWeight: 900,
+            fontFamily: 'var(--font-heading)',
+            background: 'linear-gradient(135deg, #ffffff 40%, #ff944d 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            letterSpacing: '1px',
+            textAlign: 'center',
+            textTransform: 'uppercase'
+          }}
+        >
+          POZZOLI MELÓDICO - PRIMEIRA SÉRIE
+        </span>
       </div>
 
       {/* Banner de Contagem de Entrada (Lead-In) */}
@@ -304,62 +228,20 @@ export function MusicXMLViewer({
         </div>
       )}
 
-      {/* Conteúdo do Leitor: Modo Vídeo vs Modo Partitura Digital */}
-      {viewMode === 'video' ? (
-        <div style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', background: '#000000', overflow: 'hidden' }}>
-          <VerticalVideoPlayer
-            videoUrl={videoUrl || currentSeries?.videoUrl}
-            currentSeries={currentSeries}
-            bpm={currentBpm}
-            isDesktopMode={isDesktopMode}
-            syncEngine={syncEngine}
-            onVideoRef={onVideoRef}
-            onTimeUpdate={onTimeUpdate}
-            isPlaying={isPlaying}
-            onTogglePlay={onTogglePlay}
-          />
-        </div>
-      ) : (
-        <div
-          className="osmd-scroll-container"
-          style={{
-            flex: 1,
-            width: '100%',
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            padding: '20px 16px 60px 16px',
-            background: '#ffffff',
-            color: '#000000',
-            scrollBehavior: 'smooth',
-            position: 'relative'
-          }}
-        >
-          {loading && (
-            <div style={{ textAlign: 'center', padding: '40px', color: '#6b7280' }}>
-              <RefreshCw size={24} className="spin-icon" style={{ marginBottom: '8px' }} />
-              <div>Carregando partitura musical...</div>
-            </div>
-          )}
-
-          {error && (
-            <div style={{ textAlign: 'center', padding: '20px', color: '#ef4444' }}>
-              <AlertCircle size={24} style={{ marginBottom: '8px' }} />
-              <div>{error}</div>
-            </div>
-          )}
-
-          <div
-            ref={containerRef}
-            id="osmd-container"
-            style={{
-              width: '100%',
-              minHeight: '380px',
-              margin: '0 auto',
-              scrollMarginTop: '60px'
-            }}
-          />
-        </div>
-      )}
+      {/* Conteúdo do Leitor com Fundo Branco */}
+      <div style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', background: '#ffffff', overflow: 'hidden' }}>
+        <VerticalVideoPlayer
+          videoUrl={videoUrl || currentSeries?.videoUrl}
+          currentSeries={currentSeries}
+          bpm={currentBpm}
+          isDesktopMode={isDesktopMode}
+          syncEngine={syncEngine}
+          onVideoRef={onVideoRef}
+          onTimeUpdate={onTimeUpdate}
+          isPlaying={isPlaying}
+          onTogglePlay={onTogglePlay}
+        />
+      </div>
     </div>
   );
 }
