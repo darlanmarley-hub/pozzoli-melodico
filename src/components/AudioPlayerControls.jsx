@@ -32,6 +32,22 @@ export default function AudioPlayerControls({
   const defaultBpm = currentSeries?.defaultBpm || 60;
   const speedRatio = bpm / defaultBpm;
 
+  const bpmIntervalRef = useRef(null);
+
+  const startBpmChange = (delta) => {
+    onBpmChange((prev) => Math.max(30, Math.min(240, prev + delta)));
+    bpmIntervalRef.current = setInterval(() => {
+      onBpmChange((prev) => Math.max(30, Math.min(240, prev + delta)));
+    }, 100);
+  };
+
+  const stopBpmChange = () => {
+    if (bpmIntervalRef.current) {
+      clearInterval(bpmIntervalRef.current);
+      bpmIntervalRef.current = null;
+    }
+  };
+
   const toggleMuteMetronome = () => {
     if (activeMedia) {
       activeMedia.muted = !isMetronomeMuted;
@@ -149,11 +165,16 @@ export default function AudioPlayerControls({
         {audioError && <span style={{ color: '#fbbf24', marginLeft: '8px', fontSize: '0.75rem' }}>(Modo Metrônomo)</span>}
       </div>
 
-      {/* Row 2: Action Pill Buttons */}
-      <div className="player-actions-row">
-        <button className="action-pill-btn" onClick={onToggleDesktopMode} title="Alternar para Formato Computador">
+      {/* Row 2: Action Pill Buttons (Lado a Lado) */}
+      <div className="player-actions-row" style={{ display: 'flex', flexDirection: 'row', gap: '8px', width: '100%', maxWidth: '440px', margin: '0 auto' }}>
+        <button
+          className="action-pill-btn"
+          onClick={onToggleDesktopMode}
+          title="Alternar para Formato Computador"
+          style={{ flex: 1, justifyContent: 'center', whiteSpace: 'nowrap' }}
+        >
           <Monitor size={15} />
-          <span>{isDesktopMode ? '📱 Formato Celular' : '💻 Formato Computador'}</span>
+          <span>{isDesktopMode ? '📱 Modo Celular' : '💻 Modo PC'}</span>
         </button>
 
         <button
@@ -162,9 +183,10 @@ export default function AudioPlayerControls({
             setIsOfflineSaved(true);
             alert('Partitura e áudio salvos com sucesso para uso offline!');
           }}
+          style={{ flex: 1, justifyContent: 'center', whiteSpace: 'nowrap' }}
         >
           <Download size={15} />
-          <span>{isOfflineSaved ? 'Salvo offline ✓' : 'Baixar para offline'}</span>
+          <span>{isOfflineSaved ? 'Salvo ✓' : 'Baixar Offline'}</span>
         </button>
       </div>
 
@@ -188,11 +210,35 @@ export default function AudioPlayerControls({
           <Home size={22} />
         </button>
 
-        {/* BPM Pill Control (- 1 em 1 BPM +) */}
+        {/* BPM Pill Control (- 1 em 1 BPM + com sensibilidade a toque e contínuo) */}
         <div className="bpm-pill-control">
-          <button className="bpm-step-btn" onClick={() => onBpmChange(bpm - 1)} title="Diminuir 1 BPM">-</button>
-          <span>{bpm} BPM</span>
-          <button className="bpm-step-btn" onClick={() => onBpmChange(bpm + 1)} title="Aumentar 1 BPM">+</button>
+          <button
+            className="bpm-step-btn"
+            onMouseDown={() => startBpmChange(-1)}
+            onMouseUp={stopBpmChange}
+            onMouseLeave={stopBpmChange}
+            onTouchStart={() => startBpmChange(-1)}
+            onTouchEnd={stopBpmChange}
+            onClick={() => onBpmChange((prev) => Math.max(30, prev - 1))}
+            title="Diminuir BPM (segure para diminuir rápido)"
+            style={{ padding: '4px 10px', fontSize: '1.2rem', fontWeight: 800, cursor: 'pointer' }}
+          >
+            -
+          </button>
+          <span style={{ minWidth: '54px', textAlign: 'center' }}>{bpm} BPM</span>
+          <button
+            className="bpm-step-btn"
+            onMouseDown={() => startBpmChange(1)}
+            onMouseUp={stopBpmChange}
+            onMouseLeave={stopBpmChange}
+            onTouchStart={() => startBpmChange(1)}
+            onTouchEnd={stopBpmChange}
+            onClick={() => onBpmChange((prev) => Math.min(240, prev + 1))}
+            title="Aumentar BPM (segure para aumentar rápido)"
+            style={{ padding: '4px 10px', fontSize: '1.2rem', fontWeight: 800, cursor: 'pointer' }}
+          >
+            +
+          </button>
         </div>
 
         {/* Botão para Resetar para o Tempo Original (60 BPM) */}

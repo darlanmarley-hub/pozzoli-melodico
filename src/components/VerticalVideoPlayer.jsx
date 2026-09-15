@@ -63,10 +63,25 @@ export default function VerticalVideoPlayer({
     }
   };
 
+  const handleContainerClick = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch((e) => console.warn(e));
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  };
+
   return (
     <div className={`vertical-video-wrapper ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}>
-      {/* Frame de Vídeo em Formato Celular / Computador */}
-      <div className={`vertical-video-frame ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}>
+      {/* Frame de Vídeo em Formato Celular / Computador (Clique na tela para Tocar/Pausar) */}
+      <div
+        className={`vertical-video-frame ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}
+        onClick={handleContainerClick}
+        style={{ cursor: 'pointer' }}
+        title="Toque na tela para Tocar / Pausar"
+      >
         {!useIframeFallback ? (
           <video
             ref={videoRef}

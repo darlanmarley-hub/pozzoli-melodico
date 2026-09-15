@@ -687,7 +687,7 @@ body {
 .vertical-video-element {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Exibe o vídeo 100% por inteiro sem cortar nada */
+  object-fit: cover; /* Preenche 100% da tela do celular sem barras pretas */
   display: block;
 }
 
