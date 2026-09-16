@@ -48,11 +48,11 @@ export const getDirectVideoUrl = (url) => {
 export const INITIAL_SERIES = [
   {
     id: 'primeira-serie',
-    title: 'PRIMEIRA SÉRIE',
+    title: '1ª Série',
     subtitle: 'Vídeo Vertical e Metrônomo Sincronizado',
     moduleId: 'modulo-1',
     moduleName: 'Módulo 1 - 1ª Série Pozzoli',
-    description: 'Primeira série do Método Pozzoli Melódico em vídeo vertical.',
+    description: '1ª Série do Método Pozzoli Melódico em vídeo vertical.',
     mxlUrl: '/partituras/1-serie.xml',
     audioUrl: '/audios/1-serie.mp3',
     videoUrl: 'https://www.dropbox.com/scl/fi/n5urgagh1k0pslalytlje/Primeira-Serie-baixa.mp4?rlkey=077uber23bk6fy2lhqb99oyn5&st=n2ihj0es&raw=1',

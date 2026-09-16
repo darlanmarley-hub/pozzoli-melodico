@@ -248,7 +248,7 @@ export default function SeriesLibraryView({
           )}
         </div>
 
-        {/* Pasta Única de Exercício: PRIMEIRA SÉRIE (Muda de Cor quando Estudado) */}
+        {/* Pasta Única de Exercício: 1ª SÉRIE (Muda de Cor quando Estudado) */}
         <div
           className="accordion-card"
           onClick={() => firstSeries && onSelectSeries && onSelectSeries(firstSeries)}
@@ -288,7 +288,7 @@ export default function SeriesLibraryView({
             <div className="card-title-group">
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
-                  PRIMEIRA SÉRIE
+                  1ª SÉRIE
                 </h3>
                 {isFirstStudied && (
                   <span
@@ -326,7 +326,7 @@ export default function SeriesLibraryView({
             <button
               className="circle-play-btn"
               onClick={() => onSelectSeries && onSelectSeries(firstSeries)}
-              title="Abrir Vídeo PRIMEIRA SÉRIE"
+              title="Abrir Vídeo 1ª Série"
               style={{
                 width: '36px',
                 height: '36px',
