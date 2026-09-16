@@ -186,7 +186,7 @@ export function MusicXMLViewer({
             textTransform: 'uppercase'
           }}
         >
-          POZZOLI MELÓDICO - 1ª SÉRIE
+          POZZOLI MELÓDICO 1ª SÉRIE
         </span>
       </div>
 
