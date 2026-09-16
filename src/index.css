@@ -756,7 +756,7 @@ input, textarea {
 }
 
 .vertical-video-frame.mobile-mode .vertical-video-element {
-  transform: scale(1.22);
+  transform: scale(1.30);
   transform-origin: center top; /* O zoom expande para baixo e lados, mantendo a borda superior visível */
 }
 
