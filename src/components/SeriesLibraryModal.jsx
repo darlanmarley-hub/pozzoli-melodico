@@ -61,7 +61,7 @@ export default function SeriesLibraryView({
             background: 'rgba(255, 102, 0, 0.12)',
             border: '1px solid rgba(255, 102, 0, 0.3)',
             color: '#ff944d',
-            padding: '5px 12px',
+            padding: '6px 14px',
             borderRadius: 'var(--radius-full)',
             fontSize: '0.75rem',
             fontWeight: 600,
@@ -69,7 +69,8 @@ export default function SeriesLibraryView({
             alignItems: 'center',
             justifyContent: 'center',
             gap: '6px',
-            marginTop: '2px',
+            marginTop: '8px',
+            marginBottom: '6px',
             lineHeight: 1.2
           }}
         >
