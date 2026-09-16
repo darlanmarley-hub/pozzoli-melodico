@@ -19,21 +19,15 @@ export default function SeriesLibraryView({
 
   return (
     <div className="library-view-container" style={{ paddingTop: '12px', paddingBottom: '30px' }}>
-      {/* Cabeçalho Destacado e Organizado para Mobile */}
+      {/* Cabeçalho Limpo sem Moldura para Mobile */}
       <div
         style={{
-          background: 'rgba(19, 25, 39, 0.8)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          borderRadius: 'var(--radius-md)',
-          padding: '14px 16px',
-          margin: '0 12px 10px 12px',
           textAlign: 'center',
+          padding: '10px 16px 4px 16px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '6px',
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)'
+          gap: '6px'
         }}
       >
         <h1
