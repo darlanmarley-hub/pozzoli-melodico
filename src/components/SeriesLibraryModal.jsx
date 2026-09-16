@@ -19,51 +19,68 @@ export default function SeriesLibraryView({
 
   return (
     <div className="library-view-container" style={{ paddingTop: '12px', paddingBottom: '30px' }}>
-      {/* Cabeçalho Compacto da Tela Inicial */}
+      {/* Cabeçalho Destacado e Organizado para Mobile */}
       <div
         style={{
+          background: 'rgba(19, 25, 39, 0.8)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: 'var(--radius-md)',
+          padding: '14px 16px',
+          margin: '0 12px 10px 12px',
           textAlign: 'center',
-          padding: '8px 12px 10px 12px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '6px'
+          gap: '6px',
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)'
         }}
       >
         <h1
           style={{
-            fontSize: '1.35rem',
+            fontSize: '1.45rem',
             fontWeight: 900,
             fontFamily: 'var(--font-heading)',
-            background: 'linear-gradient(135deg, #ffffff 40%, #ff944d 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            letterSpacing: '0.3px',
-            lineHeight: 1.2
+            color: '#ffffff',
+            letterSpacing: '0.5px',
+            lineHeight: 1.2,
+            margin: 0
           }}
         >
-          POZZOLI MELÓDICO NO BOLSO
+          POZZOLI MELÓDICO
         </h1>
 
         <div
           style={{
-            background: 'rgba(251, 191, 36, 0.08)',
-            border: '1px solid rgba(251, 191, 36, 0.25)',
-            color: '#fbbf24',
-            padding: '4px 10px',
+            fontSize: '0.8rem',
+            fontWeight: 700,
+            color: 'var(--accent-orange)',
+            letterSpacing: '0.5px',
+            textTransform: 'uppercase'
+          }}
+        >
+          Leitura & Solfejo Musical
+        </div>
+
+        <div
+          style={{
+            background: 'rgba(255, 102, 0, 0.12)',
+            border: '1px solid rgba(255, 102, 0, 0.3)',
+            color: '#ff944d',
+            padding: '5px 12px',
             borderRadius: 'var(--radius-full)',
-            fontSize: '0.72rem',
+            fontSize: '0.75rem',
             fontWeight: 600,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '4px',
-            maxWidth: '96%',
+            gap: '6px',
+            marginTop: '2px',
             lineHeight: 1.2
           }}
         >
-          <Wifi size={12} style={{ flexShrink: 0 }} />
-          <span>Conecte-se ao Wi-Fi para economizar dados</span>
+          <Wifi size={13} style={{ flexShrink: 0, color: '#ff944d' }} />
+          <span>Conecte-se ao Wi-Fi para economizar dados móveis</span>
         </div>
       </div>
 
