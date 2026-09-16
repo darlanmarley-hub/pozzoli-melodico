@@ -103,7 +103,7 @@ export default function App() {
     <div className="app-container">
       {/* Tab View: Partitura / Leitura / Player em Formato Vertical */}
       {activeTab === 'reader' && (
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden', background: '#000000' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden', background: '#ffffff' }}>
           <ScoreViewer
             mxlUrl={currentSeries.mxlUrl}
             videoUrl={currentSeries.videoUrl}
