@@ -183,10 +183,14 @@ export function MusicXMLViewer({
             WebkitTextFillColor: 'transparent',
             letterSpacing: '1px',
             textAlign: 'center',
-            textTransform: 'uppercase'
+            textTransform: 'uppercase',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '14px'
           }}
         >
-          POZZOLI MELÓDICO 1ª SÉRIE
+          <span>POZZOLI MELÓDICO</span>
+          <span>1ª SÉRIE</span>
         </span>
       </div>
 
