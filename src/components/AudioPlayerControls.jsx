@@ -107,22 +107,48 @@ export default function AudioPlayerControls({
     };
   }, [activeMedia, onTimeUpdate]);
 
-  const togglePlayPause = () => {
-    if (!activeMedia) return;
+  useEffect(() => {
+    if (syncEngine) {
+      syncEngine.setCallbacks({
+        onProgress: (t) => {
+          setCurrentTime(t);
+          const dur = syncEngine.getTotalDurationSec();
+          if (dur > 0) setDuration(dur);
+          if (onTimeUpdate) onTimeUpdate(t);
+        },
+        onPhaseChange: (phase) => {
+          if (phase === 'playing') setIsPlaying(true);
+          if (phase === 'paused' || phase === 'stopped' || phase === 'finished') setIsPlaying(false);
+        }
+      });
+    }
+  }, [syncEngine, onTimeUpdate]);
 
+  const togglePlayPause = () => {
     if (isPlaying) {
-      activeMedia.pause();
+      if (syncEngine) {
+        syncEngine.pause();
+      }
+      if (activeMedia) {
+        activeMedia.pause();
+      }
       setIsPlaying(false);
     } else {
-      activeMedia.play()
-        .then(() => {
-          setIsPlaying(true);
-          setAudioError(false);
-        })
-        .catch((err) => {
-          console.warn('Erro ao disparar vídeo:', err);
-          setAudioError(true);
-        });
+      if (syncEngine) {
+        syncEngine.play();
+        setIsPlaying(true);
+      }
+      if (activeMedia && !syncEngine?.useMidiAudio) {
+        activeMedia.play()
+          .then(() => {
+            setIsPlaying(true);
+            setAudioError(false);
+          })
+          .catch((err) => {
+            console.warn('Erro ao disparar mídia:', err);
+            setAudioError(true);
+          });
+      }
     }
   };
 
@@ -154,7 +180,7 @@ export default function AudioPlayerControls({
       {!videoElement && (
         <audio
           ref={audioRef}
-          src={audioUrl || '/audios/1-serie.mp3'}
+          src={audioUrl || '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3'}
           preload="auto"
         />
       )}

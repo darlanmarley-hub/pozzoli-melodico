@@ -27,7 +27,7 @@ export default function VerticalVideoPlayer({
   const defaultBpm = currentSeries?.defaultBpm || 90;
   const speedRatio = bpm / defaultBpm;
 
-  const rawUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/n5urgagh1k0pslalytlje/Primeira-Serie-baixa.mp4?rlkey=077uber23bk6fy2lhqb99oyn5&st=n2ihj0es&raw=1';
+  const rawUrl = videoUrl || currentSeries?.videoUrl || '/partituras/primeira serie/serie1.mp4';
   const directVideoSrc = getDirectVideoUrl(rawUrl);
 
   // Expor o elemento vídeo para o AudioSyncEngine

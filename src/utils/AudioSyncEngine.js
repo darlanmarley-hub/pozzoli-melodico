@@ -1,13 +1,17 @@
 import { CountInEngine } from './CountInEngine';
+import * as ToneMidiModule from '@tonejs/midi';
+
+const Midi = ToneMidiModule.Midi || ToneMidiModule.default?.Midi || ToneMidiModule.default || ToneMidiModule;
 
 /**
  * Audio-Driven Synchronization & Master Clock Engine para Pozzoli Melódico
+ * Suporta Execução de Áudio MP3, Síntese MIDI via Web Audio API e Sincronização em tempo real com OpenSheetMusicDisplay (OSMD).
  * 
  * Estados Suportados:
  * "idle" | "preparing" | "count-in" | "playing" | "paused" | "stopped" | "finished" | "error"
  */
 export class AudioSyncEngine {
-  constructor(audioElement = null, osmdInstance = null, originalBpm = 90, syncConfig = null) {
+  constructor(audioElement = null, osmdInstance = null, originalBpm = 60, syncConfig = null) {
     this.audioElement = audioElement;
     this.osmd = osmdInstance;
     this.originalBpm = originalBpm;
@@ -19,11 +23,21 @@ export class AudioSyncEngine {
     this.countInBeats = syncConfig?.countInBeats || 4;
     this.audioOffsetSec = syncConfig?.audioOffset || 0;
 
-    this.timeSignature = '4/4';
+    this.timeSignature = '2/4';
     this.scoreMap = [];
-    this.musicalNotesData = []; // Estrutura intermediária legível para análise musical
+    this.musicalNotesData = [];
+    this.midiNotes = [];
+    this.midiData = null;
     this.currentIndex = 0;
+    this.lastJumpedIndex = -1;
     this.animFrameId = null;
+
+    // Web Audio API Context para Síntese MIDI
+    this.audioCtx = null;
+    this.midiStartTime = 0;
+    this.midiPauseTime = 0;
+    this.scheduledNoteIndices = new Set();
+    this.useMidiAudio = false; // Áudio MP3 habilitado por padrão para tocar o arquivo Pozzoli
 
     // Configurações de Loop
     this.isLoopActive = false;
@@ -39,6 +53,18 @@ export class AudioSyncEngine {
 
     if (this.audioElement) {
       this.setupAudioElement();
+    }
+  }
+
+  initAudioContext() {
+    if (!this.audioCtx) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        this.audioCtx = new AudioContextClass();
+      }
+    }
+    if (this.audioCtx && this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
     }
   }
 
@@ -61,6 +87,37 @@ export class AudioSyncEngine {
   setOsmdInstance(osmdInstance) {
     this.osmd = osmdInstance;
     this.buildScoreMap();
+  }
+
+  /**
+   * Carrega e decodifica o arquivo MIDI (.mid)
+   */
+  async loadMidi(midiUrl = '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid') {
+    try {
+      const res = await fetch(midiUrl);
+      if (!res.ok) return null;
+
+      const arrayBuffer = await res.arrayBuffer();
+      const midi = new Midi(arrayBuffer);
+      this.midiData = midi;
+
+      if (midi.tracks && midi.tracks.length > 0) {
+        const track = midi.tracks.find(t => t.notes && t.notes.length > 0) || midi.tracks[0];
+        this.midiNotes = track.notes.map((n, idx) => ({
+          stepIndex: idx,
+          midi: n.midi,
+          noteName: n.name,
+          timeSec: n.time,
+          durationSec: n.duration,
+          pitchFreq: 440 * Math.pow(2, (n.midi - 69) / 12)
+        }));
+      }
+
+      return this.midiNotes;
+    } catch (err) {
+      console.warn('Erro ao carregar MIDI no AudioSyncEngine:', err);
+      return null;
+    }
   }
 
   setSyncConfig(syncConfig) {
@@ -104,49 +161,6 @@ export class AudioSyncEngine {
   }
 
   /**
-   * Interpola o tempo exato em áudio (em milissegundos) a partir de syncPoints em JSON
-   */
-  getAudioTimeForMeasureBeat(measureNumber, beatInMeasure = 1) {
-    if (!this.syncConfig || !this.syncConfig.syncPoints || this.syncConfig.syncPoints.length === 0) {
-      return null;
-    }
-
-    const points = this.syncConfig.syncPoints;
-    const beatsPerMeasure = parseInt(this.timeSignature.split('/')[0]) || 4;
-
-    const targetAbsBeat = (measureNumber - 1) * beatsPerMeasure + (beatInMeasure - 1);
-
-    const mapped = points.map((p) => ({
-      absBeat: (p.measure - 1) * beatsPerMeasure + (p.beat - 1),
-      timeMs: p.audioTime * 1000
-    })).sort((a, b) => a.absBeat - b.absBeat);
-
-    if (targetAbsBeat <= mapped[0].absBeat) {
-      const diffBeats = mapped[0].absBeat - targetAbsBeat;
-      const msPerBeat = (60.0 / Math.max(30, this.originalBpm)) * 1000;
-      return Math.max(0, mapped[0].timeMs - diffBeats * msPerBeat);
-    }
-
-    if (targetAbsBeat >= mapped[mapped.length - 1].absBeat) {
-      const last = mapped[mapped.length - 1];
-      const diffBeats = targetAbsBeat - last.absBeat;
-      const msPerBeat = (60.0 / Math.max(30, this.originalBpm)) * 1000;
-      return last.timeMs + diffBeats * msPerBeat;
-    }
-
-    for (let i = 0; i < mapped.length - 1; i++) {
-      const p1 = mapped[i];
-      const p2 = mapped[i + 1];
-      if (targetAbsBeat >= p1.absBeat && targetAbsBeat <= p2.absBeat) {
-        const ratio = (targetAbsBeat - p1.absBeat) / (p2.absBeat - p1.absBeat || 1);
-        return p1.timeMs + ratio * (p2.timeMs - p1.timeMs);
-      }
-    }
-
-    return null;
-  }
-
-  /**
    * Extrai a estrutura intermediária de dados musicais do MusicXML via OSMD
    */
   buildScoreMap() {
@@ -164,11 +178,10 @@ export class AudioSyncEngine {
       let cumulativeBeats = 0;
       const msPerQuarterAtOriginalBpm = (60.0 / Math.max(30, this.originalBpm)) * 1000;
 
-      // Extrair Fórmula de Compasso
       if (this.osmd.Sheet && this.osmd.Sheet.SourceMeasures && this.osmd.Sheet.SourceMeasures.length > 0) {
         const firstMeasure = this.osmd.Sheet.SourceMeasures[0];
         if (firstMeasure.duration) {
-          const num = firstMeasure.duration.Numerator || 4;
+          const num = firstMeasure.duration.Numerator || 2;
           const den = firstMeasure.duration.Denominator || 4;
           this.timeSignature = `${num}/${den}`;
         }
@@ -208,7 +221,7 @@ export class AudioSyncEngine {
                 ? note.Pitch.halfTone
                 : (note.Pitch.octave - 4) * 12 + note.Pitch.fundamentalNote;
               
-              const midi = halfTone + 60; // C4 = 60
+              const midi = halfTone + 60;
               pitchFreq = 440 * Math.pow(2, (midi - 69) / 12);
               
               const noteIdx = (midi % 12 + 12) % 12;
@@ -226,15 +239,8 @@ export class AudioSyncEngine {
         const beatInMeasure = Math.floor(cumulativeQuartersInMeasure) + 1;
         cumulativeQuartersInMeasure += durationQuarters;
 
-        const syncStartTimeMs = this.getAudioTimeForMeasureBeat(measureNumber, beatInMeasure);
-
         let startTimeMs = cumulativeTimeMs;
         let durationMs = durationQuarters * msPerQuarterAtOriginalBpm;
-
-        if (syncStartTimeMs !== null) {
-          startTimeMs = syncStartTimeMs;
-        }
-
         const endTimeMs = startTimeMs + durationMs;
 
         const noteObj = {
@@ -253,7 +259,6 @@ export class AudioSyncEngine {
 
         map.push(noteObj);
 
-        // Estrutura Intermediária Específica
         intermediateData.push({
           measure: measureNumber,
           voice: voiceId,
@@ -287,6 +292,7 @@ export class AudioSyncEngine {
 
   setBpm(newBpm) {
     this.currentBpm = Math.max(30, Math.min(280, newBpm));
+
     if (this.audioElement) {
       const speedRatio = this.currentBpm / this.originalBpm;
       this.audioElement.playbackRate = Math.max(0.4, Math.min(2.5, speedRatio));
@@ -294,12 +300,68 @@ export class AudioSyncEngine {
   }
 
   /**
-   * Dispara a reprodução direta do áudio do vídeo Pozzoli
+   * Síntese sonora de uma nota MIDI via Web Audio API
+   */
+  playMidiSoundNote(pitchFreq, startTimeCtx, durationSec, velocity = 0.7) {
+    if (!this.audioCtx || !pitchFreq) return;
+
+    try {
+      const osc1 = this.audioCtx.createOscillator();
+      const osc2 = this.audioCtx.createOscillator();
+      const gainNode = this.audioCtx.createGain();
+
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(pitchFreq, startTimeCtx);
+
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(pitchFreq, startTimeCtx);
+
+      const vol = Math.min(1.0, Math.max(0.1, velocity)) * 0.4;
+      const attackTime = 0.008;
+      const releaseTime = Math.min(0.2, durationSec * 0.4);
+
+      gainNode.gain.setValueAtTime(0, startTimeCtx);
+      gainNode.gain.linearRampToValueAtTime(vol, startTimeCtx + attackTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, startTimeCtx + durationSec + releaseTime);
+
+      osc1.connect(gainNode);
+      osc2.connect(gainNode);
+      gainNode.connect(this.audioCtx.destination);
+
+      osc1.start(startTimeCtx);
+      osc2.start(startTimeCtx);
+
+      osc1.stop(startTimeCtx + durationSec + releaseTime);
+      osc2.stop(startTimeCtx + durationSec + releaseTime);
+    } catch (e) {
+      console.warn('Erro ao sintetizar nota MIDI:', e);
+    }
+  }
+
+  /**
+   * Dispara a reprodução sincronizada
    */
   play() {
-    if (!this.audioElement) return;
+    this.initAudioContext();
     this.setBpm(this.currentBpm);
-    this.startMusicalAudioPlayback();
+
+    if (!this.useMidiAudio && this.audioElement) {
+      this.startMusicalAudioPlayback();
+    } else if (this.useMidiAudio && (this.midiNotes.length > 0 || this.scoreMap.length > 0)) {
+      this.startMidiAudioPlayback();
+    } else if (this.audioElement) {
+      this.startMusicalAudioPlayback();
+    }
+  }
+
+  startMidiAudioPlayback() {
+    this.setPhase('playing');
+    this.scheduledNoteIndices.clear();
+
+    const bpmRatio = this.originalBpm / this.currentBpm;
+    this.midiStartTime = this.audioCtx.currentTime - (this.midiPauseTime * bpmRatio);
+
+    this.startSyncLoop();
   }
 
   startMusicalAudioPlayback() {
@@ -311,10 +373,10 @@ export class AudioSyncEngine {
         this.startSyncLoop();
       })
       .catch((err) => {
-        console.warn('Erro ao reproduzir áudio musical:', err);
+        console.warn('Erro ao reproduzir áudio:', err);
         this.setPhase('error');
         if (this.onErrorCallback) {
-          this.onErrorCallback(`O navegador bloqueou ou falhou ao reproduzir o áudio: ${err.message}`);
+          this.onErrorCallback(`Falha ao reproduzir o áudio: ${err.message}`);
         }
       });
   }
@@ -324,13 +386,19 @@ export class AudioSyncEngine {
     if (this.audioElement) {
       this.audioElement.pause();
     }
+
+    if (this.audioCtx && this.playbackPhase === 'playing') {
+      const bpmRatio = this.currentBpm / this.originalBpm;
+      this.midiPauseTime = (this.audioCtx.currentTime - this.midiStartTime) * bpmRatio;
+    }
+
     this.stopSyncLoop();
     this.setPhase('paused');
   }
 
   resume() {
     if (this.playbackPhase === 'paused') {
-      this.startMusicalAudioPlayback();
+      this.play();
     } else {
       this.play();
     }
@@ -342,6 +410,8 @@ export class AudioSyncEngine {
       this.audioElement.pause();
       this.audioElement.currentTime = 0;
     }
+    this.midiPauseTime = 0;
+    this.scheduledNoteIndices.clear();
     this.stopSyncLoop();
     this.setPhase('stopped');
     this.jumpToStep(0);
@@ -353,17 +423,25 @@ export class AudioSyncEngine {
   }
 
   seek(seconds) {
+    this.midiPauseTime = Math.max(0, seconds);
     if (this.audioElement) {
       this.audioElement.currentTime = Math.max(0, seconds);
     }
-    this.syncCursorToAudioTime();
+    this.scheduledNoteIndices.clear();
+
+    if (this.playbackPhase === 'playing') {
+      const bpmRatio = this.originalBpm / this.currentBpm;
+      this.midiStartTime = this.audioCtx.currentTime - (this.midiPauseTime * bpmRatio);
+    }
+
+    this.syncCursorToCurrentTime();
   }
 
   startSyncLoop() {
     this.stopSyncLoop();
     const loop = () => {
       if (this.playbackPhase !== 'playing') return;
-      this.syncCursorToAudioTime();
+      this.syncCursorToCurrentTime();
       this.animFrameId = requestAnimationFrame(loop);
     };
     this.animFrameId = requestAnimationFrame(loop);
@@ -377,32 +455,50 @@ export class AudioSyncEngine {
   }
 
   /**
-   * Atualização contínua do cursor em tempo real baseada na posição do áudio mestre
+   * Sincronização em tempo real do cursor OSMD e da síntese Web Audio MIDI
    */
-  syncCursorToAudioTime() {
-    if (!this.audioElement || this.scoreMap.length === 0) return;
+  syncCursorToCurrentTime() {
+    let currentSec = 0;
 
-    const audioSec = this.audioElement.currentTime;
-    const duration = this.audioElement.duration || 1;
-    const speedRatio = this.audioElement.playbackRate || (this.currentBpm / this.originalBpm);
+    if (this.useMidiAudio && this.audioCtx) {
+      const bpmRatio = this.currentBpm / this.originalBpm;
+      const rawElapsed = Math.max(0, this.audioCtx.currentTime - this.midiStartTime);
+      currentSec = rawElapsed * bpmRatio;
+
+      // Agendar notas MIDI com antecedência
+      const notes = this.scoreMap;
+      const lookaheadSec = 0.2;
+      
+      notes.forEach((note, idx) => {
+        const noteStartSec = note.startTimeMs / 1000;
+        const noteDurationSec = note.durationMs / 1000;
+
+        if (
+          !this.scheduledNoteIndices.has(idx) &&
+          noteStartSec >= currentSec &&
+          noteStartSec <= currentSec + lookaheadSec
+        ) {
+          this.scheduledNoteIndices.add(idx);
+          if (!note.isRest && note.pitchFreq) {
+            const timeUntilNote = (noteStartSec - currentSec) / bpmRatio;
+            const audioCtxTargetTime = this.audioCtx.currentTime + timeUntilNote;
+            const scaledDuration = noteDurationSec / bpmRatio;
+            this.playMidiSoundNote(note.pitchFreq, audioCtxTargetTime, scaledDuration);
+          }
+        }
+      });
+    } else if (this.audioElement) {
+      currentSec = this.audioElement.currentTime;
+    }
+
+    const totalDurationSec = this.getTotalDurationSec();
 
     if (this.onProgressCallback) {
-      this.onProgressCallback(audioSec, audioSec / duration);
+      this.onProgressCallback(currentSec, totalDurationSec > 0 ? currentSec / totalDurationSec : 0);
     }
 
-    // Suporte ao modo Loop por compassos/trecho
-    if (this.isLoopActive && this.loopEndMeasure) {
-      const endNote = this.scoreMap.find(n => n.measureNumber > this.loopEndMeasure);
-      if (endNote && audioSec * speedRatio >= endNote.startTimeMs / 1000) {
-        const startNote = this.scoreMap.find(n => n.measureNumber >= (this.loopStartMeasure || 1));
-        const seekTime = startNote ? (startNote.startTimeMs / 1000) / speedRatio : 0;
-        this.seek(seekTime);
-        return;
-      }
-    }
-
-    // Condição de término do áudio
-    if (audioSec >= duration && duration > 0) {
+    // Condição de término
+    if (totalDurationSec > 0 && currentSec >= totalDurationSec) {
       if (this.isLoopActive) {
         this.seek(0);
       } else {
@@ -412,24 +508,41 @@ export class AudioSyncEngine {
       return;
     }
 
-    const originalTimeMs = audioSec * speedRatio * 1000;
+    // Localizar a nota ativa no mapa de partitura
     const notes = this.scoreMap;
+    if (notes.length === 0) return;
+
+    const currentMs = currentSec * 1000;
 
     while (
       this.currentIndex < notes.length - 1 &&
-      originalTimeMs >= notes[this.currentIndex].endTimeMs
+      currentMs >= notes[this.currentIndex].endTimeMs
     ) {
       this.currentIndex++;
     }
 
     while (
       this.currentIndex > 0 &&
-      originalTimeMs < notes[this.currentIndex].startTimeMs
+      currentMs < notes[this.currentIndex].startTimeMs
     ) {
       this.currentIndex--;
     }
 
-    this.jumpToStep(this.currentIndex);
+    if (this.lastJumpedIndex !== this.currentIndex) {
+      this.lastJumpedIndex = this.currentIndex;
+      this.jumpToStep(this.currentIndex);
+    }
+  }
+
+  getTotalDurationSec() {
+    if (this.scoreMap.length > 0) {
+      const lastNote = this.scoreMap[this.scoreMap.length - 1];
+      return lastNote.endTimeMs / 1000;
+    }
+    if (this.audioElement && this.audioElement.duration) {
+      return this.audioElement.duration;
+    }
+    return 60;
   }
 
   scrollToCursorSafely() {
@@ -440,10 +553,9 @@ export class AudioSyncEngine {
       const container = cursorEl.closest('.osmd-scroll-container') || cursorEl.closest('#osmd-container') || cursorEl.parentElement;
       if (!container) return;
 
-      // Calcular a altura real de qualquer cabeçalho fixo no topo da tela
-      const headerEl = document.querySelector('.reader-top-header') || document.querySelector('.screen-header') || document.querySelector('.glass-panel');
+      const headerEl = document.querySelector('.reader-top-header') || document.querySelector('.screen-header');
       const headerHeight = headerEl ? headerEl.offsetHeight : 0;
-      const safeTopPadding = headerHeight + 24; // Margem de segurança de 24px abaixo do cabeçalho
+      const safeTopPadding = headerHeight + 24;
 
       const cursorRect = cursorEl.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
@@ -454,16 +566,13 @@ export class AudioSyncEngine {
       const visibleTopBoundary = currentScroll + safeTopPadding;
       const visibleBottomBoundary = currentScroll + containerRect.height - 80;
 
-      // Se o cursor estiver posicionado acima da área segura visível, rola suavemente
       if (relativeCursorTop < visibleTopBoundary) {
         const targetScroll = Math.max(0, relativeCursorTop - safeTopPadding);
         container.scrollTo({
           top: targetScroll,
           behavior: 'smooth'
         });
-      } 
-      // Se o cursor avançar para a parte inferior
-      else if (relativeCursorTop > visibleBottomBoundary) {
+      } else if (relativeCursorTop > visibleBottomBoundary) {
         const targetScroll = relativeCursorTop - safeTopPadding - 30;
         container.scrollTo({
           top: targetScroll,
@@ -487,7 +596,6 @@ export class AudioSyncEngine {
       }
       cursor.show();
 
-      // Garantir rolagem segura que nunca esconde a partitura atrás do cabeçalho
       this.scrollToCursorSafely();
 
       const activeNote = this.scoreMap[targetIndex];

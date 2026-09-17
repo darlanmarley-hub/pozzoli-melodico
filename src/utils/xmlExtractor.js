@@ -11,7 +11,7 @@ const scoreXmlCache = new Map();
  */
 export async function extractMusicXml(url) {
   if (!url) {
-    url = '/partituras/1-serie.xml';
+    url = '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.xml';
   }
 
   // Tentar URL direta trocando extensão .mxl para .xml primeiro (fallback rápido)
