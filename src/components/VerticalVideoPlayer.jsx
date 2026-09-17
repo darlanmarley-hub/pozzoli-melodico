@@ -27,8 +27,38 @@ export default function VerticalVideoPlayer({
   const defaultBpm = currentSeries?.defaultBpm || 90;
   const speedRatio = bpm / defaultBpm;
 
-  const rawUrl = videoUrl || currentSeries?.videoUrl || '/partituras/primeira serie/serie1.mp4';
+  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || '/partituras/primeira serie/serie1-pc.mp4';
+  const mobileUrl = videoUrl || currentSeries?.videoUrl || '/partituras/primeira serie/serie1.mp4';
+  const rawUrl = isDesktopMode ? pcUrl : mobileUrl;
   const directVideoSrc = getDirectVideoUrl(rawUrl);
+
+  const prevSrcRef = useRef(directVideoSrc);
+
+  useEffect(() => {
+    if (prevSrcRef.current !== directVideoSrc && videoRef.current) {
+      const currentTime = videoRef.current.currentTime || 0;
+      const wasPlaying = !videoRef.current.paused;
+
+      videoRef.current.src = directVideoSrc;
+      videoRef.current.load();
+
+      const handleCanPlay = () => {
+        if (videoRef.current) {
+          if (currentTime > 0) {
+            try {
+              videoRef.current.currentTime = currentTime;
+            } catch (e) {}
+          }
+          if (wasPlaying) {
+            videoRef.current.play().catch(console.warn);
+          }
+        }
+      };
+
+      videoRef.current.addEventListener('canplay', handleCanPlay, { once: true });
+      prevSrcRef.current = directVideoSrc;
+    }
+  }, [directVideoSrc]);
 
   // Expor o elemento vídeo para o AudioSyncEngine
   useEffect(() => {

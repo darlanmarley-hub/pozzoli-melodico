@@ -57,6 +57,7 @@ export const INITIAL_SERIES = [
     midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
     audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
     videoUrl: '/partituras/primeira serie/serie1.mp4',
+    videoPcUrl: '/partituras/primeira serie/serie1-pc.mp4',
     embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
     timeSignature: '4/4',
     defaultBpm: 60,
