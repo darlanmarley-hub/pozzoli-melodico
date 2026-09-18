@@ -260,96 +260,107 @@ export default function SeriesLibraryView({
           )}
         </div>
 
-        {/* Pasta Única de Exercício: 1ª SÉRIE (Muda de Cor quando Estudado) */}
-        <div
-          className="accordion-card"
-          onClick={() => firstSeries && onSelectSeries && onSelectSeries(firstSeries)}
-          style={{
-            cursor: 'pointer',
-            padding: '14px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            background: isFirstStudied
-              ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(19, 25, 39, 0.96) 100%)'
-              : 'var(--bg-card)',
-            border: isFirstStudied ? '2px solid #10b981' : '1px solid var(--border-orange)',
-            borderRadius: 'var(--radius-md)',
-            boxShadow: isFirstStudied ? '0 4px 16px rgba(16, 185, 129, 0.35)' : '0 4px 16px rgba(0,0,0,0.3)',
-            transition: 'all 0.3s ease'
-          }}
-        >
-          <div className="header-left" style={{ gap: '12px' }}>
+        {/* Lista de Exercícios / Séries */}
+        {allSeries.map((series) => {
+          const isSeriesStudied = studied.includes(series.id);
+          const isSeriesFav = favorites.includes(series.id);
+
+          return (
             <div
-              className="icon-badge-box"
+              key={series.id}
+              className="accordion-card"
+              onClick={() => onSelectSeries && onSelectSeries(series)}
               style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '12px',
-                background: isFirstStudied ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 102, 0, 0.2)',
-                border: isFirstStudied ? '1px solid #10b981' : '1px solid var(--accent-orange)'
+                cursor: 'pointer',
+                padding: '14px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                background: isSeriesStudied
+                  ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(19, 25, 39, 0.96) 100%)'
+                  : 'var(--bg-card)',
+                border: isSeriesStudied ? '2px solid #10b981' : '1px solid var(--border-orange)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: isSeriesStudied ? '0 4px 16px rgba(16, 185, 129, 0.35)' : '0 4px 16px rgba(0,0,0,0.3)',
+                transition: 'all 0.3s ease'
               }}
             >
-              {isFirstStudied ? (
-                <CheckCircle2 size={24} style={{ color: '#10b981' }} />
-              ) : (
-                <Music size={22} style={{ color: 'var(--accent-orange)' }} />
-              )}
-            </div>
+              <div className="header-left" style={{ gap: '12px' }}>
+                <div
+                  className="icon-badge-box"
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: isSeriesStudied ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 102, 0, 0.2)',
+                    border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--accent-orange)'
+                  }}
+                >
+                  {isSeriesStudied ? (
+                    <CheckCircle2 size={24} style={{ color: '#10b981' }} />
+                  ) : (
+                    <Music size={22} style={{ color: 'var(--accent-orange)' }} />
+                  )}
+                </div>
 
-            <div className="card-title-group">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
-                  1ª SÉRIE
-                </h3>
-                {isFirstStudied && (
-                  <span
-                    style={{
-                      background: '#10b981',
-                      color: '#ffffff',
-                      fontSize: '0.7rem',
-                      fontWeight: 800,
-                      padding: '2px 8px',
-                      borderRadius: '10px',
-                      boxShadow: '0 2px 6px rgba(16, 185, 129, 0.4)'
-                    }}
-                  >
-                    Estudado ✓
-                  </span>
-                )}
+                <div className="card-title-group">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                      {series.title.toUpperCase()}
+                    </h3>
+                    {isSeriesStudied && (
+                      <span
+                        style={{
+                          background: '#10b981',
+                          color: '#ffffff',
+                          fontSize: '0.7rem',
+                          fontWeight: 800,
+                          padding: '2px 8px',
+                          borderRadius: '10px',
+                          boxShadow: '0 2px 6px rgba(16, 185, 129, 0.4)'
+                        }}
+                      >
+                        Estudado ✓
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                    {series.subtitle || series.moduleName}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
+                <button
+                  className="heart-toggle-btn"
+                  onClick={() => onToggleFavorite && onToggleFavorite(series.id)}
+                  title={isSeriesFav ? 'Remover dos Favoritos' : 'Salvar nos Favoritos'}
+                  style={{ padding: '6px' }}
+                >
+                  <Heart
+                    size={20}
+                    fill={isSeriesFav ? '#ff6600' : 'none'}
+                    color={isSeriesFav ? '#ff6600' : '#ffffff'}
+                  />
+                </button>
+
+                <button
+                  className="circle-play-btn"
+                  onClick={() => onSelectSeries && onSelectSeries(series)}
+                  title={`Abrir Vídeo ${series.title}`}
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    background: isSeriesStudied ? '#10b981' : 'var(--accent-orange)',
+                    boxShadow: isSeriesStudied ? '0 3px 10px rgba(16, 185, 129, 0.5)' : '0 3px 10px var(--accent-orange-glow)'
+                  }}
+                >
+                  <Play size={18} style={{ marginLeft: '1px' }} />
+                </button>
               </div>
             </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
-            <button
-              className="heart-toggle-btn"
-              onClick={() => onToggleFavorite && onToggleFavorite(firstSeries.id)}
-              title={isFav ? 'Remover dos Favoritos' : 'Salvar nos Favoritos'}
-              style={{ padding: '6px' }}
-            >
-              <Heart
-                size={20}
-                fill={isFav ? '#ff6600' : 'none'}
-                color={isFav ? '#ff6600' : '#ffffff'}
-              />
-            </button>
-
-            <button
-              className="circle-play-btn"
-              onClick={() => onSelectSeries && onSelectSeries(firstSeries)}
-              title="Abrir Vídeo 1ª Série"
-              style={{
-                width: '36px',
-                height: '36px',
-                background: isFirstStudied ? '#10b981' : 'var(--accent-orange)',
-                boxShadow: isFirstStudied ? '0 3px 10px rgba(16, 185, 129, 0.5)' : '0 3px 10px var(--accent-orange-glow)'
-              }}
-            >
-              <Play size={18} style={{ marginLeft: '1px' }} />
-            </button>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

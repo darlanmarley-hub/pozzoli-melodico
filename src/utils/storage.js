@@ -65,6 +65,26 @@ export const INITIAL_SERIES = [
     displayOrder: 1,
     isAvailable: true,
     isBuiltin: true
+  },
+  {
+    id: 'segunda-serie',
+    title: '2ª Série',
+    subtitle: 'Vídeo Formato Celular / Mobile Sincronizado',
+    moduleId: 'modulo-1',
+    moduleName: 'Módulo 1 - 2ª Série Pozzoli',
+    description: '2ª Série do Método Pozzoli Melódico em vídeo formato celular/mobile.',
+    mxlUrl: '',
+    midiUrl: '',
+    audioUrl: '',
+    videoUrl: 'https://www.dropbox.com/scl/fi/eeztr2o12mrr4prnmvy38/serie2-mobile.mp4?rlkey=jfm3u3xv6or5lghhtk0gdv841&st=2ucn8rcj&dl=0',
+    videoPcUrl: 'https://www.dropbox.com/scl/fi/eeztr2o12mrr4prnmvy38/serie2-mobile.mp4?rlkey=jfm3u3xv6or5lghhtk0gdv841&st=2ucn8rcj&dl=0',
+    embedUrl: '',
+    timeSignature: '4/4',
+    defaultBpm: 60,
+    difficulty: 'Iniciante',
+    displayOrder: 2,
+    isAvailable: true,
+    isBuiltin: true
   }
 ];
 

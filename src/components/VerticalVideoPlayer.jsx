@@ -35,6 +35,7 @@ export default function VerticalVideoPlayer({
   const prevSrcRef = useRef(directVideoSrc);
 
   useEffect(() => {
+    setIsVideoLoading(true);
     if (prevSrcRef.current !== directVideoSrc && videoRef.current) {
       const currentTime = videoRef.current.currentTime || 0;
       const wasPlaying = !videoRef.current.paused;
@@ -43,6 +44,7 @@ export default function VerticalVideoPlayer({
       videoRef.current.load();
 
       const handleCanPlay = () => {
+        setIsVideoLoading(false);
         if (videoRef.current) {
           if (currentTime > 0) {
             try {
@@ -119,22 +121,41 @@ export default function VerticalVideoPlayer({
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'rgba(11, 16, 29, 0.85)',
-              backdropFilter: 'blur(8px)',
+              background: 'rgba(11, 16, 29, 0.88)',
+              backdropFilter: 'blur(10px)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '12px',
-              zIndex: 30,
+              gap: '14px',
+              zIndex: 35,
               color: '#ffffff',
               pointerEvents: 'none'
             }}
           >
-            <RefreshCw size={36} className="spin-icon" style={{ color: 'var(--accent-orange)' }} />
-            <span style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.5px' }}>
-              Carregando exercício
-            </span>
+            <div
+              style={{
+                width: '58px',
+                height: '58px',
+                borderRadius: '50%',
+                background: 'rgba(255, 102, 0, 0.15)',
+                border: '2px solid var(--accent-orange)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 0 25px rgba(255, 102, 0, 0.4)'
+              }}
+            >
+              <RefreshCw size={30} className="spin-icon" style={{ color: 'var(--accent-orange)' }} />
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '0.6px', display: 'block', color: '#ffffff' }}>
+                Carregando exercício...
+              </span>
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
+                {currentSeries?.title || 'Pozzoli Melódico'}
+              </span>
+            </div>
           </div>
         )}
 
