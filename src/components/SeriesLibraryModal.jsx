@@ -222,9 +222,6 @@ export default function SeriesLibraryView({
                               </span>
                             )}
                           </div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1px' }}>
-                            {series.moduleName || series.subtitle}
-                          </div>
                         </div>
                       </div>
 
@@ -323,9 +320,6 @@ export default function SeriesLibraryView({
                         Estudado ✓
                       </span>
                     )}
-                  </div>
-                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                    {series.subtitle || series.moduleName}
                   </div>
                 </div>
               </div>
