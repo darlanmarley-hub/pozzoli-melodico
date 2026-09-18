@@ -763,16 +763,15 @@ input, textarea {
   height: calc(100vh - 140px);
   min-height: calc(100vh - 140px);
   margin: 0 auto;
-  background: #ffffff;
+  background: #000000;
   border: none;
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
   display: flex;
-  align-items: flex-start; /* Alinha o vídeo a partir do topo seguro */
+  align-items: center;
   justify-content: center;
-  padding-top: max(env(safe-area-inset-top), 24px); /* Espaço seguro superior */
-  padding-bottom: 12px;
+  padding: 0;
 }
 
 .vertical-video-element {
@@ -780,17 +779,18 @@ input, textarea {
   height: 100%;
   object-fit: contain;
   display: block;
+  transform: none;
   transition: transform 0.3s ease;
 }
 
 .vertical-video-frame.mobile-mode .vertical-video-element {
-  transform: scale(1.30);
-  transform-origin: center top; /* O zoom expande para baixo e lados, mantendo a borda superior visível */
+  transform: none;
+  object-fit: contain;
+  max-height: 100%;
 }
 
 .vertical-video-frame.desktop-mode {
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0;
   align-items: center;
   justify-content: center;
   background: #000000;

@@ -142,12 +142,12 @@ export function MusicXMLViewer({
 
   return (
     <div
-      className={`score-view-wrapper ${isDesktopMode ? 'desktop-mode' : ''}`}
+      className={`score-view-wrapper ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}
       style={{
         width: width || '100%',
         height: 'calc(100vh - 175px)',
         minHeight: 'calc(100vh - 175px)',
-        background: isDesktopMode ? '#000000' : '#ffffff',
+        background: '#000000',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -232,8 +232,8 @@ export function MusicXMLViewer({
         </div>
       )}
 
-      {/* Conteúdo do Leitor com Fundo em Modo Desktop */}
-      <div style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', background: isDesktopMode ? '#000000' : '#ffffff', overflow: 'hidden' }}>
+      {/* Conteúdo do Leitor com Fundo em Modo Desktop/Mobile */}
+      <div style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', background: '#000000', overflow: 'hidden' }}>
         <VerticalVideoPlayer
           videoUrl={videoUrl || currentSeries?.videoUrl}
           currentSeries={currentSeries}
