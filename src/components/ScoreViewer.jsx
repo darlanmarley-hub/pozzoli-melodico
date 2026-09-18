@@ -147,7 +147,7 @@ export function MusicXMLViewer({
         width: width || '100%',
         height: 'calc(100vh - 175px)',
         minHeight: 'calc(100vh - 175px)',
-        background: '#000000',
+        background: '#ffffff',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -232,8 +232,8 @@ export function MusicXMLViewer({
         </div>
       )}
 
-      {/* Conteúdo do Leitor com Fundo em Modo Desktop/Mobile */}
-      <div style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', background: '#000000', overflow: 'hidden' }}>
+      {/* Conteúdo do Leitor com Fundo Branco */}
+      <div style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', background: '#ffffff', overflow: 'hidden' }}>
         <VerticalVideoPlayer
           videoUrl={videoUrl || currentSeries?.videoUrl}
           currentSeries={currentSeries}
