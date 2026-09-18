@@ -27,8 +27,8 @@ export default function VerticalVideoPlayer({
   const defaultBpm = currentSeries?.defaultBpm || 90;
   const speedRatio = bpm / defaultBpm;
 
-  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || '/partituras/primeira serie/serie1-pc.mp4';
-  const mobileUrl = videoUrl || currentSeries?.videoUrl || '/partituras/primeira serie/serie1.mp4';
+  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rl01vjkvq4sq1cvld2gpr/serie1-pc.mp4?rlkey=a0uau8q887anbdh0hlgv3qnga&st=sbn05j3n&dl=0';
+  const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=y2ce0vpf&dl=0';
   const rawUrl = isDesktopMode ? pcUrl : mobileUrl;
   const directVideoSrc = getDirectVideoUrl(rawUrl);
 
@@ -160,27 +160,44 @@ export default function VerticalVideoPlayer({
               if (onEnded) onEnded();
             }}
             onError={() => {
-              console.log('Alternando para o player embed do Google Drive...');
+              console.warn('Erro ao carregar vídeo do Dropbox:', directVideoSrc);
               setIsVideoLoading(false);
               setUseIframeFallback(true);
             }}
           />
         ) : (
-          <iframe
-            src={drivePreviewUrl}
-            width="100%"
-            height="480"
-            allow="autoplay"
-            allowFullScreen
-            title="Vídeo Pozzoli 1ª Série Google Drive"
+          <div
             style={{
-              width: '100%',
-              height: '480px',
-              border: 'none',
+              padding: '24px',
+              textAlign: 'center',
+              color: '#ffffff',
+              background: '#1a1d24',
               borderRadius: 'var(--radius-md)',
-              display: 'block'
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              height: '100%',
+              minHeight: '300px'
             }}
-          />
+          >
+            <Video size={48} style={{ color: 'var(--accent-orange)' }} />
+            <p style={{ fontWeight: 700, margin: 0 }}>Não foi possível carregar o vídeo diretamente.</p>
+            <a
+              href={rawUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#ff6600',
+                textDecoration: 'underline',
+                fontSize: '0.9rem',
+                fontWeight: 600
+              }}
+            >
+              Abrir vídeo no Dropbox
+            </a>
+          </div>
         )}
       </div>
     </div>
