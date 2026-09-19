@@ -28,8 +28,8 @@ export default function VerticalVideoPlayer({
   const defaultBpm = currentSeries?.defaultBpm || 90;
   const speedRatio = bpm / defaultBpm;
 
-  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rl01vjkvq4sq1cvld2gpr/serie1-pc.mp4?rlkey=a0uau8q887anbdh0hlgv3qnga&st=sbn05j3n&dl=0';
-  const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=y2ce0vpf&dl=0';
+  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
+  const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
   const rawUrl = isDesktopMode ? pcUrl : mobileUrl;
   const directVideoSrc = getDirectVideoUrl(rawUrl);
 
