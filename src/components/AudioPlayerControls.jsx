@@ -18,7 +18,10 @@ export default function AudioPlayerControls({
   onTimeUpdate,
   onToggleDesktopMode,
   isDesktopMode,
-  onGoHome
+  onGoHome,
+  isMenuVisible = true,
+  onHideMenu = null,
+  onShowMenu = null
 }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -126,6 +129,7 @@ export default function AudioPlayerControls({
 
   const togglePlayPause = () => {
     if (isPlaying) {
+      if (onShowMenu) onShowMenu();
       if (syncEngine) {
         syncEngine.pause();
       }
@@ -134,6 +138,7 @@ export default function AudioPlayerControls({
       }
       setIsPlaying(false);
     } else {
+      if (onHideMenu) onHideMenu();
       if (syncEngine) {
         syncEngine.play();
         setIsPlaying(true);
@@ -153,6 +158,7 @@ export default function AudioPlayerControls({
   };
 
   const handleStop = () => {
+    if (onShowMenu) onShowMenu();
     if (activeMedia) {
       activeMedia.pause();
       activeMedia.currentTime = 0;
@@ -176,7 +182,15 @@ export default function AudioPlayerControls({
   };
 
   return (
-    <div className="player-dock-container">
+    <div
+      className="player-dock-container"
+      style={{
+        transform: isMenuVisible ? 'translateY(0)' : 'translateY(100%)',
+        opacity: isMenuVisible ? 1 : 0,
+        pointerEvents: isMenuVisible ? 'auto' : 'none',
+        transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
+      }}
+    >
       {!videoElement && (
         <audio
           ref={audioRef}

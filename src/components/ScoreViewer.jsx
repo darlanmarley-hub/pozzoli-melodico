@@ -23,6 +23,8 @@ export function MusicXMLViewer({
   currentBpm = 90,
   playbackPhase = 'idle',
   countInTick = null,
+  isMenuVisible = true,
+  onToggleMenu = null,
   highlightCurrentMeasure = true,
   onVideoRef = null,
   onTimeUpdate = null,
@@ -145,8 +147,8 @@ export function MusicXMLViewer({
       className={`score-view-wrapper ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}
       style={{
         width: width || '100%',
-        height: 'calc(100vh - 175px)',
-        minHeight: 'calc(100vh - 175px)',
+        height: '100vh',
+        minHeight: '100vh',
         background: '#ffffff',
         display: 'flex',
         flexDirection: 'column',
@@ -160,6 +162,10 @@ export function MusicXMLViewer({
       <div
         className="reader-top-header"
         style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
           width: '100%',
           display: 'flex',
           alignItems: 'center',
@@ -170,7 +176,11 @@ export function MusicXMLViewer({
           borderBottom: '1px solid var(--border-orange)',
           zIndex: 50,
           flexShrink: 0,
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)'
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+          transform: isMenuVisible ? 'translateY(0)' : 'translateY(-100%)',
+          opacity: isMenuVisible ? 1 : 0,
+          pointerEvents: isMenuVisible ? 'auto' : 'none',
+          transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
         <span
@@ -198,7 +208,10 @@ export function MusicXMLViewer({
       {playbackPhase === 'count-in' && countInTick && (
         <div
           style={{
-            position: 'relative',
+            position: 'absolute',
+            top: isMenuVisible ? '50px' : '0',
+            left: 0,
+            right: 0,
             width: '100%',
             zIndex: 60,
             background: 'linear-gradient(90deg, #e55c00 0%, #ff6600 100%)',
@@ -210,7 +223,8 @@ export function MusicXMLViewer({
             fontWeight: 700,
             fontSize: '0.9rem',
             boxShadow: '0 4px 15px rgba(255, 102, 0, 0.4)',
-            flexShrink: 0
+            flexShrink: 0,
+            transition: 'top 0.35s ease'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -233,7 +247,7 @@ export function MusicXMLViewer({
       )}
 
       {/* Conteúdo do Leitor com Fundo Branco */}
-      <div style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', background: '#ffffff', overflow: 'hidden' }}>
+      <div style={{ flex: 1, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: '#ffffff', overflow: 'hidden' }}>
         <VerticalVideoPlayer
           videoUrl={videoUrl || currentSeries?.videoUrl}
           currentSeries={currentSeries}
@@ -244,6 +258,7 @@ export function MusicXMLViewer({
           onTimeUpdate={onTimeUpdate}
           isPlaying={isPlaying}
           onTogglePlay={onTogglePlay}
+          onToggleMenu={onToggleMenu}
         />
       </div>
     </div>

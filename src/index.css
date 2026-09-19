@@ -176,8 +176,8 @@ input, textarea {
   position: relative;
   width: 100%;
   max-width: 100%;
-  height: calc(100vh - 180px);
-  min-height: calc(100vh - 180px);
+  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   background: #ffffff;
   border: none;
@@ -760,8 +760,8 @@ input, textarea {
   width: 100%;
   max-width: 100%;
   flex: 1;
-  height: calc(100vh - 140px);
-  min-height: calc(100vh - 140px);
+  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
   background: #ffffff;
   border: none;

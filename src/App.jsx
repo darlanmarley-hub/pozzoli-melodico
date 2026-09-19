@@ -33,6 +33,7 @@ export default function App() {
   const [stats, setStats] = useState(() => getStats());
   const [bpm, setBpm] = useState(60);
   const [isDesktopMode, setIsDesktopMode] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(true);
   const [activeTab, setActiveTab] = useState('library'); // 'library', 'saved', 'reader', 'stats', 'profile'
   const [videoElement, setVideoElement] = useState(null);
   const [audioCurrentTime, setAudioCurrentTime] = useState(0);
@@ -103,7 +104,7 @@ export default function App() {
     <div className="app-container">
       {/* Tab View: Partitura / Leitura / Player em Formato Vertical */}
       {activeTab === 'reader' && (
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden', background: '#ffffff' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden', background: '#ffffff', position: 'relative' }}>
           <ScoreViewer
             mxlUrl={currentSeries.mxlUrl}
             videoUrl={currentSeries.videoUrl}
@@ -114,6 +115,8 @@ export default function App() {
             currentBpm={bpm}
             playbackPhase={playbackPhase}
             countInTick={countInTick}
+            isMenuVisible={isMenuVisible}
+            onToggleMenu={() => setIsMenuVisible((prev) => !prev)}
             onVideoRef={(el) => {
               setVideoElement(el);
               if (syncEngineRef.current && el) {
@@ -141,6 +144,9 @@ export default function App() {
             onToggleDesktopMode={() => setIsDesktopMode(!isDesktopMode)}
             isDesktopMode={isDesktopMode}
             onGoHome={() => setActiveTab('library')}
+            isMenuVisible={isMenuVisible}
+            onHideMenu={() => setIsMenuVisible(false)}
+            onShowMenu={() => setIsMenuVisible(true)}
           />
         </div>
       )}

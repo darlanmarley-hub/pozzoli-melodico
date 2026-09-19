@@ -17,7 +17,8 @@ export default function VerticalVideoPlayer({
   onTimeUpdate = null,
   onEnded = null,
   isPlaying = false,
-  onTogglePlay = null
+  onTogglePlay = null,
+  onToggleMenu = null
 }) {
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
@@ -97,6 +98,9 @@ export default function VerticalVideoPlayer({
   };
 
   const handleContainerClick = () => {
+    if (onToggleMenu) {
+      onToggleMenu();
+    }
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play().catch((e) => console.warn(e));
