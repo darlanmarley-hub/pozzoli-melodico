@@ -103,6 +103,7 @@ export const INITIAL_SERIES = [
     defaultBpm: 60,
     difficulty: 'Iniciante',
     displayOrder: 3,
+    videoScale: 1.08,
     isAvailable: true,
     isBuiltin: true
   }
