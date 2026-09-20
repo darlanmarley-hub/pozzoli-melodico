@@ -35,7 +35,7 @@ export default function VerticalVideoPlayer({
 
   const videoTranslateY = currentSeries?.videoTranslateY
     ? currentSeries.videoTranslateY
-    : (currentSeries?.id === 'terceira-serie' ? '28px' : '0px');
+    : (currentSeries?.id === 'terceira-serie' ? '52px' : '0px');
 
   const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
   const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
