@@ -33,6 +33,10 @@ export default function VerticalVideoPlayer({
     ? currentSeries.videoScale
     : (currentSeries?.id === 'terceira-serie' ? 1.08 : baseScale);
 
+  const videoTranslateY = currentSeries?.videoTranslateY
+    ? currentSeries.videoTranslateY
+    : (currentSeries?.id === 'terceira-serie' ? '28px' : '0px');
+
   const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
   const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
   const rawUrl = isDesktopMode ? pcUrl : mobileUrl;
@@ -173,7 +177,7 @@ export default function VerticalVideoPlayer({
             ref={videoRef}
             src={directVideoSrc}
             className="vertical-video-element"
-            style={{ transform: `scale(${videoScale})` }}
+            style={{ transform: `scale(${videoScale}) translateY(${videoTranslateY})` }}
             playsInline
             controls={false}
             preload="auto"

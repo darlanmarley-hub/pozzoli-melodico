@@ -104,6 +104,7 @@ export const INITIAL_SERIES = [
     difficulty: 'Iniciante',
     displayOrder: 3,
     videoScale: 1.08,
+    videoTranslateY: '28px',
     isAvailable: true,
     isBuiltin: true
   }
