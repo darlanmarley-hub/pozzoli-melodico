@@ -31,11 +31,11 @@ export default function VerticalVideoPlayer({
   const baseScale = isDesktopMode ? 1.0 : 1.06;
   const videoScale = currentSeries?.videoScale
     ? currentSeries.videoScale
-    : (currentSeries?.id === 'terceira-serie' ? 1.16 : baseScale);
+    : ((currentSeries?.id === 'terceira-serie' || currentSeries?.id === 'primeira-serie') ? 1.16 : baseScale);
 
   const videoTranslateY = currentSeries?.videoTranslateY
     ? currentSeries.videoTranslateY
-    : (currentSeries?.id === 'terceira-serie' ? '78px' : (isDesktopMode ? '0px' : '40px'));
+    : ((currentSeries?.id === 'terceira-serie' || currentSeries?.id === 'primeira-serie') ? '78px' : (isDesktopMode ? '0px' : '40px'));
 
   const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
   const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
