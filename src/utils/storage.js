@@ -70,7 +70,7 @@ export const SERIES_FOLDERS = [
         difficulty: 'Iniciante',
         displayOrder: 1,
         videoScale: 0.85,
-        videoTranslateY: '-45px',
+        videoTranslateY: '-15px',
         isAvailable: true,
         isBuiltin: true
       }

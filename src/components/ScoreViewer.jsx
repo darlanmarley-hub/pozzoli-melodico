@@ -249,8 +249,20 @@ export function MusicXMLViewer({
         </div>
       )}
 
-      {/* Conteúdo do Leitor com Fundo Branco */}
-      <div style={{ flex: 1, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: '#ffffff', overflow: 'hidden' }}>
+      {/* Conteúdo do Leitor com Fundo Branco (Abaixo do Texto do Topo) */}
+      <div
+        style={{
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          background: '#ffffff',
+          overflow: 'hidden',
+          paddingTop: isMenuVisible ? '48px' : '0px',
+          transition: 'padding-top 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
+      >
         <VerticalVideoPlayer
           videoUrl={videoUrl || currentSeries?.videoUrl}
           currentSeries={currentSeries}
