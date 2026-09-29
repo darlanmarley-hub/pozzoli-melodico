@@ -152,9 +152,9 @@ input, textarea {
   border-radius: 4px;
 }
 
-/* Vertical Video Player Component Styles - Mobile & PC Formats */
+/* Vertical Video Player Component Styles - Fully Mobile Responsive */
 .vertical-video-wrapper {
-  background: transparent;
+  background: #ffffff;
   border: none;
   border-radius: 0;
   padding: 0;
@@ -168,17 +168,20 @@ input, textarea {
   width: 100%;
   height: 100%;
   box-shadow: none;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Frame de Vídeo - Formato Celular sem Molduras (Mobile Portrait Full Screen View) */
+/* Frame de Vídeo - Responsivo para Telas de Celular (Mobile Portrait View) */
 .vertical-video-frame,
 .vertical-video-frame.mobile-mode {
   position: relative;
   width: 100%;
   max-width: 100%;
-  height: 100vh;
-  min-height: 100vh;
-  margin: 0;
+  height: 100%;
+  max-height: 100%;
+  flex: 1;
+  margin: 0 auto;
   background: #ffffff;
   border: none;
   border-radius: 0;
@@ -206,6 +209,17 @@ input, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Elemento de Vídeo HTML5 Responsivo para Celular */
+.vertical-video-element {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
 
 /* Bottom Player Dock (Format exact as Screenshot 1) */
