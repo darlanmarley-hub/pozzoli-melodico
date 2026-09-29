@@ -336,9 +336,6 @@ export default function SeriesLibraryView({
                         </span>
                       )}
                     </div>
-                    <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      {folder.subtitle} • {folderExercises.length} exercício(s)
-                    </p>
                   </div>
                 </div>
 
