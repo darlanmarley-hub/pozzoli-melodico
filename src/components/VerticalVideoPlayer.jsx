@@ -28,11 +28,11 @@ export default function VerticalVideoPlayer({
   const defaultBpm = currentSeries?.defaultBpm || 90;
   const speedRatio = bpm / defaultBpm;
 
+  const scale = currentSeries?.videoScale ?? 0.85;
+  const translateY = currentSeries?.videoTranslateY ?? '-45px';
   const videoTransform = isDesktopMode
     ? 'none'
-    : (currentSeries?.videoScale && currentSeries?.videoScale !== 1.0
-        ? `scale(${currentSeries.videoScale}) translateY(${currentSeries.videoTranslateY || '0px'})`
-        : 'none');
+    : `translateY(${translateY}) scale(${scale})`;
 
   const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
   const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';

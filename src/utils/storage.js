@@ -69,8 +69,8 @@ export const SERIES_FOLDERS = [
         defaultBpm: 60,
         difficulty: 'Iniciante',
         displayOrder: 1,
-        videoScale: 1.0,
-        videoTranslateY: '0px',
+        videoScale: 0.85,
+        videoTranslateY: '-45px',
         isAvailable: true,
         isBuiltin: true
       }
