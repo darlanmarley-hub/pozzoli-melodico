@@ -28,8 +28,8 @@ export default function VerticalVideoPlayer({
   const defaultBpm = currentSeries?.defaultBpm || 90;
   const speedRatio = bpm / defaultBpm;
 
-  const scale = currentSeries?.videoScale ?? 0.95;
-  const translateY = currentSeries?.videoTranslateY ?? '-110px';
+  const scale = currentSeries?.videoScale ?? 0.90;
+  const translateY = currentSeries?.videoTranslateY ?? '-70px';
   const videoTransform = isDesktopMode
     ? 'none'
     : `translateY(${translateY}) scale(${scale})`;
