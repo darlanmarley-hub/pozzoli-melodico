@@ -259,7 +259,7 @@ export function MusicXMLViewer({
           flexDirection: 'column',
           background: '#ffffff',
           overflow: 'hidden',
-          paddingTop: isMenuVisible ? '48px' : '0px',
+          paddingTop: isMenuVisible ? '44px' : '0px',
           transition: 'padding-top 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
