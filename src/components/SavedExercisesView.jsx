@@ -1,10 +1,11 @@
 import React from 'react';
 import { Heart, Play, Video, Music, Trash2, CheckCircle2, Bookmark, ArrowLeft } from 'lucide-react';
+import { isItemFavorite, isItemStudied } from '../utils/storage';
 
 /**
  * SavedExercisesView Component
  * Exibe a área dedicada de exercícios salvos/favoritos pelo aluno,
- * com atalho direto para reprodução no player com vídeo do Google Drive.
+ * com atalho direto para reprodução no player com vídeo do Google Drive / Dropbox.
  */
 export default function SavedExercisesView({
   allSeries,
@@ -14,7 +15,7 @@ export default function SavedExercisesView({
   onToggleFavorite,
   onGoBack
 }) {
-  const savedExercises = allSeries.filter((s) => favorites.includes(s.id));
+  const savedExercises = allSeries.filter((s) => isItemFavorite(favorites, s));
 
   return (
     <div className="library-view-container" style={{ paddingTop: '16px', paddingBottom: '40px' }}>
@@ -42,7 +43,6 @@ export default function SavedExercisesView({
       )}
 
       {/* Banner da Pasta Favoritos */}
-
       <div
         style={{
           background: 'linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(19, 25, 39, 0.8) 100%)',
@@ -120,7 +120,7 @@ export default function SavedExercisesView({
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {savedExercises.map((series) => {
-            const isCompleted = studied.includes(series.id);
+            const isCompleted = isItemStudied(studied, series);
 
             return (
               <div
@@ -151,13 +151,13 @@ export default function SavedExercisesView({
 
                   <div>
                     <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff' }}>
-                      {series.title}
+                      {series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      {series.moduleName || series.subtitle}
+                      {series.subtitle || series.moduleName || 'Pozzoli Melódico'}
                     </div>
                     <div className="exercise-meta-badges" style={{ marginTop: '6px' }}>
-                      <span className="meta-pill">⏱ {series.defaultBpm || 90} BPM</span>
+                      <span className="meta-pill">⏱ {series.defaultBpm || 60} BPM</span>
                       {isCompleted && <span className="meta-pill green">✔ Concluído</span>}
                     </div>
                   </div>

@@ -45,72 +45,40 @@ export const getDirectVideoUrl = (url) => {
   return url;
 };
 
-export const INITIAL_SERIES = [
+export const SERIES_FOLDERS = [
   {
     id: 'primeira-serie',
-    title: '1ª Série',
-    subtitle: '',
-    moduleId: 'modulo-1',
-    moduleName: 'Módulo 1 - 1ª Série Pozzoli',
-    description: '1ª Série do Método Pozzoli Melódico.',
-    mxlUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.xml',
-    midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
-    audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
-    videoUrl: 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0',
-    videoPcUrl: 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0',
-    embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
-    timeSignature: '4/4',
-    defaultBpm: 60,
-    difficulty: 'Iniciante',
-    displayOrder: 1,
-    videoScale: 1.16,
-    videoTranslateY: '78px',
-    isAvailable: true,
-    isBuiltin: true
-  },
-  {
-    id: 'segunda-serie',
-    title: '2ª Série',
-    subtitle: '',
-    moduleId: 'modulo-1',
-    moduleName: 'Módulo 1 - 2ª Série Pozzoli',
-    description: '2ª Série do Método Pozzoli Melódico.',
-    mxlUrl: '',
-    midiUrl: '',
-    audioUrl: '',
-    videoUrl: 'https://www.dropbox.com/scl/fi/wer31gfjzpqhvvcpgo91q/serie2.mp4?rlkey=s8dltgl6fzfxwe4od3792u18s&st=a2k779xp&dl=0',
-    videoPcUrl: 'https://www.dropbox.com/scl/fi/wer31gfjzpqhvvcpgo91q/serie2.mp4?rlkey=s8dltgl6fzfxwe4od3792u18s&st=a2k779xp&dl=0',
-    embedUrl: '',
-    timeSignature: '4/4',
-    defaultBpm: 60,
-    difficulty: 'Iniciante',
-    displayOrder: 2,
-    isAvailable: true,
-    isBuiltin: true
-  },
-  {
-    id: 'terceira-serie',
-    title: '3ª Série',
-    subtitle: '',
-    moduleId: 'modulo-1',
-    moduleName: 'Módulo 1 - 3ª Série Pozzoli',
-    description: '3ª Série do Método Pozzoli Melódico.',
-    mxlUrl: '',
-    midiUrl: '',
-    audioUrl: '',
-    videoUrl: 'https://www.dropbox.com/scl/fi/mpczvks7dxag6ukmzq240/serie3.mp4?rlkey=29mqtabnfjm33fe4p7vl6aqrk&st=ryz6mj9l&dl=0',
-    videoPcUrl: 'https://www.dropbox.com/scl/fi/mpczvks7dxag6ukmzq240/serie3.mp4?rlkey=29mqtabnfjm33fe4p7vl6aqrk&st=ryz6mj9l&dl=0',
-    embedUrl: '',
-    timeSignature: '4/4',
-    defaultBpm: 60,
-    difficulty: 'Iniciante',
-    displayOrder: 3,
-    videoScale: 1.16,
-    videoTranslateY: '78px',
-    isAvailable: true,
-    isBuiltin: true
+    title: '1ª SÉRIE',
+    subtitle: 'Módulo 1 - Pozzoli Melódico',
+    description: 'Pasta da 1ª Série do Método Pozzoli Melódico.',
+    exercises: [
+      {
+        id: 'serie-1-ex-1',
+        seriesId: 'primeira-serie',
+        seriesTitle: '1ª SÉRIE',
+        title: 'Exercício N.1',
+        subtitle: '1ª Série - Exercício N.1',
+        description: 'Exercício N.1 da 1ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.xml',
+        midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
+        audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
+        videoUrl: 'https://www.dropbox.com/scl/fi/82fmd72izqnscmt516xq7/serie1-n1.mp4?rlkey=bht9hx78j78qmrdu9mahtyqhc&st=lqae3chz&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/82fmd72izqnscmt516xq7/serie1-n1.mp4?rlkey=bht9hx78j78qmrdu9mahtyqhc&st=lqae3chz&dl=0',
+        embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
+        timeSignature: '2/4',
+        defaultBpm: 60,
+        difficulty: 'Iniciante',
+        displayOrder: 1,
+        videoScale: 1.16,
+        videoTranslateY: '78px',
+        isAvailable: true,
+        isBuiltin: true
+      }
+    ]
   }
 ];
+
+export const INITIAL_SERIES = SERIES_FOLDERS.flatMap(folder => folder.exercises);
 
 const STORAGE_KEYS = {
   FAVORITES: 'pozzoli_favorites',
@@ -128,6 +96,13 @@ export const getFavorites = () => {
   } catch {
     return [];
   }
+};
+
+export const isItemFavorite = (favList = [], item) => {
+  if (!item) return false;
+  const id = typeof item === 'string' ? item : item.id;
+  const seriesId = typeof item === 'object' ? item.seriesId : null;
+  return favList.includes(id) || (seriesId ? favList.includes(seriesId) : false);
 };
 
 export const toggleFavorite = (seriesId) => {
@@ -149,6 +124,13 @@ export const getStudied = () => {
   } catch {
     return [];
   }
+};
+
+export const isItemStudied = (studiedList = [], item) => {
+  if (!item) return false;
+  const id = typeof item === 'string' ? item : item.id;
+  const seriesId = typeof item === 'object' ? item.seriesId : null;
+  return studiedList.includes(id) || (seriesId ? studiedList.includes(seriesId) : false);
 };
 
 export const toggleStudied = (seriesId) => {

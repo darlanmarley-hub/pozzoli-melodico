@@ -204,7 +204,7 @@ export default function StatsModal({
                     </div>
                     <div>
                       <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span>{item.title}</span>
+                        <span>{item.seriesTitle ? `${item.seriesTitle} - ${item.title}` : item.title}</span>
                         {isItemStudied && <CheckCircle2 size={14} color="#10b981" />}
                         {isItemFavorite && <Star size={14} color="#fbbf24" fill="#fbbf24" />}
                       </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Folder, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music, CheckCircle2 } from 'lucide-react';
+import { Folder, FolderOpen, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music, CheckCircle2 } from 'lucide-react';
+import { SERIES_FOLDERS, isItemStudied, isItemFavorite } from '../utils/storage';
 
 export default function SeriesLibraryView({
   allSeries = [],
@@ -9,13 +10,19 @@ export default function SeriesLibraryView({
   onToggleFavorite
 }) {
   const [isFavExpanded, setIsFavExpanded] = useState(false);
+  const [expandedFolders, setExpandedFolders] = useState({
+    'primeira-serie': true
+  });
 
-  const firstSeries = allSeries[0] || {};
-  const isFav = favorites.includes(firstSeries.id);
-  const isFirstStudied = studied.includes(firstSeries.id);
+  const toggleFolder = (folderId) => {
+    setExpandedFolders((prev) => ({
+      ...prev,
+      [folderId]: !prev[folderId]
+    }));
+  };
+
   const favCount = favorites.length;
-
-  const savedSeries = allSeries.filter((s) => favorites.includes(s.id));
+  const savedSeries = allSeries.filter((s) => isItemFavorite(favorites, s));
 
   return (
     <div className="library-view-container" style={{ paddingTop: '12px', paddingBottom: '30px' }}>
@@ -79,8 +86,8 @@ export default function SeriesLibraryView({
         </div>
       </div>
 
-      <div style={{ padding: '0 12px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {/* Pasta Accordion: FAVORITOS (Acima da PRIMEIRA SÉRIE) */}
+      <div style={{ padding: '0 12px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {/* Pasta Accordion: FAVORITOS */}
         <div
           className="accordion-card"
           style={{
@@ -182,7 +189,7 @@ export default function SeriesLibraryView({
                 </div>
               ) : (
                 savedSeries.map((series) => {
-                  const isSeriesStudied = studied.includes(series.id);
+                  const isSeriesStudied = isItemStudied(studied, series);
                   return (
                     <div
                       key={series.id}
@@ -215,7 +222,7 @@ export default function SeriesLibraryView({
                         </div>
                         <div>
                           <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <span>{series.title}</span>
+                            <span>{series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}</span>
                             {isSeriesStudied && (
                               <span style={{ background: '#10b981', color: '#ffffff', fontSize: '0.65rem', fontWeight: 800, padding: '1px 5px', borderRadius: '8px' }}>
                                 Estudado ✓
@@ -257,101 +264,229 @@ export default function SeriesLibraryView({
           )}
         </div>
 
-        {/* Lista de Exercícios / Séries */}
-        {allSeries.map((series) => {
-          const isSeriesStudied = studied.includes(series.id);
-          const isSeriesFav = favorites.includes(series.id);
+        {/* PASTAS DAS SÉRIES (1ª SÉRIE, 2ª SÉRIE, 3ª SÉRIE) */}
+        {SERIES_FOLDERS.map((folder) => {
+          const isExpanded = !!expandedFolders[folder.id];
+          const folderExercises = folder.exercises || [];
+          const completedCount = folderExercises.filter((ex) => isItemStudied(studied, ex)).length;
+          const isFolderComplete = folderExercises.length > 0 && completedCount === folderExercises.length;
 
           return (
             <div
-              key={series.id}
+              key={folder.id}
               className="accordion-card"
-              onClick={() => onSelectSeries && onSelectSeries(series)}
               style={{
-                cursor: 'pointer',
-                padding: '14px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                background: isSeriesStudied
-                  ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(19, 25, 39, 0.96) 100%)'
-                  : 'var(--bg-card)',
-                border: isSeriesStudied ? '2px solid #10b981' : '1px solid var(--border-orange)',
+                background: 'var(--bg-card)',
+                border: isFolderComplete ? '2px solid #10b981' : '1px solid var(--border-orange)',
                 borderRadius: 'var(--radius-md)',
-                boxShadow: isSeriesStudied ? '0 4px 16px rgba(16, 185, 129, 0.35)' : '0 4px 16px rgba(0,0,0,0.3)',
-                transition: 'all 0.3s ease'
+                boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                overflow: 'hidden',
+                transition: 'border-color 0.2s ease'
               }}
             >
-              <div className="header-left" style={{ gap: '12px' }}>
-                <div
-                  className="icon-badge-box"
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '12px',
-                    background: isSeriesStudied ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 102, 0, 0.2)',
-                    border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--accent-orange)'
-                  }}
-                >
-                  {isSeriesStudied ? (
-                    <CheckCircle2 size={24} style={{ color: '#10b981' }} />
-                  ) : (
-                    <Music size={22} style={{ color: 'var(--accent-orange)' }} />
-                  )}
-                </div>
-
-                <div className="card-title-group">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
-                      {series.title.toUpperCase()}
-                    </h3>
-                    {isSeriesStudied && (
-                      <span
-                        style={{
-                          background: '#10b981',
-                          color: '#ffffff',
-                          fontSize: '0.7rem',
-                          fontWeight: 800,
-                          padding: '2px 8px',
-                          borderRadius: '10px',
-                          boxShadow: '0 2px 6px rgba(16, 185, 129, 0.4)'
-                        }}
-                      >
-                        Estudado ✓
-                      </span>
+              {/* Header da Pasta da Série */}
+              <div
+                onClick={() => toggleFolder(folder.id)}
+                style={{
+                  cursor: 'pointer',
+                  padding: '14px 16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: isFolderComplete
+                    ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(19, 25, 39, 0.95) 100%)'
+                    : 'transparent'
+                }}
+              >
+                <div className="header-left" style={{ gap: '12px' }}>
+                  <div
+                    className="icon-badge-box"
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '12px',
+                      background: isFolderComplete ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 102, 0, 0.2)',
+                      border: isFolderComplete ? '1px solid #10b981' : '1px solid var(--accent-orange)'
+                    }}
+                  >
+                    {isExpanded ? (
+                      <FolderOpen size={22} style={{ color: isFolderComplete ? '#10b981' : 'var(--accent-orange)' }} />
+                    ) : (
+                      <Folder size={22} style={{ color: isFolderComplete ? '#10b981' : 'var(--accent-orange)' }} />
                     )}
                   </div>
+
+                  <div className="card-title-group">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                        {folder.title.toUpperCase()}
+                      </h3>
+                      {isFolderComplete && (
+                        <span
+                          style={{
+                            background: '#10b981',
+                            color: '#ffffff',
+                            fontSize: '0.68rem',
+                            fontWeight: 800,
+                            padding: '2px 8px',
+                            borderRadius: '10px'
+                          }}
+                        >
+                          Concluído ✓
+                        </span>
+                      )}
+                    </div>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                      {folder.subtitle} • {folderExercises.length} exercício(s)
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span
+                    style={{
+                      background: isFolderComplete ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 102, 0, 0.15)',
+                      color: isFolderComplete ? '#10b981' : 'var(--accent-orange)',
+                      fontWeight: 800,
+                      fontSize: '0.78rem',
+                      padding: '3px 9px',
+                      borderRadius: '10px',
+                      border: isFolderComplete ? '1px solid #10b981' : '1px solid rgba(255, 102, 0, 0.4)'
+                    }}
+                  >
+                    {completedCount}/{folderExercises.length}
+                  </span>
+
+                  <button
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--text-muted)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      padding: '2px'
+                    }}
+                  >
+                    {isExpanded ? (
+                      <ChevronUp size={20} color="var(--accent-orange)" />
+                    ) : (
+                      <ChevronDown size={20} color="var(--accent-orange)" />
+                    )}
+                  </button>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
-                <button
-                  className="heart-toggle-btn"
-                  onClick={() => onToggleFavorite && onToggleFavorite(series.id)}
-                  title={isSeriesFav ? 'Remover dos Favoritos' : 'Salvar nos Favoritos'}
-                  style={{ padding: '6px' }}
-                >
-                  <Heart
-                    size={20}
-                    fill={isSeriesFav ? '#ff6600' : 'none'}
-                    color={isSeriesFav ? '#ff6600' : '#ffffff'}
-                  />
-                </button>
-
-                <button
-                  className="circle-play-btn"
-                  onClick={() => onSelectSeries && onSelectSeries(series)}
-                  title={`Abrir Vídeo ${series.title}`}
+              {/* Exercícios contidos dentro desta Série (Folder Content) */}
+              {isExpanded && (
+                <div
                   style={{
-                    width: '36px',
-                    height: '36px',
-                    background: isSeriesStudied ? '#10b981' : 'var(--accent-orange)',
-                    boxShadow: isSeriesStudied ? '0 3px 10px rgba(16, 185, 129, 0.5)' : '0 3px 10px var(--accent-orange-glow)'
+                    padding: '10px 12px 14px 12px',
+                    borderTop: '1px solid var(--border-color)',
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px'
                   }}
                 >
-                  <Play size={18} style={{ marginLeft: '1px' }} />
-                </button>
-              </div>
+                  {folderExercises.map((exercise) => {
+                    const isExStudied = isItemStudied(studied, exercise);
+                    const isExFav = isItemFavorite(favorites, exercise);
+
+                    return (
+                      <div
+                        key={exercise.id}
+                        onClick={() => onSelectSeries && onSelectSeries(exercise)}
+                        style={{
+                          cursor: 'pointer',
+                          background: isExStudied
+                            ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)'
+                            : 'rgba(255, 255, 255, 0.04)',
+                          border: isExStudied ? '1px solid #10b981' : '1px solid rgba(255, 102, 0, 0.3)',
+                          borderRadius: 'var(--radius-sm)',
+                          padding: '12px 14px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '10px',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div
+                            style={{
+                              width: '38px',
+                              height: '38px',
+                              borderRadius: '10px',
+                              background: isExStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 102, 0, 0.15)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: isExStudied ? '#10b981' : 'var(--accent-orange)'
+                            }}
+                          >
+                            {isExStudied ? <CheckCircle2 size={20} /> : <Music size={18} />}
+                          </div>
+
+                          <div>
+                            <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span>{exercise.title}</span>
+                              {isExStudied && (
+                                <span
+                                  style={{
+                                    background: '#10b981',
+                                    color: '#ffffff',
+                                    fontSize: '0.65rem',
+                                    fontWeight: 800,
+                                    padding: '1px 6px',
+                                    borderRadius: '8px'
+                                  }}
+                                >
+                                  Estudado ✓
+                                </span>
+                              )}
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span>⏱ {exercise.defaultBpm || 60} BPM</span>
+                              <span>•</span>
+                              <span>{exercise.timeSignature || '4/4'}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
+                          <button
+                            className="heart-toggle-btn"
+                            onClick={() => onToggleFavorite && onToggleFavorite(exercise.id)}
+                            title={isExFav ? 'Remover dos Favoritos' : 'Salvar nos Favoritos'}
+                            style={{ padding: '6px' }}
+                          >
+                            <Heart
+                              size={20}
+                              fill={isExFav ? '#ff6600' : 'none'}
+                              color={isExFav ? '#ff6600' : '#ffffff'}
+                            />
+                          </button>
+
+                          <button
+                            className="circle-play-btn"
+                            onClick={() => onSelectSeries && onSelectSeries(exercise)}
+                            title={`Estudar ${exercise.title}`}
+                            style={{
+                              width: '36px',
+                              height: '36px',
+                              background: isExStudied ? '#10b981' : 'var(--accent-orange)',
+                              boxShadow: isExStudied ? '0 3px 10px rgba(16, 185, 129, 0.4)' : '0 3px 10px var(--accent-orange-glow)'
+                            }}
+                          >
+                            <Play size={18} style={{ marginLeft: '1px' }} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           );
         })}
