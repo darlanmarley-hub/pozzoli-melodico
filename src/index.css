@@ -800,7 +800,7 @@ input, textarea {
 }
 
 .vertical-video-frame.mobile-mode .vertical-video-element {
-  transform: translateY(-70px) scale(0.90);
+  transform: translateY(-30px) scale(0.90);
   transform-origin: top center;
   object-fit: contain;
   object-position: top center;
