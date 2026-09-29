@@ -199,11 +199,10 @@ export function MusicXMLViewer({
             gap: '14px'
           }}
         >
-          <span>POZZOLI MELÓDICO</span>
           <span>
             {currentSeries?.seriesTitle
               ? `${currentSeries.seriesTitle} — ${currentSeries.title}`
-              : (currentSeries?.title || '1ª SÉRIE')}
+              : (currentSeries?.title || '1ª SÉRIE — EXERCÍCIO N.1')}
           </span>
         </span>
       </div>

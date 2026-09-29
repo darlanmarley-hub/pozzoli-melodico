@@ -163,7 +163,7 @@ export default function VerticalVideoPlayer({
                 Carregando exercício...
               </span>
               <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
-                {currentSeries?.title || 'Pozzoli Melódico'}
+                {currentSeries?.seriesTitle ? `${currentSeries.seriesTitle} — ${currentSeries.title}` : (currentSeries?.title || '1ª Série — Exercício N.1')}
               </span>
             </div>
           </div>
