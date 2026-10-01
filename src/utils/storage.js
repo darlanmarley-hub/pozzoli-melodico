@@ -95,6 +95,28 @@ export const SERIES_FOLDERS = [
         videoTranslateY: '60px',
         isAvailable: true,
         isBuiltin: true
+      },
+      {
+        id: 'serie-1-ex-3',
+        seriesId: 'primeira-serie',
+        seriesTitle: '1ª SÉRIE',
+        title: 'Exercício N.3',
+        subtitle: '1ª Série - Exercício N.3',
+        description: 'Exercício N.3 da 1ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.xml',
+        midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
+        audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
+        videoUrl: 'https://www.dropbox.com/scl/fi/ial5ujzf5r9sbx5ck0xkw/serie1-n3.mp4?rlkey=it1xetc5e4l3kamk7lu8p38f3&st=pc1quj4c&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/ial5ujzf5r9sbx5ck0xkw/serie1-n3.mp4?rlkey=it1xetc5e4l3kamk7lu8p38f3&st=pc1quj4c&dl=0',
+        embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
+        timeSignature: '2/4',
+        defaultBpm: 60,
+        difficulty: 'Iniciante',
+        displayOrder: 3,
+        videoScale: 0.90,
+        videoTranslateY: '60px',
+        isAvailable: true,
+        isBuiltin: true
       }
     ]
   }
