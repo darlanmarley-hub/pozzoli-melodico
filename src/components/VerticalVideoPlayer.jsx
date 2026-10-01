@@ -31,7 +31,7 @@ export default function VerticalVideoPlayer({
   const scale = currentSeries?.videoScale ?? 0.90;
   const translateY = currentSeries?.videoTranslateY ?? '0px';
   const videoTransform = isDesktopMode
-    ? 'none'
+    ? `translateY(${translateY})`
     : `translateY(${translateY}) scale(${scale})`;
 
   const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
