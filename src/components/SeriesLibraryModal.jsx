@@ -65,24 +65,25 @@ export default function SeriesLibraryView({
 
         <div
           style={{
-            background: 'rgba(255, 102, 0, 0.12)',
-            border: '1px solid rgba(255, 102, 0, 0.3)',
+            background: 'rgba(255, 102, 0, 0.14)',
+            border: '1px solid rgba(255, 102, 0, 0.4)',
             color: '#ff944d',
-            padding: '6px 14px',
+            padding: '8px 16px',
             borderRadius: 'var(--radius-full)',
-            fontSize: '0.75rem',
-            fontWeight: 600,
+            fontSize: '0.92rem',
+            fontWeight: 700,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
+            gap: '8px',
             marginTop: '8px',
             marginBottom: '6px',
-            lineHeight: 1.2
+            lineHeight: 1.35,
+            textAlign: 'center'
           }}
         >
-          <Wifi size={13} style={{ flexShrink: 0, color: '#ff944d' }} />
-          <span>Conecte-se ao Wi-Fi para economizar dados móveis</span>
+          <Wifi size={17} style={{ flexShrink: 0, color: '#ff944d' }} />
+          <span>Conecte-se ao Wi-Fi para economizar seus dados móveis</span>
         </div>
       </div>
 
