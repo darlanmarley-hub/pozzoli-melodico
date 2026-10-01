@@ -91,10 +91,10 @@ export default function SeriesLibraryView({
         <div
           className="accordion-card"
           style={{
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border-orange)',
+            background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.12) 0%, var(--bg-card) 100%)',
+            border: '1px solid var(--accent-rose-glow)',
             borderRadius: 'var(--radius-md)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+            boxShadow: '0 4px 20px rgba(244, 63, 94, 0.15)',
             overflow: 'hidden',
             transition: 'border-color 0.2s ease'
           }}
@@ -112,16 +112,16 @@ export default function SeriesLibraryView({
           >
             <div className="header-left" style={{ gap: '10px' }}>
               <div
-                className="icon-badge-box orange"
+                className="icon-badge-box"
                 style={{
                   width: '42px',
                   height: '42px',
                   borderRadius: '12px',
-                  background: 'rgba(255, 102, 0, 0.2)',
-                  border: '1px solid var(--accent-orange)'
+                  background: 'rgba(244, 63, 94, 0.2)',
+                  border: '1px solid var(--accent-rose)'
                 }}
               >
-                <Heart size={20} fill="var(--accent-orange)" style={{ color: 'var(--accent-orange)' }} />
+                <Heart size={20} fill="var(--accent-rose)" style={{ color: 'var(--accent-rose)' }} />
               </div>
 
               <div className="card-title-group">
@@ -137,13 +137,13 @@ export default function SeriesLibraryView({
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span
                 style={{
-                  background: 'rgba(255, 102, 0, 0.2)',
-                  color: '#ff6600',
+                  background: 'rgba(244, 63, 94, 0.2)',
+                  color: 'var(--accent-rose)',
                   fontWeight: 800,
                   fontSize: '0.78rem',
                   padding: '2px 8px',
                   borderRadius: '10px',
-                  border: '1px solid var(--accent-orange)'
+                  border: '1px solid var(--accent-rose)'
                 }}
               >
                 {favCount}
@@ -161,9 +161,9 @@ export default function SeriesLibraryView({
                 }}
               >
                 {isFavExpanded ? (
-                  <ChevronUp size={20} color="var(--accent-orange)" />
+                  <ChevronUp size={20} color="var(--accent-rose)" />
                 ) : (
-                  <ChevronDown size={20} color="var(--accent-orange)" />
+                  <ChevronDown size={20} color="var(--accent-rose)" />
                 )}
               </button>
             </div>
@@ -174,7 +174,7 @@ export default function SeriesLibraryView({
             <div
               style={{
                 padding: '0 12px 12px 12px',
-                borderTop: '1px solid var(--border-color)',
+                borderTop: '1px solid rgba(244, 63, 94, 0.25)',
                 background: 'rgba(0, 0, 0, 0.2)',
                 display: 'flex',
                 flexDirection: 'column',
@@ -195,7 +195,7 @@ export default function SeriesLibraryView({
                       key={series.id}
                       style={{
                         background: isSeriesStudied ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.04)',
-                        border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--border-orange)',
+                        border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--accent-rose-glow)',
                         borderRadius: 'var(--radius-sm)',
                         padding: '10px 12px',
                         display: 'flex',
@@ -211,11 +211,11 @@ export default function SeriesLibraryView({
                             width: '34px',
                             height: '34px',
                             borderRadius: '10px',
-                            background: isSeriesStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 102, 0, 0.15)',
+                            background: isSeriesStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(244, 63, 94, 0.15)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: isSeriesStudied ? '#10b981' : 'var(--accent-orange)'
+                            color: isSeriesStudied ? '#10b981' : 'var(--accent-rose)'
                           }}
                         >
                           {isSeriesStudied ? <CheckCircle2 size={18} /> : <Video size={16} />}
@@ -249,8 +249,8 @@ export default function SeriesLibraryView({
                           style={{
                             width: '32px',
                             height: '32px',
-                            background: isSeriesStudied ? '#10b981' : 'var(--accent-orange)',
-                            boxShadow: isSeriesStudied ? '0 2px 8px rgba(16, 185, 129, 0.4)' : '0 2px 8px var(--accent-orange-glow)'
+                            background: isSeriesStudied ? '#10b981' : 'var(--accent-rose)',
+                            boxShadow: isSeriesStudied ? '0 2px 8px rgba(16, 185, 129, 0.4)' : '0 2px 8px var(--accent-rose-glow)'
                           }}
                         >
                           <Play size={14} style={{ marginLeft: '1px' }} />

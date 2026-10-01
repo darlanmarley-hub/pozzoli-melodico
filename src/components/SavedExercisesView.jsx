@@ -26,7 +26,7 @@ export default function SavedExercisesView({
           style={{
             background: 'none',
             border: 'none',
-            color: 'var(--accent-orange)',
+            color: 'var(--accent-rose)',
             fontSize: '0.95rem',
             fontWeight: 700,
             display: 'flex',
@@ -45,14 +45,15 @@ export default function SavedExercisesView({
       {/* Banner da Pasta Favoritos */}
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(19, 25, 39, 0.8) 100%)',
-          border: '1px solid var(--border-orange)',
+          background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(19, 25, 39, 0.9) 100%)',
+          border: '1px solid var(--accent-rose-glow)',
           borderRadius: 'var(--radius-lg)',
           padding: '20px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '12px'
+          gap: '12px',
+          boxShadow: '0 4px 20px rgba(244, 63, 94, 0.15)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -61,15 +62,15 @@ export default function SavedExercisesView({
               width: '48px',
               height: '48px',
               borderRadius: '14px',
-              background: 'rgba(255, 102, 0, 0.2)',
-              border: '1px solid var(--accent-orange)',
+              background: 'rgba(244, 63, 94, 0.2)',
+              border: '1px solid var(--accent-rose)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'var(--accent-orange)'
+              color: 'var(--accent-rose)'
             }}
           >
-            <Heart size={24} fill="var(--accent-orange)" />
+            <Heart size={24} fill="var(--accent-rose)" />
           </div>
           <div>
             <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff' }}>
@@ -83,7 +84,7 @@ export default function SavedExercisesView({
 
         <span
           style={{
-            background: 'var(--accent-orange)',
+            background: 'var(--accent-rose)',
             color: '#fff',
             padding: '4px 12px',
             borderRadius: 'var(--radius-full)',
@@ -111,7 +112,7 @@ export default function SavedExercisesView({
             gap: '12px'
           }}
         >
-          <Heart size={36} style={{ color: 'var(--accent-orange)', opacity: 0.8 }} fill="var(--accent-orange)" />
+          <Heart size={36} style={{ color: 'var(--accent-rose)', opacity: 0.8 }} fill="var(--accent-rose)" />
           <p style={{ fontSize: '1rem', fontWeight: 600 }}>Nenhum exercício na pasta Favoritos</p>
           <span style={{ fontSize: '0.85rem', maxWidth: '340px' }}>
             Marque o ícone de coração nos exercícios da biblioteca para enviá-los diretamente para esta pasta Favoritos.
@@ -128,7 +129,7 @@ export default function SavedExercisesView({
                 className="exercise-item-card"
                 style={{
                   background: 'var(--bg-card)',
-                  border: '1px solid var(--border-orange)',
+                  border: '1px solid var(--accent-rose-glow)',
                   borderRadius: 'var(--radius-md)',
                   padding: '16px'
                 }}
@@ -139,11 +140,11 @@ export default function SavedExercisesView({
                       width: '44px',
                       height: '44px',
                       borderRadius: '12px',
-                      background: 'rgba(255, 102, 0, 0.15)',
+                      background: 'rgba(244, 63, 94, 0.15)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: 'var(--accent-orange)'
+                      color: 'var(--accent-rose)'
                     }}
                   >
                     <Video size={20} />
@@ -176,6 +177,10 @@ export default function SavedExercisesView({
                     className="circle-play-btn"
                     onClick={() => onSelectSeries(series)}
                     title="Estudar Exercício"
+                    style={{
+                      background: 'var(--accent-rose)',
+                      boxShadow: '0 3px 10px var(--accent-rose-glow)'
+                    }}
                   >
                     <Play size={18} style={{ marginLeft: '2px' }} />
                   </button>
