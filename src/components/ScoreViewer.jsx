@@ -183,28 +183,37 @@ export function MusicXMLViewer({
           transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
-        <span
-          style={{
-            fontSize: '1.05rem',
-            fontWeight: 900,
-            fontFamily: 'var(--font-heading)',
-            background: 'linear-gradient(135deg, #ffffff 40%, #ff944d 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            letterSpacing: '1px',
-            textAlign: 'center',
-            textTransform: 'uppercase',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '14px'
-          }}
-        >
-          <span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span
+            style={{
+              fontSize: '1.05rem',
+              fontWeight: 900,
+              fontFamily: 'var(--font-heading)',
+              background: 'linear-gradient(135deg, #ffffff 40%, #ff944d 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              letterSpacing: '1px',
+              textAlign: 'center',
+              textTransform: 'uppercase'
+            }}
+          >
             {currentSeries?.seriesTitle
               ? `${currentSeries.seriesTitle} — ${currentSeries.title}`
               : (currentSeries?.title || '1ª SÉRIE — EXERCÍCIO N.1')}
           </span>
-        </span>
+          <span
+            style={{
+              fontSize: '0.72rem',
+              fontWeight: 600,
+              color: 'rgba(255, 255, 255, 0.75)',
+              letterSpacing: '0.4px',
+              textTransform: 'none',
+              marginTop: '1px'
+            }}
+          >
+            {currentSeries?.seriesSubtitle || 'Exercícios em intervalos de segunda'}
+          </span>
+        </div>
       </div>
 
       {/* Banner de Contagem de Entrada (Lead-In) */}

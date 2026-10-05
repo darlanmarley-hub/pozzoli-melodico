@@ -337,6 +337,11 @@ export default function SeriesLibraryView({
                         </span>
                       )}
                     </div>
+                    {folder.subtitle && (
+                      <p style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.7)', margin: '2px 0 0 0', fontWeight: 500 }}>
+                        {folder.subtitle}
+                      </p>
+                    )}
                   </div>
                 </div>
 

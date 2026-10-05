@@ -49,13 +49,14 @@ export const SERIES_FOLDERS = [
   {
     id: 'primeira-serie',
     title: '1ª SÉRIE',
-    subtitle: 'Módulo 1 - Pozzoli Melódico',
-    description: 'Pasta da 1ª Série do Método Pozzoli Melódico.',
+    subtitle: 'Exercícios em intervalos de segunda',
+    description: 'Pasta da 1ª Série - Exercícios em intervalos de segunda.',
     exercises: [
       {
         id: 'serie-1-ex-1',
         seriesId: 'primeira-serie',
         seriesTitle: '1ª SÉRIE',
+        seriesSubtitle: 'Exercícios em intervalos de segunda',
         title: 'Exercício N.1',
         subtitle: '1ª Série - Exercício N.1',
         description: 'Exercício N.1 da 1ª Série do Método Pozzoli Melódico.',
