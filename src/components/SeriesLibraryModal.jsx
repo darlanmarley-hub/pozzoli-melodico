@@ -392,102 +392,108 @@ export default function SeriesLibraryView({
                     gap: '10px'
                   }}
                 >
-                  {folderExercises.map((exercise) => {
-                    const isExStudied = isItemStudied(studied, exercise);
-                    const isExFav = isItemFavorite(favorites, exercise);
+                  {folderExercises.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '16px 12px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                      Em breve novos exercícios serão adicionados a esta série.
+                    </div>
+                  ) : (
+                    folderExercises.map((exercise) => {
+                      const isExStudied = isItemStudied(studied, exercise);
+                      const isExFav = isItemFavorite(favorites, exercise);
 
-                    return (
-                      <div
-                        key={exercise.id}
-                        onClick={() => onSelectSeries && onSelectSeries(exercise)}
-                        style={{
-                          cursor: 'pointer',
-                          background: isExStudied
-                            ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)'
-                            : 'rgba(255, 255, 255, 0.04)',
-                          border: isExStudied ? '1px solid #10b981' : '1px solid rgba(255, 102, 0, 0.3)',
-                          borderRadius: 'var(--radius-sm)',
-                          padding: '12px 14px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '10px',
-                          transition: 'all 0.2s ease'
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <div
-                            style={{
-                              width: '38px',
-                              height: '38px',
-                              borderRadius: '10px',
-                              background: isExStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 102, 0, 0.15)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              color: isExStudied ? '#10b981' : 'var(--accent-orange)'
-                            }}
-                          >
-                            {isExStudied ? <CheckCircle2 size={20} /> : <Music size={18} />}
+                      return (
+                        <div
+                          key={exercise.id}
+                          onClick={() => onSelectSeries && onSelectSeries(exercise)}
+                          style={{
+                            cursor: 'pointer',
+                            background: isExStudied
+                              ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)'
+                              : 'rgba(255, 255, 255, 0.04)',
+                            border: isExStudied ? '1px solid #10b981' : '1px solid rgba(255, 102, 0, 0.3)',
+                            borderRadius: 'var(--radius-sm)',
+                            padding: '12px 14px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '10px',
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div
+                              style={{
+                                width: '38px',
+                                height: '38px',
+                                borderRadius: '10px',
+                                background: isExStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 102, 0, 0.15)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: isExStudied ? '#10b981' : 'var(--accent-orange)'
+                              }}
+                            >
+                              {isExStudied ? <CheckCircle2 size={20} /> : <Music size={18} />}
+                            </div>
+
+                            <div>
+                              <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span>{exercise.title}</span>
+                                {isExStudied && (
+                                  <span
+                                    style={{
+                                      background: '#10b981',
+                                      color: '#ffffff',
+                                      fontSize: '0.65rem',
+                                      fontWeight: 800,
+                                      padding: '1px 6px',
+                                      borderRadius: '8px'
+                                    }}
+                                  >
+                                    Estudado ✓
+                                  </span>
+                                )}
+                              </div>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span>⏱ {exercise.defaultBpm || 60} BPM</span>
+                                <span>•</span>
+                                <span>{exercise.timeSignature || '4/4'}</span>
+                              </div>
+                            </div>
                           </div>
 
-                          <div>
-                            <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <span>{exercise.title}</span>
-                              {isExStudied && (
-                                <span
-                                  style={{
-                                    background: '#10b981',
-                                    color: '#ffffff',
-                                    fontSize: '0.65rem',
-                                    fontWeight: 800,
-                                    padding: '1px 6px',
-                                    borderRadius: '8px'
-                                  }}
-                                >
-                                  Estudado ✓
-                                </span>
-                              )}
-                            </div>
-                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <span>⏱ {exercise.defaultBpm || 60} BPM</span>
-                              <span>•</span>
-                              <span>{exercise.timeSignature || '4/4'}</span>
-                            </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
+                            <button
+                              className="heart-toggle-btn"
+                              onClick={() => onToggleFavorite && onToggleFavorite(exercise.id)}
+                              title={isExFav ? 'Remover dos Favoritos' : 'Salvar nos Favoritos'}
+                              style={{ padding: '6px' }}
+                            >
+                              <Heart
+                                size={20}
+                                fill={isExFav ? '#ff6600' : 'none'}
+                                color={isExFav ? '#ff6600' : '#ffffff'}
+                              />
+                            </button>
+
+                            <button
+                              className="circle-play-btn"
+                              onClick={() => onSelectSeries && onSelectSeries(exercise)}
+                              title={`Estudar ${exercise.title}`}
+                              style={{
+                                width: '36px',
+                                height: '36px',
+                                background: isExStudied ? '#10b981' : 'var(--accent-orange)',
+                                boxShadow: isExStudied ? '0 3px 10px rgba(16, 185, 129, 0.4)' : '0 3px 10px var(--accent-orange-glow)'
+                              }}
+                            >
+                              <Play size={18} style={{ marginLeft: '1px' }} />
+                            </button>
                           </div>
                         </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} onClick={(e) => e.stopPropagation()}>
-                          <button
-                            className="heart-toggle-btn"
-                            onClick={() => onToggleFavorite && onToggleFavorite(exercise.id)}
-                            title={isExFav ? 'Remover dos Favoritos' : 'Salvar nos Favoritos'}
-                            style={{ padding: '6px' }}
-                          >
-                            <Heart
-                              size={20}
-                              fill={isExFav ? '#ff6600' : 'none'}
-                              color={isExFav ? '#ff6600' : '#ffffff'}
-                            />
-                          </button>
-
-                          <button
-                            className="circle-play-btn"
-                            onClick={() => onSelectSeries && onSelectSeries(exercise)}
-                            title={`Estudar ${exercise.title}`}
-                            style={{
-                              width: '36px',
-                              height: '36px',
-                              background: isExStudied ? '#10b981' : 'var(--accent-orange)',
-                              boxShadow: isExStudied ? '0 3px 10px rgba(16, 185, 129, 0.4)' : '0 3px 10px var(--accent-orange-glow)'
-                            }}
-                          >
-                            <Play size={18} style={{ marginLeft: '1px' }} />
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })
+                  )}
                 </div>
               )}
             </div>

@@ -280,54 +280,7 @@ export const SERIES_FOLDERS = [
     title: '2ª SÉRIE',
     subtitle: 'Exercícios sobre intervalos de terça',
     description: 'Pasta da 2ª Série - Exercícios sobre intervalos de terça.',
-    exercises: [
-      {
-        id: 'serie-2-ex-1',
-        seriesId: 'segunda-serie',
-        seriesTitle: '2ª SÉRIE',
-        seriesSubtitle: 'Exercícios sobre intervalos de terça',
-        title: 'Exercício N.1',
-        subtitle: '2ª Série - Exercício N.1',
-        description: 'Exercício N.1 da 2ª Série do Método Pozzoli Melódico.',
-        mxlUrl: '/partituras/Pozzolli--2-SEGUNDA-SERIE-mxl.xml',
-        midiUrl: '/partituras/Pozzolli--2-SEGUNDA-SERIE-mxl.mid',
-        audioUrl: '/partituras/Pozzolli--2-SEGUNDA-SERIE-mxl.mp3',
-        videoUrl: '',
-        videoPcUrl: '',
-        embedUrl: '',
-        timeSignature: '2/4',
-        defaultBpm: 60,
-        difficulty: 'Intermediário',
-        displayOrder: 1,
-        videoScale: 0.90,
-        videoTranslateY: '60px',
-        isAvailable: true,
-        isBuiltin: true
-      },
-      {
-        id: 'serie-2-ex-2',
-        seriesId: 'segunda-serie',
-        seriesTitle: '2ª SÉRIE',
-        seriesSubtitle: 'Exercícios sobre intervalos de terça',
-        title: 'Exercício N.2',
-        subtitle: '2ª Série - Exercício N.2',
-        description: 'Exercício N.2 da 2ª Série do Método Pozzoli Melódico.',
-        mxlUrl: '/partituras/Pozzolli--2-SEGUNDA-SERIE-mxl.xml',
-        midiUrl: '/partituras/Pozzolli--2-SEGUNDA-SERIE-mxl.mid',
-        audioUrl: '/partituras/Pozzolli--2-SEGUNDA-SERIE-mxl.mp3',
-        videoUrl: '',
-        videoPcUrl: '',
-        embedUrl: '',
-        timeSignature: '2/4',
-        defaultBpm: 60,
-        difficulty: 'Intermediário',
-        displayOrder: 2,
-        videoScale: 0.90,
-        videoTranslateY: '60px',
-        isAvailable: true,
-        isBuiltin: true
-      }
-    ]
+    exercises: []
   }
 ];
 
