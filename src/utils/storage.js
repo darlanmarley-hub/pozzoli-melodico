@@ -32,11 +32,14 @@ export const MODULES = [
 export const getDirectVideoUrl = (url) => {
   if (!url) return '';
   if (url.includes('dropbox.com')) {
-    return url
+    let cleanUrl = url
       .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
       .replace('dropbox.com', 'dl.dropboxusercontent.com')
-      .replace(/[?&]dl=[01]/g, '')
-      .replace(/[?&]raw=1/g, '');
+      .replace(/[?&]dl=[01]/g, '');
+    if (!cleanUrl.includes('raw=1')) {
+      cleanUrl += (cleanUrl.includes('?') ? '&' : '?') + 'raw=1';
+    }
+    return cleanUrl;
   }
   if (url.includes('drive.google.com')) {
     const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);

@@ -32,7 +32,20 @@ export default function App() {
   const [profile, setProfile] = useState(() => getProfile());
   const [stats, setStats] = useState(() => getStats());
   const [bpm, setBpm] = useState(60);
-  const [isDesktopMode, setIsDesktopMode] = useState(false);
+  const [isDesktopMode, setIsDesktopMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pozzoli_desktop_mode');
+      return saved !== null ? JSON.parse(saved) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('pozzoli_desktop_mode', JSON.stringify(isDesktopMode));
+    } catch (e) {}
+  }, [isDesktopMode]);
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   const [activeTab, setActiveTab] = useState('library'); // 'library', 'saved', 'reader', 'stats', 'profile'
   const [videoElement, setVideoElement] = useState(null);

@@ -35,6 +35,7 @@ export function MusicXMLViewer({
   const activeEmbedUrl = embedUrl || 'https://www.soundslice.com/slices/2gm7c/embed/';
 
   const containerRef = useRef(null);
+  const osmdRef = useRef(null);
   const isDesktop = currentSeries?.isDesktopMode || isDesktopMode;
 
   // Estado de modo de visualização: 'video' (Vídeo Vertical Pozzoli), 'embed' (Soundslice iframe) ou 'osmd' (MusicXML SVG)
@@ -106,13 +107,13 @@ export function MusicXMLViewer({
 
           setLoading(false);
         } catch (renderErr) {
-          console.error('Erro de renderização OSMD:', renderErr);
+          console.warn('Erro de renderização OSMD:', renderErr);
           setError(`Falha ao renderizar a partitura em SVG: ${renderErr.message}`);
           setLoading(false);
         }
       });
     } catch (err) {
-      console.error('Erro ao extrair arquivo de partitura:', err);
+      console.warn('Erro ao extrair arquivo de partitura:', err);
       setError(`Falha ao carregar arquivo de partitura: ${err.message}`);
       setLoading(false);
     }
