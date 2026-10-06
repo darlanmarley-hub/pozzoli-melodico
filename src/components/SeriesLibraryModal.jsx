@@ -10,9 +10,7 @@ export default function SeriesLibraryView({
   onToggleFavorite
 }) {
   const [isFavExpanded, setIsFavExpanded] = useState(false);
-  const [expandedFolders, setExpandedFolders] = useState({
-    'primeira-serie': true
-  });
+  const [expandedFolders, setExpandedFolders] = useState({});
 
   const toggleFolder = (folderId) => {
     setExpandedFolders((prev) => ({
