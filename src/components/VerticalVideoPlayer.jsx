@@ -161,31 +161,7 @@ export default function VerticalVideoPlayer({
           </div>
         )}
 
-        {/* Overlay de Ícone Play quando o vídeo está pausado */}
-        {!isPlaying && !isVideoLoading && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '64px',
-              height: '64px',
-              borderRadius: '50%',
-              background: 'rgba(255, 102, 0, 0.85)',
-              border: '2px solid rgba(255, 255, 255, 0.8)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#ffffff',
-              zIndex: 30,
-              pointerEvents: 'none',
-              boxShadow: '0 4px 20px rgba(255, 102, 0, 0.6)'
-            }}
-          >
-            <Play size={32} fill="#ffffff" style={{ marginLeft: '4px' }} />
-          </div>
-        )}
+
 
         {!useIframeFallback ? (
           <video
