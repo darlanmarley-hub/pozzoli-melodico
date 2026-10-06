@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Folder, FolderOpen, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music, CheckCircle2 } from 'lucide-react';
+import { Folder, FolderOpen, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music, CheckCircle2, Monitor } from 'lucide-react';
 import { SERIES_FOLDERS, isItemStudied, isItemFavorite } from '../utils/storage';
 
 export default function SeriesLibraryView({
@@ -407,10 +407,16 @@ export default function SeriesLibraryView({
                           onClick={() => onSelectSeries && onSelectSeries(exercise)}
                           style={{
                             cursor: 'pointer',
-                            background: isExStudied
+                            background: exercise.isDesktopMode
+                              ? 'linear-gradient(135deg, rgba(37, 99, 235, 0.18) 0%, rgba(19, 25, 39, 0.95) 100%)'
+                              : isExStudied
                               ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)'
                               : 'rgba(255, 255, 255, 0.04)',
-                            border: isExStudied ? '1px solid #10b981' : '1px solid rgba(255, 102, 0, 0.3)',
+                            border: exercise.isDesktopMode
+                              ? '1px solid #3b82f6'
+                              : isExStudied
+                              ? '1px solid #10b981'
+                              : '1px solid rgba(255, 102, 0, 0.3)',
                             borderRadius: 'var(--radius-sm)',
                             padding: '12px 14px',
                             display: 'flex',
@@ -426,19 +432,48 @@ export default function SeriesLibraryView({
                                 width: '38px',
                                 height: '38px',
                                 borderRadius: '10px',
-                                background: isExStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 102, 0, 0.15)',
+                                background: exercise.isDesktopMode
+                                  ? 'rgba(37, 99, 235, 0.25)'
+                                  : isExStudied
+                                  ? 'rgba(16, 185, 129, 0.2)'
+                                  : 'rgba(255, 102, 0, 0.15)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                color: isExStudied ? '#10b981' : 'var(--accent-orange)'
+                                color: exercise.isDesktopMode
+                                  ? '#60a5fa'
+                                  : isExStudied
+                                  ? '#10b981'
+                                  : 'var(--accent-orange)'
                               }}
                             >
-                              {isExStudied ? <CheckCircle2 size={20} /> : <Music size={18} />}
+                              {exercise.isDesktopMode ? (
+                                <Monitor size={20} />
+                              ) : isExStudied ? (
+                                <CheckCircle2 size={20} />
+                              ) : (
+                                <Music size={18} />
+                              )}
                             </div>
 
                             <div>
-                              <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                                 <span>{exercise.title}</span>
+                                {exercise.isDesktopMode && (
+                                  <span
+                                    style={{
+                                      background: 'rgba(37, 99, 235, 0.25)',
+                                      border: '1px solid #3b82f6',
+                                      color: '#60a5fa',
+                                      fontSize: '0.65rem',
+                                      fontWeight: 800,
+                                      padding: '1px 6px',
+                                      borderRadius: '8px'
+                                    }}
+                                  >
+                                    🖥️ Formato PC
+                                  </span>
+                                )}
                                 {isExStudied && (
                                   <span
                                     style={{
@@ -455,9 +490,7 @@ export default function SeriesLibraryView({
                                 )}
                               </div>
                               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span>⏱ {exercise.defaultBpm || 60} BPM</span>
-                                <span>•</span>
-                                <span>{exercise.timeSignature || '4/4'}</span>
+                                <span>{exercise.subtitle || (exercise.isDesktopMode ? 'Vídeo Horizontal (Desktop)' : `⏱ ${exercise.defaultBpm || 60} BPM`)}</span>
                               </div>
                             </div>
                           </div>

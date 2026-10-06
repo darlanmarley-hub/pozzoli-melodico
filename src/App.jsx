@@ -69,6 +69,17 @@ export default function App() {
     }
   }, [currentSeries]);
 
+  const handleSelectSeries = (selected) => {
+    if (!selected) return;
+    if (syncEngineRef.current) syncEngineRef.current.stop();
+    const currentList = [...INITIAL_SERIES, ...getCustomSeries()];
+    setAllSeries(currentList);
+    let idx = currentList.findIndex((s) => s.id === selected.id);
+    if (idx < 0) idx = 0;
+    setCurrentSeriesIndex(idx);
+    setActiveTab('reader');
+  };
+
   const handlePreviousScore = () => {
     if (currentSeriesIndex > 0) {
       if (syncEngineRef.current) syncEngineRef.current.stop();
@@ -109,7 +120,7 @@ export default function App() {
             mxlUrl={currentSeries.mxlUrl}
             videoUrl={currentSeries.videoUrl}
             currentSeries={currentSeries}
-            isDesktopMode={isDesktopMode}
+            isDesktopMode={currentSeries?.isDesktopMode || isDesktopMode}
             syncEngine={syncEngineRef.current}
             activeNoteInfo={activeNoteInfo}
             currentBpm={bpm}
@@ -157,11 +168,7 @@ export default function App() {
           allSeries={allSeries}
           studied={studied}
           favorites={favorites}
-          onSelectSeries={(selected) => {
-            const idx = allSeries.findIndex((s) => s.id === selected.id);
-            if (idx >= 0) setCurrentSeriesIndex(idx);
-            setActiveTab('reader');
-          }}
+          onSelectSeries={handleSelectSeries}
           onOpenSaved={() => setActiveTab('saved')}
           onToggleFavorite={handleToggleFavorite}
           onAddExercise={handleAddExercise}
@@ -174,11 +181,7 @@ export default function App() {
           allSeries={allSeries}
           favorites={favorites}
           studied={studied}
-          onSelectSeries={(selected) => {
-            const idx = allSeries.findIndex((s) => s.id === selected.id);
-            if (idx >= 0) setCurrentSeriesIndex(idx);
-            setActiveTab('reader');
-          }}
+          onSelectSeries={handleSelectSeries}
           onToggleFavorite={handleToggleFavorite}
           onGoBack={() => setActiveTab('library')}
         />
@@ -193,11 +196,7 @@ export default function App() {
             favorites={favorites}
             allSeries={allSeries}
             onClose={() => setActiveTab('library')}
-            onSelectSeries={(selected) => {
-              const idx = allSeries.findIndex((s) => s.id === selected.id);
-              if (idx >= 0) setCurrentSeriesIndex(idx);
-              setActiveTab('reader');
-            }}
+            onSelectSeries={handleSelectSeries}
           />
         </div>
       )}

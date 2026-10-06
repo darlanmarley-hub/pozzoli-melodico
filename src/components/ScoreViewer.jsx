@@ -35,8 +35,8 @@ export function MusicXMLViewer({
   const activeEmbedUrl = embedUrl || 'https://www.soundslice.com/slices/2gm7c/embed/';
 
   const containerRef = useRef(null);
-  const osmdRef = useRef(null);
-  
+  const isDesktop = currentSeries?.isDesktopMode || isDesktopMode;
+
   // Estado de modo de visualização: 'video' (Vídeo Vertical Pozzoli), 'embed' (Soundslice iframe) ou 'osmd' (MusicXML SVG)
   const [viewMode, setViewMode] = useState('video');
   const [loading, setLoading] = useState(true);
@@ -91,7 +91,7 @@ export function MusicXMLViewer({
 
           await osmd.load(xmlString);
 
-          const baseZoom = isDesktopMode ? 1.15 : 0.85;
+          const baseZoom = isDesktop ? 1.15 : 0.85;
           osmd.zoom = baseZoom * zoomLevel;
 
           osmd.render();
@@ -116,7 +116,7 @@ export function MusicXMLViewer({
       setError(`Falha ao carregar arquivo de partitura: ${err.message}`);
       setLoading(false);
     }
-  }, [targetUrl, isDesktopMode, syncEngine, zoomLevel]);
+  }, [targetUrl, isDesktop, syncEngine, zoomLevel]);
 
   useEffect(() => {
     initAndRenderScore();
@@ -144,7 +144,7 @@ export function MusicXMLViewer({
 
   return (
     <div
-      className={`score-view-wrapper ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}
+      className={`score-view-wrapper ${isDesktop ? 'desktop-mode' : 'mobile-mode'}`}
       style={{
         width: width || '100%',
         height: '100vh',
@@ -197,7 +197,9 @@ export function MusicXMLViewer({
               textTransform: 'uppercase'
             }}
           >
-            {currentSeries?.seriesTitle
+            {currentSeries?.isDesktopMode
+              ? currentSeries.title
+              : currentSeries?.seriesTitle
               ? `${currentSeries.seriesTitle} — ${currentSeries.title}`
               : (currentSeries?.title || '1ª SÉRIE — EXERCÍCIO N.1')}
           </span>

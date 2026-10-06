@@ -28,45 +28,51 @@ export default function VerticalVideoPlayer({
   const defaultBpm = currentSeries?.defaultBpm || 90;
   const speedRatio = bpm / defaultBpm;
 
+  const isDesktop = currentSeries?.isDesktopMode || isDesktopMode;
   const scale = currentSeries?.videoScale ?? 0.90;
   const translateY = currentSeries?.videoTranslateY ?? '0px';
-  const videoTransform = isDesktopMode
+  const videoTransform = isDesktop
     ? `translateY(${translateY})`
     : `translateY(${translateY}) scale(${scale})`;
 
-  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
+  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0';
   const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
-  const rawUrl = isDesktopMode ? pcUrl : mobileUrl;
+  const rawUrl = isDesktop ? pcUrl : mobileUrl;
   const directVideoSrc = getDirectVideoUrl(rawUrl);
 
   const prevSrcRef = useRef(directVideoSrc);
 
   useEffect(() => {
     setIsVideoLoading(true);
-    if (prevSrcRef.current !== directVideoSrc && videoRef.current) {
-      const currentTime = videoRef.current.currentTime || 0;
-      const wasPlaying = !videoRef.current.paused;
+    setUseIframeFallback(false);
 
-      videoRef.current.src = directVideoSrc;
-      videoRef.current.load();
+    const timer = setTimeout(() => {
+      setIsVideoLoading(false);
+    }, 1200);
+
+    if (videoRef.current) {
+      if (prevSrcRef.current !== directVideoSrc) {
+        videoRef.current.src = directVideoSrc;
+        videoRef.current.load();
+        prevSrcRef.current = directVideoSrc;
+      }
 
       const handleCanPlay = () => {
         setIsVideoLoading(false);
         if (videoRef.current) {
-          if (currentTime > 0) {
-            try {
-              videoRef.current.currentTime = currentTime;
-            } catch (e) {}
-          }
-          if (wasPlaying) {
-            videoRef.current.play().catch(console.warn);
-          }
+          videoRef.current.play().catch(console.warn);
         }
       };
 
-      videoRef.current.addEventListener('canplay', handleCanPlay, { once: true });
-      prevSrcRef.current = directVideoSrc;
+      if (videoRef.current.readyState >= 3) {
+        setIsVideoLoading(false);
+        videoRef.current.play().catch(console.warn);
+      } else {
+        videoRef.current.addEventListener('canplay', handleCanPlay, { once: true });
+      }
     }
+
+    return () => clearTimeout(timer);
   }, [directVideoSrc]);
 
   // Expor o elemento vídeo para o AudioSyncEngine
@@ -117,10 +123,10 @@ export default function VerticalVideoPlayer({
   };
 
   return (
-    <div className={`vertical-video-wrapper ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}>
+    <div className={`vertical-video-wrapper ${isDesktop ? 'desktop-mode' : 'mobile-mode'}`}>
       {/* Frame de Vídeo em Formato Celular / Computador (Clique na tela para Tocar/Pausar) */}
       <div
-        className={`vertical-video-frame ${isDesktopMode ? 'desktop-mode' : 'mobile-mode'}`}
+        className={`vertical-video-frame ${isDesktop ? 'desktop-mode' : 'mobile-mode'}`}
         onClick={handleContainerClick}
         style={{ cursor: 'pointer', position: 'relative' }}
         title="Toque na tela para Tocar / Pausar"
@@ -176,10 +182,9 @@ export default function VerticalVideoPlayer({
             className="vertical-video-element"
             style={{ transform: videoTransform, transformOrigin: 'top center' }}
             playsInline
-            controls={false}
+            controls
             preload="auto"
             onLoadStart={() => setIsVideoLoading(true)}
-            onWaiting={() => setIsVideoLoading(true)}
             onCanPlay={() => setIsVideoLoading(false)}
             onPlaying={() => setIsVideoLoading(false)}
             onLoadedData={() => setIsVideoLoading(false)}
@@ -192,44 +197,26 @@ export default function VerticalVideoPlayer({
               if (onEnded) onEnded();
             }}
             onError={() => {
-              console.warn('Erro ao carregar vídeo do Dropbox:', directVideoSrc);
+              console.warn('Alternando para player de streaming embutido (iframe):', directVideoSrc);
               setIsVideoLoading(false);
               setUseIframeFallback(true);
             }}
           />
         ) : (
-          <div
+          <iframe
+            src={directVideoSrc}
+            title={currentSeries?.title || 'Vídeo Pozzoli'}
             style={{
-              padding: '24px',
-              textAlign: 'center',
-              color: '#ffffff',
-              background: '#1a1d24',
-              borderRadius: 'var(--radius-md)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
+              width: '100%',
               height: '100%',
-              minHeight: '300px'
+              minHeight: '350px',
+              border: 'none',
+              borderRadius: 0,
+              background: '#000000'
             }}
-          >
-            <Video size={48} style={{ color: 'var(--accent-orange)' }} />
-            <p style={{ fontWeight: 700, margin: 0 }}>Não foi possível carregar o vídeo diretamente.</p>
-            <a
-              href={rawUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: '#ff6600',
-                textDecoration: 'underline',
-                fontSize: '0.9rem',
-                fontWeight: 600
-              }}
-            >
-              Abrir vídeo no Dropbox
-            </a>
-          </div>
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+            allowFullScreen
+          />
         )}
       </div>
     </div>

@@ -32,9 +32,11 @@ export const MODULES = [
 export const getDirectVideoUrl = (url) => {
   if (!url) return '';
   if (url.includes('dropbox.com')) {
-    let clean = url.replace(/[?&]dl=0/, '').replace(/[?&]dl=1/, '');
-    clean += clean.includes('?') ? '&raw=1' : '?raw=1';
-    return clean;
+    return url
+      .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+      .replace('dropbox.com', 'dl.dropboxusercontent.com')
+      .replace(/[?&]dl=[01]/g, '')
+      .replace(/[?&]raw=1/g, '');
   }
   if (url.includes('drive.google.com')) {
     const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -53,6 +55,30 @@ export const SERIES_FOLDERS = [
     description: 'Pasta da 1ª Série - Exercícios em intervalos de segunda.',
     exercises: [
       {
+        id: 'serie-1-versao-computador',
+        seriesId: 'primeira-serie',
+        seriesTitle: '1ª SÉRIE',
+        seriesSubtitle: 'Exercícios em intervalos de segunda',
+        title: 'SÉRIE COMPLETA - VERSÃO COMPUTADOR',
+        subtitle: '1ª Série completa em vídeo horizontal (Desktop)',
+        description: 'Vídeo da 1ª Série em formato horizontal panorâmico gravado para telas de computador.',
+        mxlUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.xml',
+        midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
+        audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
+        videoUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
+        isDesktopMode: true,
+        embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
+        timeSignature: '2/4',
+        defaultBpm: 60,
+        difficulty: 'Iniciante',
+        displayOrder: 0,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        isAvailable: true,
+        isBuiltin: true
+      },
+      {
         id: 'serie-1-ex-1',
         seriesId: 'primeira-serie',
         seriesTitle: '1ª SÉRIE',
@@ -64,7 +90,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/82fmd72izqnscmt516xq7/serie1-n1.mp4?rlkey=bht9hx78j78qmrdu9mahtyqhc&st=lqae3chz&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/82fmd72izqnscmt516xq7/serie1-n1.mp4?rlkey=bht9hx78j78qmrdu9mahtyqhc&st=lqae3chz&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '2/4',
         defaultBpm: 60,
@@ -86,7 +112,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/4birprc72sabl20ls2uyg/serie1-n2.mp4?rlkey=a0bmfiesefis3igs9ar869pkq&st=3cnrytfr&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/4birprc72sabl20ls2uyg/serie1-n2.mp4?rlkey=a0bmfiesefis3igs9ar869pkq&st=3cnrytfr&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '2/4',
         defaultBpm: 60,
@@ -108,7 +134,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/ial5ujzf5r9sbx5ck0xkw/serie1-n3.mp4?rlkey=it1xetc5e4l3kamk7lu8p38f3&st=pc1quj4c&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/ial5ujzf5r9sbx5ck0xkw/serie1-n3.mp4?rlkey=it1xetc5e4l3kamk7lu8p38f3&st=pc1quj4c&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '2/4',
         defaultBpm: 60,
@@ -130,7 +156,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/sj8euy5ml60imuwq5aidz/serie1-n4.mp4?rlkey=8u1ovn27r63ygxnvw6bz10e3z&st=sww1zysj&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/sj8euy5ml60imuwq5aidz/serie1-n4.mp4?rlkey=8u1ovn27r63ygxnvw6bz10e3z&st=sww1zysj&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '3/4',
         defaultBpm: 60,
@@ -152,7 +178,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/x7fvpvizovyhk8dhxrg1a/serie1-n5.mp4?rlkey=q9jmetl3xv1ox4muykbkazeyf&st=k02avvbl&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/x7fvpvizovyhk8dhxrg1a/serie1-n5.mp4?rlkey=q9jmetl3xv1ox4muykbkazeyf&st=k02avvbl&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '3/4',
         defaultBpm: 60,
@@ -174,7 +200,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/ydnybumg0xfs49sb5gg1p/serie1-n6.mp4?rlkey=u54lyklokq1vwoyzujrhz55m1&st=nofqndzi&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/ydnybumg0xfs49sb5gg1p/serie1-n6.mp4?rlkey=u54lyklokq1vwoyzujrhz55m1&st=nofqndzi&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '3/4',
         defaultBpm: 60,
@@ -196,7 +222,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/q9vsbwfku2v3oeefp6g0e/serie1-n7.mp4?rlkey=qvf8a4c9806uc3rg4gghpihvs&st=oor8c4lr&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/q9vsbwfku2v3oeefp6g0e/serie1-n7.mp4?rlkey=qvf8a4c9806uc3rg4gghpihvs&st=oor8c4lr&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '3/4',
         defaultBpm: 60,
@@ -218,7 +244,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/8ychfimxrs4907002rmr2/serie1-n8.mp4?rlkey=46ayrpkfyeaxont2c058y7j4u&st=5hn3u9m7&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/8ychfimxrs4907002rmr2/serie1-n8.mp4?rlkey=46ayrpkfyeaxont2c058y7j4u&st=5hn3u9m7&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '4/4',
         defaultBpm: 60,
@@ -240,7 +266,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/jbss2wewhmuft4ixpl33e/serie1-n9.mp4?rlkey=zhrsmmky0j6lxh94yytxi195i&st=0d3ijyq5&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/jbss2wewhmuft4ixpl33e/serie1-n9.mp4?rlkey=zhrsmmky0j6lxh94yytxi195i&st=0d3ijyq5&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '4/4',
         defaultBpm: 60,
@@ -262,7 +288,7 @@ export const SERIES_FOLDERS = [
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
         audioUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mp3',
         videoUrl: 'https://www.dropbox.com/scl/fi/9qbov8ok7qcd7xm2ykbo6/serie1-n10.mp4?rlkey=zh9ofcmm7p4q90f8781glsqpo&st=15tutk14&dl=0',
-        videoPcUrl: 'https://www.dropbox.com/scl/fi/9qbov8ok7qcd7xm2ykbo6/serie1-n10.mp4?rlkey=zh9ofcmm7p4q90f8781glsqpo&st=15tutk14&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0',
         embedUrl: 'https://www.soundslice.com/slices/2gm7c/embed/',
         timeSignature: '4/4',
         defaultBpm: 60,
