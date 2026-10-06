@@ -182,7 +182,7 @@ export default function VerticalVideoPlayer({
             className="vertical-video-element"
             style={{ transform: videoTransform, transformOrigin: 'top center' }}
             playsInline
-            controls
+            controls={!isDesktop}
             preload="auto"
             onLoadStart={() => setIsVideoLoading(true)}
             onCanPlay={() => setIsVideoLoading(false)}
