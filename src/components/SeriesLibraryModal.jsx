@@ -46,7 +46,7 @@ export default function SeriesLibraryView({
             margin: 0
           }}
         >
-          POZZOLI MELÓDICO
+          POZZOLI MELÓDICO NO BOLSO
         </h1>
 
         <div
