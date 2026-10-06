@@ -120,6 +120,7 @@ export default function VerticalVideoPlayer({
         style={{ cursor: 'pointer', position: 'relative' }}
         title="Toque na tela para Tocar / Pausar"
       >
+        {!isDesktop && <div className="desktop-device-notch" />}
         {/* Overlay de Ícone Carregando Vídeo */}
         {isVideoLoading && !useIframeFallback && (
           <div

@@ -838,35 +838,55 @@ input, textarea {
   object-fit: contain;
 }
 
-/* Responsividade para Exercícios N.1 a N.10 em Telas de Desktop (>= 768px) — Sem Moldura */
+/* Moldura Premium Modelo Smartphone Glass para Exercícios N.1 a N.10 em Telas de Desktop (>= 768px) */
+.desktop-device-notch {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .vertical-video-wrapper.mobile-mode {
-    max-width: 440px;
-    max-height: calc(100vh - 140px);
-    height: calc(100vh - 140px);
-    margin: 0 auto;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
+    max-width: 400px;
+    max-height: calc(100vh - 150px);
+    height: calc(100vh - 150px);
+    margin: 12px auto;
+    padding: 8px;
+    border-radius: 28px;
+    background: linear-gradient(145deg, #182032 0%, #0d121f 100%);
+    border: 2px solid rgba(255, 102, 0, 0.4);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(255, 102, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .vertical-video-frame.mobile-mode {
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
     background: #000000;
     overflow: hidden;
   }
 
-  .vertical-video-frame.mobile-mode {
-    max-width: 440px;
-    max-height: 100%;
-    height: 100%;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    background: #000000;
-  }
-
   .vertical-video-frame.mobile-mode .vertical-video-element {
     object-fit: contain;
-    border-radius: 0;
+    border-radius: 20px;
     border: none;
-    box-shadow: none;
+  }
+
+  .desktop-device-notch {
+    display: block;
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+    z-index: 40;
+    pointer-events: none;
   }
 }
 
