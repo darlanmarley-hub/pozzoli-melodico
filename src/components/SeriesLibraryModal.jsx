@@ -487,9 +487,11 @@ export default function SeriesLibraryView({
                                   </span>
                                 )}
                               </div>
-                              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span>{exercise.subtitle || (exercise.isDesktopMode ? 'Vídeo Horizontal (Desktop)' : `⏱ ${exercise.defaultBpm || 60} BPM`)}</span>
-                              </div>
+                              {exercise.subtitle || (!exercise.isDesktopMode && `⏱ ${exercise.defaultBpm || 60} BPM`) ? (
+                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                  <span>{exercise.subtitle || (!exercise.isDesktopMode ? `⏱ ${exercise.defaultBpm || 60} BPM` : '')}</span>
+                                </div>
+                              ) : null}
                             </div>
                           </div>
 

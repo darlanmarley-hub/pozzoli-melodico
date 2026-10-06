@@ -63,7 +63,7 @@ export const SERIES_FOLDERS = [
         seriesTitle: '1ª SÉRIE',
         seriesSubtitle: 'Exercícios em intervalos de segunda',
         title: 'SÉRIE COMPLETA - VERSÃO COMPUTADOR',
-        subtitle: '1ª Série completa em vídeo horizontal (Desktop)',
+        subtitle: '',
         description: 'Vídeo da 1ª Série em formato horizontal panorâmico gravado para telas de computador.',
         mxlUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.xml',
         midiUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.mid',
