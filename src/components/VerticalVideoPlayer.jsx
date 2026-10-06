@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Video, Music, Zap, Volume2, VolumeX, RefreshCw } from 'lucide-react';
+import { Video, Music, Zap, Volume2, VolumeX, RefreshCw, Play } from 'lucide-react';
 import { getDirectVideoUrl } from '../utils/storage';
 
 /**
@@ -46,31 +46,20 @@ export default function VerticalVideoPlayer({
     setIsVideoLoading(true);
     setUseIframeFallback(false);
 
-    const timer = setTimeout(() => {
-      setIsVideoLoading(false);
-    }, 1200);
-
     if (videoRef.current) {
       if (prevSrcRef.current !== directVideoSrc) {
         videoRef.current.src = directVideoSrc;
         videoRef.current.load();
+        try {
+          videoRef.current.currentTime = 0;
+        } catch (e) {}
         prevSrcRef.current = directVideoSrc;
       }
-
-      const handleCanPlay = () => {
-        setIsVideoLoading(false);
-        if (videoRef.current) {
-          videoRef.current.play().catch(console.warn);
-        }
-      };
-
-      if (videoRef.current.readyState >= 3) {
-        setIsVideoLoading(false);
-        videoRef.current.play().catch(console.warn);
-      } else {
-        videoRef.current.addEventListener('canplay', handleCanPlay, { once: true });
-      }
     }
+
+    const timer = setTimeout(() => {
+      setIsVideoLoading(false);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [directVideoSrc]);
@@ -168,10 +157,33 @@ export default function VerticalVideoPlayer({
               <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '0.6px', display: 'block', color: '#ffffff' }}>
                 Carregando exercício...
               </span>
-              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
-                {currentSeries?.seriesTitle ? `${currentSeries.seriesTitle} — ${currentSeries.title}` : (currentSeries?.title || '1ª Série — Exercício N.1')}
-              </span>
             </div>
+          </div>
+        )}
+
+        {/* Overlay de Ícone Play quando o vídeo está pausado */}
+        {!isPlaying && !isVideoLoading && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              background: 'rgba(255, 102, 0, 0.85)',
+              border: '2px solid rgba(255, 255, 255, 0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#ffffff',
+              zIndex: 30,
+              pointerEvents: 'none',
+              boxShadow: '0 4px 20px rgba(255, 102, 0, 0.6)'
+            }}
+          >
+            <Play size={32} fill="#ffffff" style={{ marginLeft: '4px' }} />
           </div>
         )}
 

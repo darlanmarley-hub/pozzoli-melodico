@@ -838,6 +838,33 @@ input, textarea {
   object-fit: contain;
 }
 
+/* Responsividade para Exercícios N.1 a N.10 em Telas de Desktop (>= 768px) */
+@media (min-width: 768px) {
+  .vertical-video-wrapper.mobile-mode {
+    max-width: 440px;
+    max-height: calc(100vh - 160px);
+    height: calc(100vh - 160px);
+    margin: 10px auto;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    background: #000000;
+    overflow: hidden;
+  }
+
+  .vertical-video-frame.mobile-mode {
+    max-width: 440px;
+    max-height: 100%;
+    height: 100%;
+    border-radius: 16px;
+    background: #000000;
+  }
+
+  .vertical-video-frame.mobile-mode .vertical-video-element {
+    object-fit: contain;
+    border-radius: 16px;
+  }
+}
+
 .video-fallback-overlay {
   position: absolute;
   inset: 0;
