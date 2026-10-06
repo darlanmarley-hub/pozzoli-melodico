@@ -168,9 +168,9 @@ export default function VerticalVideoPlayer({
             ref={videoRef}
             src={directVideoSrc}
             className="vertical-video-element"
-            style={{ transform: videoTransform, transformOrigin: 'top center' }}
+            style={{ transform: videoTransform, transformOrigin: 'top center', cursor: 'pointer', pointerEvents: 'auto' }}
             playsInline
-            controls={!isDesktop}
+            controls={false}
             preload="auto"
             onLoadStart={() => setIsVideoLoading(true)}
             onCanPlay={() => setIsVideoLoading(false)}
