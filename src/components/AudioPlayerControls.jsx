@@ -202,27 +202,6 @@ export default function AudioPlayerControls({
       {/* Row 1: Action Buttons above Scrubber */}
       <div className="player-actions-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '2px 0' }}>
         <button
-          className={`action-pill-btn ${isDesktopMode ? 'orange' : ''}`}
-          onClick={onToggleDesktopMode}
-          title="Alternar Modo Desktop / Celular"
-          style={{
-            padding: '5px 12px',
-            fontSize: '0.75rem',
-            background: isDesktopMode ? 'rgba(37, 99, 235, 0.25)' : 'rgba(255, 255, 255, 0.08)',
-            border: isDesktopMode ? '1px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.2)',
-            color: isDesktopMode ? '#60a5fa' : '#ffffff',
-            borderRadius: '20px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
-        >
-          <Monitor size={14} />
-          <span>{isDesktopMode ? 'Modo Desktop 🖥️' : 'Modo Celular 📱'}</span>
-        </button>
-
-        <button
           className={`action-pill-btn ${isOfflineSaved ? 'green' : ''}`}
           onClick={() => setIsOfflineSaved(!isOfflineSaved)}
           title="Salvar para uso offline"
