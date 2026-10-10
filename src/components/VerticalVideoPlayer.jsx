@@ -99,13 +99,19 @@ export default function VerticalVideoPlayer({
     }
   };
 
-  const handleContainerClick = () => {
+  const hasScrollbar = currentSeries?.hasScrollbar || currentSeries?.id === 'serie-2-ex-7';
+
+  const handleContainerClick = (e) => {
+    // Evita alternar Play/Pause ao clicar na barra de rolagem
+    if (e && e.target && e.target.classList && e.target.classList.contains('has-scrollbar')) {
+      return;
+    }
     if (onToggleMenu) {
       onToggleMenu();
     }
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        videoRef.current.play().catch((e) => console.warn(e));
+        videoRef.current.play().catch((err) => console.warn(err));
       } else {
         videoRef.current.pause();
       }
@@ -116,10 +122,10 @@ export default function VerticalVideoPlayer({
     <div className={`vertical-video-wrapper ${isDesktop ? 'desktop-mode' : 'mobile-mode'}`}>
       {/* Frame de Vídeo em Formato Celular / Computador (Clique na tela para Tocar/Pausar) */}
       <div
-        className={`vertical-video-frame ${isDesktop ? 'desktop-mode' : 'mobile-mode'}`}
+        className={`vertical-video-frame ${isDesktop ? 'desktop-mode' : 'mobile-mode'} ${hasScrollbar ? 'has-scrollbar' : ''}`}
         onClick={handleContainerClick}
         style={{ cursor: 'pointer', position: 'relative' }}
-        title="Toque na tela para Tocar / Pausar"
+        title="Toque na tela para Tocar / Pausar (ou use a barra de rolagem)"
       >
         {!isDesktop && <div className="desktop-device-notch" />}
         {/* Overlay de Ícone Carregando Vídeo */}

@@ -879,6 +879,33 @@ input, textarea {
     border: none;
   }
 
+  /* Barra de Rolagem Ativada na Moldura do Vídeo para Desktop (ex: 2ª Série Exercício N.7) */
+  .vertical-video-frame.has-scrollbar {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-orange) rgba(0, 0, 0, 0.5);
+  }
+
+  .vertical-video-frame.has-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .vertical-video-frame.has-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+  }
+
+  .vertical-video-frame.has-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--accent-orange);
+    border-radius: 4px;
+    box-shadow: 0 0 10px var(--accent-orange-glow);
+  }
+
+  .vertical-video-frame.has-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ff8833;
+  }
+
   /* Dock de Controles DENTRO da Moldura do Celular no Desktop */
   .vertical-video-wrapper.mobile-mode .player-dock-container {
     position: relative;

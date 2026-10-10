@@ -451,6 +451,7 @@ export const SERIES_FOLDERS = [
         displayOrder: 7,
         videoScale: 0.90,
         videoTranslateY: '60px',
+        hasScrollbar: true,
         isAvailable: true,
         isBuiltin: true
       },
