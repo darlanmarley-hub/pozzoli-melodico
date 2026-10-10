@@ -99,7 +99,7 @@ export default function VerticalVideoPlayer({
     }
   };
 
-  const hasScrollbar = currentSeries?.hasScrollbar || ['serie-2-ex-7', 'serie-2-ex-8', 'serie-2-ex-9', 'serie-2-ex-10'].includes(currentSeries?.id);
+  const hasScrollbar = !!currentSeries?.hasScrollbar || ['serie-1-ex-10', 'serie-2-ex-7', 'serie-2-ex-8', 'serie-2-ex-9', 'serie-2-ex-10'].includes(currentSeries?.id);
 
   const handleContainerClick = (e) => {
     // Evita alternar Play/Pause ao clicar na barra de rolagem
