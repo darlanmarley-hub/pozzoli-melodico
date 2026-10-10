@@ -32,33 +32,33 @@
   --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
 }
 
-/* Baroque Classical Theme Variables */
+/* Baroque Classical Theme Variables - Rich Dark Baroque with Antique Gold & Mahogany */
 body.theme-baroque, [data-theme="baroque"] {
-  --bg-main: #f5eedf;
-  --bg-card: #faf6ee;
-  --bg-card-hover: #f1e7d4;
-  --bg-dock: #2a2016;
-  --bg-dock-inner: #1e160f;
+  --bg-main: #110d09;
+  --bg-card: #1c1510;
+  --bg-card-hover: #261d16;
+  --bg-dock: #18110b;
+  --bg-dock-inner: #0f0a07;
 
-  --accent-orange: #b8621b;
-  --accent-orange-hover: #9c4e12;
-  --accent-orange-glow: rgba(184, 98, 27, 0.35);
+  --accent-orange: #e66a1f;
+  --accent-orange-hover: #cf5812;
+  --accent-orange-glow: rgba(230, 106, 31, 0.45);
 
-  --accent-gold: #c69238;
-  --accent-gold-hover: #dfb76c;
-  --accent-gold-glow: rgba(198, 146, 56, 0.4);
+  --accent-gold: #d4a34b;
+  --accent-gold-hover: #f3cf88;
+  --accent-gold-glow: rgba(212, 163, 75, 0.45);
 
-  --accent-green: #2d6b38;
-  --accent-rose: #87212e;
-  --accent-rose-glow: rgba(135, 33, 46, 0.3);
+  --accent-green: #10b981;
+  --accent-rose: #be2c3f;
+  --accent-rose-glow: rgba(190, 44, 63, 0.4);
 
-  --text-main: #241b13;
-  --text-muted: #66503c;
-  --text-dim: #947a63;
+  --text-main: #fdf8ee;
+  --text-muted: #c7b299;
+  --text-dim: #8f7a65;
 
-  --border-color: #d6c4a4;
-  --border-orange: rgba(184, 98, 27, 0.45);
-  --border-gold: rgba(198, 146, 56, 0.6);
+  --border-color: rgba(212, 163, 75, 0.25);
+  --border-orange: rgba(230, 106, 31, 0.45);
+  --border-gold: rgba(212, 163, 75, 0.45);
 
   --font-family: 'Cormorant Garamond', Georgia, serif;
   --font-heading: 'Cinzel', 'Playfair Display', Georgia, serif;
@@ -188,7 +188,7 @@ input, textarea {
 
 /* Vertical Video Player Component Styles - Fully Mobile Responsive */
 .vertical-video-wrapper {
-  background: #ffffff;
+  background: var(--bg-main);
   border: none;
   border-radius: 0;
   padding: 0;
@@ -216,7 +216,7 @@ input, textarea {
   max-height: 100%;
   flex: 1;
   margin: 0 auto;
-  background: #ffffff;
+  background: #000000;
   border: none;
   border-radius: 0;
   overflow: hidden;
@@ -236,7 +236,7 @@ input, textarea {
   flex: 1;
   margin: 0;
   padding: 0;
-  background: #ffffff;
+  background: #000000;
   border: none;
   border-radius: 0;
   overflow: hidden;
@@ -824,7 +824,7 @@ input, textarea {
   height: calc(100vh - 140px);
   min-height: auto;
   margin: 0 auto;
-  background: #ffffff;
+  background: #000000;
   border: none;
   border-radius: 0;
   overflow: hidden;
@@ -843,7 +843,7 @@ input, textarea {
   display: block;
   transform: none;
   transition: transform 0.3s ease;
-  background: #ffffff;
+  background: #000000;
 }
 
 .vertical-video-frame.mobile-mode .vertical-video-element {
@@ -1108,41 +1108,42 @@ input, textarea {
 }
 
 /* ========================================================
-   BAROQUE CLASSICAL THEME STYLES (ESTILO BARROCO)
+   BAROQUE CLASSICAL THEME STYLES (DARK BAROQUE / NOBRE NOTURNO)
+   Fundo escuro profundo com ouro antigo e alto contraste
    ======================================================== */
 body.theme-baroque {
-  background-color: #f5eedf !important;
+  background-color: #110d09 !important;
   background-image: 
-    radial-gradient(circle at 50% 8%, rgba(255, 255, 255, 0.85) 0%, rgba(246, 238, 222, 0.95) 50%, rgba(232, 219, 194, 1) 100%) !important;
-  color: #241b13 !important;
+    radial-gradient(circle at 50% 10%, #1e1610 0%, #120e0a 55%, #080604 100%) !important;
+  color: #fdf8ee !important;
   font-family: 'Cormorant Garamond', Georgia, serif !important;
 }
 
 body.theme-baroque .app-container {
-  background: transparent;
+  background: transparent !important;
 }
 
-/* Scrollbar Baroque */
+/* Scrollbar Baroque Dark */
 body.theme-baroque ::-webkit-scrollbar-track {
-  background: #eae0cb;
+  background: #110d09;
 }
 body.theme-baroque ::-webkit-scrollbar-thumb {
-  background: #c69238;
+  background: #a87930;
   border-radius: 4px;
 }
 body.theme-baroque ::-webkit-scrollbar-thumb:hover {
-  background: #9e6f22;
+  background: #d4a34b;
 }
 
 /* Theme Switcher in Baroque mode */
 body.theme-baroque .theme-switcher-bar {
-  background: #e9dec6;
-  border: 1px solid #c69238;
-  box-shadow: inset 0 2px 5px rgba(60, 40, 15, 0.12);
+  background: rgba(28, 21, 16, 0.9);
+  border: 1px solid rgba(212, 163, 75, 0.45);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 body.theme-baroque .theme-pill-btn {
-  color: #634d39;
+  color: #c7b299;
   font-family: 'Cinzel', serif;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -1150,8 +1151,8 @@ body.theme-baroque .theme-pill-btn {
 
 body.theme-baroque .theme-pill-btn.active {
   background: linear-gradient(135deg, #dfb76c 0%, #a27429 100%);
-  color: #1a1208;
-  box-shadow: 0 3px 12px rgba(162, 116, 41, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: #120e0a;
+  box-shadow: 0 3px 12px rgba(162, 116, 41, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   border: 1px solid #fae6b8;
 }
 
@@ -1159,93 +1160,92 @@ body.theme-baroque .theme-pill-btn.active {
 body.theme-baroque h1,
 body.theme-baroque h2,
 body.theme-baroque h3,
+body.theme-baroque h4,
+body.theme-baroque h5,
+body.theme-baroque h6,
 body.theme-baroque .screen-title {
   font-family: 'Cinzel', 'Playfair Display', serif !important;
-  color: #241b13 !important;
+  color: #fdf8ee !important;
   letter-spacing: 0.8px !important;
 }
 
 body.theme-baroque .library-main-title {
   font-family: 'Cinzel', serif !important;
-  color: #241b13 !important;
+  color: #fdf8ee !important;
   letter-spacing: 1.5px !important;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 163, 75, 0.25);
 }
 
 body.theme-baroque .library-sub-title {
   font-family: 'Cormorant Garamond', Georgia, serif !important;
   font-style: italic !important;
-  color: #8c621c !important;
+  color: #e5bd68 !important;
   font-size: 0.95rem !important;
   letter-spacing: 1px !important;
 }
 
 /* Library Banner & Wi-Fi pill */
 body.theme-baroque .wifi-tip-badge {
-  background: rgba(184, 98, 27, 0.1) !important;
-  border: 1px solid rgba(184, 98, 27, 0.35) !important;
-  color: #823c0b !important;
+  background: rgba(212, 163, 75, 0.12) !important;
+  border: 1px solid rgba(212, 163, 75, 0.4) !important;
+  color: #f3cf88 !important;
   font-family: 'Cormorant Garamond', Georgia, serif !important;
   font-size: 0.95rem !important;
 }
 
 /* Baroque Accordion Folders */
 body.theme-baroque .accordion-card {
-  background: #fdfaf4 !important;
-  border: 1px solid #d4c2a3 !important;
-  box-shadow: 0 4px 18px rgba(70, 48, 22, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.75) !important;
+  background: #1c1510 !important;
+  border: 1px solid rgba(212, 163, 75, 0.35) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
   border-radius: var(--radius-md) !important;
   position: relative;
 }
 
 body.theme-baroque .accordion-card.folder-completed {
-  border: 1.5px solid #2d6b38 !important;
-  box-shadow: 0 4px 20px rgba(45, 107, 56, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
+  border: 1.5px solid #10b981 !important;
+  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
 }
 
 body.theme-baroque .icon-badge-box {
-  background: rgba(198, 146, 56, 0.18) !important;
-  border: 1px solid #c69238 !important;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+  background: rgba(212, 163, 75, 0.15) !important;
+  border: 1px solid rgba(212, 163, 75, 0.5) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
-body.theme-baroque .card-title-group h3,
-body.theme-baroque .card-title-group [style*="color: #ffffff"],
-body.theme-baroque .card-title-group [style*="color:#ffffff"] {
-  color: #241b13 !important;
+body.theme-baroque .card-title-group h3 {
+  color: #fdf8ee !important;
   font-family: 'Cinzel', serif !important;
 }
 
-body.theme-baroque .card-title-group p,
-body.theme-baroque .card-title-group [style*="rgba(255, 255, 255"] {
-  color: #634d39 !important;
+body.theme-baroque .card-title-group p {
+  color: #c7b299 !important;
   font-family: 'Cormorant Garamond', Georgia, serif !important;
 }
 
-/* Baroque Exercise Cards */
+/* Baroque Exercise Cards (Dark wood / antique leather with gold border) */
 body.theme-baroque .exercise-row-card,
 body.theme-baroque .favorite-row-card {
-  background: #fcf9f2 !important;
-  border: 1px solid #dfcfb2 !important;
-  box-shadow: 0 1px 4px rgba(70, 48, 22, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+  background: #221a13 !important;
+  border: 1px solid rgba(212, 163, 75, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
   transition: all 0.25s ease;
 }
 
 body.theme-baroque .exercise-row-card:hover,
 body.theme-baroque .favorite-row-card:hover {
-  background: #f7ede0 !important;
-  border-color: #c69238 !important;
-  box-shadow: 0 4px 14px rgba(162, 116, 41, 0.15) !important;
+  background: #2b2118 !important;
+  border-color: #d4a34b !important;
+  box-shadow: 0 4px 16px rgba(212, 163, 75, 0.2) !important;
   transform: translateY(-1px);
 }
 
-/* Baroque Exercise Names & Labels: Dark ink color for strong contrast against parchment */
 body.theme-baroque .exercise-name,
 body.theme-baroque .exercise-name span,
 body.theme-baroque .exercise-row-card span,
 body.theme-baroque .favorite-row-card span,
 body.theme-baroque .exercise-item-card .exercise-name {
-  color: #1a120b !important;
+  color: #fdf8ee !important;
 }
 
 body.theme-baroque .exercise-name {
@@ -1255,49 +1255,55 @@ body.theme-baroque .exercise-name {
 
 body.theme-baroque .exercise-row-card [style*="color: var(--text-muted)"],
 body.theme-baroque .favorite-row-card [style*="color: var(--text-muted)"] {
-  color: #634d39 !important;
+  color: #c7b299 !important;
 }
 
 body.theme-baroque .circle-play-btn {
   background: linear-gradient(135deg, #dfb76c 0%, #a27429 100%) !important;
-  color: #1a1208 !important;
+  color: #120e0a !important;
   border: 1px solid #fae6b8 !important;
-  box-shadow: 0 3px 10px rgba(162, 116, 41, 0.45) !important;
+  box-shadow: 0 3px 10px rgba(162, 116, 41, 0.5) !important;
 }
 
 body.theme-baroque .circle-play-btn:hover {
   transform: scale(1.08);
-  box-shadow: 0 5px 16px rgba(162, 116, 41, 0.65) !important;
+  box-shadow: 0 5px 16px rgba(162, 116, 41, 0.7) !important;
 }
 
 /* Baroque Score Reader & Video Frame */
 body.theme-baroque .score-reader-page-bg {
-  background: #f6efe1 !important;
+  background: #0d0906 !important;
 }
 
 body.theme-baroque .vertical-video-frame {
-  background: #ffffff !important;
-  box-shadow: 0 0 35px rgba(65, 45, 20, 0.15) !important;
+  background: #000000 !important;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.7) !important;
+}
+
+body.theme-baroque .reader-top-header {
+  background: linear-gradient(180deg, #1e1610 0%, #110d09 100%) !important;
+  border-bottom: 2px solid #d4a34b !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
 }
 
 /* Baroque Player Dock (Antique Mahogany & Engraved Brass) */
 body.theme-baroque .player-dock-container {
-  background: linear-gradient(180deg, #2b1f15 0%, #17110a 100%) !important;
-  border-top: 2px solid #c69238 !important;
-  box-shadow: 0 -10px 30px rgba(23, 17, 10, 0.8), inset 0 1px 0 rgba(223, 183, 108, 0.4) !important;
+  background: linear-gradient(180deg, #221810 0%, #120c07 100%) !important;
+  border-top: 2px solid #d4a34b !important;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(223, 183, 108, 0.4) !important;
 }
 
 body.theme-baroque .controls-dock-bar {
-  background: #1d150e !important;
-  border: 1px solid rgba(198, 146, 56, 0.45) !important;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.55) !important;
+  background: #140d08 !important;
+  border: 1px solid rgba(212, 163, 75, 0.4) !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6) !important;
 }
 
 body.theme-baroque .orange-play-btn {
   background: linear-gradient(135deg, #dfb76c 0%, #a27429 100%) !important;
   border: 2px solid #fae6b8 !important;
-  color: #1a1208 !important;
-  box-shadow: 0 6px 20px rgba(198, 146, 56, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+  color: #120e0a !important;
+  box-shadow: 0 6px 20px rgba(212, 163, 75, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
 }
 
 body.theme-baroque .orange-play-btn:hover {
@@ -1306,16 +1312,16 @@ body.theme-baroque .orange-play-btn:hover {
 }
 
 body.theme-baroque .bpm-pill-control {
-  background: rgba(198, 146, 56, 0.12) !important;
-  border: 1px solid rgba(198, 146, 56, 0.4) !important;
-  color: #fae6b8 !important;
+  background: rgba(212, 163, 75, 0.15) !important;
+  border: 1px solid rgba(212, 163, 75, 0.4) !important;
+  color: #fdf8ee !important;
   font-family: 'Cinzel', serif !important;
 }
 
 body.theme-baroque .action-pill-btn {
-  background: rgba(198, 146, 56, 0.15) !important;
-  border: 1px solid #c69238 !important;
-  color: #dfb76c !important;
+  background: rgba(212, 163, 75, 0.15) !important;
+  border: 1px solid #d4a34b !important;
+  color: #f3cf88 !important;
   font-family: 'Cinzel', serif !important;
   letter-spacing: 0.5px;
 }
@@ -1323,105 +1329,52 @@ body.theme-baroque .action-pill-btn {
 body.theme-baroque .scrubber-slider::-webkit-slider-thumb {
   background: linear-gradient(135deg, #dfb76c 0%, #a27429 100%) !important;
   border: 2px solid #ffffff !important;
-  box-shadow: 0 0 16px rgba(198, 146, 56, 0.8), 0 2px 6px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 0 16px rgba(212, 163, 75, 0.8), 0 2px 6px rgba(0, 0, 0, 0.6) !important;
 }
 
 body.theme-baroque .scrubber-slider::-moz-range-thumb {
   background: linear-gradient(135deg, #dfb76c 0%, #a27429 100%) !important;
   border: 2px solid #ffffff !important;
-  box-shadow: 0 0 16px rgba(198, 146, 56, 0.8), 0 2px 6px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 0 16px rgba(212, 163, 75, 0.8), 0 2px 6px rgba(0, 0, 0, 0.6) !important;
 }
 
 /* Baroque Bottom Navigation Bar */
 body.theme-baroque .bottom-nav-pill {
-  background: linear-gradient(180deg, #2a1f14 0%, #1a120a 100%) !important;
-  border: 1px solid #c69238 !important;
-  box-shadow: 0 8px 30px rgba(35, 23, 13, 0.6), inset 0 1px 0 rgba(223, 183, 108, 0.35) !important;
+  background: linear-gradient(180deg, #221810 0%, #140d08 100%) !important;
+  border: 1px solid #d4a34b !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(223, 183, 108, 0.35) !important;
 }
 
 body.theme-baroque .bottom-nav-pill .nav-tab-btn {
-  color: #c9b49e !important;
+  color: #c7b299 !important;
   font-family: 'Cinzel', serif !important;
   letter-spacing: 0.5px;
 }
 
 body.theme-baroque .bottom-nav-pill .nav-tab-btn.active {
   background: linear-gradient(135deg, #d4a34b 0%, #9e6f22 100%) !important;
-  color: #1a1208 !important;
-  box-shadow: 0 2px 10px rgba(198, 146, 56, 0.45) !important;
+  color: #120e0a !important;
+  box-shadow: 0 2px 10px rgba(212, 163, 75, 0.5) !important;
   border: 1px solid #fae6b8 !important;
 }
 
 /* Stats and Profile Baroque Overrides */
 body.theme-baroque .profile-page-container h1,
 body.theme-baroque .stats-page-container h1 {
-  color: #241b13 !important;
+  color: #fdf8ee !important;
   font-family: 'Cinzel', serif !important;
 }
 
-body.theme-baroque .profile-page-container [style*="color: #ffffff"],
-body.theme-baroque .stats-page-container [style*="color: #ffffff"],
-body.theme-baroque .profile-page-container [style*="color: #fff"],
-body.theme-baroque .stats-page-container [style*="color: #fff"] {
-  color: #241b13 !important;
+body.theme-baroque .profile-page-container p,
+body.theme-baroque .stats-page-container p {
+  color: #c7b299 !important;
 }
 
 body.theme-baroque .profile-page-container [style*="background: var(--bg-card)"],
 body.theme-baroque .stats-page-container [style*="background: var(--bg-card)"] {
-  background: #fdfaf4 !important;
-  border: 1px solid #d4c2a3 !important;
-  box-shadow: 0 4px 18px rgba(70, 48, 22, 0.08) !important;
-}
-
-/* ========================================================
-   UNIVERSAL DARK TEXT ENFORCEMENT FOR BAROQUE THEME
-   Transforma qualquer texto branco em cor escura legível
-   ======================================================== */
-body.theme-baroque h1,
-body.theme-baroque h2,
-body.theme-baroque h3,
-body.theme-baroque h4,
-body.theme-baroque h5,
-body.theme-baroque h6,
-body.theme-baroque .screen-title,
-body.theme-baroque .library-main-title {
-  color: #1a120b !important;
-}
-
-/* Converte qualquer estilo inline de texto branco ou quase-branco para nanquim escuro */
-body.theme-baroque .library-view-container [style*="color: #ffffff"],
-body.theme-baroque .library-view-container [style*="color:#ffffff"],
-body.theme-baroque .library-view-container [style*="color: #fff"],
-body.theme-baroque .library-view-container [style*="color:#fff"],
-body.theme-baroque .library-view-container [style*="color: rgba(255, 255, 255"],
-body.theme-baroque .library-view-container [style*="color:rgba(255, 255, 255"],
-body.theme-baroque .stats-page-container [style*="color: #ffffff"],
-body.theme-baroque .stats-page-container [style*="color:#ffffff"],
-body.theme-baroque .stats-page-container [style*="color: #fff"],
-body.theme-baroque .stats-page-container [style*="color:#fff"],
-body.theme-baroque .stats-page-container [style*="color: rgba(255, 255, 255"],
-body.theme-baroque .stats-page-container [style*="color:rgba(255, 255, 255"],
-body.theme-baroque .profile-page-container [style*="color: #ffffff"],
-body.theme-baroque .profile-page-container [style*="color:#ffffff"],
-body.theme-baroque .profile-page-container [style*="color: #fff"],
-body.theme-baroque .profile-page-container [style*="color:#fff"],
-body.theme-baroque .profile-page-container [style*="color: rgba(255, 255, 255"],
-body.theme-baroque .profile-page-container [style*="color:rgba(255, 255, 255"] {
-  color: #1a120b !important;
-}
-
-/* Subtítulos e descrições em tom sépia quente escuro */
-body.theme-baroque p,
-body.theme-baroque .library-view-container p,
-body.theme-baroque .stats-page-container p,
-body.theme-baroque .profile-page-container p {
-  color: #5c4735 !important;
-}
-
-/* Badges e tags mantêm contraste apropriado */
-body.theme-baroque span[style*="background: #10b981"],
-body.theme-baroque span[style*="background:#10b981"] {
-  color: #ffffff !important;
+  background: #1c1510 !important;
+  border: 1px solid rgba(212, 163, 75, 0.35) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4) !important;
 }
 
 

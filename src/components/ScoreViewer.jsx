@@ -151,7 +151,7 @@ export function MusicXMLViewer({
         width: width || '100%',
         height: '100vh',
         minHeight: '100vh',
-        background: '#ffffff',
+        background: 'var(--bg-main)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

@@ -134,7 +134,7 @@ export default function App() {
             flex: 1, 
             height: '100vh', 
             overflow: 'hidden', 
-            background: theme === 'baroque' ? '#f6efe1' : '#ffffff', 
+            background: 'var(--bg-main)', 
             position: 'relative' 
           }}
         >
