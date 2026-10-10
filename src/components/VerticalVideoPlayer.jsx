@@ -241,7 +241,7 @@ export default function VerticalVideoPlayer({
               minHeight: '350px',
               border: 'none',
               borderRadius: 0,
-              background: '#000000'
+              background: '#ffffff'
             }}
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             allowFullScreen
