@@ -151,7 +151,7 @@ export function MusicXMLViewer({
         width: width || '100%',
         height: '100vh',
         minHeight: '100vh',
-        background: 'var(--bg-main)',
+        background: '#ffffff',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -207,12 +207,12 @@ export function MusicXMLViewer({
           </span>
           <span
             style={{
-              fontSize: '0.72rem',
+              fontSize: '0.92rem',
               fontWeight: 600,
-              color: 'rgba(255, 255, 255, 0.75)',
+              color: 'rgba(255, 255, 255, 0.92)',
               letterSpacing: '0.4px',
               textTransform: 'none',
-              marginTop: '1px'
+              marginTop: '3px'
             }}
           >
             {currentSeries?.seriesSubtitle || 'Exercícios em intervalos de segunda'}
@@ -270,7 +270,7 @@ export function MusicXMLViewer({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          background: 'var(--bg-main)',
+          background: '#ffffff',
           overflow: 'hidden',
           paddingTop: isMenuVisible ? '60px' : '0px',
           transition: 'padding-top 0.35s cubic-bezier(0.4, 0, 0.2, 1)'

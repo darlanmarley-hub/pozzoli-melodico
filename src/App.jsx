@@ -134,7 +134,7 @@ export default function App() {
             flex: 1, 
             height: '100vh', 
             overflow: 'hidden', 
-            background: 'var(--bg-main)', 
+            background: '#ffffff', 
             position: 'relative' 
           }}
         >

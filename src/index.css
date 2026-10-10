@@ -188,7 +188,7 @@ input, textarea {
 
 /* Vertical Video Player Component Styles - Fully Mobile Responsive */
 .vertical-video-wrapper {
-  background: var(--bg-main);
+  background: #ffffff;
   border: none;
   border-radius: 0;
   padding: 0;
@@ -216,7 +216,7 @@ input, textarea {
   max-height: 100%;
   flex: 1;
   margin: 0 auto;
-  background: #000000;
+  background: #ffffff;
   border: none;
   border-radius: 0;
   overflow: hidden;
@@ -236,7 +236,7 @@ input, textarea {
   flex: 1;
   margin: 0;
   padding: 0;
-  background: #000000;
+  background: #ffffff;
   border: none;
   border-radius: 0;
   overflow: hidden;
@@ -647,11 +647,11 @@ input, textarea {
 }
 
 .meta-pill {
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.90rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text-muted);
 }
 
@@ -700,10 +700,10 @@ input, textarea {
   transform: scale(0.92);
 }
 
-/* Bottom Navigation Floating Bar (Exact as Screenshot 2) */
+/* Bottom Navigation Floating Bar (Compact & Mobile Optimized) */
 .bottom-nav-container {
   position: fixed;
-  bottom: 16px;
+  bottom: 12px;
   left: 0;
   right: 0;
   display: flex;
@@ -716,24 +716,24 @@ input, textarea {
   pointer-events: auto;
   background: var(--accent-orange);
   border-radius: var(--radius-full);
-  padding: 6px 10px;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 8px 24px rgba(255, 102, 0, 0.4);
+  gap: 4px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .nav-tab-btn {
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.8);
-  padding: 8px 18px;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -746,6 +746,36 @@ input, textarea {
   background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Redução Compacta e Delicada para Mobile (<= 768px) */
+@media (max-width: 768px) {
+  .bottom-nav-container {
+    bottom: 8px;
+  }
+
+  .bottom-nav-pill {
+    padding: 3px 5px;
+    gap: 3px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  }
+
+  .nav-tab-btn {
+    padding: 4px 7px;
+    font-size: 0.70rem;
+    gap: 4px;
+  }
+
+  .nav-tab-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  body.theme-baroque .bottom-nav-pill .nav-tab-btn {
+    font-size: 0.70rem !important;
+    letter-spacing: 0.2px !important;
+    padding: 4px 7px !important;
+  }
 }
 
 /* Vertical Video Player Component Styles - Borderless Mobile Full View */
@@ -824,7 +854,7 @@ input, textarea {
   height: calc(100vh - 140px);
   min-height: auto;
   margin: 0 auto;
-  background: #000000;
+  background: #ffffff;
   border: none;
   border-radius: 0;
   overflow: hidden;
@@ -843,11 +873,11 @@ input, textarea {
   display: block;
   transform: none;
   transition: transform 0.3s ease;
-  background: #000000;
+  background: #ffffff;
 }
 
 .vertical-video-frame.mobile-mode .vertical-video-element {
-  transform: translateY(0px) scale(0.90);
+  transform: none;
   transform-origin: top center;
   object-fit: contain;
   object-position: top center;
@@ -917,9 +947,9 @@ input, textarea {
     margin: 10px auto;
     padding: 6px;
     border-radius: 36px;
-    background: linear-gradient(145deg, #182032 0%, #0d121f 100%);
-    border: 3px solid rgba(255, 102, 0, 0.5);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 102, 0, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    background: #ffffff;
+    border: 3px solid rgba(212, 163, 75, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), 0 0 25px rgba(212, 163, 75, 0.25);
     overflow: hidden;
     position: relative;
     display: flex;
@@ -1250,12 +1280,58 @@ body.theme-baroque .exercise-item-card .exercise-name {
 
 body.theme-baroque .exercise-name {
   font-family: 'Cinzel', serif !important;
-  letter-spacing: 0.4px !important;
+  font-size: 1.20rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px !important;
+}
+
+body.theme-baroque .exercise-badge-number {
+  background: rgba(212, 163, 75, 0.18) !important;
+  border: 1px solid rgba(212, 163, 75, 0.5) !important;
+  color: #dfb76c !important;
+  font-family: 'Cinzel', serif !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.series-folder-subtitle {
+  font-size: 0.98rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.exercise-subtitle {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.favorites-folder-subtitle {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--text-muted);
 }
 
 body.theme-baroque .exercise-row-card [style*="color: var(--text-muted)"],
 body.theme-baroque .favorite-row-card [style*="color: var(--text-muted)"] {
-  color: #c7b299 !important;
+  color: #d2c0ab !important;
+}
+
+body.theme-baroque .series-folder-subtitle {
+  font-size: 0.98rem !important;
+  color: #dfcfbd !important;
+  font-weight: 600 !important;
+}
+
+body.theme-baroque .exercise-subtitle {
+  font-size: 0.92rem !important;
+  color: #d2c0ab !important;
+  font-weight: 500 !important;
+}
+
+body.theme-baroque .favorites-folder-subtitle {
+  font-size: 0.92rem !important;
+  color: #dfcfbd !important;
+  font-weight: 500 !important;
 }
 
 body.theme-baroque .circle-play-btn {
@@ -1270,14 +1346,26 @@ body.theme-baroque .circle-play-btn:hover {
   box-shadow: 0 5px 16px rgba(162, 116, 41, 0.7) !important;
 }
 
-/* Baroque Score Reader & Video Frame */
+/* Baroque Score Reader & Video Frame - Clean White to match sheet music videos */
 body.theme-baroque .score-reader-page-bg {
-  background: #0d0906 !important;
+  background: #ffffff !important;
+}
+
+body.theme-baroque .score-view-wrapper {
+  background: #ffffff !important;
+}
+
+body.theme-baroque .vertical-video-wrapper {
+  background: #ffffff !important;
 }
 
 body.theme-baroque .vertical-video-frame {
-  background: #000000 !important;
-  box-shadow: 0 0 35px rgba(0, 0, 0, 0.7) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+body.theme-baroque .vertical-video-element {
+  background: #ffffff !important;
 }
 
 body.theme-baroque .reader-top-header {

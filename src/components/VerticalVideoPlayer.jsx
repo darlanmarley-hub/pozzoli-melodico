@@ -30,11 +30,12 @@ export default function VerticalVideoPlayer({
   const speedRatio = bpm / defaultBpm;
 
   const isDesktop = currentSeries?.isDesktopMode || isDesktopMode;
-  const scale = currentSeries?.videoScale ?? 0.90;
-  const translateY = currentSeries?.videoTranslateY ?? '0px';
-  const videoTransform = isDesktop
+  // Para formato mobile, os vídeos são mantidos no seu tamanho original natural (scale 1.0)
+  const scale = isDesktop ? (currentSeries?.videoScale ?? 1.0) : 1.0;
+  const translateY = isDesktop ? (currentSeries?.videoTranslateY ?? '0px') : '0px';
+  const videoTransform = isDesktop && translateY !== '0px'
     ? `translateY(${translateY})`
-    : `translateY(${translateY}) scale(${scale})`;
+    : 'none';
 
   const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0';
   const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
@@ -173,15 +174,15 @@ export default function VerticalVideoPlayer({
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'rgba(11, 16, 29, 0.88)',
-              backdropFilter: 'blur(10px)',
+              background: 'rgba(255, 255, 255, 0.94)',
+              backdropFilter: 'blur(8px)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '14px',
               zIndex: 35,
-              color: '#ffffff',
+              color: '#222222',
               pointerEvents: 'none'
             }}
           >
@@ -190,18 +191,18 @@ export default function VerticalVideoPlayer({
                 width: '58px',
                 height: '58px',
                 borderRadius: '50%',
-                background: 'rgba(255, 102, 0, 0.15)',
-                border: '2px solid var(--accent-orange)',
+                background: 'rgba(212, 163, 75, 0.15)',
+                border: '2px solid var(--accent-gold, #d4a34b)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 0 25px rgba(255, 102, 0, 0.4)'
+                boxShadow: '0 0 25px rgba(212, 163, 75, 0.35)'
               }}
             >
-              <RefreshCw size={30} className="spin-icon" style={{ color: 'var(--accent-orange)' }} />
+              <RefreshCw size={30} className="spin-icon" style={{ color: 'var(--accent-gold, #d4a34b)' }} />
             </div>
             <div style={{ textAlign: 'center' }}>
-              <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '0.6px', display: 'block', color: '#ffffff' }}>
+              <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '0.6px', display: 'block', color: '#1a1a1a' }}>
                 Carregando exercício...
               </span>
             </div>
@@ -241,7 +242,7 @@ export default function VerticalVideoPlayer({
               minHeight: '350px',
               border: 'none',
               borderRadius: 0,
-              background: '#000000'
+              background: '#ffffff'
             }}
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             allowFullScreen

@@ -208,7 +208,7 @@ export default function StatsModal({
                         {isItemStudied && <CheckCircle2 size={14} color="#10b981" />}
                         {isItemFavorite && <Star size={14} color="#fbbf24" fill="#fbbf24" />}
                       </div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                      <div className="exercise-subtitle" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>
                         {item.moduleName || item.subtitle}
                       </div>
                     </div>

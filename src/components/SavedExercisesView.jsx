@@ -73,10 +73,10 @@ export default function SavedExercisesView({
             <Heart size={24} fill="var(--accent-rose)" />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
+            <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)' }}>
               Pasta Favoritos
             </h2>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+            <p style={{ fontSize: '1.0rem', color: 'var(--text-muted)', marginTop: '2px' }}>
               Seus exercícios marcados com o coração para estudo direto
             </p>
           </div>
@@ -86,10 +86,10 @@ export default function SavedExercisesView({
           style={{
             background: 'var(--accent-rose)',
             color: '#fff',
-            padding: '4px 12px',
+            padding: '5px 14px',
             borderRadius: 'var(--radius-full)',
             fontWeight: 800,
-            fontSize: '0.85rem'
+            fontSize: '0.95rem'
           }}
         >
           {savedExercises.length} favoritos
@@ -112,9 +112,9 @@ export default function SavedExercisesView({
             gap: '12px'
           }}
         >
-          <Heart size={36} style={{ color: 'var(--accent-rose)', opacity: 0.8 }} fill="var(--accent-rose)" />
-          <p style={{ fontSize: '1rem', fontWeight: 600 }}>Nenhum exercício na pasta Favoritos</p>
-          <span style={{ fontSize: '0.85rem', maxWidth: '340px' }}>
+          <Heart size={40} style={{ color: 'var(--accent-rose)', opacity: 0.8 }} fill="var(--accent-rose)" />
+          <p style={{ fontSize: '1.15rem', fontWeight: 700 }}>Nenhum exercício na pasta Favoritos</p>
+          <span style={{ fontSize: '0.98rem', maxWidth: '380px', lineHeight: 1.45 }}>
             Marque o ícone de coração nos exercícios da biblioteca para enviá-los diretamente para esta pasta Favoritos.
           </span>
         </div>
@@ -137,29 +137,30 @@ export default function SavedExercisesView({
                 <div className="exercise-left-info" style={{ gap: '14px' }}>
                   <div
                     style={{
-                      width: '44px',
-                      height: '44px',
+                      width: '46px',
+                      height: '46px',
                       borderRadius: '12px',
                       background: 'rgba(244, 63, 94, 0.15)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: 'var(--accent-rose)'
+                      color: 'var(--accent-rose)',
+                      flexShrink: 0
                     }}
                   >
-                    <Video size={20} />
+                    <Video size={22} />
                   </div>
 
                   <div>
-                    <div className="exercise-name" style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)' }}>
+                    <div className="exercise-name" style={{ fontSize: '1.20rem', fontWeight: 800, color: 'var(--text-main)' }}>
                       {series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                    <div className="exercise-subtitle" style={{ fontSize: '1.0rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>
                       {series.subtitle || series.moduleName || 'Pozzoli Melódico'}
                     </div>
                     <div className="exercise-meta-badges" style={{ marginTop: '6px' }}>
-                      <span className="meta-pill">⏱ {series.defaultBpm || 60} BPM</span>
-                      {isCompleted && <span className="meta-pill green">✔ Concluído</span>}
+                      <span className="meta-pill" style={{ fontSize: '0.90rem', padding: '3px 8px' }}>⏱ {series.defaultBpm || 60} BPM</span>
+                      {isCompleted && <span className="meta-pill green" style={{ fontSize: '0.90rem', padding: '3px 8px' }}>✔ Concluído</span>}
                     </div>
                   </div>
                 </div>

@@ -150,10 +150,10 @@ export default function SeriesLibraryView({
               </div>
 
               <div className="card-title-group">
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>
+                <h3 style={{ fontSize: '1.10rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   FAVORITOS
                 </h3>
-                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '1px' }}>
+                <p className="favorites-folder-subtitle" style={{ fontSize: '0.98rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>
                   {favCount === 0 ? 'Nenhum exercício salvo' : `${favCount} exercício(s) salvo(s)`}
                 </p>
               </div>
@@ -165,8 +165,8 @@ export default function SeriesLibraryView({
                   background: 'rgba(244, 63, 94, 0.2)',
                   color: 'var(--accent-rose)',
                   fontWeight: 800,
-                  fontSize: '0.78rem',
-                  padding: '2px 8px',
+                  fontSize: '0.92rem',
+                  padding: '3px 10px',
                   borderRadius: '10px',
                   border: '1px solid var(--accent-rose)'
                 }}
@@ -208,7 +208,7 @@ export default function SeriesLibraryView({
               }}
             >
               {savedSeries.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '12px', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                <div style={{ textAlign: 'center', padding: '16px 12px', color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.45 }}>
                   Nenhum exercício salvo em Favoritos ainda.<br />
                   Toque no ícone de coração ♡ em qualquer exercício para salvá-lo aqui.
                 </div>
@@ -233,28 +233,40 @@ export default function SeriesLibraryView({
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <div
+                          className="exercise-badge-number"
                           style={{
-                            width: '34px',
-                            height: '34px',
-                            borderRadius: '10px',
+                            width: '38px',
+                            height: '38px',
+                            borderRadius: '11px',
                             background: isSeriesStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(244, 63, 94, 0.15)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: isSeriesStudied ? '#10b981' : 'var(--accent-rose)'
+                            color: isSeriesStudied ? '#10b981' : 'var(--accent-rose)',
+                            border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--accent-rose-glow)',
+                            flexShrink: 0
                           }}
                         >
-                          {isSeriesStudied ? <CheckCircle2 size={18} /> : <Video size={16} />}
+                          {isSeriesStudied ? <CheckCircle2 size={20} /> : (
+                            <span style={{ fontSize: '1.15rem', fontWeight: 900, fontFamily: 'var(--font-heading)' }}>
+                              {series.displayOrder > 0 ? series.displayOrder : <Video size={16} />}
+                            </span>
+                          )}
                         </div>
                         <div>
-                          <div className="exercise-name" style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <div className="exercise-name" style={{ fontSize: '1.20rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                             <span>{series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}</span>
                             {isSeriesStudied && (
-                              <span style={{ background: '#10b981', color: '#ffffff', fontSize: '0.65rem', fontWeight: 800, padding: '1px 5px', borderRadius: '8px' }}>
+                              <span style={{ background: '#10b981', color: '#ffffff', fontSize: '0.80rem', fontWeight: 800, padding: '2px 8px', borderRadius: '8px' }}>
                                 Estudado ✓
                               </span>
                             )}
                           </div>
+                          {series.subtitle && (
+                            <div className="exercise-subtitle" style={{ fontSize: '0.95rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>
+                              {series.subtitle}
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -363,7 +375,7 @@ export default function SeriesLibraryView({
                       )}
                     </div>
                     {folder.subtitle && (
-                      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '2px 0 0 0', fontWeight: 600 }}>
+                      <p className="series-folder-subtitle" style={{ fontSize: '0.98rem', color: 'var(--text-muted)', margin: '3px 0 0 0', fontWeight: 600 }}>
                         {folder.subtitle}
                       </p>
                     )}
@@ -454,15 +466,21 @@ export default function SeriesLibraryView({
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <div
+                              className="exercise-badge-number"
                               style={{
-                                width: '38px',
-                                height: '38px',
-                                borderRadius: '10px',
+                                width: '42px',
+                                height: '42px',
+                                borderRadius: '12px',
                                 background: exercise.isDesktopMode
                                   ? 'rgba(37, 99, 235, 0.25)'
                                   : isExStudied
                                   ? 'rgba(16, 185, 129, 0.2)'
                                   : 'rgba(255, 102, 0, 0.15)',
+                                border: exercise.isDesktopMode
+                                  ? '1px solid #3b82f6'
+                                  : isExStudied
+                                  ? '1px solid #10b981'
+                                  : '1px solid rgba(255, 102, 0, 0.4)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -470,20 +488,23 @@ export default function SeriesLibraryView({
                                   ? '#60a5fa'
                                   : isExStudied
                                   ? '#10b981'
-                                  : 'var(--accent-orange)'
+                                  : 'var(--accent-orange)',
+                                flexShrink: 0
                               }}
                             >
                               {exercise.isDesktopMode ? (
-                                <Monitor size={20} />
+                                <Monitor size={22} />
                               ) : isExStudied ? (
-                                <CheckCircle2 size={20} />
+                                <CheckCircle2 size={22} />
                               ) : (
-                                <Music size={18} />
+                                <span style={{ fontSize: '1.25rem', fontWeight: 900, fontFamily: 'var(--font-heading)' }}>
+                                  {exercise.displayOrder > 0 ? exercise.displayOrder : <Music size={18} />}
+                                </span>
                               )}
                             </div>
 
                             <div>
-                              <div className="exercise-name" style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                              <div className="exercise-name" style={{ fontSize: '1.20rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                                 <span>{exercise.title}</span>
                                 {exercise.isDesktopMode && (
                                   <span
@@ -516,7 +537,7 @@ export default function SeriesLibraryView({
                                 )}
                               </div>
                               {exercise.subtitle || (!exercise.isDesktopMode && `⏱ ${exercise.defaultBpm || 60} BPM`) ? (
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div className="exercise-subtitle" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginTop: '3px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500 }}>
                                   <span>{exercise.subtitle || (!exercise.isDesktopMode ? `⏱ ${exercise.defaultBpm || 60} BPM` : '')}</span>
                                 </div>
                               ) : null}
