@@ -845,40 +845,64 @@ input, textarea {
 
 @media (min-width: 768px) {
   .vertical-video-wrapper.mobile-mode {
-    max-width: 400px;
-    max-height: calc(100vh - 150px);
-    height: calc(100vh - 150px);
-    margin: 12px auto;
-    padding: 8px;
-    border-radius: 28px;
+    max-width: 420px;
+    max-height: calc(100vh - 70px);
+    height: calc(100vh - 70px);
+    margin: 10px auto;
+    padding: 6px;
+    border-radius: 36px;
     background: linear-gradient(145deg, #182032 0%, #0d121f 100%);
-    border: 2px solid rgba(255, 102, 0, 0.4);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(255, 102, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 102, 0, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 102, 0, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2);
     overflow: hidden;
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
   .vertical-video-frame.mobile-mode {
+    flex: 1;
+    width: 100%;
     max-width: 100%;
-    max-height: 100%;
-    height: 100%;
-    border-radius: 22px;
+    height: auto;
+    border-radius: 28px 28px 0 0;
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
     background: #000000;
     overflow: hidden;
+    position: relative;
   }
 
   .vertical-video-frame.mobile-mode .vertical-video-element {
     object-fit: contain;
-    border-radius: 20px;
+    border-radius: 26px 26px 0 0;
     border: none;
+  }
+
+  /* Dock de Controles DENTRO da Moldura do Celular no Desktop */
+  .vertical-video-wrapper.mobile-mode .player-dock-container {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0 0 28px 28px;
+    border-top: 1px solid var(--border-orange);
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    background: rgba(19, 25, 39, 0.98);
+    backdrop-filter: blur(16px);
+    padding: 8px 10px 12px 10px;
+    z-index: 50;
+    margin-top: auto;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.6);
   }
 
   .desktop-device-notch {
     display: block;
     position: absolute;
-    top: 14px;
+    top: 12px;
     left: 50%;
     transform: translateX(-50%);
     width: 60px;

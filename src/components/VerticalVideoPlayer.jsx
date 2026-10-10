@@ -18,7 +18,8 @@ export default function VerticalVideoPlayer({
   onEnded = null,
   isPlaying = false,
   onTogglePlay = null,
-  onToggleMenu = null
+  onToggleMenu = null,
+  playerControls = null
 }) {
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
@@ -208,6 +209,9 @@ export default function VerticalVideoPlayer({
           />
         )}
       </div>
+
+      {/* Controles do Player (Dock) posicionados DENTRO da Moldura do Celular */}
+      {playerControls}
     </div>
   );
 }

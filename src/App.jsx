@@ -134,30 +134,30 @@ export default function App() {
                 syncEngineRef.current.setAudioElement(el);
               }
             }}
-          />
-
-          {/* Bottom Dock Player */}
-          <AudioPlayerControls
-            videoElement={videoElement}
-            currentSeries={currentSeries}
-            audioUrl={currentSeries.audioUrl}
-            bpm={bpm}
-            syncEngine={syncEngineRef.current}
-            playbackPhase={playbackPhase}
-            onBpmChange={(newBpm) => setBpm(newBpm)}
-            onPreviousScore={handlePreviousScore}
-            onNextScore={handleNextScore}
-            hasPrevious={currentSeriesIndex > 0}
-            hasNext={currentSeriesIndex < allSeries.length - 1}
-            isStudied={isCurrentStudied}
-            onToggleStudied={handleToggleStudiedCurrent}
-            onTimeUpdate={(t) => setAudioCurrentTime(t)}
-            onToggleDesktopMode={() => setIsDesktopMode(!isDesktopMode)}
-            isDesktopMode={isDesktopMode}
-            onGoHome={() => setActiveTab('library')}
-            isMenuVisible={isMenuVisible}
-            onHideMenu={() => setIsMenuVisible(false)}
-            onShowMenu={() => setIsMenuVisible(true)}
+            playerControls={
+              <AudioPlayerControls
+                videoElement={videoElement}
+                currentSeries={currentSeries}
+                audioUrl={currentSeries.audioUrl}
+                bpm={bpm}
+                syncEngine={syncEngineRef.current}
+                playbackPhase={playbackPhase}
+                onBpmChange={(newBpm) => setBpm(newBpm)}
+                onPreviousScore={handlePreviousScore}
+                onNextScore={handleNextScore}
+                hasPrevious={currentSeriesIndex > 0}
+                hasNext={currentSeriesIndex < allSeries.length - 1}
+                isStudied={isCurrentStudied}
+                onToggleStudied={handleToggleStudiedCurrent}
+                onTimeUpdate={(t) => setAudioCurrentTime(t)}
+                onToggleDesktopMode={() => setIsDesktopMode(!isDesktopMode)}
+                isDesktopMode={isDesktopMode}
+                onGoHome={() => setActiveTab('library')}
+                isMenuVisible={isMenuVisible}
+                onHideMenu={() => setIsMenuVisible(false)}
+                onShowMenu={() => setIsMenuVisible(true)}
+              />
+            }
           />
         </div>
       )}

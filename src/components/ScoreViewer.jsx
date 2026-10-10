@@ -29,7 +29,8 @@ export function MusicXMLViewer({
   onVideoRef = null,
   onTimeUpdate = null,
   isPlaying = false,
-  onTogglePlay = null
+  onTogglePlay = null,
+  playerControls = null
 }) {
   const targetUrl = scoreUrl || mxlUrl;
   const activeEmbedUrl = embedUrl || 'https://www.soundslice.com/slices/2gm7c/embed/';
@@ -269,7 +270,7 @@ export function MusicXMLViewer({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          background: '#ffffff',
+          background: 'var(--bg-main)',
           overflow: 'hidden',
           paddingTop: isMenuVisible ? '60px' : '0px',
           transition: 'padding-top 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -286,6 +287,7 @@ export function MusicXMLViewer({
           isPlaying={isPlaying}
           onTogglePlay={onTogglePlay}
           onToggleMenu={onToggleMenu}
+          playerControls={playerControls}
         />
       </div>
     </div>
