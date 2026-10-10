@@ -73,7 +73,7 @@ export default function SavedExercisesView({
             <Heart size={24} fill="var(--accent-rose)" />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
               Pasta Favoritos
             </h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
@@ -151,7 +151,7 @@ export default function SavedExercisesView({
                   </div>
 
                   <div>
-                    <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff' }}>
+                    <div className="exercise-name" style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)' }}>
                       {series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>

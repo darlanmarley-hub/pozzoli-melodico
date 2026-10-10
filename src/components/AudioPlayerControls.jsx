@@ -21,7 +21,9 @@ export default function AudioPlayerControls({
   onGoHome,
   isMenuVisible = true,
   onHideMenu = null,
-  onShowMenu = null
+  onShowMenu = null,
+  theme = 'baroque',
+  onThemeChange = null
 }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -210,6 +212,17 @@ export default function AudioPlayerControls({
           <Download size={14} />
           <span>{isOfflineSaved ? 'Baixado ✓' : 'Baixar para offline'}</span>
         </button>
+
+        {onThemeChange && (
+          <button
+            className="action-pill-btn"
+            onClick={() => onThemeChange(theme === 'baroque' ? 'modern' : 'baroque')}
+            title="Alternar estilo visual entre Barroco e Moderno"
+            style={{ padding: '5px 12px', fontSize: '0.75rem' }}
+          >
+            <span>{theme === 'baroque' ? '🏛️ Estilo Barroco' : '⚡ Estilo Moderno'}</span>
+          </button>
+        )}
       </div>
 
       {/* Row 3: Scrubber Slider */}

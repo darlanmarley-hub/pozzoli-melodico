@@ -7,7 +7,9 @@ export default function SeriesLibraryView({
   studied = [],
   favorites = [],
   onSelectSeries,
-  onToggleFavorite
+  onToggleFavorite,
+  theme = 'baroque',
+  onThemeChange = null
 }) {
   const [isFavExpanded, setIsFavExpanded] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState({});
@@ -36,11 +38,11 @@ export default function SeriesLibraryView({
         }}
       >
         <h1
+          className="library-main-title"
           style={{
             fontSize: '1.45rem',
             fontWeight: 900,
             fontFamily: 'var(--font-heading)',
-            color: '#ffffff',
             letterSpacing: '0.5px',
             lineHeight: 1.2,
             margin: 0
@@ -50,18 +52,42 @@ export default function SeriesLibraryView({
         </h1>
 
         <div
+          className="library-sub-title"
           style={{
-            fontSize: '0.8rem',
+            fontSize: '0.85rem',
             fontWeight: 700,
             color: 'var(--accent-orange)',
             letterSpacing: '0.5px',
             textTransform: 'uppercase'
           }}
         >
-          Leitura & Solfejo Musical
+          {theme === 'baroque' ? '❦ Metodo di Solfeggio Melodico · Ettore Pozzoli ❦' : 'Leitura & Solfejo Musical'}
         </div>
 
+        {/* Seletor de Modelo de Design: Barroco Clássico vs Moderno Escuro */}
+        {onThemeChange && (
+          <div className="theme-switcher-bar">
+            <button
+              type="button"
+              className={`theme-pill-btn ${theme === 'baroque' ? 'active' : ''}`}
+              onClick={() => onThemeChange('baroque')}
+              title="Ativar Estilo Barroco Clássico (Pergaminho nobre, ouro antigo e tipografia clássica)"
+            >
+              🏛️ Barroco Clássico
+            </button>
+            <button
+              type="button"
+              className={`theme-pill-btn ${theme === 'modern' ? 'active' : ''}`}
+              onClick={() => onThemeChange('modern')}
+              title="Ativar Estilo Moderno Escuro"
+            >
+              ⚡ Moderno Escuro
+            </button>
+          </div>
+        )}
+
         <div
+          className="wifi-tip-badge"
           style={{
             background: 'rgba(255, 102, 0, 0.14)',
             border: '1px solid rgba(255, 102, 0, 0.4)',
@@ -74,13 +100,13 @@ export default function SeriesLibraryView({
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            marginTop: '8px',
+            marginTop: '4px',
             marginBottom: '6px',
             lineHeight: 1.35,
             textAlign: 'center'
           }}
         >
-          <Wifi size={17} style={{ flexShrink: 0, color: '#ff944d' }} />
+          <Wifi size={17} style={{ flexShrink: 0 }} />
           <span>Conecte-se ao Wi-Fi para economizar seus dados móveis</span>
         </div>
       </div>
@@ -124,7 +150,7 @@ export default function SeriesLibraryView({
               </div>
 
               <div className="card-title-group">
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   FAVORITOS
                 </h3>
                 <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '1px' }}>
@@ -192,6 +218,7 @@ export default function SeriesLibraryView({
                   return (
                     <div
                       key={series.id}
+                      className="favorite-row-card"
                       style={{
                         background: isSeriesStudied ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.04)',
                         border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--accent-rose-glow)',
@@ -220,7 +247,7 @@ export default function SeriesLibraryView({
                           {isSeriesStudied ? <CheckCircle2 size={18} /> : <Video size={16} />}
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <div className="exercise-name" style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                             <span>{series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}</span>
                             {isSeriesStudied && (
                               <span style={{ background: '#10b981', color: '#ffffff', fontSize: '0.65rem', fontWeight: 800, padding: '1px 5px', borderRadius: '8px' }}>
@@ -273,7 +300,7 @@ export default function SeriesLibraryView({
           return (
             <div
               key={folder.id}
-              className="accordion-card"
+              className={`accordion-card ${isFolderComplete ? 'folder-completed' : ''}`}
               style={{
                 background: 'var(--bg-card)',
                 border: isFolderComplete ? '2px solid #10b981' : '1px solid var(--border-orange)',
@@ -317,7 +344,7 @@ export default function SeriesLibraryView({
 
                   <div className="card-title-group">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                      <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>
                         {folder.title.toUpperCase()}
                       </h3>
                       {isFolderComplete && (
@@ -336,7 +363,7 @@ export default function SeriesLibraryView({
                       )}
                     </div>
                     {folder.subtitle && (
-                      <p style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.7)', margin: '2px 0 0 0', fontWeight: 500 }}>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '2px 0 0 0', fontWeight: 600 }}>
                         {folder.subtitle}
                       </p>
                     )}
@@ -402,6 +429,7 @@ export default function SeriesLibraryView({
                       return (
                         <div
                           key={exercise.id}
+                          className="exercise-row-card"
                           onClick={() => onSelectSeries && onSelectSeries(exercise)}
                           style={{
                             cursor: 'pointer',
@@ -455,7 +483,7 @@ export default function SeriesLibraryView({
                             </div>
 
                             <div>
-                              <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                              <div className="exercise-name" style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                                 <span>{exercise.title}</span>
                                 {exercise.isDesktopMode && (
                                   <span
@@ -505,7 +533,7 @@ export default function SeriesLibraryView({
                               <Heart
                                 size={20}
                                 fill={isExFav ? '#ff6600' : 'none'}
-                                color={isExFav ? '#ff6600' : '#ffffff'}
+                                color={isExFav ? '#ff6600' : 'var(--text-dim)'}
                               />
                             </button>
 

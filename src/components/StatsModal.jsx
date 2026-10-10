@@ -21,7 +21,7 @@ export default function StatsModal({
     <div className="stats-page-container" style={{ paddingBottom: '60px', maxWidth: '520px', margin: '0 auto' }}>
       {/* Título & Subtítulo */}
       <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ffffff', letterSpacing: '0.5px' }}>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '0.5px' }}>
           Seu Progresso
         </h1>
         <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '4px' }}>
@@ -43,7 +43,7 @@ export default function StatsModal({
             }}
           >
             <Clock size={24} color="var(--accent-orange)" style={{ margin: '0 auto 6px' }} />
-            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff' }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
               {stats?.totalPracticeMinutes || 45} min
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Tempo Total</div>
@@ -60,7 +60,7 @@ export default function StatsModal({
             }}
           >
             <Trophy size={24} color="#fbbf24" style={{ margin: '0 auto 6px' }} />
-            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff' }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
               {completionPercent}%
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Concluído</div>
@@ -77,7 +77,7 @@ export default function StatsModal({
             }}
           >
             <CheckCircle2 size={24} color="#10b981" style={{ margin: '0 auto 6px' }} />
-            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff' }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
               {completedCount}/{totalCount}
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Exercícios</div>
@@ -98,7 +98,7 @@ export default function StatsModal({
             style={{
               fontSize: '0.95rem',
               fontWeight: 700,
-              color: '#ffffff',
+              color: 'var(--text-main)',
               marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
@@ -155,7 +155,7 @@ export default function StatsModal({
             style={{
               fontSize: '0.95rem',
               fontWeight: 700,
-              color: '#ffffff',
+              color: 'var(--text-main)',
               marginBottom: '14px',
               display: 'flex',
               alignItems: 'center',
@@ -203,7 +203,7 @@ export default function StatsModal({
                       <Play size={16} style={{ marginLeft: '2px' }} />
                     </div>
                     <div>
-                      <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div className="exercise-name" style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span>{item.seriesTitle ? `${item.seriesTitle} - ${item.title}` : item.title}</span>
                         {isItemStudied && <CheckCircle2 size={14} color="#10b981" />}
                         {isItemFavorite && <Star size={14} color="#fbbf24" fill="#fbbf24" />}

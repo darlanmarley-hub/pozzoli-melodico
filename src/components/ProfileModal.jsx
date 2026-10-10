@@ -42,7 +42,7 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
     <div className="profile-page-container" style={{ paddingBottom: '60px' }}>
       {/* Título & Subtítulo */}
       <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ffffff', letterSpacing: '0.5px' }}>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '0.5px' }}>
           Seu Perfil
         </h1>
         <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '4px' }}>
@@ -145,7 +145,7 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
         >
           <Cloud size={24} style={{ color: 'var(--accent-orange)', flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#ffffff' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-main)' }}>
               Sincronização na nuvem
             </h4>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: 1.4 }}>
@@ -180,7 +180,7 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   fontSize: '0.95rem',
                   width: '100%',
                   outline: 'none'
@@ -191,7 +191,7 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
 
           {/* Status: Conta Conectada - Online */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: 'var(--radius-md)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', fontWeight: 600, color: '#ffffff' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-main)' }}>
               <ShieldCheck size={18} color="#10b981" />
               <span>Conta conectada</span>
             </div>

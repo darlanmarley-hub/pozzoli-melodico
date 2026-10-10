@@ -32,12 +32,23 @@ export default function App() {
   const [profile, setProfile] = useState(() => getProfile());
   const [stats, setStats] = useState(() => getStats());
   const [bpm, setBpm] = useState(60);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('pozzoli_app_theme') || 'baroque';
+  });
   const [isDesktopMode, setIsDesktopMode] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   const [activeTab, setActiveTab] = useState('library'); // 'library', 'saved', 'reader', 'stats', 'profile'
   const [videoElement, setVideoElement] = useState(null);
   const [audioCurrentTime, setAudioCurrentTime] = useState(0);
   const [activeNoteInfo, setActiveNoteInfo] = useState(null);
+
+  // Apply theme to document body and root
+  useEffect(() => {
+    document.body.classList.remove('theme-modern', 'theme-baroque');
+    document.body.classList.add(`theme-${theme}`);
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('pozzoli_app_theme', theme);
+  }, [theme]);
 
   // Playback Phase state: "idle" | "loading" | "countIn" | "playing" | "paused" | "ended"
   const [playbackPhase, setPlaybackPhase] = useState('idle');
@@ -115,7 +126,18 @@ export default function App() {
     <div className="app-container">
       {/* Tab View: Partitura / Leitura / Player em Formato Vertical */}
       {activeTab === 'reader' && (
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100vh', overflow: 'hidden', background: '#ffffff', position: 'relative' }}>
+        <div 
+          className="score-reader-page-bg"
+          style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            flex: 1, 
+            height: '100vh', 
+            overflow: 'hidden', 
+            background: theme === 'baroque' ? '#f6efe1' : '#ffffff', 
+            position: 'relative' 
+          }}
+        >
           <ScoreViewer
             mxlUrl={currentSeries.mxlUrl}
             videoUrl={currentSeries.videoUrl}
@@ -136,6 +158,8 @@ export default function App() {
             }}
             playerControls={
               <AudioPlayerControls
+                theme={theme}
+                onThemeChange={(newTheme) => setTheme(newTheme)}
                 videoElement={videoElement}
                 currentSeries={currentSeries}
                 audioUrl={currentSeries.audioUrl}
@@ -165,6 +189,8 @@ export default function App() {
       {/* Tab View: Biblioteca / Tela Principal */}
       {activeTab === 'library' && (
         <SeriesLibraryView
+          theme={theme}
+          onThemeChange={(newTheme) => setTheme(newTheme)}
           allSeries={allSeries}
           studied={studied}
           favorites={favorites}
