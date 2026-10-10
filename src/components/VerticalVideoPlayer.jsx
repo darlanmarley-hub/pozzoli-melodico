@@ -121,9 +121,6 @@ export default function VerticalVideoPlayer({
     if (e && e.target && e.target.classList && e.target.classList.contains('has-scrollbar')) {
       return;
     }
-    if (onToggleMenu) {
-      onToggleMenu();
-    }
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play().catch((err) => console.warn(err));

@@ -138,7 +138,6 @@ export default function AudioPlayerControls({
       }
       setIsPlaying(false);
     } else {
-      if (onHideMenu) onHideMenu();
       if (syncEngine) {
         syncEngine.play();
         setIsPlaying(true);
