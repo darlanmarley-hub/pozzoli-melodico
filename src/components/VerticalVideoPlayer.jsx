@@ -103,7 +103,7 @@ export default function VerticalVideoPlayer({
   const isUserScrollingRef = useRef(false);
   const userScrollTimeoutRef = useRef(null);
 
-  const hasScrollbar = !!currentSeries?.hasScrollbar || ['serie-1-ex-10', 'serie-2-ex-7', 'serie-2-ex-8', 'serie-2-ex-9', 'serie-2-ex-10'].includes(currentSeries?.id);
+  const hasScrollbar = !isDesktop;
 
   const handleFrameScroll = (e) => {
     // Se a rolagem for iniciada manualmente pelo usuário (mouse/touch)
