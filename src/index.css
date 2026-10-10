@@ -751,30 +751,30 @@ input, textarea {
 /* Redução Compacta e Delicada para Mobile (<= 768px) */
 @media (max-width: 768px) {
   .bottom-nav-container {
-    bottom: 8px;
+    bottom: 12px;
   }
 
   .bottom-nav-pill {
-    padding: 3px 5px;
-    gap: 3px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    padding: 5px 9px;
+    gap: 4px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.45);
   }
 
   .nav-tab-btn {
-    padding: 4px 7px;
-    font-size: 0.70rem;
-    gap: 4px;
+    padding: 6px 11px;
+    font-size: 0.80rem;
+    gap: 5px;
   }
 
   .nav-tab-btn svg {
-    width: 13px;
-    height: 13px;
+    width: 15px;
+    height: 15px;
   }
 
   body.theme-baroque .bottom-nav-pill .nav-tab-btn {
-    font-size: 0.70rem !important;
-    letter-spacing: 0.2px !important;
-    padding: 4px 7px !important;
+    font-size: 0.80rem !important;
+    letter-spacing: 0.3px !important;
+    padding: 6px 11px !important;
   }
 }
 
@@ -929,8 +929,8 @@ input, textarea {
 }
 
 .vertical-video-frame.has-scrollbar .vertical-video-element {
-  min-height: 125%;
-  object-fit: cover;
+  min-height: 100%;
+  object-fit: contain;
   object-position: top center;
 }
 
@@ -1220,7 +1220,98 @@ body.theme-baroque .wifi-tip-badge {
   border: 1px solid rgba(212, 163, 75, 0.4) !important;
   color: #f3cf88 !important;
   font-family: 'Cormorant Garamond', Georgia, serif !important;
-  font-size: 0.95rem !important;
+  font-size: 1.10rem !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 768px) {
+  .wifi-tip-badge {
+    font-size: 1.05rem !important;
+    padding: 8px 14px !important;
+    line-height: 1.4 !important;
+  }
+
+  body.theme-baroque .wifi-tip-badge {
+    font-size: 1.08rem !important;
+  }
+
+  .series-folder-subtitle {
+    font-size: 1.05rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .exercise-subtitle {
+    font-size: 1.02rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .favorites-folder-subtitle {
+    font-size: 1.02rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .theme-pill-btn {
+    font-size: 0.92rem !important;
+    padding: 7px 14px !important;
+  }
+
+  .folder-count-badge {
+    font-size: 1.20rem !important;
+    padding: 4px 14px !important;
+    font-weight: 900 !important;
+  }
+
+  body.theme-baroque .folder-count-badge {
+    font-size: 1.20rem !important;
+    font-weight: 900 !important;
+  }
+
+  .exercise-badge-number {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.28rem !important;
+  }
+
+  body.theme-baroque .exercise-badge-number {
+    font-size: 1.28rem !important;
+  }
+
+  .status-badge-complete,
+  .studied-badge {
+    font-size: 0.82rem !important;
+    padding: 2px 8px !important;
+  }
+
+  .desktop-format-badge {
+    font-size: 0.82rem !important;
+    padding: 2px 8px !important;
+  }
+
+  .exercise-name {
+    font-size: 0.95rem !important;
+  }
+
+  body.theme-baroque .exercise-name {
+    font-size: 0.95rem !important;
+  }
+
+  body.theme-baroque .series-folder-subtitle {
+    font-size: 1.05rem !important;
+    color: #dfcfbd !important;
+  }
+
+  body.theme-baroque .exercise-subtitle {
+    font-size: 1.02rem !important;
+    color: #d2c0ab !important;
+  }
+
+  /* Redução do zoom dos vídeos no mobile para enquadramento perfeito da partitura (exceto desktop) */
+  .vertical-video-frame.mobile-mode .vertical-video-element,
+  .vertical-video-frame:not(.desktop-mode) .vertical-video-element {
+    object-fit: contain !important;
+    transform: scale(0.88);
+    transform-origin: top center;
+  }
 }
 
 /* Baroque Accordion Folders */
@@ -1280,9 +1371,9 @@ body.theme-baroque .exercise-item-card .exercise-name {
 
 body.theme-baroque .exercise-name {
   font-family: 'Cinzel', serif !important;
-  font-size: 1.20rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.5px !important;
+  font-size: 0.98rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3px !important;
 }
 
 body.theme-baroque .exercise-badge-number {
@@ -1291,6 +1382,17 @@ body.theme-baroque .exercise-badge-number {
   color: #dfb76c !important;
   font-family: 'Cinzel', serif !important;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  font-size: 1.28rem !important;
+  font-weight: 900 !important;
+}
+
+body.theme-baroque .folder-count-badge {
+  background: rgba(212, 163, 75, 0.22) !important;
+  border: 1px solid rgba(212, 163, 75, 0.55) !important;
+  color: #dfb76c !important;
+  font-family: 'Cinzel', serif !important;
+  font-size: 1.20rem !important;
+  font-weight: 900 !important;
 }
 
 .series-folder-subtitle {

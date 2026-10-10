@@ -152,7 +152,7 @@ export default function SavedExercisesView({
                   </div>
 
                   <div>
-                    <div className="exercise-name" style={{ fontSize: '1.20rem', fontWeight: 800, color: 'var(--text-main)' }}>
+                    <div className="exercise-name" style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-main)' }}>
                       {series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}
                     </div>
                     <div className="exercise-subtitle" style={{ fontSize: '1.0rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>

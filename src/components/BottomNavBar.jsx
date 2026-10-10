@@ -9,7 +9,7 @@ export default function BottomNavBar({ activeTab, onTabChange }) {
           className={`nav-tab-btn ${activeTab === 'library' ? 'active' : ''}`}
           onClick={() => onTabChange('library')}
         >
-          <Library size={15} />
+          <Library size={16} />
           <span>Biblioteca</span>
         </button>
 
@@ -17,7 +17,7 @@ export default function BottomNavBar({ activeTab, onTabChange }) {
           className={`nav-tab-btn ${activeTab === 'stats' ? 'active' : ''}`}
           onClick={() => onTabChange('stats')}
         >
-          <BarChart2 size={15} />
+          <BarChart2 size={16} />
           <span>Progresso</span>
         </button>
 
@@ -25,7 +25,7 @@ export default function BottomNavBar({ activeTab, onTabChange }) {
           className={`nav-tab-btn ${activeTab === 'profile' ? 'active' : ''}`}
           onClick={() => onTabChange('profile')}
         >
-          <User size={15} />
+          <User size={16} />
           <span>Perfil</span>
         </button>
       </div>
