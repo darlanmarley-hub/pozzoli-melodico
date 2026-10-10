@@ -500,6 +500,29 @@ export const SERIES_FOLDERS = [
         hasScrollbar: true,
         isAvailable: true,
         isBuiltin: true
+      },
+      {
+        id: 'serie-2-ex-10',
+        seriesId: 'segunda-serie',
+        seriesTitle: '2ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de terça',
+        title: 'Exercício N.10',
+        subtitle: '2ª Série - Exercício N.10',
+        description: 'Exercício N.10 da 2ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/z7x4mg23rc1b5satl76jx/ex10.mp4?rlkey=jh8g2he8kplglir9peu44927e&st=ijdy8dh1&dl=0',
+        embedUrl: '',
+        timeSignature: '4/4',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 10,
+        videoScale: 0.90,
+        videoTranslateY: '60px',
+        hasScrollbar: true,
+        isAvailable: true,
+        isBuiltin: true
       }
     ]
   }
