@@ -906,6 +906,12 @@ input, textarea {
     background: #ff8833;
   }
 
+  .vertical-video-frame.has-scrollbar .vertical-video-element {
+    min-height: 125%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
   /* Dock de Controles DENTRO da Moldura do Celular no Desktop */
   .vertical-video-wrapper.mobile-mode .player-dock-container {
     position: relative;

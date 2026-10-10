@@ -99,7 +99,22 @@ export default function VerticalVideoPlayer({
     }
   };
 
+  const frameRef = useRef(null);
+  const isUserScrollingRef = useRef(false);
+  const userScrollTimeoutRef = useRef(null);
+
   const hasScrollbar = !!currentSeries?.hasScrollbar || ['serie-1-ex-10', 'serie-2-ex-7', 'serie-2-ex-8', 'serie-2-ex-9', 'serie-2-ex-10'].includes(currentSeries?.id);
+
+  const handleFrameScroll = (e) => {
+    // Se a rolagem for iniciada manualmente pelo usuário (mouse/touch)
+    if (e && e.isTrusted) {
+      isUserScrollingRef.current = true;
+      if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
+      userScrollTimeoutRef.current = setTimeout(() => {
+        isUserScrollingRef.current = false;
+      }, 2500);
+    }
+  };
 
   const handleContainerClick = (e) => {
     // Evita alternar Play/Pause ao clicar na barra de rolagem
@@ -118,12 +133,36 @@ export default function VerticalVideoPlayer({
     }
   };
 
+  const handleVideoTimeUpdate = () => {
+    if (videoRef.current && onTimeUpdate) {
+      onTimeUpdate(videoRef.current.currentTime);
+    }
+
+    // Auto-scroll da barra de rolagem sincronizada com a reprodução do vídeo
+    if (hasScrollbar && frameRef.current && videoRef.current && videoRef.current.duration > 0) {
+      if (!isUserScrollingRef.current) {
+        const { currentTime, duration } = videoRef.current;
+        const progress = currentTime / duration;
+        const maxScroll = frameRef.current.scrollHeight - frameRef.current.clientHeight;
+        if (maxScroll > 0) {
+          const targetScrollTop = progress * maxScroll;
+          frameRef.current.scrollTo({
+            top: targetScrollTop,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+  };
+
   return (
     <div className={`vertical-video-wrapper ${isDesktop ? 'desktop-mode' : 'mobile-mode'}`}>
       {/* Frame de Vídeo em Formato Celular / Computador (Clique na tela para Tocar/Pausar) */}
       <div
+        ref={frameRef}
         className={`vertical-video-frame ${isDesktop ? 'desktop-mode' : 'mobile-mode'} ${hasScrollbar ? 'has-scrollbar' : ''}`}
         onClick={handleContainerClick}
+        onScroll={handleFrameScroll}
         style={{ cursor: 'pointer', position: 'relative' }}
         title="Toque na tela para Tocar / Pausar (ou use a barra de rolagem)"
       >
@@ -169,8 +208,6 @@ export default function VerticalVideoPlayer({
           </div>
         )}
 
-
-
         {!useIframeFallback ? (
           <video
             ref={videoRef}
@@ -184,11 +221,7 @@ export default function VerticalVideoPlayer({
             onCanPlay={() => setIsVideoLoading(false)}
             onPlaying={() => setIsVideoLoading(false)}
             onLoadedData={() => setIsVideoLoading(false)}
-            onTimeUpdate={() => {
-              if (videoRef.current && onTimeUpdate) {
-                onTimeUpdate(videoRef.current.currentTime);
-              }
-            }}
+            onTimeUpdate={handleVideoTimeUpdate}
             onEnded={() => {
               if (onEnded) onEnded();
             }}
