@@ -1314,13 +1314,13 @@ body.theme-baroque .wifi-tip-badge {
   }
 
   .exercise-name {
-    font-size: 1.15rem !important;
+    font-size: 0.95rem !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     letter-spacing: normal !important;
   }
 
   body.theme-baroque .exercise-name {
-    font-size: 1.15rem !important;
+    font-size: 0.95rem !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     letter-spacing: normal !important;
   }
@@ -1437,6 +1437,7 @@ body.theme-baroque .desktop-card-highlight .exercise-name,
 body.theme-baroque .desktop-card-highlight .exercise-name span {
   color: #ffffff !important;
   font-weight: 800 !important;
+  font-size: 0.95rem !important;
 }
 
 .desktop-card-highlight .exercise-subtitle,

@@ -204,7 +204,7 @@ export default function StatsModal({
                       <Play size={18} style={{ marginLeft: '2px' }} />
                     </div>
                     <div>
-                      <div className="exercise-name" style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1.15rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div className="exercise-name" style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span>
                           {item.isDesktopMode && item.seriesTitle
                             ? `${item.seriesTitle} - ${item.title}`

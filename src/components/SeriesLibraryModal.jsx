@@ -305,7 +305,7 @@ export default function SeriesLibraryView({
                           )}
                         </div>
                         <div>
-                          <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: series.isDesktopMode ? 800 : 700, color: series.isDesktopMode ? '#ffffff' : 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                          <div className="exercise-name" style={{ fontSize: '0.95rem', fontWeight: series.isDesktopMode ? 800 : 700, color: series.isDesktopMode ? '#ffffff' : 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                             <span>
                               {series.isDesktopMode && series.seriesTitle
                                 ? `${series.seriesTitle} - ${series.title}`
@@ -590,7 +590,7 @@ export default function SeriesLibraryView({
                               <div
                                 className="exercise-name"
                                 style={{
-                                  fontSize: '1.15rem',
+                                  fontSize: '0.95rem',
                                   fontWeight: exercise.isDesktopMode ? 800 : 700,
                                   color: exercise.isDesktopMode ? '#ffffff' : 'var(--text-main)',
                                   fontFamily: "'Inter', -apple-system, sans-serif",

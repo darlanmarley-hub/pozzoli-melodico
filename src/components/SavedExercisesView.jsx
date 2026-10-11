@@ -172,7 +172,7 @@ export default function SavedExercisesView({
                   </div>
 
                   <div>
-                    <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: 700, color: 'var(--text-main)', fontFamily: "'Inter', -apple-system, sans-serif" }}>
+                    <div className="exercise-name" style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', fontFamily: "'Inter', -apple-system, sans-serif" }}>
                       {series.isDesktopMode && series.seriesTitle
                         ? `${series.seriesTitle} - ${series.title}`
                         : series.title?.toLowerCase().includes('série')
