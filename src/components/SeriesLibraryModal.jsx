@@ -244,12 +244,12 @@ export default function SeriesLibraryView({
                       className={`favorite-row-card ${series.isDesktopMode ? 'desktop-card-highlight' : ''}`}
                       style={{
                         background: series.isDesktopMode
-                          ? '#000000'
+                          ? 'linear-gradient(135deg, #2f3440 0%, #22262f 100%)'
                           : isSeriesStudied
                           ? 'rgba(16, 185, 129, 0.12)'
                           : 'rgba(255, 255, 255, 0.04)',
                         border: series.isDesktopMode
-                          ? '1.5px solid #ffffff'
+                          ? '1.5px solid rgba(255, 255, 255, 0.45)'
                           : isSeriesStudied
                           ? '1px solid #10b981'
                           : '1px solid var(--accent-rose-glow)',
@@ -260,7 +260,7 @@ export default function SeriesLibraryView({
                         justifyContent: 'space-between',
                         gap: '8px',
                         boxShadow: series.isDesktopMode
-                          ? '0 4px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.12)'
+                          ? '0 4px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                           : 'none',
                         transition: 'all 0.3s ease'
                       }}
@@ -273,7 +273,7 @@ export default function SeriesLibraryView({
                             height: '44px',
                             borderRadius: '12px',
                             background: series.isDesktopMode
-                              ? '#111111'
+                              ? 'rgba(0, 0, 0, 0.35)'
                               : isSeriesStudied
                               ? 'rgba(16, 185, 129, 0.2)'
                               : 'rgba(244, 63, 94, 0.15)',
@@ -514,12 +514,12 @@ export default function SeriesLibraryView({
                           style={{
                             cursor: 'pointer',
                             background: exercise.isDesktopMode
-                              ? '#000000'
+                              ? 'linear-gradient(135deg, #2f3440 0%, #22262f 100%)'
                               : isExStudied
                               ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)'
                               : 'rgba(255, 255, 255, 0.04)',
                             border: exercise.isDesktopMode
-                              ? '1.5px solid #ffffff'
+                              ? '1.5px solid rgba(255, 255, 255, 0.45)'
                               : isExStudied
                               ? '1px solid #10b981'
                               : '1px solid rgba(255, 102, 0, 0.3)',
@@ -530,7 +530,7 @@ export default function SeriesLibraryView({
                             justifyContent: 'space-between',
                             gap: '10px',
                             boxShadow: exercise.isDesktopMode
-                              ? '0 4px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.12)'
+                              ? '0 4px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                               : 'none',
                             transition: 'all 0.2s ease'
                           }}
@@ -543,12 +543,12 @@ export default function SeriesLibraryView({
                                 height: '44px',
                                 borderRadius: '12px',
                                 background: exercise.isDesktopMode
-                                  ? '#111111'
+                                  ? 'rgba(0, 0, 0, 0.35)'
                                   : isExStudied
                                   ? 'rgba(16, 185, 129, 0.2)'
                                   : 'rgba(255, 102, 0, 0.15)',
                                 border: exercise.isDesktopMode
-                                  ? '1.5px solid #ffffff'
+                                  ? '1.5px solid rgba(255, 255, 255, 0.6)'
                                   : isExStudied
                                   ? '1px solid #10b981'
                                   : '1px solid rgba(255, 102, 0, 0.4)',
@@ -561,7 +561,7 @@ export default function SeriesLibraryView({
                                   ? '#10b981'
                                   : 'var(--accent-orange)',
                                 boxShadow: exercise.isDesktopMode
-                                  ? '0 0 10px rgba(255, 255, 255, 0.2)'
+                                  ? '0 0 10px rgba(255, 255, 255, 0.15)'
                                   : 'none',
                                 flexShrink: 0
                               }}
