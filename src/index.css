@@ -1215,11 +1215,15 @@ body.theme-baroque .library-sub-title {
 }
 
 /* Library Banner & Wi-Fi pill */
+.wifi-tip-badge {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
 body.theme-baroque .wifi-tip-badge {
   background: rgba(212, 163, 75, 0.12) !important;
   border: 1px solid rgba(212, 163, 75, 0.4) !important;
   color: #f3cf88 !important;
-  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   font-size: 1.25rem !important;
   font-weight: 700 !important;
 }
@@ -1229,24 +1233,26 @@ body.theme-baroque .wifi-tip-badge {
     font-size: 1.22rem !important;
     padding: 10px 18px !important;
     line-height: 1.4 !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   }
 
   body.theme-baroque .wifi-tip-badge {
     font-size: 1.25rem !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   }
 
   .series-folder-subtitle {
-    font-size: 1.20rem !important;
+    font-size: 0.88rem !important;
     line-height: 1.4 !important;
   }
 
   .exercise-subtitle {
-    font-size: 1.15rem !important;
-    line-height: 1.4 !important;
+    font-size: 0.76rem !important;
+    line-height: 1.35 !important;
   }
 
   .favorites-folder-subtitle {
-    font-size: 1.18rem !important;
+    font-size: 0.88rem !important;
     line-height: 1.4 !important;
   }
 
@@ -1320,15 +1326,15 @@ body.theme-baroque .wifi-tip-badge {
   }
 
   body.theme-baroque .series-folder-subtitle {
-    font-size: 1.20rem !important;
+    font-size: 0.88rem !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     color: #dfcfbd !important;
   }
 
   body.theme-baroque .exercise-subtitle {
-    font-size: 1.15rem !important;
+    font-size: 0.76rem !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-    color: #d2c0ab !important;
+    color: #bfae9b !important;
   }
 
   /* Redução do zoom dos vídeos no mobile para enquadramento perfeito da partitura (exceto desktop) */
@@ -1437,8 +1443,9 @@ body.theme-baroque .desktop-card-highlight .exercise-name span {
 .desktop-card-highlight .exercise-subtitle span,
 body.theme-baroque .desktop-card-highlight .exercise-subtitle,
 body.theme-baroque .desktop-card-highlight .exercise-subtitle span {
-  color: #f3f4f6 !important;
-  font-weight: 600 !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-size: 0.76rem !important;
+  font-weight: 500 !important;
 }
 
 .desktop-card-highlight .heart-toggle-btn svg,
@@ -1523,21 +1530,21 @@ body.theme-baroque .favorites-count-badge {
 
 .series-folder-subtitle {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 1.20rem;
+  font-size: 0.88rem;
   line-height: 1.4;
   color: var(--text-muted);
 }
 
 .exercise-subtitle {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 1.15rem;
-  line-height: 1.4;
+  font-size: 0.76rem;
+  line-height: 1.35;
   color: var(--text-muted);
 }
 
 .favorites-folder-subtitle {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 1.18rem;
+  font-size: 0.88rem;
   line-height: 1.4;
   color: var(--text-muted);
 }
@@ -1550,21 +1557,21 @@ body.theme-baroque .favorite-row-card [style*="color: var(--text-muted)"] {
 
 body.theme-baroque .series-folder-subtitle {
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-  font-size: 1.20rem !important;
+  font-size: 0.88rem !important;
   color: #dfcfbd !important;
   font-weight: 500 !important;
 }
 
 body.theme-baroque .exercise-subtitle {
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-  font-size: 1.15rem !important;
-  color: #d2c0ab !important;
-  font-weight: 500 !important;
+  font-size: 0.76rem !important;
+  color: #bfae9b !important;
+  font-weight: 400 !important;
 }
 
 body.theme-baroque .favorites-folder-subtitle {
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-  font-size: 1.18rem !important;
+  font-size: 0.88rem !important;
   color: #dfcfbd !important;
   font-weight: 500 !important;
 }

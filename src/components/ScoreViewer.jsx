@@ -201,18 +201,21 @@ export function MusicXMLViewer({
           >
             {currentSeries?.isDesktopMode
               ? currentSeries.title
+              : currentSeries?.title?.toLowerCase().includes('série')
+              ? currentSeries.title
               : currentSeries?.seriesTitle
               ? `${currentSeries.seriesTitle} — ${currentSeries.title}`
-              : (currentSeries?.title || '1ª SÉRIE — EXERCÍCIO N.1')}
+              : (currentSeries?.title || 'PRIMEIRA SÉRIE — EXERCÍCIO N.1')}
           </span>
           <span
             style={{
-              fontSize: '1.12rem',
-              fontWeight: 600,
-              color: 'rgba(255, 255, 255, 0.95)',
-              letterSpacing: '0.4px',
+              fontSize: '0.76rem',
+              fontWeight: 500,
+              color: 'rgba(255, 255, 255, 0.75)',
+              letterSpacing: '0.3px',
               textTransform: 'none',
-              marginTop: '3px'
+              marginTop: '2px',
+              fontFamily: "'Inter', -apple-system, sans-serif"
             }}
           >
             {currentSeries?.isDesktopMode

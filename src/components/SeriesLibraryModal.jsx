@@ -58,6 +58,7 @@ export default function SeriesLibraryView({
             background: 'rgba(255, 102, 0, 0.14)',
             border: '1px solid rgba(255, 102, 0, 0.4)',
             color: '#ff944d',
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             padding: '10px 20px',
             borderRadius: 'var(--radius-full)',
             fontSize: '1.25rem',
@@ -119,7 +120,7 @@ export default function SeriesLibraryView({
                 <h3 style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   FAVORITOS
                 </h3>
-                <p className="favorites-folder-subtitle" style={{ fontSize: '1.18rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>
+                <p className="favorites-folder-subtitle" style={{ fontSize: '0.88rem', color: 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", marginTop: '2px', fontWeight: 500 }}>
                   {favCount === 0 ? 'Nenhum exercício salvo' : `${favCount} exercício(s) salvo(s)`}
                 </p>
               </div>
@@ -212,11 +213,11 @@ export default function SeriesLibraryView({
                     <Heart size={20} fill="rgba(244, 63, 94, 0.35)" />
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '320px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxWidth: '320px' }}>
                     <span
                       style={{
-                        fontSize: '1.10rem',
-                        fontWeight: 800,
+                        fontSize: '0.96rem',
+                        fontWeight: 700,
                         color: 'var(--text-main)',
                         fontFamily: "'Inter', -apple-system, sans-serif"
                       }}
@@ -225,7 +226,7 @@ export default function SeriesLibraryView({
                     </span>
                     <span
                       style={{
-                        fontSize: '0.98rem',
+                        fontSize: '0.84rem',
                         color: 'var(--text-muted)',
                         lineHeight: 1.45,
                         fontFamily: "'Inter', -apple-system, sans-serif"
@@ -305,7 +306,15 @@ export default function SeriesLibraryView({
                         </div>
                         <div>
                           <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: series.isDesktopMode ? 800 : 700, color: series.isDesktopMode ? '#ffffff' : 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                            <span>{series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}</span>
+                            <span>
+                              {series.isDesktopMode && series.seriesTitle
+                                ? `${series.seriesTitle} - ${series.title}`
+                                : series.title?.toLowerCase().includes('série')
+                                ? series.title
+                                : series.seriesTitle
+                                ? `${series.seriesTitle} - ${series.title}`
+                                : series.title}
+                            </span>
                             {isSeriesStudied && (
                               <span className="studied-badge" style={{ background: '#10b981', color: '#ffffff', fontSize: '0.95rem', fontWeight: 800, padding: '3px 10px', borderRadius: '8px' }}>
                                 Estudado ✓
@@ -313,7 +322,7 @@ export default function SeriesLibraryView({
                             )}
                           </div>
                           {series.subtitle && (
-                            <div className="exercise-subtitle" style={{ fontSize: '1.15rem', color: series.isDesktopMode ? '#f3f4f6' : 'var(--text-muted)', marginTop: '3px', fontWeight: series.isDesktopMode ? 600 : 500 }}>
+                            <div className="exercise-subtitle" style={{ fontSize: '0.76rem', color: series.isDesktopMode ? 'rgba(255, 255, 255, 0.72)' : 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", marginTop: '2px', fontWeight: 500 }}>
                               {series.subtitle}
                             </div>
                           )}
@@ -442,7 +451,7 @@ export default function SeriesLibraryView({
                       )}
                     </div>
                     {folder.subtitle && (
-                      <p className="series-folder-subtitle" style={{ fontSize: '1.20rem', color: 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", margin: '3px 0 0 0', fontWeight: 500 }}>
+                      <p className="series-folder-subtitle" style={{ fontSize: '0.88rem', color: 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", margin: '3px 0 0 0', fontWeight: 500 }}>
                         {folder.subtitle}
                       </p>
                     )}
@@ -612,14 +621,14 @@ export default function SeriesLibraryView({
                                 <div
                                   className="exercise-subtitle"
                                   style={{
-                                    fontSize: '1.16rem',
-                                    color: exercise.isDesktopMode ? '#f3f4f6' : 'var(--text-muted)',
+                                    fontSize: '0.76rem',
+                                    color: exercise.isDesktopMode ? 'rgba(255, 255, 255, 0.72)' : 'var(--text-muted)',
                                     fontFamily: "'Inter', -apple-system, sans-serif",
-                                    marginTop: '4px',
+                                    marginTop: '2px',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '8px',
-                                    fontWeight: exercise.isDesktopMode ? 600 : 500
+                                    gap: '6px',
+                                    fontWeight: 400
                                   }}
                                 >
                                   <span>{exercise.subtitle || (!exercise.isDesktopMode ? `⏱ ${exercise.defaultBpm || 60} BPM` : '')}</span>

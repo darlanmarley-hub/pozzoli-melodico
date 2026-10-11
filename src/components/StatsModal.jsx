@@ -205,11 +205,19 @@ export default function StatsModal({
                     </div>
                     <div>
                       <div className="exercise-name" style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1.15rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span>{item.seriesTitle ? `${item.seriesTitle} - ${item.title}` : item.title}</span>
+                        <span>
+                          {item.isDesktopMode && item.seriesTitle
+                            ? `${item.seriesTitle} - ${item.title}`
+                            : item.title?.toLowerCase().includes('série')
+                            ? item.title
+                            : item.seriesTitle
+                            ? `${item.seriesTitle} - ${item.title}`
+                            : item.title}
+                        </span>
                         {isItemStudied && <CheckCircle2 size={16} color="#10b981" />}
                         {isItemFavorite && <Star size={16} color="#fbbf24" fill="#fbbf24" />}
                       </div>
-                      <div className="exercise-subtitle" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginTop: '4px', fontWeight: 500 }}>
+                      <div className="exercise-subtitle" style={{ fontSize: '0.76rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>
                         {item.moduleName || item.subtitle}
                       </div>
                     </div>

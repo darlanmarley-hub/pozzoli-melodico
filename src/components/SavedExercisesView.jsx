@@ -129,11 +129,11 @@ export default function SavedExercisesView({
             <Heart size={26} fill="rgba(244, 63, 94, 0.3)" />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '340px' }}>
-            <p style={{ fontSize: '1.20rem', fontWeight: 800, color: 'var(--text-main)', margin: 0, fontFamily: "'Inter', -apple-system, sans-serif" }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxWidth: '340px' }}>
+            <p style={{ fontSize: '0.96rem', fontWeight: 700, color: 'var(--text-main)', margin: 0, fontFamily: "'Inter', -apple-system, sans-serif" }}>
               Nenhum exercício salvo ainda
             </p>
-            <span style={{ fontSize: '1.02rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0, fontFamily: "'Inter', -apple-system, sans-serif" }}>
+            <span style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.45, margin: 0, fontFamily: "'Inter', -apple-system, sans-serif" }}>
               Toque no ícone de coração <span style={{ color: 'var(--accent-rose)', fontWeight: 700 }}>♡</span> em qualquer exercício para adicioná-lo aos seus favoritos.
             </span>
           </div>
@@ -173,9 +173,15 @@ export default function SavedExercisesView({
 
                   <div>
                     <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: 700, color: 'var(--text-main)', fontFamily: "'Inter', -apple-system, sans-serif" }}>
-                      {series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}
+                      {series.isDesktopMode && series.seriesTitle
+                        ? `${series.seriesTitle} - ${series.title}`
+                        : series.title?.toLowerCase().includes('série')
+                        ? series.title
+                        : series.seriesTitle
+                        ? `${series.seriesTitle} - ${series.title}`
+                        : series.title}
                     </div>
-                    <div className="exercise-subtitle" style={{ fontSize: '1.16rem', color: 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", marginTop: '3px', fontWeight: 500 }}>
+                    <div className="exercise-subtitle" style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", marginTop: '2px', fontWeight: 500 }}>
                       {series.subtitle || series.moduleName || 'Pozzoli Melódico'}
                     </div>
                     <div className="exercise-meta-badges" style={{ marginTop: '6px' }}>
