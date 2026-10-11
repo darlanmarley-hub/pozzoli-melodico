@@ -1256,14 +1256,34 @@ body.theme-baroque .wifi-tip-badge {
   }
 
   .folder-count-badge {
-    font-size: 1.20rem !important;
-    padding: 4px 14px !important;
-    font-weight: 900 !important;
+    font-size: 0.88rem !important;
+    padding: 3px 10px !important;
+    font-weight: 700 !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    border-radius: 10px !important;
   }
 
   body.theme-baroque .folder-count-badge {
-    font-size: 1.20rem !important;
-    font-weight: 900 !important;
+    font-size: 0.88rem !important;
+    padding: 3px 10px !important;
+    font-weight: 700 !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    border-radius: 10px !important;
+  }
+
+  .favorites-count-badge,
+  body.theme-baroque .favorites-count-badge {
+    font-size: 0.78rem !important;
+    padding: 2px 8px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 9999px !important;
+    background: rgba(244, 63, 94, 0.2) !important;
+    border: 1px solid var(--accent-rose) !important;
+    color: var(--accent-rose) !important;
   }
 
   .exercise-badge-number {
@@ -1289,19 +1309,25 @@ body.theme-baroque .wifi-tip-badge {
 
   .exercise-name {
     font-size: 1.15rem !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    letter-spacing: normal !important;
   }
 
   body.theme-baroque .exercise-name {
     font-size: 1.15rem !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    letter-spacing: normal !important;
   }
 
   body.theme-baroque .series-folder-subtitle {
     font-size: 1.20rem !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     color: #dfcfbd !important;
   }
 
   body.theme-baroque .exercise-subtitle {
     font-size: 1.15rem !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     color: #d2c0ab !important;
   }
 
@@ -1336,12 +1362,26 @@ body.theme-baroque .icon-badge-box {
 
 body.theme-baroque .card-title-group h3 {
   color: #fdf8ee !important;
-  font-family: 'Cinzel', serif !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
 body.theme-baroque .card-title-group p {
   color: #c7b299 !important;
-  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+.empty-favorites-card {
+  transition: all 0.25s ease;
+}
+
+body.theme-baroque .empty-favorites-card {
+  background: rgba(190, 44, 63, 0.12) !important;
+  border: 1px dashed rgba(212, 163, 75, 0.4) !important;
+}
+
+body.theme-baroque .empty-favorites-card span,
+body.theme-baroque .empty-favorites-card p {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
 /* Baroque Exercise Cards (Dark wood / antique leather with gold border) */
@@ -1361,6 +1401,53 @@ body.theme-baroque .favorite-row-card:hover {
   transform: translateY(-1px);
 }
 
+/* Card de Destaque Especial: Série Completa / Formato Computador */
+.desktop-card-highlight,
+body.theme-baroque .desktop-card-highlight {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.28) 0%, rgba(30, 58, 138, 0.35) 50%, rgba(15, 23, 42, 0.96) 100%) !important;
+  border: 1.5px solid #3b82f6 !important;
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.32) !important;
+}
+
+.desktop-card-highlight:hover,
+body.theme-baroque .desktop-card-highlight:hover {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.38) 0%, rgba(30, 58, 138, 0.48) 50%, rgba(15, 23, 42, 0.98) 100%) !important;
+  border-color: #60a5fa !important;
+  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.45) !important;
+  transform: translateY(-1px);
+}
+
+.desktop-card-highlight .exercise-badge-number,
+body.theme-baroque .desktop-card-highlight .exercise-badge-number {
+  background: rgba(37, 99, 235, 0.3) !important;
+  border: 1.5px solid #60a5fa !important;
+  color: #93c5fd !important;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.35) !important;
+}
+
+.desktop-card-highlight .exercise-name,
+.desktop-card-highlight .exercise-name span,
+body.theme-baroque .desktop-card-highlight .exercise-name,
+body.theme-baroque .desktop-card-highlight .exercise-name span {
+  color: #93c5fd !important;
+  font-weight: 800 !important;
+}
+
+.desktop-card-highlight .exercise-subtitle,
+.desktop-card-highlight .exercise-subtitle span,
+body.theme-baroque .desktop-card-highlight .exercise-subtitle,
+body.theme-baroque .desktop-card-highlight .exercise-subtitle span {
+  color: #bfdbfe !important;
+  font-weight: 600 !important;
+}
+
+.desktop-card-highlight .circle-play-btn,
+body.theme-baroque .desktop-card-highlight .circle-play-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  box-shadow: 0 3px 12px rgba(37, 99, 235, 0.5) !important;
+  color: #ffffff !important;
+}
+
 body.theme-baroque .exercise-name,
 body.theme-baroque .exercise-name span,
 body.theme-baroque .exercise-row-card span,
@@ -1369,45 +1456,73 @@ body.theme-baroque .exercise-item-card .exercise-name {
   color: #fdf8ee !important;
 }
 
+body.theme-baroque .accordion-card h3,
+body.theme-baroque .card-title-group h3 {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: 0.2px !important;
+}
+
 body.theme-baroque .exercise-name {
-  font-family: 'Cinzel', serif !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   font-size: 1.15rem !important;
   font-weight: 700 !important;
-  letter-spacing: 0.3px !important;
+  letter-spacing: normal !important;
 }
 
 body.theme-baroque .exercise-badge-number {
   background: rgba(212, 163, 75, 0.18) !important;
   border: 1px solid rgba(212, 163, 75, 0.5) !important;
   color: #dfb76c !important;
-  font-family: 'Cinzel', serif !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-  font-size: 1.28rem !important;
-  font-weight: 900 !important;
+  font-size: 1.18rem !important;
+  font-weight: 800 !important;
 }
 
 body.theme-baroque .folder-count-badge {
   background: rgba(212, 163, 75, 0.22) !important;
   border: 1px solid rgba(212, 163, 75, 0.55) !important;
   color: #dfb76c !important;
-  font-family: 'Cinzel', serif !important;
-  font-size: 1.20rem !important;
-  font-weight: 900 !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-size: 0.88rem !important;
+  padding: 3px 10px !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+}
+
+.favorites-count-badge,
+body.theme-baroque .favorites-count-badge {
+  background: rgba(244, 63, 94, 0.2) !important;
+  border: 1px solid var(--accent-rose) !important;
+  color: var(--accent-rose) !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-size: 0.78rem !important;
+  padding: 2px 8px !important;
+  min-width: 22px !important;
+  height: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
 }
 
 .series-folder-subtitle {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 1.20rem;
   line-height: 1.4;
   color: var(--text-muted);
 }
 
 .exercise-subtitle {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 1.15rem;
   line-height: 1.4;
   color: var(--text-muted);
 }
 
 .favorites-folder-subtitle {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 1.18rem;
   line-height: 1.4;
   color: var(--text-muted);
@@ -1416,21 +1531,25 @@ body.theme-baroque .folder-count-badge {
 body.theme-baroque .exercise-row-card [style*="color: var(--text-muted)"],
 body.theme-baroque .favorite-row-card [style*="color: var(--text-muted)"] {
   color: #d2c0ab !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
 body.theme-baroque .series-folder-subtitle {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   font-size: 1.20rem !important;
   color: #dfcfbd !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
 
 body.theme-baroque .exercise-subtitle {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   font-size: 1.15rem !important;
   color: #d2c0ab !important;
   font-weight: 500 !important;
 }
 
 body.theme-baroque .favorites-folder-subtitle {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   font-size: 1.18rem !important;
   color: #dfcfbd !important;
   font-weight: 500 !important;
@@ -1548,16 +1667,35 @@ body.theme-baroque .bottom-nav-pill .nav-tab-btn.active {
   border: 1px solid #fae6b8 !important;
 }
 
-/* Stats and Profile Baroque Overrides */
+/* Stats and Profile Clean Modern Inter Typography Overrides */
+.profile-page-container,
+.stats-page-container,
+body.theme-baroque .profile-page-container,
+body.theme-baroque .stats-page-container,
+.profile-page-container *,
+.stats-page-container *,
+body.theme-baroque .profile-page-container *,
+body.theme-baroque .stats-page-container * {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
 body.theme-baroque .profile-page-container h1,
 body.theme-baroque .stats-page-container h1 {
   color: #fdf8ee !important;
-  font-family: 'Cinzel', serif !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: -0.02em !important;
+}
+
+body.theme-baroque .profile-page-container h4,
+body.theme-baroque .stats-page-container h4 {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: -0.01em !important;
 }
 
 body.theme-baroque .profile-page-container p,
 body.theme-baroque .stats-page-container p {
   color: #c7b299 !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
 body.theme-baroque .profile-page-container [style*="background: var(--bg-card)"],
@@ -1566,6 +1704,7 @@ body.theme-baroque .stats-page-container [style*="background: var(--bg-card)"] {
   border: 1px solid rgba(212, 163, 75, 0.35) !important;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4) !important;
 }
+
 
 
 

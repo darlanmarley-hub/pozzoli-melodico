@@ -39,13 +39,13 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
   };
 
   return (
-    <div className="profile-page-container" style={{ paddingBottom: '60px' }}>
+    <div className="profile-page-container" style={{ paddingBottom: '60px', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
       {/* Título & Subtítulo */}
       <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '0.5px' }}>
+        <h1 style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
           Seu Perfil
         </h1>
-        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+        <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginTop: '6px', fontWeight: 500 }}>
           Gerencie sua conta
         </p>
       </div>
@@ -68,8 +68,8 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
           <div style={{ position: 'relative' }}>
             <div
               style={{
-                width: '90px',
-                height: '90px',
+                width: '94px',
+                height: '94px',
                 borderRadius: '50%',
                 background: photoUrl ? `url(${photoUrl}) center/cover` : 'rgba(255, 102, 0, 0.15)',
                 border: '3px solid var(--accent-orange)',
@@ -81,7 +81,7 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
                 overflow: 'hidden'
               }}
             >
-              {!photoUrl && <User size={44} />}
+              {!photoUrl && <User size={48} />}
             </div>
             <label
               htmlFor="profile-photo-input"
@@ -91,8 +91,8 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
                 right: '0',
                 background: 'var(--accent-orange)',
                 color: '#fff',
-                width: '32px',
-                height: '32px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
@@ -102,7 +102,7 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
               }}
               title="Carregar nova foto"
             >
-              <Upload size={16} />
+              <Upload size={18} />
             </label>
             <input
               id="profile-photo-input"
@@ -117,16 +117,17 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
             <label
               htmlFor="profile-photo-input"
               style={{
-                fontSize: '0.85rem',
+                fontSize: '1.02rem',
                 color: 'var(--accent-orange)',
                 fontWeight: 700,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '8px',
+                padding: '4px 8px'
               }}
             >
-              <Upload size={14} /> Carregar foto de perfil
+              <Upload size={16} /> Carregar foto de perfil
             </label>
           </div>
         </div>
@@ -137,19 +138,19 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
             background: 'linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(19, 25, 39, 0.6) 100%)',
             border: '1px solid var(--border-orange)',
             borderRadius: 'var(--radius-lg)',
-            padding: '16px 20px',
+            padding: '18px 20px',
             display: 'flex',
             alignItems: 'flex-start',
             gap: '14px'
           }}
         >
-          <Cloud size={24} style={{ color: 'var(--accent-orange)', flexShrink: 0, marginTop: '2px' }} />
+          <Cloud size={26} style={{ color: 'var(--accent-orange)', flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-main)' }}>
+            <h4 style={{ fontSize: '1.12rem', fontWeight: 800, color: 'var(--text-main)' }}>
               Sincronização na nuvem
             </h4>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: 1.4 }}>
-              sua conta está pronta para salvar sessões de estudos.
+            <p style={{ fontSize: '1.02rem', color: 'var(--text-muted)', marginTop: '4px', lineHeight: 1.45 }}>
+              Sua conta está pronta para salvar e sincronizar sessões de estudos.
             </p>
           </div>
         </div>
@@ -168,11 +169,11 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
         >
           {/* E-mail do Usuário */}
           <div>
-            <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>
+            <label style={{ fontSize: '1.02rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>
               E-mail do usuário:
             </label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '10px 14px' }}>
-              <Mail size={18} color="var(--accent-orange)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
+              <Mail size={20} color="var(--accent-orange)" />
               <input
                 type="email"
                 value={email}
@@ -181,21 +182,22 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
                   background: 'transparent',
                   border: 'none',
                   color: 'var(--text-main)',
-                  fontSize: '0.95rem',
+                  fontSize: '1.08rem',
                   width: '100%',
-                  outline: 'none'
+                  outline: 'none',
+                  fontFamily: 'inherit'
                 }}
               />
             </div>
           </div>
 
           {/* Status: Conta Conectada - Online */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: 'var(--radius-md)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-main)' }}>
-              <ShieldCheck size={18} color="#10b981" />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: 'var(--radius-md)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-main)' }}>
+              <ShieldCheck size={20} color="#10b981" />
               <span>Conta conectada</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', fontWeight: 700, color: '#10b981' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.98rem', fontWeight: 700, color: '#10b981' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }}></span>
               Online
             </div>
@@ -206,22 +208,23 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
         <button
           onClick={() => window.location.reload()}
           style={{
-            padding: '14px',
+            padding: '16px',
             borderRadius: 'var(--radius-lg)',
             background: 'rgba(59, 130, 246, 0.12)',
             border: '1px solid #3b82f6',
             color: '#60a5fa',
             fontWeight: 800,
-            fontSize: '0.95rem',
+            fontSize: '1.05rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
             cursor: 'pointer',
-            transition: 'background 0.2s ease'
+            transition: 'background 0.2s ease',
+            fontFamily: 'inherit'
           }}
         >
-          <RotateCw size={18} />
+          <RotateCw size={20} />
           Recarregar App
         </button>
 
@@ -229,22 +232,23 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
         <button
           onClick={handleLogout}
           style={{
-            padding: '14px',
+            padding: '16px',
             borderRadius: 'var(--radius-lg)',
             background: 'rgba(239, 68, 68, 0.1)',
             border: '1px solid #ef4444',
             color: '#ef4444',
             fontWeight: 800,
-            fontSize: '0.95rem',
+            fontSize: '1.05rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
             cursor: 'pointer',
-            transition: 'background 0.2s ease'
+            transition: 'background 0.2s ease',
+            fontFamily: 'inherit'
           }}
         >
-          <LogOut size={18} />
+          <LogOut size={20} />
           Sair da Conta
         </button>
       </div>

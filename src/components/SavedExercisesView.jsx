@@ -99,24 +99,44 @@ export default function SavedExercisesView({
       {/* Lista de Exercícios Favoritos */}
       {savedExercises.length === 0 ? (
         <div
+          className="empty-favorites-card"
           style={{
             textAlign: 'center',
-            padding: '40px 20px',
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border-color)',
+            padding: '36px 20px',
+            background: 'rgba(244, 63, 94, 0.07)',
+            border: '1px dashed rgba(244, 63, 94, 0.35)',
             borderRadius: 'var(--radius-lg)',
-            color: 'var(--text-muted)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '12px'
+            gap: '12px',
+            margin: '8px 0'
           }}
         >
-          <Heart size={40} style={{ color: 'var(--accent-rose)', opacity: 0.8 }} fill="var(--accent-rose)" />
-          <p style={{ fontSize: '1.15rem', fontWeight: 700 }}>Nenhum exercício na pasta Favoritos</p>
-          <span style={{ fontSize: '1.18rem', maxWidth: '420px', lineHeight: 1.45 }}>
-            Marque o ícone de coração nos exercícios da biblioteca para enviá-los diretamente para esta pasta Favoritos.
-          </span>
+          <div
+            style={{
+              width: '52px',
+              height: '52px',
+              borderRadius: '50%',
+              background: 'rgba(244, 63, 94, 0.15)',
+              border: '1px solid rgba(244, 63, 94, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--accent-rose)'
+            }}
+          >
+            <Heart size={26} fill="rgba(244, 63, 94, 0.3)" />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '340px' }}>
+            <p style={{ fontSize: '1.20rem', fontWeight: 800, color: 'var(--text-main)', margin: 0, fontFamily: "'Inter', -apple-system, sans-serif" }}>
+              Nenhum exercício salvo ainda
+            </p>
+            <span style={{ fontSize: '1.02rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0, fontFamily: "'Inter', -apple-system, sans-serif" }}>
+              Toque no ícone de coração <span style={{ color: 'var(--accent-rose)', fontWeight: 700 }}>♡</span> em qualquer exercício para adicioná-lo aos seus favoritos.
+            </span>
+          </div>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -152,10 +172,10 @@ export default function SavedExercisesView({
                   </div>
 
                   <div>
-                    <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: 700, color: 'var(--text-main)' }}>
+                    <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: 700, color: 'var(--text-main)', fontFamily: "'Inter', -apple-system, sans-serif" }}>
                       {series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}
                     </div>
-                    <div className="exercise-subtitle" style={{ fontSize: '1.16rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>
+                    <div className="exercise-subtitle" style={{ fontSize: '1.16rem', color: 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", marginTop: '3px', fontWeight: 500 }}>
                       {series.subtitle || series.moduleName || 'Pozzoli Melódico'}
                     </div>
                     <div className="exercise-meta-badges" style={{ marginTop: '6px' }}>

@@ -18,13 +18,13 @@ export default function StatsModal({
   const completionPercent = Math.round((completedCount / (totalCount || 1)) * 100);
 
   return (
-    <div className="stats-page-container" style={{ paddingBottom: '60px', maxWidth: '520px', margin: '0 auto' }}>
+    <div className="stats-page-container" style={{ paddingBottom: '60px', maxWidth: '520px', margin: '0 auto', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
       {/* Título & Subtítulo */}
       <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '0.5px' }}>
+        <h1 style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
           Seu Progresso
         </h1>
-        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+        <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginTop: '6px', fontWeight: 500 }}>
           Acompanhe suas estatísticas de estudo do Pozzoli
         </p>
       </div>
@@ -37,16 +37,16 @@ export default function StatsModal({
               background: 'var(--bg-card)',
               border: '1px solid var(--border-orange)',
               borderRadius: 'var(--radius-lg)',
-              padding: '16px 12px',
+              padding: '16px 10px',
               textAlign: 'center',
               boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
             }}
           >
             <Clock size={24} color="var(--accent-orange)" style={{ margin: '0 auto 6px' }} />
-            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)' }}>
               {stats?.totalPracticeMinutes || 45} min
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Tempo Total</div>
+            <div style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 600, marginTop: '4px' }}>Tempo Total</div>
           </div>
 
           <div
@@ -54,16 +54,16 @@ export default function StatsModal({
               background: 'var(--bg-card)',
               border: '1px solid var(--border-orange)',
               borderRadius: 'var(--radius-lg)',
-              padding: '16px 12px',
+              padding: '16px 10px',
               textAlign: 'center',
               boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
             }}
           >
             <Trophy size={24} color="#fbbf24" style={{ margin: '0 auto 6px' }} />
-            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)' }}>
               {completionPercent}%
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Concluído</div>
+            <div style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 600, marginTop: '4px' }}>Concluído</div>
           </div>
 
           <div
@@ -71,16 +71,16 @@ export default function StatsModal({
               background: 'var(--bg-card)',
               border: '1px solid var(--border-orange)',
               borderRadius: 'var(--radius-lg)',
-              padding: '16px 12px',
+              padding: '16px 10px',
               textAlign: 'center',
               boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
             }}
           >
             <CheckCircle2 size={24} color="#10b981" style={{ margin: '0 auto 6px' }} />
-            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-main)' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)' }}>
               {completedCount}/{totalCount}
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Exercícios</div>
+            <div style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontWeight: 600, marginTop: '4px' }}>Exercícios</div>
           </div>
         </div>
 
@@ -96,7 +96,7 @@ export default function StatsModal({
         >
           <h4
             style={{
-              fontSize: '0.95rem',
+              fontSize: '1.10rem',
               fontWeight: 700,
               color: 'var(--text-main)',
               marginBottom: '16px',
@@ -105,23 +105,23 @@ export default function StatsModal({
               gap: '8px'
             }}
           >
-            <Calendar size={18} color="var(--accent-orange)" />
+            <Calendar size={20} color="var(--accent-orange)" />
             <span>Prática Semanal (Minutos por dia)</span>
           </h4>
 
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '110px', padding: '0 8px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '115px', padding: '0 8px' }}>
             {weeklyPractice.map((mins, idx) => {
               const heightPercent = Math.round((mins / maxWeeklyMinutes) * 100);
               const isToday = idx === new Date().getDay();
 
               return (
                 <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', flex: 1 }}>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 700 }}>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 700 }}>
                     {mins > 0 ? `${mins}m` : ''}
                   </span>
                   <div
                     style={{
-                      width: '20px',
+                      width: '22px',
                       height: `${Math.max(8, heightPercent)}%`,
                       background: isToday
                         ? 'linear-gradient(to top, #ff6600, #ff8533)'
@@ -133,7 +133,7 @@ export default function StatsModal({
                       transition: 'height 0.3s ease'
                     }}
                   />
-                  <span style={{ fontSize: '0.75rem', fontWeight: isToday ? 800 : 600, color: isToday ? 'var(--accent-orange)' : 'var(--text-muted)' }}>
+                  <span style={{ fontSize: '0.90rem', fontWeight: isToday ? 800 : 600, color: isToday ? 'var(--accent-orange)' : 'var(--text-muted)' }}>
                     {daysOfWeek[idx]}
                   </span>
                 </div>
@@ -153,16 +153,16 @@ export default function StatsModal({
         >
           <h4
             style={{
-              fontSize: '0.95rem',
+              fontSize: '1.15rem',
               fontWeight: 700,
               color: 'var(--text-main)',
-              marginBottom: '14px',
+              marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'
             }}
           >
-            <Star size={18} color="#fbbf24" fill="#fbbf24" />
+            <Star size={20} color="#fbbf24" fill="#fbbf24" />
             <span>Sua Lista de Exercícios</span>
           </h4>
 
@@ -179,7 +179,7 @@ export default function StatsModal({
                     background: 'rgba(255,255,255,0.03)',
                     border: '1px solid var(--border-color)',
                     borderRadius: 'var(--radius-md)',
-                    padding: '12px 16px',
+                    padding: '14px 16px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -187,28 +187,29 @@ export default function StatsModal({
                     transition: 'border-color 0.2s ease'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div
                       style={{
-                        width: '36px',
-                        height: '36px',
+                        width: '38px',
+                        height: '38px',
                         borderRadius: '10px',
                         background: 'rgba(255, 102, 0, 0.15)',
                         color: 'var(--accent-orange)',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        flexShrink: 0
                       }}
                     >
-                      <Play size={16} style={{ marginLeft: '2px' }} />
+                      <Play size={18} style={{ marginLeft: '2px' }} />
                     </div>
                     <div>
-                      <div className="exercise-name" style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div className="exercise-name" style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1.15rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span>{item.seriesTitle ? `${item.seriesTitle} - ${item.title}` : item.title}</span>
-                        {isItemStudied && <CheckCircle2 size={14} color="#10b981" />}
-                        {isItemFavorite && <Star size={14} color="#fbbf24" fill="#fbbf24" />}
+                        {isItemStudied && <CheckCircle2 size={16} color="#10b981" />}
+                        {isItemFavorite && <Star size={16} color="#fbbf24" fill="#fbbf24" />}
                       </div>
-                      <div className="exercise-subtitle" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>
+                      <div className="exercise-subtitle" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginTop: '4px', fontWeight: 500 }}>
                         {item.moduleName || item.subtitle}
                       </div>
                     </div>
@@ -216,13 +217,14 @@ export default function StatsModal({
 
                   <span
                     style={{
-                      fontSize: '0.75rem',
+                      fontSize: '0.90rem',
                       fontWeight: 700,
                       color: 'var(--accent-orange)',
                       background: 'rgba(255, 102, 0, 0.12)',
-                      padding: '4px 10px',
-                      borderRadius: '12px',
-                      border: '1px solid var(--border-orange)'
+                      padding: '6px 14px',
+                      borderRadius: '14px',
+                      border: '1px solid var(--border-orange)',
+                      flexShrink: 0
                     }}
                   >
                     Estudar
