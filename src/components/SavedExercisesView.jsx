@@ -27,7 +27,7 @@ export default function SavedExercisesView({
             background: 'none',
             border: 'none',
             color: 'var(--accent-rose)',
-            fontSize: '0.95rem',
+            fontSize: '1.08rem',
             fontWeight: 700,
             display: 'flex',
             alignItems: 'center',
@@ -76,7 +76,7 @@ export default function SavedExercisesView({
             <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)' }}>
               Pasta Favoritos
             </h2>
-            <p style={{ fontSize: '1.0rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+            <p style={{ fontSize: '1.18rem', color: 'var(--text-muted)', marginTop: '2px' }}>
               Seus exercícios marcados com o coração para estudo direto
             </p>
           </div>
@@ -86,10 +86,10 @@ export default function SavedExercisesView({
           style={{
             background: 'var(--accent-rose)',
             color: '#fff',
-            padding: '5px 14px',
+            padding: '6px 16px',
             borderRadius: 'var(--radius-full)',
             fontWeight: 800,
-            fontSize: '0.95rem'
+            fontSize: '1.12rem'
           }}
         >
           {savedExercises.length} favoritos
@@ -114,7 +114,7 @@ export default function SavedExercisesView({
         >
           <Heart size={40} style={{ color: 'var(--accent-rose)', opacity: 0.8 }} fill="var(--accent-rose)" />
           <p style={{ fontSize: '1.15rem', fontWeight: 700 }}>Nenhum exercício na pasta Favoritos</p>
-          <span style={{ fontSize: '0.98rem', maxWidth: '380px', lineHeight: 1.45 }}>
+          <span style={{ fontSize: '1.18rem', maxWidth: '420px', lineHeight: 1.45 }}>
             Marque o ícone de coração nos exercícios da biblioteca para enviá-los diretamente para esta pasta Favoritos.
           </span>
         </div>
@@ -152,15 +152,15 @@ export default function SavedExercisesView({
                   </div>
 
                   <div>
-                    <div className="exercise-name" style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-main)' }}>
+                    <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: 700, color: 'var(--text-main)' }}>
                       {series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}
                     </div>
-                    <div className="exercise-subtitle" style={{ fontSize: '1.0rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>
+                    <div className="exercise-subtitle" style={{ fontSize: '1.16rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>
                       {series.subtitle || series.moduleName || 'Pozzoli Melódico'}
                     </div>
                     <div className="exercise-meta-badges" style={{ marginTop: '6px' }}>
-                      <span className="meta-pill" style={{ fontSize: '0.90rem', padding: '3px 8px' }}>⏱ {series.defaultBpm || 60} BPM</span>
-                      {isCompleted && <span className="meta-pill green" style={{ fontSize: '0.90rem', padding: '3px 8px' }}>✔ Concluído</span>}
+                      <span className="meta-pill" style={{ fontSize: '1.05rem', padding: '4px 10px' }}>⏱ {series.defaultBpm || 60} BPM</span>
+                      {isCompleted && <span className="meta-pill green" style={{ fontSize: '1.05rem', padding: '4px 10px' }}>✔ Concluído</span>}
                     </div>
                   </div>
                 </div>

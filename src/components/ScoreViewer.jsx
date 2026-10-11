@@ -207,15 +207,17 @@ export function MusicXMLViewer({
           </span>
           <span
             style={{
-              fontSize: '0.92rem',
+              fontSize: '1.12rem',
               fontWeight: 600,
-              color: 'rgba(255, 255, 255, 0.92)',
+              color: 'rgba(255, 255, 255, 0.95)',
               letterSpacing: '0.4px',
               textTransform: 'none',
               marginTop: '3px'
             }}
           >
-            {currentSeries?.seriesSubtitle || 'Exercícios em intervalos de segunda'}
+            {currentSeries?.isDesktopMode
+              ? (currentSeries?.subtitle || 'Formato computador')
+              : (currentSeries?.seriesSubtitle || 'Exercícios em intervalos de segunda')}
           </span>
         </div>
       </div>

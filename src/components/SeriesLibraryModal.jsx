@@ -52,51 +52,27 @@ export default function SeriesLibraryView({
         </h1>
 
 
-        {/* Seletor de Modelo de Design: Barroco Clássico vs Moderno Escuro */}
-        {onThemeChange && (
-          <div className="theme-switcher-bar">
-            <button
-              type="button"
-              className={`theme-pill-btn ${theme === 'baroque' ? 'active' : ''}`}
-              onClick={() => onThemeChange('baroque')}
-              style={{ fontSize: '0.92rem', padding: '7px 14px' }}
-              title="Ativar Estilo Barroco Clássico (Pergaminho nobre, ouro antigo e tipografia clássica)"
-            >
-              🏛️ Barroco Clássico
-            </button>
-            <button
-              type="button"
-              className={`theme-pill-btn ${theme === 'modern' ? 'active' : ''}`}
-              onClick={() => onThemeChange('modern')}
-              style={{ fontSize: '0.92rem', padding: '7px 14px' }}
-              title="Ativar Estilo Moderno Escuro"
-            >
-              ⚡ Moderno Escuro
-            </button>
-          </div>
-        )}
-
         <div
           className="wifi-tip-badge"
           style={{
             background: 'rgba(255, 102, 0, 0.14)',
             border: '1px solid rgba(255, 102, 0, 0.4)',
             color: '#ff944d',
-            padding: '9px 18px',
+            padding: '10px 20px',
             borderRadius: 'var(--radius-full)',
-            fontSize: '1.05rem',
+            fontSize: '1.25rem',
             fontWeight: 700,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '8px',
+            gap: '10px',
             marginTop: '4px',
             marginBottom: '6px',
             lineHeight: 1.4,
             textAlign: 'center'
           }}
         >
-          <Wifi size={19} style={{ flexShrink: 0 }} />
+          <Wifi size={22} style={{ flexShrink: 0 }} />
           <span>Conecte-se ao Wi-Fi para economizar seus dados móveis</span>
         </div>
       </div>
@@ -143,7 +119,7 @@ export default function SeriesLibraryView({
                 <h3 style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   FAVORITOS
                 </h3>
-                <p className="favorites-folder-subtitle" style={{ fontSize: '1.02rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>
+                <p className="favorites-folder-subtitle" style={{ fontSize: '1.18rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>
                   {favCount === 0 ? 'Nenhum exercício salvo' : `${favCount} exercício(s) salvo(s)`}
                 </p>
               </div>
@@ -199,7 +175,7 @@ export default function SeriesLibraryView({
               }}
             >
               {savedSeries.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '16px 12px', color: 'var(--text-muted)', fontSize: '1.02rem', lineHeight: 1.45 }}>
+                <div style={{ textAlign: 'center', padding: '16px 12px', color: 'var(--text-muted)', fontSize: '1.18rem', lineHeight: 1.45 }}>
                   Nenhum exercício salvo em Favoritos ainda.<br />
                   Toque no ícone de coração ♡ em qualquer exercício para salvá-lo aqui.
                 </div>
@@ -245,16 +221,16 @@ export default function SeriesLibraryView({
                           )}
                         </div>
                         <div>
-                          <div className="exercise-name" style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                          <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                             <span>{series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}</span>
                             {isSeriesStudied && (
-                              <span className="studied-badge" style={{ background: '#10b981', color: '#ffffff', fontSize: '0.82rem', fontWeight: 800, padding: '2px 8px', borderRadius: '8px' }}>
+                              <span className="studied-badge" style={{ background: '#10b981', color: '#ffffff', fontSize: '0.95rem', fontWeight: 800, padding: '3px 10px', borderRadius: '8px' }}>
                                 Estudado ✓
                               </span>
                             )}
                           </div>
                           {series.subtitle && (
-                            <div className="exercise-subtitle" style={{ fontSize: '1.02rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>
+                            <div className="exercise-subtitle" style={{ fontSize: '1.15rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>
                               {series.subtitle}
                             </div>
                           )}
@@ -367,7 +343,7 @@ export default function SeriesLibraryView({
                       )}
                     </div>
                     {folder.subtitle && (
-                      <p className="series-folder-subtitle" style={{ fontSize: '1.05rem', color: 'var(--text-muted)', margin: '3px 0 0 0', fontWeight: 600 }}>
+                      <p className="series-folder-subtitle" style={{ fontSize: '1.22rem', color: 'var(--text-muted)', margin: '3px 0 0 0', fontWeight: 600 }}>
                         {folder.subtitle}
                       </p>
                     )}
@@ -499,22 +475,6 @@ export default function SeriesLibraryView({
                             <div>
                               <div className="exercise-name" style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                                 <span>{exercise.title}</span>
-                                {exercise.isDesktopMode && (
-                                  <span
-                                    className="desktop-format-badge"
-                                    style={{
-                                      background: 'rgba(37, 99, 235, 0.25)',
-                                      border: '1px solid #3b82f6',
-                                      color: '#60a5fa',
-                                      fontSize: '0.82rem',
-                                      fontWeight: 800,
-                                      padding: '2px 8px',
-                                      borderRadius: '8px'
-                                    }}
-                                  >
-                                    🖥️ Formato PC
-                                  </span>
-                                )}
                                 {isExStudied && (
                                   <span
                                     className="studied-badge"
@@ -532,7 +492,7 @@ export default function SeriesLibraryView({
                                 )}
                               </div>
                               {exercise.subtitle || (!exercise.isDesktopMode && `⏱ ${exercise.defaultBpm || 60} BPM`) ? (
-                                <div className="exercise-subtitle" style={{ fontSize: '1.02rem', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500 }}>
+                                <div className="exercise-subtitle" style={{ fontSize: '1.16rem', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500 }}>
                                   <span>{exercise.subtitle || (!exercise.isDesktopMode ? `⏱ ${exercise.defaultBpm || 60} BPM` : '')}</span>
                                 </div>
                               ) : null}
