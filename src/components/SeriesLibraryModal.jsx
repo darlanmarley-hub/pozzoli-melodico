@@ -59,21 +59,21 @@ export default function SeriesLibraryView({
             border: '1px solid rgba(255, 102, 0, 0.4)',
             color: '#ff944d',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            padding: '10px 20px',
+            padding: '6px 14px',
             borderRadius: 'var(--radius-full)',
-            fontSize: '1.25rem',
-            fontWeight: 700,
+            fontSize: '0.85rem',
+            fontWeight: 600,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '10px',
+            gap: '8px',
             marginTop: '4px',
             marginBottom: '6px',
-            lineHeight: 1.4,
+            lineHeight: 1.35,
             textAlign: 'center'
           }}
         >
-          <Wifi size={22} style={{ flexShrink: 0 }} />
+          <Wifi size={16} style={{ flexShrink: 0 }} />
           <span>Conecte-se ao Wi-Fi para economizar seus dados móveis</span>
         </div>
       </div>
