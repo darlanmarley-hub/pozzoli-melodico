@@ -55,14 +55,14 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
         <div
           style={{
             background: 'var(--bg-card)',
-            border: '1px solid var(--border-orange)',
+            border: '1px solid var(--border-color)',
             borderRadius: 'var(--radius-lg)',
             padding: '24px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             gap: '16px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.3)'
+            boxShadow: '0 8px 24px rgba(0,0,0,0.25)'
           }}
         >
           <div style={{ position: 'relative' }}>
@@ -71,17 +71,17 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
                 width: '94px',
                 height: '94px',
                 borderRadius: '50%',
-                background: photoUrl ? `url(${photoUrl}) center/cover` : 'rgba(255, 102, 0, 0.15)',
-                border: '3px solid var(--accent-orange)',
+                background: photoUrl ? `url(${photoUrl}) center/cover` : 'rgba(255, 255, 255, 0.06)',
+                border: '2px solid rgba(255, 255, 255, 0.2)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '2.5rem',
-                color: 'var(--accent-orange)',
+                color: 'var(--text-muted)',
                 overflow: 'hidden'
               }}
             >
-              {!photoUrl && <User size={48} />}
+              {!photoUrl && <User size={48} color="var(--text-muted)" />}
             </div>
             <label
               htmlFor="profile-photo-input"
@@ -89,7 +89,8 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
                 position: 'absolute',
                 bottom: '0',
                 right: '0',
-                background: 'var(--accent-orange)',
+                background: 'rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 color: '#fff',
                 width: '34px',
                 height: '34px',
@@ -98,7 +99,8 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.4)'
+                boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                backdropFilter: 'blur(8px)'
               }}
               title="Carregar nova foto"
             >
@@ -118,8 +120,8 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
               htmlFor="profile-photo-input"
               style={{
                 fontSize: '1.02rem',
-                color: 'var(--accent-orange)',
-                fontWeight: 700,
+                color: 'var(--text-main)',
+                fontWeight: 600,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -127,7 +129,7 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
                 padding: '4px 8px'
               }}
             >
-              <Upload size={16} /> Carregar foto de perfil
+              <Upload size={16} color="var(--text-muted)" /> Carregar foto de perfil
             </label>
           </div>
         </div>
@@ -135,18 +137,19 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
         {/* Aviso de Sincronização na Nuvem (Diretamente Abaixo da Foto do Usuário) */}
         <div
           style={{
-            background: 'linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(19, 25, 39, 0.6) 100%)',
-            border: '1px solid var(--border-orange)',
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border-color)',
             borderRadius: 'var(--radius-lg)',
             padding: '18px 20px',
             display: 'flex',
             alignItems: 'flex-start',
-            gap: '14px'
+            gap: '14px',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.2)'
           }}
         >
-          <Cloud size={26} style={{ color: 'var(--accent-orange)', flexShrink: 0, marginTop: '2px' }} />
+          <Cloud size={26} style={{ color: 'var(--text-muted)', flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <h4 style={{ fontSize: '1.12rem', fontWeight: 800, color: 'var(--text-main)' }}>
+            <h4 style={{ fontSize: '1.12rem', fontWeight: 700, color: 'var(--text-main)' }}>
               Sincronização na nuvem
             </h4>
             <p style={{ fontSize: '1.02rem', color: 'var(--text-muted)', marginTop: '4px', lineHeight: 1.45 }}>
@@ -164,7 +167,8 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
             padding: '20px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px'
+            gap: '16px',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.2)'
           }}
         >
           {/* E-mail do Usuário */}
@@ -172,8 +176,8 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
             <label style={{ fontSize: '1.02rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>
               E-mail do usuário:
             </label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
-              <Mail size={20} color="var(--accent-orange)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
+              <Mail size={20} color="var(--text-muted)" />
               <input
                 type="email"
                 value={email}
@@ -192,13 +196,13 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
           </div>
 
           {/* Status: Conta Conectada - Online */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: 'var(--radius-md)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-main)' }}>
-              <ShieldCheck size={20} color="#10b981" />
+              <ShieldCheck size={20} color="var(--text-muted)" />
               <span>Conta conectada</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.98rem', fontWeight: 700, color: '#10b981' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }}></span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.98rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
               Online
             </div>
           </div>
@@ -210,21 +214,21 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
           style={{
             padding: '16px',
             borderRadius: 'var(--radius-lg)',
-            background: 'rgba(59, 130, 246, 0.12)',
-            border: '1px solid #3b82f6',
-            color: '#60a5fa',
-            fontWeight: 800,
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            color: 'var(--text-main)',
+            fontWeight: 700,
             fontSize: '1.05rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
             cursor: 'pointer',
-            transition: 'background 0.2s ease',
+            transition: 'all 0.2s ease',
             fontFamily: 'inherit'
           }}
         >
-          <RotateCw size={20} />
+          <RotateCw size={20} color="var(--text-muted)" />
           Recarregar App
         </button>
 
@@ -234,21 +238,21 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
           style={{
             padding: '16px',
             borderRadius: 'var(--radius-lg)',
-            background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid #ef4444',
-            color: '#ef4444',
-            fontWeight: 800,
+            background: 'rgba(255, 255, 255, 0.02)',
+            border: '1px solid rgba(239, 68, 68, 0.35)',
+            color: '#f87171',
+            fontWeight: 700,
             fontSize: '1.05rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
             cursor: 'pointer',
-            transition: 'background 0.2s ease',
+            transition: 'all 0.2s ease',
             fontFamily: 'inherit'
           }}
         >
-          <LogOut size={20} />
+          <LogOut size={20} color="#f87171" />
           Sair da Conta
         </button>
       </div>
