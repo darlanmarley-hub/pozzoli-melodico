@@ -241,16 +241,27 @@ export default function SeriesLibraryView({
                   return (
                     <div
                       key={series.id}
-                      className="favorite-row-card"
+                      className={`favorite-row-card ${series.isDesktopMode ? 'desktop-card-highlight' : ''}`}
                       style={{
-                        background: isSeriesStudied ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.04)',
-                        border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--accent-rose-glow)',
+                        background: series.isDesktopMode
+                          ? '#000000'
+                          : isSeriesStudied
+                          ? 'rgba(16, 185, 129, 0.12)'
+                          : 'rgba(255, 255, 255, 0.04)',
+                        border: series.isDesktopMode
+                          ? '1.5px solid #ffffff'
+                          : isSeriesStudied
+                          ? '1px solid #10b981'
+                          : '1px solid var(--accent-rose-glow)',
                         borderRadius: 'var(--radius-sm)',
                         padding: '10px 12px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         gap: '8px',
+                        boxShadow: series.isDesktopMode
+                          ? '0 4px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.12)'
+                          : 'none',
                         transition: 'all 0.3s ease'
                       }}
                     >
@@ -261,23 +272,39 @@ export default function SeriesLibraryView({
                             width: '44px',
                             height: '44px',
                             borderRadius: '12px',
-                            background: isSeriesStudied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(244, 63, 94, 0.15)',
+                            background: series.isDesktopMode
+                              ? '#111111'
+                              : isSeriesStudied
+                              ? 'rgba(16, 185, 129, 0.2)'
+                              : 'rgba(244, 63, 94, 0.15)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: isSeriesStudied ? '#10b981' : 'var(--accent-rose)',
-                            border: isSeriesStudied ? '1px solid #10b981' : '1px solid var(--accent-rose-glow)',
+                            color: series.isDesktopMode
+                              ? '#ffffff'
+                              : isSeriesStudied
+                              ? '#10b981'
+                              : 'var(--accent-rose)',
+                            border: series.isDesktopMode
+                              ? '1.5px solid #ffffff'
+                              : isSeriesStudied
+                              ? '1px solid #10b981'
+                              : '1px solid var(--accent-rose-glow)',
                             flexShrink: 0
                           }}
                         >
-                          {isSeriesStudied ? <CheckCircle2 size={22} /> : (
+                          {series.isDesktopMode ? (
+                            <Monitor size={22} color="#ffffff" />
+                          ) : isSeriesStudied ? (
+                            <CheckCircle2 size={22} />
+                          ) : (
                             <span style={{ fontSize: '1.28rem', fontWeight: 900, fontFamily: 'var(--font-heading)' }}>
                               {series.displayOrder > 0 ? series.displayOrder : <Video size={18} />}
                             </span>
                           )}
                         </div>
                         <div>
-                          <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                          <div className="exercise-name" style={{ fontSize: '1.18rem', fontWeight: series.isDesktopMode ? 800 : 700, color: series.isDesktopMode ? '#ffffff' : 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                             <span>{series.seriesTitle ? `${series.seriesTitle} - ${series.title}` : series.title}</span>
                             {isSeriesStudied && (
                               <span className="studied-badge" style={{ background: '#10b981', color: '#ffffff', fontSize: '0.95rem', fontWeight: 800, padding: '3px 10px', borderRadius: '8px' }}>
@@ -286,7 +313,7 @@ export default function SeriesLibraryView({
                             )}
                           </div>
                           {series.subtitle && (
-                            <div className="exercise-subtitle" style={{ fontSize: '1.15rem', color: 'var(--text-muted)', marginTop: '3px', fontWeight: 500 }}>
+                            <div className="exercise-subtitle" style={{ fontSize: '1.15rem', color: series.isDesktopMode ? '#f3f4f6' : 'var(--text-muted)', marginTop: '3px', fontWeight: series.isDesktopMode ? 600 : 500 }}>
                               {series.subtitle}
                             </div>
                           )}
@@ -300,7 +327,7 @@ export default function SeriesLibraryView({
                           title="Remover dos Salvos"
                           style={{ padding: '4px' }}
                         >
-                          <Trash2 size={16} color="#ef4444" />
+                          <Trash2 size={16} color={series.isDesktopMode ? '#ffffff' : '#ef4444'} />
                         </button>
 
                         <button
@@ -310,11 +337,26 @@ export default function SeriesLibraryView({
                           style={{
                             width: '32px',
                             height: '32px',
-                            background: isSeriesStudied ? '#10b981' : 'var(--accent-rose)',
-                            boxShadow: isSeriesStudied ? '0 2px 8px rgba(16, 185, 129, 0.4)' : '0 2px 8px var(--accent-rose-glow)'
+                            background: isSeriesStudied
+                              ? '#10b981'
+                              : series.isDesktopMode
+                              ? '#ffffff'
+                              : 'var(--accent-rose)',
+                            color: series.isDesktopMode && !isSeriesStudied ? '#000000' : '#ffffff',
+                            border: series.isDesktopMode && !isSeriesStudied ? '1px solid #ffffff' : 'none',
+                            boxShadow: isSeriesStudied
+                              ? '0 2px 8px rgba(16, 185, 129, 0.4)'
+                              : series.isDesktopMode
+                              ? '0 2px 12px rgba(255, 255, 255, 0.45)'
+                              : '0 2px 8px var(--accent-rose-glow)'
                           }}
                         >
-                          <Play size={14} style={{ marginLeft: '1px' }} />
+                          <Play
+                            size={14}
+                            style={{ marginLeft: '1px' }}
+                            fill={series.isDesktopMode && !isSeriesStudied ? '#000000' : 'none'}
+                            color={series.isDesktopMode && !isSeriesStudied ? '#000000' : '#ffffff'}
+                          />
                         </button>
                       </div>
                     </div>
@@ -472,12 +514,12 @@ export default function SeriesLibraryView({
                           style={{
                             cursor: 'pointer',
                             background: exercise.isDesktopMode
-                              ? 'linear-gradient(135deg, rgba(37, 99, 235, 0.28) 0%, rgba(30, 58, 138, 0.35) 50%, rgba(15, 23, 42, 0.95) 100%)'
+                              ? '#000000'
                               : isExStudied
                               ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)'
                               : 'rgba(255, 255, 255, 0.04)',
                             border: exercise.isDesktopMode
-                              ? '1.5px solid #3b82f6'
+                              ? '1.5px solid #ffffff'
                               : isExStudied
                               ? '1px solid #10b981'
                               : '1px solid rgba(255, 102, 0, 0.3)',
@@ -488,7 +530,7 @@ export default function SeriesLibraryView({
                             justifyContent: 'space-between',
                             gap: '10px',
                             boxShadow: exercise.isDesktopMode
-                              ? '0 4px 18px rgba(37, 99, 235, 0.3)'
+                              ? '0 4px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.12)'
                               : 'none',
                             transition: 'all 0.2s ease'
                           }}
@@ -501,12 +543,12 @@ export default function SeriesLibraryView({
                                 height: '44px',
                                 borderRadius: '12px',
                                 background: exercise.isDesktopMode
-                                  ? 'rgba(37, 99, 235, 0.3)'
+                                  ? '#111111'
                                   : isExStudied
                                   ? 'rgba(16, 185, 129, 0.2)'
                                   : 'rgba(255, 102, 0, 0.15)',
                                 border: exercise.isDesktopMode
-                                  ? '1.5px solid #60a5fa'
+                                  ? '1.5px solid #ffffff'
                                   : isExStudied
                                   ? '1px solid #10b981'
                                   : '1px solid rgba(255, 102, 0, 0.4)',
@@ -514,18 +556,18 @@ export default function SeriesLibraryView({
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 color: exercise.isDesktopMode
-                                  ? '#93c5fd'
+                                  ? '#ffffff'
                                   : isExStudied
                                   ? '#10b981'
                                   : 'var(--accent-orange)',
                                 boxShadow: exercise.isDesktopMode
-                                  ? '0 0 12px rgba(59, 130, 246, 0.35)'
+                                  ? '0 0 10px rgba(255, 255, 255, 0.2)'
                                   : 'none',
                                 flexShrink: 0
                               }}
                             >
                               {exercise.isDesktopMode ? (
-                                <Monitor size={22} />
+                                <Monitor size={22} color="#ffffff" />
                               ) : isExStudied ? (
                                 <CheckCircle2 size={22} />
                               ) : (
@@ -541,7 +583,7 @@ export default function SeriesLibraryView({
                                 style={{
                                   fontSize: '1.15rem',
                                   fontWeight: exercise.isDesktopMode ? 800 : 700,
-                                  color: exercise.isDesktopMode ? '#93c5fd' : 'var(--text-main)',
+                                  color: exercise.isDesktopMode ? '#ffffff' : 'var(--text-main)',
                                   fontFamily: "'Inter', -apple-system, sans-serif",
                                   display: 'flex',
                                   alignItems: 'center',
@@ -571,7 +613,7 @@ export default function SeriesLibraryView({
                                   className="exercise-subtitle"
                                   style={{
                                     fontSize: '1.16rem',
-                                    color: exercise.isDesktopMode ? '#bfdbfe' : 'var(--text-muted)',
+                                    color: exercise.isDesktopMode ? '#f3f4f6' : 'var(--text-muted)',
                                     fontFamily: "'Inter', -apple-system, sans-serif",
                                     marginTop: '4px',
                                     display: 'flex',
@@ -595,8 +637,8 @@ export default function SeriesLibraryView({
                             >
                               <Heart
                                 size={20}
-                                fill={isExFav ? '#ff6600' : 'none'}
-                                color={isExFav ? '#ff6600' : 'var(--text-dim)'}
+                                fill={isExFav ? (exercise.isDesktopMode ? '#ffffff' : '#ff6600') : 'none'}
+                                color={exercise.isDesktopMode ? '#ffffff' : (isExFav ? '#ff6600' : 'var(--text-dim)')}
                               />
                             </button>
 
@@ -610,16 +652,23 @@ export default function SeriesLibraryView({
                                 background: isExStudied
                                   ? '#10b981'
                                   : exercise.isDesktopMode
-                                  ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
+                                  ? '#ffffff'
                                   : 'var(--accent-orange)',
+                                color: exercise.isDesktopMode && !isExStudied ? '#000000' : '#ffffff',
+                                border: exercise.isDesktopMode && !isExStudied ? '1px solid #ffffff' : 'none',
                                 boxShadow: isExStudied
                                   ? '0 3px 10px rgba(16, 185, 129, 0.4)'
                                   : exercise.isDesktopMode
-                                  ? '0 3px 12px rgba(37, 99, 235, 0.5)'
+                                  ? '0 2px 14px rgba(255, 255, 255, 0.45)'
                                   : '0 3px 10px var(--accent-orange-glow)'
                               }}
                             >
-                              <Play size={18} style={{ marginLeft: '1px' }} />
+                              <Play
+                                size={18}
+                                style={{ marginLeft: '1px' }}
+                                fill={exercise.isDesktopMode && !isExStudied ? '#000000' : 'none'}
+                                color={exercise.isDesktopMode && !isExStudied ? '#000000' : '#ffffff'}
+                              />
                             </button>
                           </div>
                         </div>
