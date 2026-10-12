@@ -305,7 +305,7 @@ export default function SeriesLibraryView({
                           )}
                         </div>
                         <div>
-                          <div className="exercise-name" style={{ fontSize: '0.95rem', fontWeight: series.isDesktopMode ? 800 : 700, color: series.isDesktopMode ? '#ffffff' : 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                          <div className="exercise-name" style={{ fontSize: '0.84rem', fontWeight: series.isDesktopMode ? 800 : 700, color: series.isDesktopMode ? '#ffffff' : 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                             <span>
                               {series.isDesktopMode && series.seriesTitle
                                 ? `${series.seriesTitle} - ${series.title}`
@@ -316,7 +316,7 @@ export default function SeriesLibraryView({
                                 : series.title}
                             </span>
                             {isSeriesStudied && (
-                              <span className="studied-badge" style={{ background: '#10b981', color: '#ffffff', fontSize: '0.95rem', fontWeight: 800, padding: '3px 10px', borderRadius: '8px' }}>
+                              <span className="studied-badge" style={{ background: '#10b981', color: '#ffffff', fontSize: '0.75rem', fontWeight: 800, padding: '2px 8px', borderRadius: '6px' }}>
                                 Estudado ✓
                               </span>
                             )}
@@ -590,7 +590,7 @@ export default function SeriesLibraryView({
                               <div
                                 className="exercise-name"
                                 style={{
-                                  fontSize: '0.95rem',
+                                  fontSize: '0.84rem',
                                   fontWeight: exercise.isDesktopMode ? 800 : 700,
                                   color: exercise.isDesktopMode ? '#ffffff' : 'var(--text-main)',
                                   fontFamily: "'Inter', -apple-system, sans-serif",
@@ -607,10 +607,10 @@ export default function SeriesLibraryView({
                                     style={{
                                       background: '#10b981',
                                       color: '#ffffff',
-                                      fontSize: '0.95rem',
+                                      fontSize: '0.75rem',
                                       fontWeight: 800,
-                                      padding: '3px 10px',
-                                      borderRadius: '8px'
+                                      padding: '2px 8px',
+                                      borderRadius: '6px'
                                     }}
                                   >
                                     Estudado ✓

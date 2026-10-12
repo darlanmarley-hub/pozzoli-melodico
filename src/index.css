@@ -1325,25 +1325,27 @@ body.theme-baroque .wifi-tip-badge {
 
   .status-badge-complete,
   .studied-badge {
-    font-size: 0.95rem !important;
-    padding: 3px 10px !important;
+    font-size: 0.75rem !important;
+    padding: 2px 8px !important;
   }
 
   .desktop-format-badge {
-    font-size: 0.95rem !important;
-    padding: 3px 10px !important;
+    font-size: 0.82rem !important;
+    padding: 2px 8px !important;
   }
 
   .exercise-name {
-    font-size: 0.95rem !important;
+    font-size: 0.78rem !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     letter-spacing: normal !important;
+    line-height: 1.35 !important;
   }
 
   body.theme-baroque .exercise-name {
-    font-size: 0.95rem !important;
+    font-size: 0.78rem !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
     letter-spacing: normal !important;
+    line-height: 1.35 !important;
   }
 
   body.theme-baroque .series-folder-subtitle {
@@ -1458,7 +1460,7 @@ body.theme-baroque .desktop-card-highlight .exercise-name,
 body.theme-baroque .desktop-card-highlight .exercise-name span {
   color: #ffffff !important;
   font-weight: 800 !important;
-  font-size: 0.95rem !important;
+  font-size: 0.84rem !important;
 }
 
 .desktop-card-highlight .exercise-subtitle,
@@ -1507,9 +1509,18 @@ body.theme-baroque .card-title-group h3 {
 
 body.theme-baroque .exercise-name {
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-  font-size: 1.15rem !important;
+  font-size: 0.84rem !important;
   font-weight: 700 !important;
   letter-spacing: normal !important;
+  line-height: 1.35 !important;
+}
+
+.exercise-name {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-size: 0.84rem !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+  line-height: 1.35 !important;
 }
 
 body.theme-baroque .exercise-badge-number {
