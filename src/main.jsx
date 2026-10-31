@@ -5,6 +5,20 @@ import './index.css';
 
 // Bloquear Gestos de Zoom no aplicativo (Pinch-to-zoom, gestos do Safari/Android, duplo-toque)
 if (typeof window !== 'undefined') {
+  window.__deferredPwaPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    window.__deferredPwaPrompt = e;
+    window.dispatchEvent(new Event('pwa-prompt-ready'));
+  });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+  }
+
   document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
   document.addEventListener('gesturechange', (e) => e.preventDefault(), { passive: false });
   document.addEventListener('gestureend', (e) => e.preventDefault(), { passive: false });

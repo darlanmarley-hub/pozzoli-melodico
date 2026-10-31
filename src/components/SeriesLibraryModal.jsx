@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Folder, FolderOpen, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music, CheckCircle2, Monitor } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Folder, FolderOpen, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music, CheckCircle2, Monitor, Smartphone, Download, Share, PlusSquare, MoreVertical, X } from 'lucide-react';
 import { SERIES_FOLDERS, isItemStudied, isItemFavorite } from '../utils/storage';
 
 export default function SeriesLibraryView({
@@ -13,6 +13,49 @@ export default function SeriesLibraryView({
 }) {
   const [isFavExpanded, setIsFavExpanded] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState({});
+  const [deferredPrompt, setDeferredPrompt] = useState(() =>
+    typeof window !== 'undefined' ? window.__deferredPwaPrompt : null
+  );
+  const [showIosModal, setShowIosModal] = useState(false);
+  const [showAndroidModal, setShowAndroidModal] = useState(false);
+
+  useEffect(() => {
+    const syncPrompt = () => {
+      if (window.__deferredPwaPrompt) {
+        setDeferredPrompt(window.__deferredPwaPrompt);
+      }
+    };
+    const handleBeforeInstall = (e) => {
+      e.preventDefault();
+      window.__deferredPwaPrompt = e;
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('pwa-prompt-ready', syncPrompt);
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    return () => {
+      window.removeEventListener('pwa-prompt-ready', syncPrompt);
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+    };
+  }, []);
+
+  const handleAndroidInstall = async () => {
+    const promptEvent = deferredPrompt || window.__deferredPwaPrompt;
+    if (promptEvent) {
+      try {
+        promptEvent.prompt();
+        const { outcome } = await promptEvent.userChoice;
+        if (outcome === 'accepted') {
+          window.__deferredPwaPrompt = null;
+          setDeferredPrompt(null);
+        }
+        return;
+      } catch (err) {
+        console.warn('Falha ao abrir prompt nativo Android:', err);
+      }
+    }
+    setShowAndroidModal(true);
+  };
 
   const toggleFolder = (folderId) => {
     setExpandedFolders((prev) => ({
@@ -69,13 +112,79 @@ export default function SeriesLibraryView({
             justifyContent: 'center',
             gap: '8px',
             marginTop: '4px',
-            marginBottom: '6px',
+            marginBottom: '4px',
             lineHeight: 1.35,
             textAlign: 'center'
           }}
         >
           <Wifi size={16} style={{ flexShrink: 0 }} />
           <span>Conecte-se ao Wi-Fi para economizar seus dados móveis</span>
+        </div>
+
+        {/* 2 Botões: Adicionar App na Tela Inicial (Android & iOS) */}
+        <div
+          className="install-app-buttons-row"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '8px',
+            width: '100%',
+            maxWidth: '460px',
+            marginTop: '2px',
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
+          }}
+        >
+          {/* Botão Android */}
+          <button
+            type="button"
+            onClick={handleAndroidInstall}
+            style={{
+              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.12) 100%)',
+              border: '1px solid rgba(16, 185, 129, 0.55)',
+              color: '#6ee7b7',
+              borderRadius: '12px',
+              padding: '9px 10px',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              cursor: 'pointer',
+              boxShadow: '0 3px 12px rgba(0, 0, 0, 0.25)',
+              lineHeight: 1.2,
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
+            }}
+          >
+            <Download size={15} style={{ flexShrink: 0, color: '#34d399' }} />
+            <span>Baixar App (Android)</span>
+          </button>
+
+          {/* Botão iOS (iPhone / iPad) */}
+          <button
+            type="button"
+            onClick={() => setShowIosModal(true)}
+            style={{
+              background: 'linear-gradient(135deg, rgba(212, 163, 75, 0.2) 0%, rgba(162, 116, 41, 0.12) 100%)',
+              border: '1px solid rgba(212, 163, 75, 0.55)',
+              color: '#f3cf88',
+              borderRadius: '12px',
+              padding: '9px 10px',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              cursor: 'pointer',
+              boxShadow: '0 3px 12px rgba(0, 0, 0, 0.25)',
+              lineHeight: 1.2,
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
+            }}
+          >
+            <Smartphone size={15} style={{ flexShrink: 0, color: '#dfb76c' }} />
+            <span>Instalar no iPhone (iOS)</span>
+          </button>
         </div>
       </div>
 
@@ -691,6 +800,139 @@ export default function SeriesLibraryView({
           );
         })}
       </div>
+
+      {/* Modal: Pequeno Manual para Adicionar na Tela Inicial do iPhone (iOS) */}
+      {showIosModal && (
+        <div
+          className="login-modal-overlay"
+          onClick={() => setShowIosModal(false)}
+          style={{ zIndex: 9999 }}
+        >
+          <div
+            className="login-modal-container"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '400px', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}
+          >
+            <div className="login-modal-header">
+              <div className="login-modal-header-title">
+                <Smartphone size={22} className="modal-icon-orange" />
+                <h3 style={{ fontSize: '1.1rem' }}>Instalar no iPhone / iPad</h3>
+              </div>
+              <button
+                type="button"
+                className="login-modal-close"
+                onClick={() => setShowIosModal(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="login-modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <p style={{ fontSize: '0.9rem', color: '#dfcfbd', lineHeight: 1.45, margin: 0 }}>
+                Siga estes <strong>3 passos rápidos</strong> no navegador <strong>Safari</strong> para deixar o aplicativo na tela inicial do seu iPhone:
+              </p>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(212, 163, 75, 0.25)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(212, 163, 75, 0.25)', color: '#f3cf88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+                  1
+                </div>
+                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
+                  Toque no botão <strong>Compartilhar</strong> <Share size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#60a5fa' }} /> na barra inferior do Safari.
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(212, 163, 75, 0.25)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(212, 163, 75, 0.25)', color: '#f3cf88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+                  2
+                </div>
+                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
+                  Role a lista para baixo e toque em <strong>"Adicionar à Tela de Início"</strong> <PlusSquare size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#f3cf88' }} />.
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(212, 163, 75, 0.25)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(212, 163, 75, 0.25)', color: '#f3cf88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+                  3
+                </div>
+                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
+                  Confirme tocando em <strong>"Adicionar"</strong> no canto superior direito.
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="login-submit-btn"
+                style={{ marginTop: '4px', height: '46px', fontSize: '0.95rem' }}
+                onClick={() => setShowIosModal(false)}
+              >
+                Entendi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Auxiliar Android (caso o navegador não abra o pop-up automático ou já esteja instalado) */}
+      {showAndroidModal && (
+        <div
+          className="login-modal-overlay"
+          onClick={() => setShowAndroidModal(false)}
+          style={{ zIndex: 9999 }}
+        >
+          <div
+            className="login-modal-container"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '400px', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}
+          >
+            <div className="login-modal-header">
+              <div className="login-modal-header-title">
+                <Download size={22} style={{ color: '#34d399' }} />
+                <h3 style={{ fontSize: '1.1rem' }}>Adicionar no Android</h3>
+              </div>
+              <button
+                type="button"
+                className="login-modal-close"
+                onClick={() => setShowAndroidModal(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="login-modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <p style={{ fontSize: '0.9rem', color: '#dfcfbd', lineHeight: 1.45, margin: 0 }}>
+                Para instalar o aplicativo na tela inicial do seu Android:
+              </p>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+                  1
+                </div>
+                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
+                  Toque nos <strong>3 pontinhos</strong> <MoreVertical size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#34d399' }} /> no canto superior direito do navegador Chrome.
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+                  2
+                </div>
+                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
+                  Toque em <strong>"Instalar aplicativo"</strong> ou <strong>"Adicionar à tela inicial"</strong> e confirme.
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="login-submit-btn"
+                style={{ marginTop: '4px', height: '46px', fontSize: '0.95rem' }}
+                onClick={() => setShowAndroidModal(false)}
+              >
+                Entendi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
