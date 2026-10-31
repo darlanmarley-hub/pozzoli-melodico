@@ -25,26 +25,27 @@ export default function SeriesLibraryView({
   const savedSeries = allSeries.filter((s) => isItemFavorite(favorites, s));
 
   return (
-    <div className="library-view-container" style={{ paddingTop: '12px', paddingBottom: '30px' }}>
+    <div className="library-view-container" style={{ paddingTop: '22px', paddingBottom: '30px' }}>
       {/* Cabeçalho Limpo sem Moldura para Mobile */}
       <div
+        className="library-top-header"
         style={{
           textAlign: 'center',
-          padding: '10px 16px 4px 16px',
+          padding: '16px 16px 6px 16px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '6px'
+          gap: '8px'
         }}
       >
         <h1
           className="library-main-title"
           style={{
-            fontSize: '1.45rem',
+            fontSize: '1.22rem',
             fontWeight: 900,
             fontFamily: 'var(--font-heading)',
             letterSpacing: '0.5px',
-            lineHeight: 1.2,
+            lineHeight: 1.25,
             margin: 0
           }}
         >
