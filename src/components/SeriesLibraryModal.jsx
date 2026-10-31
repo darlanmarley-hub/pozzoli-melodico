@@ -121,19 +121,41 @@ export default function SeriesLibraryView({
           <span>Conecte-se ao Wi-Fi para economizar seus dados móveis</span>
         </div>
 
-        {/* 2 Botões: Adicionar App na Tela Inicial (Android & iOS) */}
+        {/* Título + 2 Botões: Adicionar App na Tela Inicial (Android & iOS) */}
         <div
-          className="install-app-buttons-row"
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '8px',
             width: '100%',
             maxWidth: '460px',
-            marginTop: '2px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '6px',
+            marginTop: '4px',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
           }}
         >
+          <span
+            style={{
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              color: '#dfcfbd',
+              letterSpacing: '0.02em',
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
+            }}
+          >
+            Instale o App na Tela Inicial
+          </span>
+
+          <div
+            className="install-app-buttons-row"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '8px',
+              width: '100%',
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
+            }}
+          >
           {/* Botão Android */}
           <button
             type="button"
@@ -185,6 +207,7 @@ export default function SeriesLibraryView({
             <Smartphone size={15} style={{ flexShrink: 0, color: '#dfb76c' }} />
             <span>Instalar no iPhone (iOS)</span>
           </button>
+          </div>
         </div>
       </div>
 
