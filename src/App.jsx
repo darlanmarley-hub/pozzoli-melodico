@@ -20,8 +20,11 @@ import {
   getCustomSeries,
   addCustomSeries,
   getAuthUser,
-  clearAuthUser
+  saveAuthUser,
+  clearAuthUser,
+  loadUserDataFromSupabase
 } from './utils/storage';
+import { supabase, isSupabaseConfigured } from './lib/supabase';
 
 export default function App() {
   const [authUser, setAuthUser] = useState(() => getAuthUser());
@@ -53,6 +56,49 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('pozzoli_app_theme', theme);
   }, [theme]);
+
+  // Escuta sessão do Supabase Auth e sincroniza dados da nuvem
+  useEffect(() => {
+    if (!isSupabaseConfigured || !supabase) return;
+
+    const hydrateFromSession = async (session) => {
+      if (!session?.user) return;
+      const sbUser = session.user;
+      const mappedUser = {
+        id: sbUser.id,
+        email: sbUser.email,
+        name: sbUser.user_metadata?.full_name || sbUser.user_metadata?.name || sbUser.email?.split('@')[0] || 'Estudante',
+        provider: sbUser.app_metadata?.provider || 'supabase',
+        avatar: sbUser.user_metadata?.avatar_url || '🎵',
+        loginTime: new Date().toISOString()
+      };
+      saveAuthUser(mappedUser);
+      setAuthUser(mappedUser);
+
+      const cloudData = await loadUserDataFromSupabase(sbUser.id);
+      if (cloudData) {
+        setProfile(cloudData.profile);
+        setFavorites(cloudData.favorites);
+        setStudied(cloudData.studied);
+        setStats(cloudData.stats);
+        setAllSeries([...INITIAL_SERIES, ...cloudData.customSeries]);
+      }
+    };
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      hydrateFromSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        hydrateFromSession(session);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   // Playback Phase state: "idle" | "loading" | "countIn" | "playing" | "paused" | "ended"
   const [playbackPhase, setPlaybackPhase] = useState('idle');
@@ -132,6 +178,10 @@ export default function App() {
         onLoginSuccess={(user) => {
           setAuthUser(user);
           setProfile(getProfile());
+          setFavorites(getFavorites());
+          setStudied(getStudied());
+          setStats(getStats());
+          setAllSeries([...INITIAL_SERIES, ...getCustomSeries()]);
         }} 
       />
     );

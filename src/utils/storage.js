@@ -1,7 +1,9 @@
 /**
  * Storage & State Manager para o Aplicativo Pozzoli Melódico
  * Suporta extração de ID do Google Drive, módulos, salvamento de exercícios e progresso do aluno.
+ * Sincroniza automaticamente com o Supabase quando autenticado.
  */
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 export const extractDriveFileId = (url) => {
   if (!url) return '';
@@ -550,6 +552,148 @@ export const SERIES_FOLDERS = [
         isBuiltin: true
       }
     ]
+  },
+  {
+    id: 'terceira-serie',
+    title: '3ª SÉRIE',
+    subtitle: 'Exercícios sobre intervalos de quarta',
+    description: 'Pasta da 3ª Série - Exercícios sobre intervalos de quarta.',
+    exercises: [
+      {
+        id: 'serie-3-versao-computador',
+        seriesId: 'terceira-serie',
+        seriesTitle: '3ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de quarta',
+        title: 'SÉRIE COMPLETA',
+        subtitle: 'Formato computador',
+        description: 'Vídeo da 3ª Série em formato horizontal panorâmico gravado para telas de computador.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/avfx8bwfirb7mg82cvkk0/Desktop.mp4?rlkey=l24yji324dhrarxk1e86z3cj6&st=36ev20yo&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/avfx8bwfirb7mg82cvkk0/Desktop.mp4?rlkey=l24yji324dhrarxk1e86z3cj6&st=36ev20yo&dl=0',
+        isDesktopMode: true,
+        embedUrl: '',
+        timeSignature: '2/4',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 0,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        isAvailable: true,
+        isBuiltin: true
+      },
+      {
+        id: 'serie-3-ex-1',
+        seriesId: 'terceira-serie',
+        seriesTitle: '3ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de quarta',
+        title: 'Terceira Série - Exercício Número 1',
+        subtitle: '⏱ 60 BPM',
+        description: 'Exercício N.1 da 3ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/zyhi3em3hgcmxal1b37w6/ex1.mp4?rlkey=ffm8e7mheusoohibjw8g49f7s&st=vuoalzva&dl=0',
+        embedUrl: '',
+        timeSignature: '2/4',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 1,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        isAvailable: true,
+        isBuiltin: true
+      },
+      {
+        id: 'serie-3-ex-2',
+        seriesId: 'terceira-serie',
+        seriesTitle: '3ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de quarta',
+        title: 'Terceira Série - Exercício Número 2',
+        subtitle: '⏱ 60 BPM',
+        description: 'Exercício N.2 da 3ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/5d0ceni5qpmrtxmq08kh4/ex2.mp4?rlkey=qn4vm7sad6amebz4cptir1ifp&st=yk6k5ypv&dl=0',
+        embedUrl: '',
+        timeSignature: '2/4',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 2,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        isAvailable: true,
+        isBuiltin: true
+      },
+      {
+        id: 'serie-3-ex-3',
+        seriesId: 'terceira-serie',
+        seriesTitle: '3ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de quarta',
+        title: 'Terceira Série - Exercício Número 3',
+        subtitle: '⏱ 60 BPM',
+        description: 'Exercício N.3 da 3ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/bkwtevme6hnxwxh9creid/ex3.mp4?rlkey=m6o9qrqs3by246jwegzx8r5mf&st=ctdc1tzv&dl=0',
+        embedUrl: '',
+        timeSignature: '3/4',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 3,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        isAvailable: true,
+        isBuiltin: true
+      },
+      {
+        id: 'serie-3-ex-4',
+        seriesId: 'terceira-serie',
+        seriesTitle: '3ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de quarta',
+        title: 'Terceira Série - Exercício Número 4',
+        subtitle: '⏱ 60 BPM',
+        description: 'Exercício N.4 da 3ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/zy1f7t9mkh0ge5eizrhhv/ex4.mp4?rlkey=ojfhlbkz5bbqqsrtoj5yovt9w&st=0bp8bnsq&dl=0',
+        embedUrl: '',
+        timeSignature: '3/4',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 4,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        isAvailable: true,
+        isBuiltin: true
+      },
+      {
+        id: 'serie-3-ex-5',
+        seriesId: 'terceira-serie',
+        seriesTitle: '3ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de quarta',
+        title: 'Terceira Série - Exercício Número 5',
+        subtitle: '⏱ 60 BPM',
+        description: 'Exercício N.5 da 3ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/1bpcmw24xf0fidx8zk7rh/ex5.mp4?rlkey=sij3tfv5amt9w42zxrtujq859&st=4r15aw5i&dl=0',
+        embedUrl: '',
+        timeSignature: '4/4',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 5,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        isAvailable: true,
+        isBuiltin: true
+      }
+    ]
   }
 ];
 
@@ -587,11 +731,146 @@ export const saveAuthUser = (user) => {
   }
 };
 
-export const clearAuthUser = () => {
+export const clearAuthUser = async () => {
   try {
     localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+    if (isSupabaseConfigured && supabase) {
+      await supabase.auth.signOut();
+    }
   } catch (e) {
     console.error(e);
+  }
+};
+
+export const syncUserDataToSupabase = async (overrides = {}) => {
+  if (!isSupabaseConfigured || !supabase) return;
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    const userId = session?.user?.id;
+    if (!userId) return;
+
+    const currentProfile = overrides.profile || getProfile();
+    const currentFavorites = overrides.favorites || getFavorites();
+    const currentStudied = overrides.studied || getStudied();
+    const currentStats = overrides.stats || getStats();
+    const currentCustom = overrides.customSeries || getCustomSeries();
+
+    await supabase.from('profiles').upsert({
+      id: userId,
+      email: currentProfile.email || session.user.email,
+      name: currentProfile.name || 'Estudante de Música',
+      instrument: currentProfile.instrument || 'Voz / Solfejo',
+      avatar: currentProfile.avatar || '🎵',
+      photo_url: currentProfile.photoUrl || null,
+      plan: currentProfile.plan || 'vitalicio',
+      daily_goal_minutes: currentProfile.dailyGoalMinutes || 15,
+      streak_days: currentProfile.streakDays || 1,
+      last_practice_date: currentProfile.lastPracticeDate || new Date().toISOString().split('T')[0],
+      favorites: currentFavorites,
+      studied: currentStudied,
+      custom_series: currentCustom,
+      stats: currentStats,
+      updated_at: new Date().toISOString()
+    });
+
+    // Sincroniza/ativa registro na tabela users_plano (anual ou vitalicio)
+    const planName = currentProfile.plan === 'anual' ? 'anual' : 'vitalicio';
+    const { data: planoRow } = await supabase
+      .from('planos')
+      .select('id')
+      .eq('nome', planName)
+      .maybeSingle();
+
+    if (planoRow?.id) {
+      const { data: existingUserPlano } = await supabase
+        .from('users_plano')
+        .select('id, status, data_inicio')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (!existingUserPlano) {
+        await supabase.from('users_plano').insert({
+          id: userId,
+          plano_id: planoRow.id,
+          data_inicio: new Date().toISOString(),
+          status: 'ativo'
+        });
+      } else if (existingUserPlano.status === 'primeiro-acesso') {
+        await supabase
+          .from('users_plano')
+          .update({
+            status: 'ativo',
+            data_inicio: existingUserPlano.data_inicio || new Date().toISOString()
+          })
+          .eq('id', userId);
+      }
+    }
+  } catch (err) {
+    console.warn('Falha ao sincronizar com o Supabase:', err);
+  }
+};
+
+export const loadUserDataFromSupabase = async (userId) => {
+  if (!isSupabaseConfigured || !supabase || !userId) return null;
+  try {
+    const [{ data, error }, { data: userPlano }] = await Promise.all([
+      supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle(),
+      supabase
+        .from('users_plano')
+        .select('status, data_inicio, data_final, plano_id, planos(nome, titulo)')
+        .eq('id', userId)
+        .maybeSingle()
+    ]);
+
+    if (error || !data) return null;
+
+    const resolvedPlan = userPlano?.planos?.nome || data.plan || 'vitalicio';
+
+    const mergedProfile = {
+      ...getProfile(),
+      name: data.name || 'Estudante de Música',
+      email: data.email || '',
+      instrument: data.instrument || 'Voz / Solfejo',
+      avatar: data.avatar || '🎵',
+      photoUrl: data.photo_url || null,
+      plan: resolvedPlan,
+      planStatus: userPlano?.status || 'ativo',
+      planStartDate: userPlano?.data_inicio || null,
+      planEndDate: userPlano?.data_final || null,
+      dailyGoalMinutes: data.daily_goal_minutes ?? 15,
+      streakDays: data.streak_days ?? 1,
+      lastPracticeDate: data.last_practice_date || new Date().toISOString().split('T')[0]
+    };
+
+    localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(mergedProfile));
+
+    if (Array.isArray(data.favorites)) {
+      localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(data.favorites));
+    }
+    if (Array.isArray(data.studied)) {
+      localStorage.setItem(STORAGE_KEYS.STUDIED, JSON.stringify(data.studied));
+    }
+    if (data.stats && typeof data.stats === 'object') {
+      localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(data.stats));
+    }
+    if (Array.isArray(data.custom_series)) {
+      localStorage.setItem(STORAGE_KEYS.CUSTOM_SERIES, JSON.stringify(data.custom_series));
+    }
+
+    return {
+      profile: mergedProfile,
+      favorites: Array.isArray(data.favorites) ? data.favorites : getFavorites(),
+      studied: Array.isArray(data.studied) ? data.studied : getStudied(),
+      stats: data.stats || getStats(),
+      customSeries: Array.isArray(data.custom_series) ? data.custom_series : getCustomSeries()
+    };
+  } catch (err) {
+    console.warn('Falha ao carregar dados do Supabase:', err);
+    return null;
   }
 };
 
@@ -620,6 +899,7 @@ export const toggleFavorite = (seriesId) => {
     favorites.push(seriesId);
   }
   localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
+  syncUserDataToSupabase({ favorites });
   return favorites;
 };
 
@@ -651,6 +931,7 @@ export const toggleStudied = (seriesId) => {
     logPracticeSession(10, seriesId);
   }
   localStorage.setItem(STORAGE_KEYS.STUDIED, JSON.stringify(studied));
+  syncUserDataToSupabase({ studied });
   return { studied, isNowStudied };
 };
 
@@ -679,6 +960,7 @@ export const getProfile = () => {
 
 export const saveProfile = (profileData) => {
   localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(profileData));
+  syncUserDataToSupabase({ profile: profileData });
   return profileData;
 };
 
@@ -717,6 +999,7 @@ export const logPracticeSession = (minutes, seriesId) => {
   });
 
   localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(stats));
+  syncUserDataToSupabase({ stats });
   return stats;
 };
 
@@ -740,5 +1023,6 @@ export const addCustomSeries = (newSeries) => {
   };
   list.push(formattedSeries);
   localStorage.setItem(STORAGE_KEYS.CUSTOM_SERIES, JSON.stringify(list));
+  syncUserDataToSupabase({ customSeries: list });
   return list;
 };

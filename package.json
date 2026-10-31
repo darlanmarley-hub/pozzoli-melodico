@@ -9,6 +9,7 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
     "@tonejs/midi": "^2.0.28",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^0.469.0",

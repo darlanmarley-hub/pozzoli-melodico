@@ -13,7 +13,8 @@ import {
   KeyRound,
   ExternalLink
 } from 'lucide-react';
-import { saveAuthUser, saveProfile, getProfile } from '../utils/storage';
+import { saveAuthUser, saveProfile, getProfile, loadUserDataFromSupabase, syncUserDataToSupabase } from '../utils/storage';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 export default function LoginPage({ onLoginSuccess }) {
   // Form states
@@ -40,7 +41,7 @@ export default function LoginPage({ onLoginSuccess }) {
   const [forgotSent, setForgotSent] = useState(false);
 
   // Handle standard email/password login
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     if (e) e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
@@ -55,6 +56,48 @@ export default function LoginPage({ onLoginSuccess }) {
     }
 
     setIsLoading(true);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password: password.trim()
+        });
+
+        if (error) {
+          setIsLoading(false);
+          setErrorMessage(
+            error.message === 'Invalid login credentials'
+              ? 'E-mail ou senha incorretos. Se é seu primeiro acesso, clique em "Valide seu acesso aqui".'
+              : error.message
+          );
+          return;
+        }
+
+        const sbUser = data.user;
+        const user = {
+          id: sbUser.id,
+          email: sbUser.email,
+          name: sbUser.user_metadata?.full_name || sbUser.email.split('@')[0],
+          provider: 'supabase',
+          avatar: '🎵',
+          loginTime: new Date().toISOString()
+        };
+
+        saveAuthUser(user);
+        await loadUserDataFromSupabase(sbUser.id);
+        setIsLoading(false);
+        setSuccessMessage('Login efetuado com sucesso!');
+        if (onLoginSuccess) {
+          setTimeout(() => onLoginSuccess(user), 300);
+        }
+        return;
+      } catch (err) {
+        setIsLoading(false);
+        setErrorMessage('Erro ao conectar ao servidor de autenticação.');
+        return;
+      }
+    }
 
     setTimeout(() => {
       setIsLoading(false);
@@ -105,9 +148,23 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   // Google Login Handler
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     setIsLoading(true);
     setErrorMessage('');
+
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin
+        }
+      });
+      if (error) {
+        setIsLoading(false);
+        setErrorMessage(error.message);
+      }
+      return;
+    }
 
     setTimeout(() => {
       setIsLoading(false);
@@ -134,7 +191,7 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   // Handle Purchase Access Validation ("VALIDAR E-MAIL DE COMPRA")
-  const handleValidateAccess = (e) => {
+  const handleValidateAccess = async (e) => {
     if (e) e.preventDefault();
     setValidationError('');
     setValidationSuccess(false);
@@ -145,6 +202,97 @@ export default function LoginPage({ onLoginSuccess }) {
     }
 
     setValidationLoading(true);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const cleanEmail = validationEmail.trim().toLowerCase();
+        const defaultPassword = 'Pozzoli123!';
+
+        // 1. Autentica o comprador que foi cadastrado automaticamente pelo Webhook da SyncPay
+        const authResult = await supabase.auth.signInWithPassword({
+          email: cleanEmail,
+          password: defaultPassword
+        });
+
+        if (authResult.error || !authResult.data?.user) {
+          setValidationLoading(false);
+          setValidationError(
+            'E-mail de compra não encontrado. Verifique se digitou o mesmo e-mail usado na compra ou se o pagamento já foi aprovado.'
+          );
+          return;
+        }
+
+        const sbUser = authResult.data.user;
+
+        // 2. Verifica o plano do comprador na tabela users_plano
+        const { data: userPlano } = await supabase
+          .from('users_plano')
+          .select('id, status, data_inicio, data_final, plano_id, planos(nome, titulo)')
+          .eq('id', sbUser.id)
+          .maybeSingle();
+
+        if (userPlano?.status === 'cancelado') {
+          await supabase.auth.signOut();
+          setValidationLoading(false);
+          setValidationError('O acesso desta compra encontra-se cancelado ou reembolsado.');
+          return;
+        }
+
+        if (userPlano?.data_final && new Date(userPlano.data_final) < new Date()) {
+          await supabase.auth.signOut();
+          setValidationLoading(false);
+          setValidationError('Seu plano anual expirou. Renove sua assinatura para continuar acessando.');
+          return;
+        }
+
+        const planName = userPlano?.planos?.nome || sbUser.user_metadata?.plan || 'vitalicio';
+        const nowIso = new Date().toISOString();
+
+        // 3. Muda o status de 'primeiro-acesso' para 'ativo' na tabela users_plano
+        if (userPlano) {
+          await supabase
+            .from('users_plano')
+            .update({
+              status: 'ativo',
+              data_inicio: userPlano.data_inicio || nowIso,
+              updated_at: nowIso
+            })
+            .eq('id', sbUser.id);
+        }
+
+        const user = {
+          id: sbUser.id,
+          email: cleanEmail,
+          name: sbUser.user_metadata?.full_name || cleanEmail.split('@')[0],
+          provider: 'purchase_validation',
+          transactionCode: sbUser.user_metadata?.transaction_code || 'SYNCPAY',
+          plan: planName,
+          avatar: '⭐',
+          loginTime: nowIso
+        };
+
+        saveAuthUser(user);
+        await loadUserDataFromSupabase(sbUser.id);
+        const existingProfile = getProfile();
+        saveProfile({
+          ...existingProfile,
+          name: user.name,
+          email: user.email,
+          plan: planName
+        });
+
+        setValidationLoading(false);
+        setValidationSuccess(true);
+        setTimeout(() => {
+          if (onLoginSuccess) onLoginSuccess(user);
+        }, 600);
+        return;
+      } catch (err) {
+        setValidationLoading(false);
+        setValidationError('Não foi possível validar o acesso no servidor.');
+        return;
+      }
+    }
 
     setTimeout(() => {
       setValidationLoading(false);
@@ -177,7 +325,7 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   // Handle Forgot Password
-  const handleForgotPassword = (e) => {
+  const handleForgotPassword = async (e) => {
     if (e) e.preventDefault();
     if (!forgotEmail.trim() || !forgotEmail.includes('@')) {
       alert('Por favor, informe um e-mail válido.');
@@ -185,6 +333,15 @@ export default function LoginPage({ onLoginSuccess }) {
     }
 
     setForgotLoading(true);
+    if (isSupabaseConfigured && supabase) {
+      await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
+        redirectTo: window.location.origin
+      });
+      setForgotLoading(false);
+      setForgotSent(true);
+      return;
+    }
+
     setTimeout(() => {
       setForgotLoading(false);
       setForgotSent(true);
