@@ -22,6 +22,10 @@ export default function VerticalVideoPlayer({
   playerControls = null
 }) {
   const videoRef = useRef(null);
+  const frameRef = useRef(null);
+  const isUserScrollingRef = useRef(false);
+  const userScrollTimeoutRef = useRef(null);
+
   const [isMuted, setIsMuted] = useState(false);
   const [useIframeFallback, setUseIframeFallback] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(true);
@@ -51,6 +55,10 @@ export default function VerticalVideoPlayer({
   useEffect(() => {
     setIsVideoLoading(true);
     setUseIframeFallback(false);
+
+    if (frameRef.current) {
+      frameRef.current.scrollTop = 0;
+    }
 
     if (videoRef.current) {
       if (prevSrcRef.current !== directVideoSrc) {
@@ -103,10 +111,6 @@ export default function VerticalVideoPlayer({
       setIsMuted(!isMuted);
     }
   };
-
-  const frameRef = useRef(null);
-  const isUserScrollingRef = useRef(false);
-  const userScrollTimeoutRef = useRef(null);
 
   const hasScrollbar = !isDesktop;
 

@@ -114,6 +114,83 @@ input, textarea {
   padding-bottom: 90px; /* space for bottom floating nav or player dock */
 }
 
+.app-container.reader-active {
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  padding-bottom: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Reader Top Header (Exercise Video Top Bar) */
+.reader-top-header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  text-align: center;
+}
+
+.reader-top-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.reader-series-pill {
+  background: rgba(212, 163, 75, 0.2);
+  border: 1px solid rgba(212, 163, 75, 0.55);
+  color: #f3cf88;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.reader-exercise-title {
+  color: #fdf8ee;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.reader-exercise-subtitle {
+  color: #c7b299;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+@media (max-width: 768px) {
+  .reader-top-header.visible {
+    padding: 10px 12px 9px 12px !important;
+  }
+
+  .reader-series-pill {
+    font-size: 0.68rem !important;
+    padding: 2px 7px !important;
+  }
+
+  .reader-exercise-title {
+    font-size: 0.9rem !important;
+  }
+
+  .reader-exercise-subtitle {
+    font-size: 0.72rem !important;
+  }
+}
+
 /* Screen Header */
 .screen-header {
   display: flex;

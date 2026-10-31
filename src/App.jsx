@@ -138,13 +138,16 @@ export default function App() {
     let idx = currentList.findIndex((s) => s.id === selected.id);
     if (idx < 0) idx = 0;
     setCurrentSeriesIndex(idx);
+    setIsMenuVisible(true);
     setActiveTab('reader');
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handlePreviousScore = () => {
     if (currentSeriesIndex > 0) {
       if (syncEngineRef.current) syncEngineRef.current.stop();
       setCurrentSeriesIndex(currentSeriesIndex - 1);
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
   };
 
@@ -152,6 +155,7 @@ export default function App() {
     if (currentSeriesIndex < allSeries.length - 1) {
       if (syncEngineRef.current) syncEngineRef.current.stop();
       setCurrentSeriesIndex(currentSeriesIndex + 1);
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
   };
 
@@ -188,7 +192,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${activeTab === 'reader' ? 'reader-active' : ''}`}>
       {/* Tab View: Partitura / Leitura / Player em Formato Vertical */}
       {activeTab === 'reader' && (
         <div 
@@ -197,7 +201,8 @@ export default function App() {
             display: 'flex', 
             flexDirection: 'column', 
             flex: 1, 
-            height: '100vh', 
+            height: '100dvh', 
+            maxHeight: '100dvh',
             overflow: 'hidden', 
             background: '#ffffff', 
             position: 'relative' 

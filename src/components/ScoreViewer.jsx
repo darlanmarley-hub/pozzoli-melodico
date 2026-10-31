@@ -144,13 +144,30 @@ export function MusicXMLViewer({
     setZoomLevel(1.0);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [currentSeries]);
+
+  // Formata o título e a série de forma limpa e legível para mobile
+  const seriesBadgeText = currentSeries?.seriesTitle || '1ª SÉRIE';
+  const rawTitle = currentSeries?.title || 'Exercício Número 1';
+  const cleanExerciseTitle = rawTitle
+    .replace(/^(Primeira|Segunda|Terceira)\s+Série\s*[-—]\s*/i, '')
+    .trim();
+  const subtitleText = currentSeries?.isDesktopMode
+    ? (currentSeries?.subtitle || 'Formato computador')
+    : (currentSeries?.seriesSubtitle || 'Exercícios em intervalos de segunda');
+
   return (
     <div
       className={`score-view-wrapper ${isDesktop ? 'desktop-mode' : 'mobile-mode'}`}
       style={{
         width: width || '100%',
-        height: '100vh',
-        minHeight: '100vh',
+        height: '100dvh',
+        minHeight: '100dvh',
+        maxHeight: '100dvh',
         background: '#ffffff',
         display: 'flex',
         flexDirection: 'column',
@@ -160,67 +177,34 @@ export function MusicXMLViewer({
         overflow: 'hidden'
       }}
     >
-      {/* Cabeçalho de Destaque no Topo */}
+      {/* Cabeçalho de Destaque no Topo - Visível imediatamente sem precisar rolar */}
       <div
-        className="reader-top-header"
+        className={`reader-top-header ${isMenuVisible ? 'visible' : 'hidden'}`}
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
           width: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '12px 16px',
-          background: 'rgba(19, 25, 39, 0.98)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid var(--border-orange)',
+          padding: isMenuVisible ? '10px 14px 10px 14px' : '0 14px',
+          maxHeight: isMenuVisible ? '110px' : '0px',
+          background: 'linear-gradient(180deg, #1e1610 0%, #120d09 100%)',
+          borderBottom: isMenuVisible ? '1.5px solid #d4a34b' : 'none',
           zIndex: 50,
           flexShrink: 0,
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
-          transform: isMenuVisible ? 'translateY(0)' : 'translateY(-100%)',
+          overflow: 'hidden',
+          boxShadow: isMenuVisible ? '0 4px 18px rgba(0, 0, 0, 0.45)' : 'none',
           opacity: isMenuVisible ? 1 : 0,
           pointerEvents: isMenuVisible ? 'auto' : 'none',
-          transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
+          transition: 'max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease'
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <span
-            style={{
-              fontSize: '1.05rem',
-              fontWeight: 900,
-              fontFamily: 'var(--font-heading)',
-              background: 'linear-gradient(135deg, #ffffff 40%, #ff944d 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              letterSpacing: '1px',
-              textAlign: 'center',
-              textTransform: 'uppercase'
-            }}
-          >
-            {currentSeries?.isDesktopMode
-              ? (currentSeries?.seriesTitle ? `${currentSeries.seriesTitle} — ${currentSeries.title}` : currentSeries.title)
-              : currentSeries?.title?.toLowerCase().includes('série')
-              ? currentSeries.title
-              : currentSeries?.seriesTitle
-              ? `${currentSeries.seriesTitle} — ${currentSeries.title}`
-              : (currentSeries?.title || 'PRIMEIRA SÉRIE — EXERCÍCIO N.1')}
-          </span>
-          <span
-            style={{
-              fontSize: '0.76rem',
-              fontWeight: 500,
-              color: 'rgba(255, 255, 255, 0.75)',
-              letterSpacing: '0.3px',
-              textTransform: 'none',
-              marginTop: '2px',
-              fontFamily: "'Inter', -apple-system, sans-serif"
-            }}
-          >
-            {currentSeries?.isDesktopMode
-              ? (currentSeries?.subtitle || 'Formato computador')
-              : (currentSeries?.seriesSubtitle || 'Exercícios em intervalos de segunda')}
+        <div className="reader-top-header-inner">
+          <div className="reader-top-title-row">
+            <span className="reader-series-pill">{seriesBadgeText}</span>
+            <span className="reader-exercise-title">{cleanExerciseTitle}</span>
+          </div>
+          <span className="reader-exercise-subtitle">
+            {subtitleText}
           </span>
         </div>
       </div>
@@ -229,10 +213,6 @@ export function MusicXMLViewer({
       {playbackPhase === 'count-in' && countInTick && (
         <div
           style={{
-            position: 'absolute',
-            top: isMenuVisible ? '50px' : '0',
-            left: 0,
-            right: 0,
             width: '100%',
             zIndex: 60,
             background: 'linear-gradient(90deg, #e55c00 0%, #ff6600 100%)',
@@ -244,8 +224,7 @@ export function MusicXMLViewer({
             fontWeight: 700,
             fontSize: '0.9rem',
             boxShadow: '0 4px 15px rgba(255, 102, 0, 0.4)',
-            flexShrink: 0,
-            transition: 'top 0.35s ease'
+            flexShrink: 0
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -272,13 +251,11 @@ export function MusicXMLViewer({
         style={{
           flex: 1,
           width: '100%',
-          height: '100%',
+          minHeight: 0,
           display: 'flex',
           flexDirection: 'column',
           background: '#ffffff',
-          overflow: 'hidden',
-          paddingTop: isMenuVisible ? '60px' : '0px',
-          transition: 'padding-top 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
+          overflow: 'hidden'
         }}
       >
         <VerticalVideoPlayer
