@@ -200,7 +200,7 @@ export function MusicXMLViewer({
             }}
           >
             {currentSeries?.isDesktopMode
-              ? currentSeries.title
+              ? (currentSeries?.seriesTitle ? `${currentSeries.seriesTitle} — ${currentSeries.title}` : currentSeries.title)
               : currentSeries?.title?.toLowerCase().includes('série')
               ? currentSeries.title
               : currentSeries?.seriesTitle

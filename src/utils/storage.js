@@ -302,6 +302,30 @@ export const SERIES_FOLDERS = [
     description: 'Pasta da 2ª Série - Exercícios sobre intervalos de terça.',
     exercises: [
       {
+        id: 'serie-2-versao-computador',
+        seriesId: 'segunda-serie',
+        seriesTitle: '2ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de terça',
+        title: 'SÉRIE COMPLETA',
+        subtitle: 'Formato computador',
+        description: 'Vídeo da 2ª Série em formato horizontal panorâmico gravado para telas de computador.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/p6enknypr9x52mmupgm0s/desktop.mp4?rlkey=ijoxmb6p9ehn8cp4dxvf2dfky&st=b5tsotut&dl=0',
+        videoPcUrl: 'https://www.dropbox.com/scl/fi/p6enknypr9x52mmupgm0s/desktop.mp4?rlkey=ijoxmb6p9ehn8cp4dxvf2dfky&st=b5tsotut&dl=0',
+        isDesktopMode: true,
+        embedUrl: '',
+        timeSignature: '2/4',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 0,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        isAvailable: true,
+        isBuiltin: true
+      },
+      {
         id: 'serie-2-ex-1',
         seriesId: 'segunda-serie',
         seriesTitle: '2ª SÉRIE',
@@ -537,7 +561,38 @@ const STORAGE_KEYS = {
   PROFILE: 'pozzoli_profile',
   STATS: 'pozzoli_stats',
   CUSTOM_SERIES: 'pozzoli_custom_series',
-  OFFLINE_CACHE: 'pozzoli_offline_ready'
+  OFFLINE_CACHE: 'pozzoli_offline_ready',
+  AUTH_USER: 'pozzoli_auth_user'
+};
+
+export const getAuthUser = () => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.AUTH_USER);
+    return data ? JSON.parse(data) : null;
+  } catch {
+    return null;
+  }
+};
+
+export const saveAuthUser = (user) => {
+  try {
+    if (!user) {
+      localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+      return null;
+    }
+    localStorage.setItem(STORAGE_KEYS.AUTH_USER, JSON.stringify(user));
+    return user;
+  } catch {
+    return null;
+  }
+};
+
+export const clearAuthUser = () => {
+  try {
+    localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const getFavorites = () => {

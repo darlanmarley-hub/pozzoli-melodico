@@ -6,6 +6,7 @@ import SavedExercisesView from './components/SavedExercisesView';
 import ProfileModal from './components/ProfileModal';
 import StatsModal from './components/StatsModal';
 import BottomNavBar from './components/BottomNavBar';
+import LoginPage from './components/LoginPage';
 import { AudioSyncEngine } from './utils/AudioSyncEngine';
 
 import {
@@ -17,10 +18,13 @@ import {
   getProfile,
   getStats,
   getCustomSeries,
-  addCustomSeries
+  addCustomSeries,
+  getAuthUser,
+  clearAuthUser
 } from './utils/storage';
 
 export default function App() {
+  const [authUser, setAuthUser] = useState(() => getAuthUser());
   const [allSeries, setAllSeries] = useState(() => {
     const custom = getCustomSeries();
     return [...INITIAL_SERIES, ...custom];
@@ -121,6 +125,17 @@ export default function App() {
     const updatedCustom = addCustomSeries(newExercise);
     setAllSeries([...INITIAL_SERIES, ...updatedCustom]);
   };
+
+  if (!authUser) {
+    return (
+      <LoginPage 
+        onLoginSuccess={(user) => {
+          setAuthUser(user);
+          setProfile(getProfile());
+        }} 
+      />
+    );
+  }
 
   return (
     <div className="app-container">
@@ -234,6 +249,10 @@ export default function App() {
             profile={profile}
             onClose={() => setActiveTab('library')}
             onSave={(updated) => setProfile(updated)}
+            onLogout={() => {
+              setAuthUser(null);
+              setActiveTab('library');
+            }}
           />
         </div>
       )}

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { User, Upload, Cloud, LogOut, CheckCircle2, ShieldCheck, Mail, Star, Save, RotateCw } from 'lucide-react';
-import { saveProfile } from '../utils/storage';
+import { saveProfile, clearAuthUser } from '../utils/storage';
 
-export default function ProfileModal({ profile = {}, onClose, onSave }) {
+export default function ProfileModal({ profile = {}, onClose, onSave, onLogout }) {
   const [name, setName] = useState(profile.name || 'Estudante Pozzoli');
   const [email, setEmail] = useState(profile.email || 'aluno@pozzolimelodico.com');
   const [photoUrl, setPhotoUrl] = useState(profile.photoUrl || null);
@@ -34,7 +34,10 @@ export default function ProfileModal({ profile = {}, onClose, onSave }) {
 
   const handleLogout = () => {
     if (window.confirm('Deseja realmente sair da sua conta?')) {
-      alert('Você saiu da sua conta.');
+      clearAuthUser();
+      if (onLogout) {
+        onLogout();
+      }
     }
   };
 

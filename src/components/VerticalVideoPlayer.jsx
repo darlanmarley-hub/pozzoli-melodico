@@ -41,7 +41,7 @@ export default function VerticalVideoPlayer({
     ? (translateY !== '0px' ? `translateY(${translateY})` : 'none')
     : `scale(${scale})${translateY !== '0px' ? ` translateY(${translateY})` : ''}`;
 
-  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0';
+  const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || (isDesktop ? (videoUrl || currentSeries?.videoUrl) : null) || 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0';
   const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
   const rawUrl = isDesktop ? pcUrl : mobileUrl;
   const directVideoSrc = getDirectVideoUrl(rawUrl);
