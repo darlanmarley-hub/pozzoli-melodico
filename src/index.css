@@ -123,12 +123,23 @@ input, textarea {
 }
 
 /* Reader Top Header (Exercise Video Top Bar) */
+.reader-top-header.visible {
+  padding: 14px 16px 12px 16px;
+  max-height: 180px;
+}
+
+.reader-top-header.hidden {
+  padding: 0 16px !important;
+  max-height: 0 !important;
+  border-bottom: none !important;
+}
+
 .reader-top-header-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 4px;
   width: 100%;
   text-align: center;
 }
@@ -142,14 +153,14 @@ input, textarea {
 }
 
 .reader-series-pill {
-  background: rgba(212, 163, 75, 0.2);
-  border: 1px solid rgba(212, 163, 75, 0.55);
+  background: rgba(212, 163, 75, 0.22);
+  border: 1px solid rgba(212, 163, 75, 0.65);
   color: #f3cf88;
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.05em;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 999px;
   text-transform: uppercase;
   white-space: nowrap;
@@ -158,36 +169,50 @@ input, textarea {
 .reader-exercise-title {
   color: #fdf8ee;
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 800;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.01em;
   line-height: 1.25;
 }
 
 .reader-exercise-subtitle {
   color: #c7b299;
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   font-weight: 500;
   line-height: 1.25;
 }
 
 @media (max-width: 768px) {
+  /* Desce o texto do cabeçalho para ficar abaixo do relógio/bateria da barra de status do celular */
   .reader-top-header.visible {
-    padding: 10px 12px 9px 12px !important;
+    padding-top: max(46px, calc(env(safe-area-inset-top, 32px) + 14px)) !important;
+    padding-bottom: 12px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    max-height: 170px !important;
   }
 
   .reader-series-pill {
-    font-size: 0.68rem !important;
-    padding: 2px 7px !important;
+    font-size: 0.7rem !important;
+    padding: 2px 8px !important;
   }
 
   .reader-exercise-title {
-    font-size: 0.9rem !important;
+    font-size: 0.92rem !important;
   }
 
   .reader-exercise-subtitle {
-    font-size: 0.72rem !important;
+    font-size: 0.74rem !important;
+  }
+
+  /* Desce os vídeos no mobile para que a partitura fique bem posicionada e nunca cole no topo */
+  .reader-video-stage.mobile-stage.menu-open .vertical-video-frame.mobile-mode {
+    padding-top: 28px !important;
+  }
+
+  .reader-video-stage.mobile-stage.menu-closed .vertical-video-frame.mobile-mode {
+    padding-top: max(54px, calc(env(safe-area-inset-top, 36px) + 22px)) !important;
   }
 }
 
@@ -1489,11 +1514,11 @@ body.theme-baroque .wifi-tip-badge {
     color: #bfae9b !important;
   }
 
-  /* Redução do zoom dos vídeos no mobile para enquadramento perfeito da partitura (exceto desktop) */
+  /* Redução do zoom e recuo superior dos vídeos no mobile para enquadramento perfeito da partitura (exceto desktop) */
   .vertical-video-frame.mobile-mode .vertical-video-element,
   .vertical-video-frame:not(.desktop-mode) .vertical-video-element {
     object-fit: contain !important;
-    transform: scale(0.88);
+    transform: translateY(22px) scale(0.88);
     transform-origin: top center;
   }
 }
@@ -2585,11 +2610,20 @@ body.theme-baroque .validation-card-subtitle {
 /* Mobile Header Spacing & Title Size Adjustments */
 @media (max-width: 768px) {
   .library-view-container {
-    padding-top: 26px !important;
+    padding-top: max(46px, calc(env(safe-area-inset-top, 32px) + 14px)) !important;
   }
 
   .library-top-header {
-    padding-top: 18px !important;
+    padding-top: 8px !important;
+  }
+
+  .profile-page-container,
+  .stats-page-container {
+    padding-top: max(36px, calc(env(safe-area-inset-top, 24px) + 12px)) !important;
+  }
+
+  .player-dock-container {
+    padding-bottom: max(16px, calc(env(safe-area-inset-bottom, 10px) + 8px)) !important;
   }
 
   .library-main-title,

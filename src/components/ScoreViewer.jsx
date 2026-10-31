@@ -177,7 +177,7 @@ export function MusicXMLViewer({
         overflow: 'hidden'
       }}
     >
-      {/* Cabeçalho de Destaque no Topo - Visível imediatamente sem precisar rolar */}
+      {/* Cabeçalho de Destaque no Topo - Com recuo seguro abaixo do relógio/bateria do celular */}
       <div
         className={`reader-top-header ${isMenuVisible ? 'visible' : 'hidden'}`}
         style={{
@@ -185,8 +185,6 @@ export function MusicXMLViewer({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: isMenuVisible ? '10px 14px 10px 14px' : '0 14px',
-          maxHeight: isMenuVisible ? '110px' : '0px',
           background: 'linear-gradient(180deg, #1e1610 0%, #120d09 100%)',
           borderBottom: isMenuVisible ? '1.5px solid #d4a34b' : 'none',
           zIndex: 50,
@@ -248,6 +246,7 @@ export function MusicXMLViewer({
 
       {/* Conteúdo do Leitor com Fundo Branco (Abaixo do Texto do Topo) */}
       <div
+        className={`reader-video-stage ${isDesktop ? 'desktop-stage' : 'mobile-stage'} ${isMenuVisible ? 'menu-open' : 'menu-closed'}`}
         style={{
           flex: 1,
           width: '100%',

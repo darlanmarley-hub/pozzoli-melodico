@@ -35,15 +35,19 @@ export default function VerticalVideoPlayer({
 
   const isDesktop = currentSeries?.isDesktopMode || isDesktopMode;
   // Para desktop: mantém escala original (1.0) sem alterar
-  // Para mobile: diminui o zoom para melhor enquadramento e conforto visual
+  // Para mobile: diminui o zoom e desce um pouco o vídeo para enquadramento perfeito abaixo do topo
   const mobileScale = currentSeries?.videoScale && currentSeries.videoScale < 1.0
     ? currentSeries.videoScale
     : 0.88;
   const scale = isDesktop ? (currentSeries?.videoScale ?? 1.0) : mobileScale;
-  const translateY = isDesktop ? (currentSeries?.videoTranslateY ?? '0px') : (currentSeries?.videoTranslateY ?? '0px');
+  const translateY = isDesktop
+    ? (currentSeries?.videoTranslateY ?? '0px')
+    : (currentSeries?.videoTranslateY && currentSeries.videoTranslateY !== '0px'
+        ? currentSeries.videoTranslateY
+        : '22px');
   const videoTransform = isDesktop
     ? (translateY !== '0px' ? `translateY(${translateY})` : 'none')
-    : `scale(${scale})${translateY !== '0px' ? ` translateY(${translateY})` : ''}`;
+    : `translateY(${translateY}) scale(${scale})`;
 
   const pcUrl = currentSeries?.videoPcUrl || currentSeries?.videoUrlPc || (isDesktop ? (videoUrl || currentSeries?.videoUrl) : null) || 'https://www.dropbox.com/scl/fi/yx5razo8j6h0evevubpf5/desktop.mp4?rlkey=zrvdkbyotqwgswjtcowvd50sr&st=225dx2cj&dl=0';
   const mobileUrl = videoUrl || currentSeries?.videoUrl || 'https://www.dropbox.com/scl/fi/rxev122eb1g94koyxqfef/serie1.mp4?rlkey=hxeihz1dob8bfacmggdncb1an&st=u5h136ev&dl=0';
