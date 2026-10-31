@@ -43,8 +43,8 @@ export default function VerticalVideoPlayer({
   const translateY = isDesktop
     ? (currentSeries?.videoTranslateY ?? '0px')
     : (currentSeries?.videoTranslateY && currentSeries.videoTranslateY !== '0px'
-        ? currentSeries.videoTranslateY
-        : '22px');
+      ? currentSeries.videoTranslateY
+      : '22px');
   const videoTransform = isDesktop
     ? (translateY !== '0px' ? `translateY(${translateY})` : 'none')
     : `translateY(${translateY}) scale(${scale})`;
@@ -70,7 +70,7 @@ export default function VerticalVideoPlayer({
         videoRef.current.load();
         try {
           videoRef.current.currentTime = 0;
-        } catch (e) {}
+        } catch (e) { }
         prevSrcRef.current = directVideoSrc;
       }
     }
