@@ -129,8 +129,9 @@ export default function SeriesLibraryView({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '6px',
-            marginTop: '4px',
+            gap: '10px',
+            marginTop: '16px',
+            marginBottom: '14px',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
           }}
         >
