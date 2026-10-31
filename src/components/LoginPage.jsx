@@ -75,6 +75,35 @@ export default function LoginPage({ onLoginSuccess }) {
         }
 
         const sbUser = data.user;
+
+        // Verifica status e validade do plano na tabela users_plano
+        const { data: userPlano } = await supabase
+          .from('users_plano')
+          .select('id, status, data_inicio, data_final, plano_id')
+          .eq('id', sbUser.id)
+          .maybeSingle();
+
+        if (userPlano?.status === 'cancelado') {
+          await supabase.auth.signOut();
+          setIsLoading(false);
+          setErrorMessage('O acesso desta compra encontra-se cancelado ou reembolsado.');
+          return;
+        }
+
+        if (userPlano?.data_final && new Date(userPlano.data_final) < new Date()) {
+          await supabase.auth.signOut();
+          setIsLoading(false);
+          setErrorMessage('Seu plano anual expirou. Renove sua assinatura para continuar acessando.');
+          return;
+        }
+
+        if (userPlano?.status === 'primeiro-acesso') {
+          await supabase
+            .from('users_plano')
+            .update({ status: 'ativo', updated_at: new Date().toISOString() })
+            .eq('id', sbUser.id);
+        }
+
         const user = {
           id: sbUser.id,
           email: sbUser.email,

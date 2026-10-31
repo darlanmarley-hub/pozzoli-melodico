@@ -64,6 +64,24 @@ export default function App() {
     const hydrateFromSession = async (session) => {
       if (!session?.user) return;
       const sbUser = session.user;
+
+      // Valida se o plano do usuário continua ativo na rota protegida
+      const { data: userPlano } = await supabase
+        .from('users_plano')
+        .select('id, status, data_final')
+        .eq('id', sbUser.id)
+        .maybeSingle();
+
+      if (
+        userPlano?.status === 'cancelado' ||
+        (userPlano?.data_final && new Date(userPlano.data_final) < new Date())
+      ) {
+        await supabase.auth.signOut();
+        clearAuthUser();
+        setAuthUser(null);
+        return;
+      }
+
       const mappedUser = {
         id: sbUser.id,
         email: sbUser.email,
@@ -86,11 +104,22 @@ export default function App() {
     };
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      hydrateFromSession(session);
+      if (session?.user) {
+        hydrateFromSession(session);
+      } else {
+        const stored = getAuthUser();
+        if (stored?.provider === 'supabase') {
+          clearAuthUser();
+          setAuthUser(null);
+        }
+      }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        clearAuthUser();
+        setAuthUser(null);
+      } else if (session?.user) {
         hydrateFromSession(session);
       }
     });
