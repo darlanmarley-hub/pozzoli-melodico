@@ -125,28 +125,6 @@ export default function LoginPage({ onLoginSuccess }) {
     }, 600);
   };
 
-  // Quick Demo / Test Login
-  const handleQuickDemoLogin = () => {
-    setEmail('aluno.pozzoli@musica.com');
-    setPassword('123456');
-    setErrorMessage('');
-    
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      const user = {
-        id: 'demo_user',
-        email: 'aluno.pozzoli@musica.com',
-        name: 'Aluno Pozzoli',
-        provider: 'demo',
-        avatar: '🎵',
-        loginTime: new Date().toISOString()
-      };
-      saveAuthUser(user);
-      if (onLoginSuccess) onLoginSuccess(user);
-    }, 400);
-  };
-
   // Google Login Handler
   const handleGoogleLogin = async () => {
     setIsLoading(true);
@@ -582,18 +560,6 @@ export default function LoginPage({ onLoginSuccess }) {
                   }}
                 >
                   Esqueceu a senha?
-                </button>
-              </div>
-
-              {/* Acesso Rápido para Demonstração / Convidado */}
-              <div className="login-demo-access">
-                <button
-                  type="button"
-                  className="login-demo-btn"
-                  onClick={handleQuickDemoLogin}
-                  title="Entrar imediatamente com dados de teste"
-                >
-                  Entrar como Convidado (Demonstração)
                 </button>
               </div>
             </>
