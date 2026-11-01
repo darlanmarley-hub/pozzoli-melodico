@@ -99,26 +99,25 @@ export default function SeriesLibraryView({
         <div
           className="wifi-tip-badge"
           style={{
-            background: 'rgba(255, 102, 0, 0.14)',
-            border: '1px solid rgba(255, 102, 0, 0.4)',
-            color: '#ff944d',
+            background: 'transparent',
+            border: 'none',
+            color: '#c9b8a3',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            padding: '6px 14px',
-            borderRadius: 'var(--radius-full)',
-            fontSize: '0.85rem',
-            fontWeight: 600,
+            padding: '2px 4px',
+            fontSize: '0.8rem',
+            fontWeight: 400,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '8px',
-            marginTop: '4px',
-            marginBottom: '4px',
+            gap: '6px',
+            marginTop: '2px',
+            marginBottom: '2px',
             lineHeight: 1.35,
             textAlign: 'center'
           }}
         >
-          <Wifi size={16} style={{ flexShrink: 0 }} />
-          <span>Conecte-se ao Wi-Fi para economizar seus dados móveis</span>
+          <Wifi size={14} style={{ flexShrink: 0, color: '#d4a34b' }} />
+          <span>Conecte-se ao Wi-Fi para economizar dados</span>
         </div>
 
         {/* Título + 2 Botões: Adicionar App na Tela Inicial (Android & iOS) */}
