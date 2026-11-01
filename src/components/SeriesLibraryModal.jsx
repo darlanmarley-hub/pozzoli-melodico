@@ -99,25 +99,43 @@ export default function SeriesLibraryView({
         <div
           className="wifi-tip-badge"
           style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#c9b8a3',
+            background: 'linear-gradient(90deg, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 100%)',
+            border: '1px solid rgba(245, 158, 11, 0.22)',
+            borderLeft: '3px solid #f59e0b',
+            borderRadius: '10px',
+            color: '#efe6d5',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            padding: '2px 4px',
+            padding: '7px 14px 7px 10px',
             fontSize: '0.8rem',
-            fontWeight: 400,
+            fontWeight: 500,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
-            marginTop: '2px',
+            gap: '9px',
+            marginTop: '6px',
             marginBottom: '2px',
             lineHeight: 1.35,
-            textAlign: 'center'
+            textAlign: 'left',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.25)'
           }}
         >
-          <Wifi size={14} style={{ flexShrink: 0, color: '#d4a34b' }} />
-          <span>Conecte-se ao Wi-Fi para economizar dados</span>
+          <span
+            style={{
+              width: '24px',
+              height: '24px',
+              borderRadius: '50%',
+              background: 'rgba(245, 158, 11, 0.2)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}
+          >
+            <Wifi size={13} style={{ color: '#fbbf24' }} />
+          </span>
+          <span>
+            Conecte-se ao <strong style={{ color: '#fbbf24', fontWeight: 700 }}>Wi-Fi</strong> para economizar seus dados
+          </span>
         </div>
 
         {/* Título + 2 Botões: Adicionar App na Tela Inicial (Android & iOS) */}
