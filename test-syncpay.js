@@ -10,8 +10,8 @@ const plano = (process.argv[3] || 'vitalicio').toLowerCase() === 'anual' ? 'anua
 
 const endpoint =
   plano === 'anual'
-    ? 'https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/webhook-anual'
-    : 'https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/webhook-vitalicio';
+    ? 'https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/clever-action'
+    : 'https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker';
 
 const fakeSyncPayPayload = {
   event: 'transaction.updated',
