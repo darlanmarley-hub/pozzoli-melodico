@@ -84,7 +84,7 @@ export default function SeriesLibraryView({
         <h1
           className="library-main-title"
           style={{
-            fontSize: '1.22rem',
+            fontSize: '1.48rem',
             fontWeight: 900,
             fontFamily: 'var(--font-heading)',
             letterSpacing: '0.5px',
