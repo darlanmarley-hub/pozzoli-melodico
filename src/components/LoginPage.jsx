@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sparkles, 
   ShieldCheck, 
@@ -11,9 +11,18 @@ import {
   AlertCircle, 
   ArrowRight,
   KeyRound,
-  ExternalLink
+  ExternalLink,
+  Smartphone
 } from 'lucide-react';
-import { saveAuthUser, saveProfile, getProfile, loadUserDataFromSupabase, syncUserDataToSupabase } from '../utils/storage';
+import {
+  saveAuthUser,
+  saveProfile,
+  getProfile,
+  loadUserDataFromSupabase,
+  syncUserDataToSupabase,
+  checkActiveDeviceConflict,
+  registerActiveDeviceSession
+} from '../utils/storage';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 export default function LoginPage({ onLoginSuccess }) {
@@ -28,6 +37,22 @@ export default function LoginPage({ onLoginSuccess }) {
   // Mode & Modals state
   const [isValidationMode, setIsValidationMode] = useState(false);
   const [showForgotModal, setShowForgotModal] = useState(false);
+
+  // Estado de conflito de dispositivo único (1 aparelho por vez)
+  const [deviceConflictModal, setDeviceConflictModal] = useState(null);
+  const [isDisconnectingDevice, setIsDisconnectingDevice] = useState(false);
+
+  useEffect(() => {
+    try {
+      const kickedReason = sessionStorage.getItem('pozzoli_kicked_reason');
+      if (kickedReason) {
+        setErrorMessage(kickedReason);
+        sessionStorage.removeItem('pozzoli_kicked_reason');
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   // Validation fields
   const [validationEmail, setValidationEmail] = useState('');
@@ -113,8 +138,23 @@ export default function LoginPage({ onLoginSuccess }) {
           loginTime: new Date().toISOString()
         };
 
-        saveAuthUser(user);
+        // Verifica se a conta já está conectada em outro dispositivo
+        const conflict = await checkActiveDeviceConflict(sbUser.id);
+        if (conflict.hasConflict) {
+          setIsLoading(false);
+          setDeviceConflictModal({
+            userId: sbUser.id,
+            user,
+            planName: null,
+            isFromValidation: false,
+            activeDevice: conflict.activeDevice
+          });
+          return;
+        }
+
         await loadUserDataFromSupabase(sbUser.id);
+        await registerActiveDeviceSession(sbUser.id, false);
+        saveAuthUser(user);
         setIsLoading(false);
         setSuccessMessage('Login efetuado com sucesso!');
         if (onLoginSuccess) {
@@ -235,8 +275,23 @@ export default function LoginPage({ onLoginSuccess }) {
           loginTime: nowIso
         };
 
-        saveAuthUser(user);
+        // Verifica se a conta já está conectada em outro dispositivo
+        const conflict = await checkActiveDeviceConflict(sbUser.id);
+        if (conflict.hasConflict) {
+          setValidationLoading(false);
+          setDeviceConflictModal({
+            userId: sbUser.id,
+            user,
+            planName,
+            isFromValidation: true,
+            activeDevice: conflict.activeDevice
+          });
+          return;
+        }
+
         await loadUserDataFromSupabase(sbUser.id);
+        await registerActiveDeviceSession(sbUser.id, false);
+        saveAuthUser(user);
         const existingProfile = getProfile();
         saveProfile({
           ...existingProfile,
@@ -286,6 +341,58 @@ export default function LoginPage({ onLoginSuccess }) {
         if (onLoginSuccess) onLoginSuccess(user);
       }, 600);
     }, 800);
+  };
+
+  // Confirmar desconexão do aparelho anterior e entrar neste dispositivo
+  const handleConfirmDisconnectOtherDevice = async () => {
+    if (!deviceConflictModal) return;
+    setIsDisconnectingDevice(true);
+
+    try {
+      const { userId, user, planName, isFromValidation } = deviceConflictModal;
+
+      await loadUserDataFromSupabase(userId);
+      await registerActiveDeviceSession(userId, true);
+      saveAuthUser(user);
+
+      if (isFromValidation && planName) {
+        const existingProfile = getProfile();
+        saveProfile({
+          ...existingProfile,
+          name: user.name,
+          email: user.email,
+          plan: planName
+        });
+      }
+
+      setIsDisconnectingDevice(false);
+      setDeviceConflictModal(null);
+
+      if (isFromValidation) {
+        setValidationSuccess(true);
+      } else {
+        setSuccessMessage('Dispositivo anterior desconectado! Entrando...');
+      }
+
+      if (onLoginSuccess) {
+        setTimeout(() => onLoginSuccess(user), 350);
+      }
+    } catch {
+      setIsDisconnectingDevice(false);
+      setDeviceConflictModal(null);
+      setErrorMessage('Não foi possível desconectar o dispositivo anterior. Tente novamente.');
+    }
+  };
+
+  const handleCancelDeviceConflict = async () => {
+    setDeviceConflictModal(null);
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.auth.signOut({ scope: 'local' });
+      } catch {
+        // ignore
+      }
+    }
   };
 
   // Handle Forgot Password
@@ -517,6 +624,98 @@ export default function LoginPage({ onLoginSuccess }) {
           )}
         </div>
       </div>
+
+      {/* ============================================================== */}
+      {/* MODAL 1: DISPOSITIVO CONECTADO EM OUTRO LUGAR (SESSÃO ÚNICA)   */}
+      {/* ============================================================== */}
+      {deviceConflictModal && (
+        <div className="login-modal-overlay">
+          <div className="login-modal-container" style={{ maxWidth: '410px' }}>
+            <div className="login-modal-header">
+              <div className="login-modal-header-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Smartphone size={22} className="modal-icon-orange" style={{ color: '#f59e0b' }} />
+                <h3 style={{ fontSize: '1.02rem' }}>Conta Conectada em Outro Aparelho</h3>
+              </div>
+              <button
+                type="button"
+                className="login-modal-close"
+                onClick={handleCancelDeviceConflict}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="login-modal-body" style={{ textAlign: 'center', padding: '20px 18px' }}>
+              <div
+                style={{
+                  width: '54px',
+                  height: '54px',
+                  borderRadius: '50%',
+                  background: 'rgba(245, 158, 11, 0.15)',
+                  border: '1px solid rgba(245, 158, 11, 0.45)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 14px auto',
+                  color: '#fbbf24'
+                }}
+              >
+                <Smartphone size={26} />
+              </div>
+
+              <p className="login-modal-desc" style={{ fontSize: '0.92rem', lineHeight: 1.5, marginBottom: '12px', color: '#efe6d5' }}>
+                Sua conta já está conectada em{' '}
+                <strong style={{ color: '#fbbf24' }}>
+                  {deviceConflictModal.activeDevice?.deviceName || 'outro dispositivo'}
+                </strong>.
+              </p>
+
+              <p className="login-modal-desc" style={{ fontSize: '0.84rem', lineHeight: 1.45, marginBottom: '20px', color: '#c9b8a3' }}>
+                O acesso simultâneo não é permitido (apenas <strong>1 dispositivo por vez</strong>). Clique abaixo para desconectar o aparelho anterior e entrar normalmente aqui.
+              </p>
+
+              <button
+                type="button"
+                className="login-submit-btn"
+                disabled={isDisconnectingDevice}
+                onClick={handleConfirmDisconnectOtherDevice}
+                style={{
+                  width: '100%',
+                  marginBottom: '10px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  padding: '13px 16px'
+                }}
+              >
+                {isDisconnectingDevice ? (
+                  <span className="btn-spinner"></span>
+                ) : (
+                  'Desconectar Aparelho Anterior e Entrar'
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleCancelDeviceConflict}
+                disabled={isDisconnectingDevice}
+                style={{
+                  width: '100%',
+                  background: 'transparent',
+                  border: '1px solid rgba(255, 255, 255, 0.16)',
+                  color: '#c9b8a3',
+                  borderRadius: '10px',
+                  padding: '10px 14px',
+                  fontSize: '0.84rem',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ============================================================== */}
       {/* MODAL 2: ESQUECEU A SENHA                                      */}

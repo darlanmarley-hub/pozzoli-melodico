@@ -22,7 +22,9 @@ import {
   getAuthUser,
   saveAuthUser,
   clearAuthUser,
-  loadUserDataFromSupabase
+  loadUserDataFromSupabase,
+  verifyCurrentDeviceIsActive,
+  getDeviceId
 } from './utils/storage';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
 
@@ -61,11 +63,35 @@ export default function App() {
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
 
+    const kickToLogin = async (reasonText) => {
+      try {
+        if (reasonText) {
+          sessionStorage.setItem('pozzoli_kicked_reason', reasonText);
+        }
+      } catch {
+        // ignore
+      }
+      await clearAuthUser(false);
+      setAuthUser(null);
+    };
+
     const hydrateFromSession = async (session) => {
       if (!session?.user) return;
+      // Só hidrata automaticamente se o usuário já concluiu o login neste aparelho
+      if (!getAuthUser()) return;
+
       const sbUser = session.user;
 
-      // Valida se o plano do usuário continua ativo na rota protegida
+      // 1. Verifica se outro dispositivo assumiu a sessão
+      const deviceCheck = await verifyCurrentDeviceIsActive(sbUser.id);
+      if (!deviceCheck.isValid) {
+        await kickToLogin(
+          `Sua conta foi conectada em ${deviceCheck.replacedBy}. Este dispositivo foi desconectado.`
+        );
+        return;
+      }
+
+      // 2. Valida se o plano do usuário continua ativo na rota protegida
       const { data: userPlano } = await supabase
         .from('users_plano')
         .select('id, status, data_final')
@@ -76,8 +102,7 @@ export default function App() {
         userPlano?.status === 'cancelado' ||
         (userPlano?.data_final && new Date(userPlano.data_final) < new Date())
       ) {
-        await supabase.auth.signOut();
-        clearAuthUser();
+        await clearAuthUser(true);
         setAuthUser(null);
         return;
       }
@@ -108,8 +133,8 @@ export default function App() {
         hydrateFromSession(session);
       } else {
         const stored = getAuthUser();
-        if (stored?.provider === 'supabase') {
-          clearAuthUser();
+        if (stored?.provider === 'supabase' || stored?.provider === 'purchase_validation') {
+          clearAuthUser(false);
           setAuthUser(null);
         }
       }
@@ -117,9 +142,9 @@ export default function App() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
-        clearAuthUser();
+        localStorage.removeItem('pozzoli_auth_user');
         setAuthUser(null);
-      } else if (session?.user) {
+      } else if (session?.user && getAuthUser()) {
         hydrateFromSession(session);
       }
     });
@@ -128,6 +153,63 @@ export default function App() {
       subscription.unsubscribe();
     };
   }, []);
+
+  // Monitoramento em tempo real de Sessão Única (desconecta se entrar em outro aparelho)
+  useEffect(() => {
+    if (!isSupabaseConfigured || !supabase || !authUser?.id) return;
+
+    let isCancelled = false;
+
+    const checkSessionLock = async () => {
+      if (isCancelled) return;
+      const result = await verifyCurrentDeviceIsActive(authUser.id);
+      if (!isCancelled && !result.isValid) {
+        try {
+          sessionStorage.setItem(
+            'pozzoli_kicked_reason',
+            `Sua conta foi conectada em ${result.replacedBy}. Este dispositivo foi desconectado.`
+          );
+        } catch {
+          // ignore
+        }
+        await clearAuthUser(false);
+        setAuthUser(null);
+      }
+    };
+
+    // Escuta em tempo real qualquer atualização na linha do usuário em public.profiles
+    const channel = supabase
+      .channel(`single_device_${authUser.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${authUser.id}`
+        },
+        (payload) => {
+          const newDevice = payload?.new?.stats?.activeDeviceSession;
+          if (newDevice?.deviceId && newDevice.deviceId !== getDeviceId()) {
+            checkSessionLock();
+          }
+        }
+      )
+      .subscribe();
+
+    const intervalId = setInterval(checkSessionLock, 6000);
+    const handleFocus = () => checkSessionLock();
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleFocus);
+
+    return () => {
+      isCancelled = true;
+      clearInterval(intervalId);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleFocus);
+      supabase.removeChannel(channel);
+    };
+  }, [authUser?.id]);
 
   // Playback Phase state: "idle" | "loading" | "countIn" | "playing" | "paused" | "ended"
   const [playbackPhase, setPlaybackPhase] = useState('idle');

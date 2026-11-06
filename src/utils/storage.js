@@ -866,7 +866,150 @@ const STORAGE_KEYS = {
   STATS: 'pozzoli_stats',
   CUSTOM_SERIES: 'pozzoli_custom_series',
   OFFLINE_CACHE: 'pozzoli_offline_ready',
-  AUTH_USER: 'pozzoli_auth_user'
+  AUTH_USER: 'pozzoli_auth_user',
+  DEVICE_ID: 'pozzoli_device_id',
+  DEVICE_SESSION_TOKEN: 'pozzoli_device_session_token'
+};
+
+export const getDeviceId = () => {
+  try {
+    let deviceId = localStorage.getItem(STORAGE_KEYS.DEVICE_ID);
+    if (!deviceId) {
+      deviceId = `dev_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+      localStorage.setItem(STORAGE_KEYS.DEVICE_ID, deviceId);
+    }
+    return deviceId;
+  } catch {
+    return 'dev_default';
+  }
+};
+
+export const getDeviceName = () => {
+  try {
+    const ua = navigator.userAgent || '';
+    if (/iPhone/i.test(ua)) return 'iPhone (iOS)';
+    if (/iPad/i.test(ua)) return 'iPad (iOS)';
+    if (/Android/i.test(ua)) return 'Celular Android';
+    if (/Macintosh|Mac OS X/i.test(ua)) return 'Computador Mac';
+    if (/Windows/i.test(ua)) return 'Computador Windows';
+    if (/Linux/i.test(ua)) return 'Computador Linux';
+    return 'Outro Dispositivo';
+  } catch {
+    return 'Outro Dispositivo';
+  }
+};
+
+export const checkActiveDeviceConflict = async (userId) => {
+  if (!isSupabaseConfigured || !supabase || !userId) {
+    return { hasConflict: false, activeDevice: null };
+  }
+  try {
+    const { data } = await supabase
+      .from('profiles')
+      .select('stats')
+      .eq('id', userId)
+      .maybeSingle();
+
+    const activeSession = data?.stats?.activeDeviceSession;
+    const currentDeviceId = getDeviceId();
+
+    if (activeSession && activeSession.deviceId && activeSession.deviceId !== currentDeviceId) {
+      return {
+        hasConflict: true,
+        activeDevice: activeSession
+      };
+    }
+
+    return { hasConflict: false, activeDevice: null };
+  } catch {
+    return { hasConflict: false, activeDevice: null };
+  }
+};
+
+export const registerActiveDeviceSession = async (userId, disconnectOthers = false) => {
+  if (!isSupabaseConfigured || !supabase || !userId) return null;
+  try {
+    if (disconnectOthers) {
+      try {
+        await supabase.auth.signOut({ scope: 'others' });
+      } catch {
+        // Ignora caso o escopo others não esteja habilitado
+      }
+    }
+
+    const deviceId = getDeviceId();
+    const deviceName = getDeviceName();
+    const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    localStorage.setItem(STORAGE_KEYS.DEVICE_SESSION_TOKEN, sessionToken);
+
+    const { data: profileRow } = await supabase
+      .from('profiles')
+      .select('stats')
+      .eq('id', userId)
+      .maybeSingle();
+
+    const baseStats =
+      profileRow?.stats && typeof profileRow.stats === 'object'
+        ? profileRow.stats
+        : getStats();
+
+    const activeDeviceSession = {
+      deviceId,
+      sessionToken,
+      deviceName,
+      connectedAt: new Date().toISOString(),
+      lastSeenAt: new Date().toISOString()
+    };
+
+    const updatedStats = {
+      ...baseStats,
+      activeDeviceSession
+    };
+
+    localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(updatedStats));
+
+    await supabase
+      .from('profiles')
+      .update({
+        stats: updatedStats,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', userId);
+
+    return activeDeviceSession;
+  } catch (err) {
+    console.warn('Erro ao registrar sessão única do dispositivo:', err);
+    return null;
+  }
+};
+
+export const verifyCurrentDeviceIsActive = async (userId) => {
+  if (!isSupabaseConfigured || !supabase || !userId) {
+    return { isValid: true, replacedBy: null };
+  }
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('stats')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (error || !data) return { isValid: true, replacedBy: null };
+
+    const activeSession = data?.stats?.activeDeviceSession;
+    const currentDeviceId = getDeviceId();
+
+    if (activeSession && activeSession.deviceId && activeSession.deviceId !== currentDeviceId) {
+      return {
+        isValid: false,
+        replacedBy: activeSession.deviceName || 'outro dispositivo'
+      };
+    }
+
+    return { isValid: true, replacedBy: null };
+  } catch {
+    return { isValid: true, replacedBy: null };
+  }
 };
 
 export const getAuthUser = () => {
@@ -891,11 +1034,40 @@ export const saveAuthUser = (user) => {
   }
 };
 
-export const clearAuthUser = async () => {
+export const clearAuthUser = async (releaseDeviceLock = true) => {
   try {
     localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
     if (isSupabaseConfigured && supabase) {
-      await supabase.auth.signOut();
+      if (releaseDeviceLock) {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          const userId = session?.user?.id;
+          if (userId) {
+            const { data: profileRow } = await supabase
+              .from('profiles')
+              .select('stats')
+              .eq('id', userId)
+              .maybeSingle();
+
+            if (profileRow?.stats?.activeDeviceSession?.deviceId === getDeviceId()) {
+              const updatedStats = {
+                ...profileRow.stats,
+                activeDeviceSession: null
+              };
+              localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(updatedStats));
+              await supabase
+                .from('profiles')
+                .update({ stats: updatedStats, updated_at: new Date().toISOString() })
+                .eq('id', userId);
+            }
+          }
+        } catch {
+          // Ignora falha ao liberar trava
+        }
+        await supabase.auth.signOut();
+      } else {
+        await supabase.auth.signOut({ scope: 'local' });
+      }
     }
   } catch (e) {
     console.error(e);
