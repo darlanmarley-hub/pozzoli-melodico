@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Play, Pause, Square, SkipBack, SkipForward, Home, CheckCircle2, Monitor, Download, Volume2, VolumeX, RotateCcw } from 'lucide-react';
 import { timeStretchEngine } from '../utils/TimeStretchAudioEngine';
+import { getDirectVideoUrl } from '../utils/storage';
+import { isVideoSavedOffline, saveVideoOffline, removeVideoOffline } from '../utils/offlineStorage';
 
 export default function AudioPlayerControls({
   videoElement,
@@ -30,8 +32,73 @@ export default function AudioPlayerControls({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isOfflineSaved, setIsOfflineSaved] = useState(false);
+  const [isDownloadingOffline, setIsDownloadingOffline] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
   const [audioError, setAudioError] = useState(false);
   const [isMetronomeMuted, setIsMetronomeMuted] = useState(false);
+
+  // Verifica se o exercício atual já está salvo offline no aparelho
+  useEffect(() => {
+    let mounted = true;
+    const exId = currentSeries?.id;
+    setIsDownloadingOffline(false);
+    setDownloadProgress(0);
+    if (!exId) {
+      setIsOfflineSaved(false);
+      return;
+    }
+    isVideoSavedOffline(exId).then((saved) => {
+      if (mounted) setIsOfflineSaved(saved);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, [currentSeries?.id]);
+
+  const handleToggleOfflineDownload = async () => {
+    const exId = currentSeries?.id;
+    if (!exId || isDownloadingOffline) return;
+
+    if (isOfflineSaved) {
+      if (!navigator.onLine) {
+        alert('Você está offline. Este exercício já está salvo e pronto para estudo sem internet!');
+        return;
+      }
+      const confirmRemove = window.confirm('Deseja remover este vídeo da memória offline do aparelho?');
+      if (!confirmRemove) return;
+      await removeVideoOffline(exId);
+      setIsOfflineSaved(false);
+      window.dispatchEvent(new CustomEvent('pozzoli-offline-updated', { detail: { id: exId, saved: false } }));
+      return;
+    }
+
+    if (!navigator.onLine) {
+      alert('Conecte-se à internet para baixar este exercício para o modo offline.');
+      return;
+    }
+
+    const rawUrl = currentSeries?.isDesktopMode
+      ? (currentSeries?.videoPcUrl || currentSeries?.videoUrl)
+      : currentSeries?.videoUrl;
+    const directUrl = getDirectVideoUrl(rawUrl);
+
+    if (!directUrl) return;
+
+    try {
+      setIsDownloadingOffline(true);
+      setDownloadProgress(5);
+      await saveVideoOffline(exId, directUrl, (pct) => {
+        setDownloadProgress(pct);
+      });
+      setIsOfflineSaved(true);
+      setIsDownloadingOffline(false);
+      window.dispatchEvent(new CustomEvent('pozzoli-offline-updated', { detail: { id: exId, saved: true } }));
+    } catch (err) {
+      console.error('Erro ao salvar vídeo offline:', err);
+      setIsDownloadingOffline(false);
+      alert('Não foi possível baixar o vídeo agora. Verifique sua conexão e tente novamente.');
+    }
+  };
 
   const activeMedia = videoElement || audioRef.current;
   const defaultBpm = currentSeries?.defaultBpm || 60;
@@ -205,12 +272,19 @@ export default function AudioPlayerControls({
       <div className="player-actions-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '2px 0' }}>
         <button
           className={`action-pill-btn ${isOfflineSaved ? 'green' : ''}`}
-          onClick={() => setIsOfflineSaved(!isOfflineSaved)}
-          title="Salvar para uso offline"
-          style={{ padding: '5px 12px', fontSize: '0.75rem' }}
+          onClick={handleToggleOfflineDownload}
+          disabled={isDownloadingOffline}
+          title="Salvar vídeo no aparelho para estudar sem internet"
+          style={{ padding: '5px 12px', fontSize: '0.75rem', opacity: isDownloadingOffline ? 0.8 : 1 }}
         >
           <Download size={14} />
-          <span>{isOfflineSaved ? 'Baixado ✓' : 'Baixar para offline'}</span>
+          <span>
+            {isDownloadingOffline
+              ? `Baixando... ${downloadProgress}%`
+              : isOfflineSaved
+              ? 'Salvo Offline ✓'
+              : 'Baixar para offline'}
+          </span>
         </button>
       </div>
 

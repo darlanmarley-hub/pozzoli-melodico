@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Video, Music, Zap, Volume2, VolumeX, RefreshCw, Play } from 'lucide-react';
 import { getDirectVideoUrl } from '../utils/storage';
+import { getOfflineVideoBlob } from '../utils/offlineStorage';
 
 /**
  * VerticalVideoPlayer Component
@@ -54,7 +55,49 @@ export default function VerticalVideoPlayer({
   const rawUrl = isDesktop ? pcUrl : mobileUrl;
   const directVideoSrc = getDirectVideoUrl(rawUrl);
 
-  const prevSrcRef = useRef(directVideoSrc);
+  const [offlineBlobUrl, setOfflineBlobUrl] = useState(null);
+  const effectiveVideoSrc = offlineBlobUrl || directVideoSrc;
+  const prevSrcRef = useRef(effectiveVideoSrc);
+
+  // Carrega o vídeo da memória interna (IndexedDB) quando salvo para uso offline
+  useEffect(() => {
+    let active = true;
+    let createdObjectUrl = null;
+
+    const loadOfflineCopy = async () => {
+      const exId = currentSeries?.id;
+      if (!exId) {
+        if (active) setOfflineBlobUrl(null);
+        return;
+      }
+      const blob = await getOfflineVideoBlob(exId);
+      if (!active) return;
+      if (blob) {
+        createdObjectUrl = URL.createObjectURL(blob);
+        setOfflineBlobUrl(createdObjectUrl);
+      } else {
+        setOfflineBlobUrl(null);
+      }
+    };
+
+    loadOfflineCopy();
+
+    const handleOfflineUpdated = (e) => {
+      if (e?.detail?.id === currentSeries?.id) {
+        loadOfflineCopy();
+      }
+    };
+
+    window.addEventListener('pozzoli-offline-updated', handleOfflineUpdated);
+
+    return () => {
+      active = false;
+      window.removeEventListener('pozzoli-offline-updated', handleOfflineUpdated);
+      if (createdObjectUrl) {
+        URL.revokeObjectURL(createdObjectUrl);
+      }
+    };
+  }, [currentSeries?.id]);
 
   useEffect(() => {
     setIsVideoLoading(true);
@@ -65,13 +108,13 @@ export default function VerticalVideoPlayer({
     }
 
     if (videoRef.current) {
-      if (prevSrcRef.current !== directVideoSrc) {
-        videoRef.current.src = directVideoSrc;
+      if (prevSrcRef.current !== effectiveVideoSrc) {
+        videoRef.current.src = effectiveVideoSrc;
         videoRef.current.load();
         try {
           videoRef.current.currentTime = 0;
         } catch (e) { }
-        prevSrcRef.current = directVideoSrc;
+        prevSrcRef.current = effectiveVideoSrc;
       }
     }
 
@@ -80,7 +123,7 @@ export default function VerticalVideoPlayer({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [directVideoSrc]);
+  }, [effectiveVideoSrc]);
 
   // Expor o elemento vídeo para o AudioSyncEngine
   useEffect(() => {
@@ -224,7 +267,7 @@ export default function VerticalVideoPlayer({
         {!useIframeFallback ? (
           <video
             ref={videoRef}
-            src={directVideoSrc}
+            src={effectiveVideoSrc}
             className="vertical-video-element"
             style={{ transform: videoTransform, transformOrigin: 'top center', cursor: 'pointer', pointerEvents: 'auto' }}
             playsInline
@@ -239,9 +282,11 @@ export default function VerticalVideoPlayer({
               if (onEnded) onEnded();
             }}
             onError={() => {
-              console.warn('Alternando para player de streaming embutido (iframe):', directVideoSrc);
               setIsVideoLoading(false);
-              setUseIframeFallback(true);
+              if (navigator.onLine) {
+                console.warn('Alternando para player de streaming embutido (iframe):', directVideoSrc);
+                setUseIframeFallback(true);
+              }
             }}
           />
         ) : (

@@ -129,22 +129,19 @@ export default function App() {
     };
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
+      if (session?.user && navigator.onLine) {
         hydrateFromSession(session);
-      } else {
-        const stored = getAuthUser();
-        if (stored?.provider === 'supabase' || stored?.provider === 'purchase_validation') {
-          clearAuthUser(false);
-          setAuthUser(null);
-        }
       }
+      // Se estiver offline ou sem sessão temporária da rede, mantém o usuário logado localmente
+      // para que ele nunca seja desconectado ao estudar os exercícios salvos em modo offline.
+    }).catch(() => {
+      // Ignora falhas de rede quando offline e mantém o authUser local intacto
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT') {
-        localStorage.removeItem('pozzoli_auth_user');
-        setAuthUser(null);
-      } else if (session?.user && getAuthUser()) {
+      // Se estiver offline, nunca desconecta o usuário automaticamente
+      if (!navigator.onLine) return;
+      if (session?.user && getAuthUser()) {
         hydrateFromSession(session);
       }
     });
@@ -161,9 +158,9 @@ export default function App() {
     let isCancelled = false;
 
     const checkSessionLock = async () => {
-      if (isCancelled) return;
+      if (isCancelled || !navigator.onLine) return;
       const result = await verifyCurrentDeviceIsActive(authUser.id);
-      if (!isCancelled && !result.isValid) {
+      if (!isCancelled && navigator.onLine && !result.isValid) {
         try {
           sessionStorage.setItem(
             'pozzoli_kicked_reason',
