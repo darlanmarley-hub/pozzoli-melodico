@@ -63,7 +63,7 @@ export default function App() {
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
 
-    const kickToLogin = async (reasonText) => {
+    const kickToLogin = async (reasonText, replacedBy = 'outro dispositivo') => {
       try {
         if (reasonText) {
           sessionStorage.setItem('pozzoli_kicked_reason', reasonText);
@@ -71,7 +71,7 @@ export default function App() {
       } catch {
         // ignore
       }
-      await clearAuthUser(false);
+      await clearAuthUser(false, replacedBy);
       setAuthUser(null);
     };
 
@@ -86,7 +86,8 @@ export default function App() {
       const deviceCheck = await verifyCurrentDeviceIsActive(sbUser.id);
       if (!deviceCheck.isValid) {
         await kickToLogin(
-          `Sua conta foi conectada em ${deviceCheck.replacedBy}. Este dispositivo foi desconectado.`
+          `Sua conta foi conectada em ${deviceCheck.replacedBy}. Este dispositivo foi desconectado.`,
+          deviceCheck.replacedBy
         );
         return;
       }
@@ -169,10 +170,13 @@ export default function App() {
         } catch {
           // ignore
         }
-        await clearAuthUser(false);
+        await clearAuthUser(false, result.replacedBy);
         setAuthUser(null);
       }
     };
+
+    // Verifica e registra imediatamente ao abrir o app
+    checkSessionLock();
 
     // Escuta em tempo real qualquer atualização na linha do usuário em public.profiles
     const channel = supabase
@@ -194,7 +198,7 @@ export default function App() {
       )
       .subscribe();
 
-    const intervalId = setInterval(checkSessionLock, 6000);
+    const intervalId = setInterval(checkSessionLock, 3000);
     const handleFocus = () => checkSessionLock();
     window.addEventListener('focus', handleFocus);
     document.addEventListener('visibilitychange', handleFocus);

@@ -21,7 +21,9 @@ import {
   loadUserDataFromSupabase,
   syncUserDataToSupabase,
   checkActiveDeviceConflict,
-  registerActiveDeviceSession
+  registerActiveDeviceSession,
+  getPausedDeviceUser,
+  clearPausedDeviceUser
 } from '../utils/storage';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
@@ -41,9 +43,12 @@ export default function LoginPage({ onLoginSuccess }) {
   // Estado de conflito de dispositivo único (1 aparelho por vez)
   const [deviceConflictModal, setDeviceConflictModal] = useState(null);
   const [isDisconnectingDevice, setIsDisconnectingDevice] = useState(false);
+  const [pausedDeviceInfo, setPausedDeviceInfo] = useState(() => getPausedDeviceUser());
+  const [isQuickReconnecting, setIsQuickReconnecting] = useState(false);
 
   useEffect(() => {
     try {
+      setPausedDeviceInfo(getPausedDeviceUser());
       const kickedReason = sessionStorage.getItem('pozzoli_kicked_reason');
       if (kickedReason) {
         setErrorMessage(kickedReason);
@@ -53,6 +58,42 @@ export default function LoginPage({ onLoginSuccess }) {
       // ignore
     }
   }, []);
+
+  // Botão de 1 Clique para voltar a entrar no dispositivo que foi desconectado
+  const handleQuickReconnectDevice = async () => {
+    if (!pausedDeviceInfo?.user) return;
+    setIsQuickReconnecting(true);
+    setErrorMessage('');
+
+    try {
+      const targetUser = pausedDeviceInfo.user;
+
+      if (isSupabaseConfigured && supabase && targetUser.id) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user && targetUser.provider === 'purchase_validation' && targetUser.email) {
+          await supabase.auth.signInWithPassword({
+            email: targetUser.email,
+            password: 'Pozzoli123!'
+          });
+        }
+        await loadUserDataFromSupabase(targetUser.id);
+        await registerActiveDeviceSession(targetUser.id);
+      }
+
+      clearPausedDeviceUser();
+      setPausedDeviceInfo(null);
+      saveAuthUser(targetUser);
+      setIsQuickReconnecting(false);
+      setSuccessMessage('Conectado de volta neste dispositivo! Entrando...');
+
+      if (onLoginSuccess) {
+        setTimeout(() => onLoginSuccess(targetUser), 250);
+      }
+    } catch {
+      setIsQuickReconnecting(false);
+      setErrorMessage('Não foi possível reconectar automaticamente. Faça login abaixo.');
+    }
+  };
 
   // Validation fields
   const [validationEmail, setValidationEmail] = useState('');
@@ -290,15 +331,18 @@ export default function LoginPage({ onLoginSuccess }) {
         }
 
         await loadUserDataFromSupabase(sbUser.id);
-        await registerActiveDeviceSession(sbUser.id, false);
-        saveAuthUser(user);
         const existingProfile = getProfile();
-        saveProfile({
-          ...existingProfile,
-          name: user.name,
-          email: user.email,
-          plan: planName
-        });
+        localStorage.setItem(
+          'pozzoli_profile',
+          JSON.stringify({
+            ...existingProfile,
+            name: user.name,
+            email: user.email,
+            plan: planName
+          })
+        );
+        await registerActiveDeviceSession(sbUser.id);
+        saveAuthUser(user);
 
         setValidationLoading(false);
         setValidationSuccess(true);
@@ -352,18 +396,20 @@ export default function LoginPage({ onLoginSuccess }) {
       const { userId, user, planName, isFromValidation } = deviceConflictModal;
 
       await loadUserDataFromSupabase(userId);
-      await registerActiveDeviceSession(userId, true);
-      saveAuthUser(user);
-
       if (isFromValidation && planName) {
         const existingProfile = getProfile();
-        saveProfile({
-          ...existingProfile,
-          name: user.name,
-          email: user.email,
-          plan: planName
-        });
+        localStorage.setItem(
+          'pozzoli_profile',
+          JSON.stringify({
+            ...existingProfile,
+            name: user.name,
+            email: user.email,
+            plan: planName
+          })
+        );
       }
+      await registerActiveDeviceSession(userId);
+      saveAuthUser(user);
 
       setIsDisconnectingDevice(false);
       setDeviceConflictModal(null);
@@ -434,6 +480,71 @@ export default function LoginPage({ onLoginSuccess }) {
             POZZOLI <span className="melodico-highlight">MELÓDICO</span> NO<br />BOLSO
           </h1>
         </header>
+
+        {/* Card de Reconexão Rápida em 1 Clique (quando o usuário saiu deste aparelho para usar outro) */}
+        {pausedDeviceInfo?.user && (
+          <div
+            style={{
+              width: '100%',
+              background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(30, 22, 14, 0.95) 100%)',
+              border: '1.5px solid rgba(245, 158, 11, 0.55)',
+              borderRadius: '16px',
+              padding: '16px',
+              marginBottom: '16px',
+              boxShadow: '0 8px 26px rgba(0, 0, 0, 0.45)',
+              textAlign: 'center',
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
+            }}
+          >
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                color: '#fbbf24',
+                fontWeight: 700,
+                fontSize: '0.88rem',
+                marginBottom: '6px'
+              }}
+            >
+              <Smartphone size={18} />
+              <span>Dispositivo Desconectado</span>
+            </div>
+
+            <p style={{ fontSize: '0.82rem', color: '#efe6d5', lineHeight: 1.45, margin: '0 0 12px 0' }}>
+              A conta <strong>{pausedDeviceInfo.user.email}</strong> foi conectada em{' '}
+              <strong style={{ color: '#fbbf24' }}>{pausedDeviceInfo.replacedBy || 'outro aparelho'}</strong>.
+              Quando quiser voltar a usar neste dispositivo, basta clicar no botão abaixo:
+            </p>
+
+            <button
+              type="button"
+              onClick={handleQuickReconnectDevice}
+              disabled={isQuickReconnecting}
+              className="validation-card-submit-btn"
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '13px 16px',
+                fontSize: '0.86rem',
+                fontWeight: 800,
+                cursor: 'pointer'
+              }}
+            >
+              {isQuickReconnecting ? (
+                <span className="btn-spinner btn-spinner-dark"></span>
+              ) : (
+                <>
+                  <Smartphone size={18} />
+                  <span>VOLTAR A ENTRAR NESTE DISPOSITIVO</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
 
         {/* 2. Banner de Alternância: Validação / Login */}
         <div className="validation-banner">

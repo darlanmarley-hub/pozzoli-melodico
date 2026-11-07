@@ -867,8 +867,54 @@ const STORAGE_KEYS = {
   CUSTOM_SERIES: 'pozzoli_custom_series',
   OFFLINE_CACHE: 'pozzoli_offline_ready',
   AUTH_USER: 'pozzoli_auth_user',
+  PAUSED_USER: 'pozzoli_paused_device_user',
   DEVICE_ID: 'pozzoli_device_id',
-  DEVICE_SESSION_TOKEN: 'pozzoli_device_session_token'
+  DEVICE_SESSION_TOKEN: 'pozzoli_device_session_token',
+  ACTIVE_DEVICE_SESSION: 'pozzoli_active_device_session'
+};
+
+export const getPausedDeviceUser = () => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.PAUSED_USER);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+export const savePausedDeviceUser = (user, replacedBy = 'outro dispositivo') => {
+  try {
+    if (!user) {
+      localStorage.removeItem(STORAGE_KEYS.PAUSED_USER);
+      return null;
+    }
+    const payload = {
+      user,
+      replacedBy,
+      pausedAt: new Date().toISOString()
+    };
+    localStorage.setItem(STORAGE_KEYS.PAUSED_USER, JSON.stringify(payload));
+    return payload;
+  } catch {
+    return null;
+  }
+};
+
+export const clearPausedDeviceUser = () => {
+  try {
+    localStorage.removeItem(STORAGE_KEYS.PAUSED_USER);
+  } catch {
+    // ignore
+  }
+};
+
+export const getLocalActiveDeviceSession = () => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.ACTIVE_DEVICE_SESSION);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
 };
 
 export const getDeviceId = () => {
@@ -926,17 +972,9 @@ export const checkActiveDeviceConflict = async (userId) => {
   }
 };
 
-export const registerActiveDeviceSession = async (userId, disconnectOthers = false) => {
+export const registerActiveDeviceSession = async (userId) => {
   if (!isSupabaseConfigured || !supabase || !userId) return null;
   try {
-    if (disconnectOthers) {
-      try {
-        await supabase.auth.signOut({ scope: 'others' });
-      } catch {
-        // Ignora caso o escopo others não esteja habilitado
-      }
-    }
-
     const deviceId = getDeviceId();
     const deviceName = getDeviceName();
     const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
@@ -961,6 +999,8 @@ export const registerActiveDeviceSession = async (userId, disconnectOthers = fal
       lastSeenAt: new Date().toISOString()
     };
 
+    localStorage.setItem(STORAGE_KEYS.ACTIVE_DEVICE_SESSION, JSON.stringify(activeDeviceSession));
+
     const updatedStats = {
       ...baseStats,
       activeDeviceSession
@@ -968,13 +1008,17 @@ export const registerActiveDeviceSession = async (userId, disconnectOthers = fal
 
     localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(updatedStats));
 
-    await supabase
+    const { error: updateErr } = await supabase
       .from('profiles')
       .update({
         stats: updatedStats,
         updated_at: new Date().toISOString()
       })
       .eq('id', userId);
+
+    if (updateErr) {
+      console.warn('Erro ao atualizar stats.activeDeviceSession:', updateErr);
+    }
 
     return activeDeviceSession;
   } catch (err) {
@@ -998,11 +1042,26 @@ export const verifyCurrentDeviceIsActive = async (userId) => {
 
     const activeSession = data?.stats?.activeDeviceSession;
     const currentDeviceId = getDeviceId();
+    const localToken = localStorage.getItem(STORAGE_KEYS.DEVICE_SESSION_TOKEN);
 
-    if (activeSession && activeSession.deviceId && activeSession.deviceId !== currentDeviceId) {
+    // Se ainda não há sessão registrada no banco (ex: usuário já estava logado antes da atualização),
+    // registra este aparelho agora mesmo para ativar a proteção de sessão única!
+    if (!activeSession || !activeSession.deviceId) {
+      await registerActiveDeviceSession(userId);
+      return { isValid: true, replacedBy: null };
+    }
+
+    if (activeSession.deviceId !== currentDeviceId) {
       return {
         isValid: false,
         replacedBy: activeSession.deviceName || 'outro dispositivo'
+      };
+    }
+
+    if (localToken && activeSession.sessionToken && activeSession.sessionToken !== localToken) {
+      return {
+        isValid: false,
+        replacedBy: activeSession.deviceName || 'outra janela/navegador'
       };
     }
 
@@ -1027,6 +1086,7 @@ export const saveAuthUser = (user) => {
       localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
       return null;
     }
+    localStorage.removeItem(STORAGE_KEYS.PAUSED_USER);
     localStorage.setItem(STORAGE_KEYS.AUTH_USER, JSON.stringify(user));
     return user;
   } catch {
@@ -1034,9 +1094,22 @@ export const saveAuthUser = (user) => {
   }
 };
 
-export const clearAuthUser = async (releaseDeviceLock = true) => {
+export const clearAuthUser = async (releaseDeviceLock = true, replacedBy = null) => {
   try {
+    const existingUser = getAuthUser();
     localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+    localStorage.removeItem(STORAGE_KEYS.ACTIVE_DEVICE_SESSION);
+    localStorage.removeItem(STORAGE_KEYS.DEVICE_SESSION_TOKEN);
+
+    if (!releaseDeviceLock && existingUser) {
+      // Quando desconectado por outro aparelho, guarda os dados do usuário e mantém o token do Supabase
+      // para que o botão de "Voltar a entrar neste dispositivo com 1 clique" funcione imediatamente!
+      savePausedDeviceUser(existingUser, replacedBy || 'outro dispositivo');
+      return;
+    }
+
+    clearPausedDeviceUser();
+
     if (isSupabaseConfigured && supabase) {
       if (releaseDeviceLock) {
         try {
@@ -1065,8 +1138,6 @@ export const clearAuthUser = async (releaseDeviceLock = true) => {
           // Ignora falha ao liberar trava
         }
         await supabase.auth.signOut();
-      } else {
-        await supabase.auth.signOut({ scope: 'local' });
       }
     }
   } catch (e) {
@@ -1084,7 +1155,12 @@ export const syncUserDataToSupabase = async (overrides = {}) => {
     const currentProfile = overrides.profile || getProfile();
     const currentFavorites = overrides.favorites || getFavorites();
     const currentStudied = overrides.studied || getStudied();
-    const currentStats = overrides.stats || getStats();
+    const rawStats = overrides.stats || getStats();
+    const localDeviceSession = getLocalActiveDeviceSession();
+    const currentStats = {
+      ...rawStats,
+      activeDeviceSession: localDeviceSession || rawStats?.activeDeviceSession || null
+    };
     const currentCustom = overrides.customSeries || getCustomSeries();
 
     await supabase.from('profiles').upsert({
@@ -1187,7 +1263,12 @@ export const loadUserDataFromSupabase = async (userId) => {
       localStorage.setItem(STORAGE_KEYS.STUDIED, JSON.stringify(data.studied));
     }
     if (data.stats && typeof data.stats === 'object') {
-      localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(data.stats));
+      const localDev = getLocalActiveDeviceSession();
+      const mergedStats = {
+        ...data.stats,
+        activeDeviceSession: localDev || data.stats.activeDeviceSession || null
+      };
+      localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(mergedStats));
     }
     if (Array.isArray(data.custom_series)) {
       localStorage.setItem(STORAGE_KEYS.CUSTOM_SERIES, JSON.stringify(data.custom_series));
