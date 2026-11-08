@@ -992,6 +992,13 @@ export const SERIES_FOLDERS = [
         isBuiltin: true
       }
     ]
+  },
+  {
+    id: 'quarta-serie',
+    title: '4ª SÉRIE',
+    subtitle: 'Exercícios sobre intervalos de segunda e de terça em compassos compostos',
+    description: 'Pasta da 4ª Série - Exercícios sobre intervalos de segunda e de terça em compassos compostos.',
+    exercises: []
   }
 ];
 

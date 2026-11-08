@@ -154,7 +154,7 @@ export function MusicXMLViewer({
   const seriesBadgeText = currentSeries?.seriesTitle || '1ª SÉRIE';
   const rawTitle = currentSeries?.title || 'Exercício Número 1';
   const cleanExerciseTitle = rawTitle
-    .replace(/^(Primeira|Segunda|Terceira)\s+Série\s*[-—]\s*/i, '')
+    .replace(/^(Primeira|Segunda|Terceira|Quarta|Quinta|Sexta|Sétima|Oitava|Nona|Décima)\s+Série\s*[-—]\s*/i, '')
     .trim();
   const subtitleText = currentSeries?.isDesktopMode
     ? (currentSeries?.subtitle || 'Formato computador')
