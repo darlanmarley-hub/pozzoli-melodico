@@ -104,11 +104,18 @@ export default function LoginPage({ onLoginSuccess }) {
 
     try {
       if (isSupabaseConfigured && supabase) {
-        // 1. Tenta autenticar com a senha inicial gerada pelo Webhook da SyncPay
+        // 1. Tenta autenticar com a senha inicial gerada pelo Webhook da SyncPay (o próprio e-mail ou Pozzoli123!)
         let authRes = await supabase.auth.signInWithPassword({
           email: targetEmail,
-          password: 'Pozzoli123!'
+          password: targetEmail
         });
+
+        if (authRes.error) {
+          authRes = await supabase.auth.signInWithPassword({
+            email: targetEmail,
+            password: 'Pozzoli123!'
+          });
+        }
 
         if (authRes.error) {
           // Caso o aluno já tenha trocado para essa mesma senha antes
@@ -147,7 +154,7 @@ export default function LoginPage({ onLoginSuccess }) {
         await supabase
           .from('users_plano')
           .update({ status: 'ativo', updated_at: nowIso })
-          .eq('id', sbUser.id);
+          .eq('email', targetEmail);
 
         await loadUserDataFromSupabase(sbUser.id);
         await registerActiveDeviceSession(sbUser.id);
@@ -155,7 +162,7 @@ export default function LoginPage({ onLoginSuccess }) {
         const user = {
           id: sbUser.id,
           email: targetEmail,
-          name: sbUser.user_metadata?.full_name || targetEmail.split('@')[0],
+          name: sbUser.user_metadata?.name || sbUser.user_metadata?.full_name || targetEmail.split('@')[0],
           provider: 'supabase',
           avatar: '🎵',
           loginTime: nowIso
