@@ -631,15 +631,24 @@ input, textarea {
   display: flex;
   align-items: center;
   gap: 14px;
+  flex: 1;
+  min-width: 0;
 }
 
 .icon-badge-box {
   width: 44px;
   height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  flex-shrink: 0;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.icon-badge-box svg {
+  flex-shrink: 0;
 }
 
 .icon-badge-box.blue {

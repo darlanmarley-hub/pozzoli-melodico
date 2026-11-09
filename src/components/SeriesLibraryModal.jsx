@@ -253,21 +253,24 @@ export default function SeriesLibraryView({
               justifyContent: 'space-between'
             }}
           >
-            <div className="header-left" style={{ gap: '10px' }}>
+            <div className="header-left" style={{ gap: '10px', flex: 1, minWidth: 0 }}>
               <div
                 className="icon-badge-box"
                 style={{
-                  width: '42px',
-                  height: '42px',
+                  width: '44px',
+                  height: '44px',
+                  minWidth: '44px',
+                  minHeight: '44px',
+                  flexShrink: 0,
                   borderRadius: '12px',
                   background: 'rgba(244, 63, 94, 0.2)',
                   border: '1px solid var(--accent-rose)'
                 }}
               >
-                <Heart size={20} fill="var(--accent-rose)" style={{ color: 'var(--accent-rose)' }} />
+                <Heart size={20} fill="var(--accent-rose)" style={{ color: 'var(--accent-rose)', flexShrink: 0 }} />
               </div>
 
-              <div className="card-title-group">
+              <div className="card-title-group" style={{ flex: 1, minWidth: 0 }}>
                 <h3 style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   FAVORITOS
                 </h3>
@@ -561,21 +564,28 @@ export default function SeriesLibraryView({
                     : 'transparent'
                 }}
               >
-                <div className="header-left" style={{ gap: '12px' }}>
+                <div className="header-left" style={{ gap: '12px', flex: 1, minWidth: 0 }}>
                   <div
                     className="icon-badge-box"
                     style={{
                       width: '44px',
                       height: '44px',
+                      minWidth: '44px',
+                      minHeight: '44px',
+                      flexShrink: 0,
                       borderRadius: '12px',
                       background: isFolderComplete ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 102, 0, 0.2)',
                       border: isFolderComplete ? '1px solid #10b981' : '1px solid var(--accent-orange)'
                     }}
                   >
-                    <Music size={22} style={{ color: isFolderComplete ? '#10b981' : 'var(--accent-orange)' }} />
+                    {isExpanded ? (
+                      <FolderOpen size={22} style={{ color: isFolderComplete ? '#10b981' : 'var(--accent-orange)', flexShrink: 0 }} />
+                    ) : (
+                      <Folder size={22} style={{ color: isFolderComplete ? '#10b981' : 'var(--accent-orange)', flexShrink: 0 }} />
+                    )}
                   </div>
 
-                  <div className="card-title-group">
+                  <div className="card-title-group" style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <h3 style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--text-main)', fontFamily: "'Inter', -apple-system, sans-serif", letterSpacing: '0.2px' }}>
                         {folder.title.toUpperCase()}
@@ -605,7 +615,7 @@ export default function SeriesLibraryView({
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
                   <span
                     className="folder-count-badge"
                     style={{
