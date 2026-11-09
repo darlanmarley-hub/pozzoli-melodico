@@ -572,11 +572,7 @@ export default function SeriesLibraryView({
                       border: isFolderComplete ? '1px solid #10b981' : '1px solid var(--accent-orange)'
                     }}
                   >
-                    {isExpanded ? (
-                      <FolderOpen size={22} style={{ color: isFolderComplete ? '#10b981' : 'var(--accent-orange)' }} />
-                    ) : (
-                      <Folder size={22} style={{ color: isFolderComplete ? '#10b981' : 'var(--accent-orange)' }} />
-                    )}
+                    <Music size={22} style={{ color: isFolderComplete ? '#10b981' : 'var(--accent-orange)' }} />
                   </div>
 
                   <div className="card-title-group">
