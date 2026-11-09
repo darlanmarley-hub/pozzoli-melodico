@@ -57,11 +57,11 @@ async function sendBrevoWelcomeEmail(email: string, name: string, userId: string
       },
       body: JSON.stringify({
         sender: {
-          name: 'Pozzoli no Bolso',
+          name: 'Pozzoli Melódico no Bolso',
           email: 'darlanmarley@gmail.com',
         },
         to: [{ email, name: name || email.split('@')[0] }],
-        subject: 'Crie sua senha - Pozzoli Melódico no Bolso',
+        subject: 'Pozzoli Melódico no Bolso - Crie sua senha',
         htmlContent,
       }),
     });
