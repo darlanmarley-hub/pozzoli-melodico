@@ -46,8 +46,9 @@ export default function LoginPage({ onLoginSuccess }) {
   const [pausedDeviceInfo, setPausedDeviceInfo] = useState(() => getPausedDeviceUser());
   const [isQuickReconnecting, setIsQuickReconnecting] = useState(false);
 
-  // Estado da rota /criar-senha (vinda do botão "Criar minha senha" do e-mail da Brevo)
+  // Estado da rota /criar-senha (vinda do botão "Criar minha senha" ou "Redefinir minha senha" do e-mail da Brevo)
   const [isCreatePasswordMode, setIsCreatePasswordMode] = useState(false);
+  const [isPasswordResetMode, setIsPasswordResetMode] = useState(false);
   const [createPwdEmail, setCreatePwdEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -68,8 +69,12 @@ export default function LoginPage({ onLoginSuccess }) {
       const params = new URLSearchParams(window.location.search);
       const emailParam = params.get('email') || '';
       const tokenParam = params.get('token') || '';
+      const modeParam = params.get('mode') || '';
       if (path.includes('/criar-senha') || tokenParam) {
         setIsCreatePasswordMode(true);
+        if (modeParam === 'reset') {
+          setIsPasswordResetMode(true);
+        }
         if (emailParam) {
           setCreatePwdEmail(emailParam.trim().toLowerCase());
           setEmail(emailParam.trim().toLowerCase());
@@ -80,7 +85,7 @@ export default function LoginPage({ onLoginSuccess }) {
     }
   }, []);
 
-  // Cadastrar nova senha pelo link enviado no e-mail da Brevo (/criar-senha)
+  // Cadastrar ou redefinir senha pelo link enviado no e-mail da Brevo (/criar-senha)
   const handleCreatePasswordSubmit = async (e) => {
     if (e) e.preventDefault();
     setCreatePwdError('');
@@ -88,7 +93,7 @@ export default function LoginPage({ onLoginSuccess }) {
 
     const targetEmail = createPwdEmail.trim().toLowerCase();
     if (!targetEmail || !targetEmail.includes('@')) {
-      setCreatePwdError('Por favor, informe o e-mail usado na sua compra.');
+      setCreatePwdError('Por favor, informe o e-mail da sua conta.');
       return;
     }
     if (!newPassword || newPassword.length < 6) {
@@ -104,50 +109,62 @@ export default function LoginPage({ onLoginSuccess }) {
 
     try {
       if (isSupabaseConfigured && supabase) {
-        // 1. Tenta autenticar com a senha inicial gerada pelo Webhook da SyncPay (o próprio e-mail ou Pozzoli123!)
+        // 1. Atualiza a senha diretamente via Edge Function (suporta 1º acesso e recuperação de senha)
+        try {
+          const edgeRes = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'set_password',
+              email: targetEmail,
+              password: newPassword
+            })
+          });
+          const edgeData = await edgeRes.json().catch(() => ({}));
+          if (!edgeRes.ok && edgeData?.error) {
+            setCreatePwdLoading(false);
+            setCreatePwdError(edgeData.error);
+            return;
+          }
+        } catch {
+          // Fallback caso a Edge Function ainda não tenha o action 'set_password'
+        }
+
+        // 2. Autentica com a nova senha (ou com a senha inicial caso fallback)
         let authRes = await supabase.auth.signInWithPassword({
           email: targetEmail,
-          password: targetEmail
+          password: newPassword
         });
+
+        if (authRes.error) {
+          authRes = await supabase.auth.signInWithPassword({
+            email: targetEmail,
+            password: targetEmail
+          });
+          if (!authRes.error && authRes.data?.user) {
+            await supabase.auth.updateUser({ password: newPassword });
+          }
+        }
 
         if (authRes.error) {
           authRes = await supabase.auth.signInWithPassword({
             email: targetEmail,
             password: 'Pozzoli123!'
           });
-        }
-
-        if (authRes.error) {
-          // Caso o aluno já tenha trocado para essa mesma senha antes
-          authRes = await supabase.auth.signInWithPassword({
-            email: targetEmail,
-            password: newPassword
-          });
+          if (!authRes.error && authRes.data?.user) {
+            await supabase.auth.updateUser({ password: newPassword });
+          }
         }
 
         if (authRes.error || !authRes.data?.user) {
           setCreatePwdLoading(false);
-          setIsCreatePasswordMode(false);
-          window.history.replaceState({}, '', '/');
-          setEmail(targetEmail);
-          setErrorMessage(
-            'Sua senha já foi cadastrada anteriormente ou o e-mail não foi localizado. Faça login com sua senha ou clique em "Esqueceu a senha?".'
+          setCreatePwdError(
+            'Não foi possível localizar sua conta com este e-mail. Verifique se digitou o mesmo e-mail da compra.'
           );
           return;
         }
 
         const sbUser = authRes.data.user;
-
-        // 2. Atualiza a senha do usuário no Supabase Auth para a senha escolhida por ele
-        const { error: updateErr } = await supabase.auth.updateUser({
-          password: newPassword
-        });
-
-        if (updateErr) {
-          setCreatePwdLoading(false);
-          setCreatePwdError('Não foi possível salvar a nova senha: ' + updateErr.message);
-          return;
-        }
 
         // 3. Ativa o plano em users_plano
         const nowIso = new Date().toISOString();
@@ -565,28 +582,41 @@ export default function LoginPage({ onLoginSuccess }) {
     }
   };
 
-  // Handle Forgot Password
+  // Handle Forgot Password (dispara e-mail de recuperação via Brevo)
   const handleForgotPassword = async (e) => {
     if (e) e.preventDefault();
-    if (!forgotEmail.trim() || !forgotEmail.includes('@')) {
+    const targetEmail = forgotEmail.trim().toLowerCase();
+    if (!targetEmail || !targetEmail.includes('@')) {
       alert('Por favor, informe um e-mail válido.');
       return;
     }
 
     setForgotLoading(true);
-    if (isSupabaseConfigured && supabase) {
-      await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
-        redirectTo: window.location.origin
+    try {
+      const res = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'forgot_password',
+          email: targetEmail
+        })
       });
-      setForgotLoading(false);
-      setForgotSent(true);
-      return;
+
+      if (!res.ok && isSupabaseConfigured && supabase) {
+        await supabase.auth.resetPasswordForEmail(targetEmail, {
+          redirectTo: `${window.location.origin}/criar-senha?email=${encodeURIComponent(targetEmail)}&mode=reset`
+        });
+      }
+    } catch {
+      if (isSupabaseConfigured && supabase) {
+        await supabase.auth.resetPasswordForEmail(targetEmail, {
+          redirectTo: `${window.location.origin}/criar-senha?email=${encodeURIComponent(targetEmail)}&mode=reset`
+        });
+      }
     }
 
-    setTimeout(() => {
-      setForgotLoading(false);
-      setForgotSent(true);
-    }, 800);
+    setForgotLoading(false);
+    setForgotSent(true);
   };
 
   return (
@@ -717,9 +747,13 @@ export default function LoginPage({ onLoginSuccess }) {
           {isCreatePasswordMode ? (
             <>
               <div className="login-card-header validation-card-header">
-                <h3 className="login-card-title">CRIE SUA SENHA</h3>
+                <h3 className="login-card-title">
+                  {isPasswordResetMode ? 'REDEFINIR SUA SENHA' : 'CRIE SUA SENHA'}
+                </h3>
                 <p className="login-card-subtitle validation-card-subtitle">
-                  Cadastre sua senha de acesso ao Pozzoli Melódico no Bolso
+                  {isPasswordResetMode
+                    ? 'Digite abaixo sua nova senha de acesso ao Pozzoli Melódico no Bolso'
+                    : 'Cadastre sua senha de acesso ao Pozzoli Melódico no Bolso'}
                 </p>
               </div>
 

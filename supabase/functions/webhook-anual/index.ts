@@ -8,33 +8,59 @@ const corsHeaders = {
 
 const APP_BASE_URL = 'https://pozzoli-melodico.vercel.app';
 
-async function sendBrevoWelcomeEmail(email: string, name: string, userId: string | null) {
+async function sendBrevoEmail(
+  email: string,
+  name: string,
+  userId: string | null,
+  mode: 'welcome' | 'recovery' = 'welcome'
+) {
   try {
     const brevoApiKey = Deno.env.get('BREVO_API_KEY') || '';
     if (!brevoApiKey) {
       console.warn('BREVO_API_KEY not set in environment');
       return { ok: false, error: 'Missing BREVO_API_KEY' };
     }
+
     const token = crypto.randomUUID();
+    const isRecovery = mode === 'recovery';
     const createPasswordUrl = `${APP_BASE_URL}/criar-senha?id=${encodeURIComponent(
       userId || ''
-    )}&email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+    )}&email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}${
+      isRecovery ? '&mode=reset' : ''
+    }`;
+
+    const titleText = isRecovery
+      ? 'Recuperação de Senha - Pozzoli Melódico no Bolso'
+      : 'Bem-vindo ao Pozzoli Melódico no Bolso!';
+
+    const paragraph1 = isRecovery
+      ? 'Recebemos uma solicitação para redefinir a senha da sua conta no aplicativo <strong>Pozzoli Melódico no Bolso</strong>.'
+      : 'Sua conta foi criada com sucesso. Agora é só cadastrar a sua senha para acessar o aplicativo.';
+
+    const paragraph2 = isRecovery
+      ? 'Clique no botão abaixo para cadastrar a sua nova senha. O link expira em 24 horas.'
+      : 'Clique no botão abaixo para cadastrar a sua senha. O link expira em 24 horas.';
+
+    const buttonLabel = isRecovery ? 'Redefinir minha senha' : 'Criar minha senha';
+    const subjectText = isRecovery
+      ? 'Pozzoli Melódico no Bolso - Recuperação de senha'
+      : 'Pozzoli Melódico no Bolso - Crie sua senha';
 
     const htmlContent = `
       <div style="font-family: Arial, Helvetica, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px 16px; color: #1f2937;">
         <h2 style="color: #ea580c; font-size: 22px; font-weight: 700; margin: 0 0 18px 0;">
-          Bem-vindo ao Pozzoli Melódico no Bolso!
+          ${titleText}
         </h2>
         <p style="font-size: 15px; line-height: 1.6; color: #1f2937; margin: 0 0 14px 0;">
-          Sua conta foi criada com sucesso. Agora é só cadastrar a sua senha para acessar o aplicativo.
+          ${paragraph1}
         </p>
         <p style="font-size: 15px; line-height: 1.6; color: #1f2937; margin: 0 0 24px 0;">
-          Clique no botão abaixo para cadastrar a sua senha. O link expira em 24 horas.
+          ${paragraph2}
         </p>
         <div style="margin: 26px 0;">
           <a href="${createPasswordUrl}"
              style="background-color: #ea580c; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 16px; padding: 14px 28px; border-radius: 8px; display: inline-block;">
-            Criar minha senha
+            ${buttonLabel}
           </a>
         </div>
         <p style="font-size: 13px; color: #6b7280; margin: 26px 0 8px 0;">
@@ -52,187 +78,314 @@ async function sendBrevoWelcomeEmail(email: string, name: string, userId: string
       method: 'POST',
       headers: {
         'accept': 'application/json',
-        'content-type': 'application/json',
         'api-key': brevoApiKey,
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
         sender: {
           name: 'Pozzoli Melódico no Bolso',
           email: 'darlanmarley@gmail.com',
         },
-        to: [{ email, name: name || email.split('@')[0] }],
-        subject: 'Pozzoli Melódico no Bolso - Crie sua senha',
+        to: [
+          {
+            email,
+            name: name || email.split('@')[0],
+          },
+        ],
+        subject: subjectText,
         htmlContent,
       }),
     });
 
     const data = await res.json().catch(() => ({}));
-    return { sent: res.ok, status: res.status, data };
+    return { ok: res.ok, status: res.status, data };
   } catch (err) {
-    console.error('Erro ao enviar e-mail pela Brevo:', err);
-    return { sent: false, error: String(err) };
+    console.error('Erro ao enviar e-mail via Brevo:', err);
+    return { ok: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 
-// ============================================================================
-// ENDPOINT EXCLUSIVO: PLANO ANUAL (SYNCPAY) -> clever-action
-// URL: https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/clever-action
-// ============================================================================
+async function findUserByEmail(supabase: any, email: string) {
+  let userId: string | null = null;
+  let userName = email.split('@')[0];
+
+  const { data: existingProfile } = await supabase
+    .from('profiles')
+    .select('id, name')
+    .ilike('email', email)
+    .maybeSingle();
+
+  if (existingProfile?.id) {
+    userId = existingProfile.id;
+    if (existingProfile.name) userName = existingProfile.name;
+  } else {
+    const { data: listData } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 });
+    const found = listData?.users?.find((u: any) => u.email?.toLowerCase() === email);
+    if (found) {
+      userId = found.id;
+      userName = found.user_metadata?.name || found.user_metadata?.full_name || userName;
+    }
+  }
+
+  return { userId, userName };
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
-  if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  }
-
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const payload = await req.json();
-    const root = payload?.data && typeof payload.data === 'object' ? payload.data : payload;
 
-    const rawStatus = String(root?.status || payload?.status || payload?.event || '').toLowerCase();
-    const clientObj = root?.client || root?.customer || root?.buyer || payload?.client || {};
-    const email = String(clientObj?.email || root?.email || payload?.email || '').trim().toLowerCase();
-    const name = String(clientObj?.name || root?.name || (email ? email.split('@')[0] : 'Aluno Pozzoli')).trim();
-    const transactionId = String(
-      root?.identifier || root?.idTransaction || root?.reference_id || root?.id || payload?.identifier || `syncpay_anual_${Date.now()}`
-    );
-
-    const planType = 'anual';
-
-    await supabaseAdmin.from('webhook_raw_events').insert({
-      provider: 'syncpay-anual',
-      event_type: String(payload?.event || rawStatus || 'unknown'),
-      transaction_id: transactionId,
-      email: email || null,
-      status: rawStatus,
-      payload,
-    });
-
-    if (!email || !email.includes('@')) {
-      return new Response(
-        JSON.stringify({ received: true, warning: 'E-mail do cliente ausente no payload' }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    const isPaid = ['paid', 'approved', 'completed', 'paid_out', 'succeeded', 'confirmed', 'ativo'].includes(rawStatus);
-    const isRevoked = ['refunded', 'chargedback', 'canceled', 'cancelled', 'expired'].includes(rawStatus);
-
-    const { data: planoRow } = await supabaseAdmin
-      .from('planos')
-      .select('id')
-      .eq('nome', planType)
-      .maybeSingle();
-
-    if (isPaid) {
-      await supabaseAdmin.from('authorized_purchases').upsert(
-        { email, plan: planType, transaction_code: transactionId },
-        { onConflict: 'email' }
-      );
-
-      let userId: string | null = null;
-      const { data: existingProfile } = await supabaseAdmin
-        .from('profiles')
-        .select('id')
-        .ilike('email', email)
-        .maybeSingle();
-
-      if (existingProfile?.id) {
-        userId = existingProfile.id;
-      } else {
-        const { data: createdUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-          email,
-          password: 'Pozzoli123!',
-          email_confirm: true,
-          user_metadata: { full_name: name, plan: planType, transaction_code: transactionId },
-        });
-
-        if (!createError && createdUser?.user?.id) {
-          userId = createdUser.user.id;
-        } else {
-          const { data: usersList } = await supabaseAdmin.auth.admin.listUsers();
-          const found = usersList?.users?.find((u) => u.email?.toLowerCase() === email);
-          if (found) userId = found.id;
-        }
+    // ========================================================================
+    // AÇÃO 1: RECUPERAÇÃO DE SENHA ("Esqueceu a senha?") VIA BREVO
+    // ========================================================================
+    if (payload?.action === 'forgot_password') {
+      const targetEmail = String(payload?.email || '').trim().toLowerCase();
+      if (!targetEmail || !targetEmail.includes('@')) {
+        return new Response(
+          JSON.stringify({ error: 'Informe um e-mail válido.' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
 
-      if (userId) {
-        const nowIso = new Date().toISOString();
-        const oneYearLaterIso = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
-
-        await supabaseAdmin.from('profiles').upsert({
-          id: userId,
-          email,
-          name,
-          plan: planType,
-          updated_at: nowIso,
-        });
-
-        await supabaseAdmin.from('users_plano').upsert({
-          id: userId,
-          plano_id: planoRow?.id || 'f39952e0-e370-4c07-8b21-08553ce6cb37',
-          data_inicio: nowIso,
-          data_final: oneYearLaterIso,
-          status: 'primeiro-acesso',
-          updated_at: nowIso,
-        });
+      const { userId, userName } = await findUserByEmail(supabase, targetEmail);
+      if (!userId) {
+        return new Response(
+          JSON.stringify({ error: 'E-mail não encontrado em nossa base de alunos.' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
 
-      // Dispara o e-mail de "Crie sua senha" via Brevo automaticamente
-      const emailResult = await sendBrevoWelcomeEmail(email, name, userId);
-
+      const emailResult = await sendBrevoEmail(targetEmail, userName, userId, 'recovery');
       return new Response(
         JSON.stringify({
           success: true,
-          plan: 'anual',
-          email,
-          user_id: userId,
-          brevo_email_sent: emailResult.sent,
+          message: 'E-mail de recuperação de senha enviado com sucesso!',
+          email: targetEmail,
+          brevo: emailResult,
         }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    if (isRevoked) {
-      await supabaseAdmin.from('authorized_purchases').delete().ilike('email', email);
-      const { data: existingProfile } = await supabaseAdmin
-        .from('profiles')
-        .select('id')
-        .ilike('email', email)
-        .maybeSingle();
+    // ========================================================================
+    // AÇÃO 2: DEFINIR / REDEFINIR SENHA NA TELA /criar-senha
+    // ========================================================================
+    if (payload?.action === 'set_password') {
+      const targetEmail = String(payload?.email || '').trim().toLowerCase();
+      const newPassword = String(payload?.password || '');
 
-      if (existingProfile?.id) {
-        await supabaseAdmin
-          .from('users_plano')
-          .update({ status: 'cancelado', updated_at: new Date().toISOString() })
-          .eq('id', existingProfile.id);
+      if (!targetEmail || !targetEmail.includes('@')) {
+        return new Response(
+          JSON.stringify({ error: 'E-mail inválido.' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      if (!newPassword || newPassword.length < 6) {
+        return new Response(
+          JSON.stringify({ error: 'A senha deve ter pelo menos 6 caracteres.' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const { userId, userName } = await findUserByEmail(supabase, targetEmail);
+      if (!userId) {
+        return new Response(
+          JSON.stringify({ error: 'Conta não localizada para este e-mail.' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const { error: updateErr } = await supabase.auth.admin.updateUserById(userId, {
+        password: newPassword,
+        email_confirm: true,
+      });
+
+      if (updateErr) {
+        return new Response(
+          JSON.stringify({ error: 'Erro ao atualizar a senha: ' + updateErr.message }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
 
       return new Response(
-        JSON.stringify({ success: true, action: 'access_revoked', email }),
+        JSON.stringify({
+          success: true,
+          message: 'Senha atualizada com sucesso!',
+          user_id: userId,
+          email: targetEmail,
+          name: userName,
+        }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
+    // ========================================================================
+    // AÇÃO 3: WEBHOOK SYNCPAY (PLANO ANUAL)
+    // ========================================================================
+    console.log('Webhook Anual (SyncPay) recebido:', JSON.stringify(payload));
+
+    const data = payload?.data || payload;
+
+    const rawEmail =
+      data?.customer?.email ||
+      data?.client?.email ||
+      data?.buyer?.email ||
+      data?.payer?.email ||
+      data?.user?.email ||
+      data?.email ||
+      payload?.customer?.email ||
+      payload?.client?.email ||
+      payload?.buyer?.email ||
+      payload?.email ||
+      '';
+
+    const email = String(rawEmail).trim().toLowerCase();
+
+    const name =
+      data?.customer?.name ||
+      data?.client?.name ||
+      data?.buyer?.name ||
+      data?.payer?.name ||
+      data?.name ||
+      payload?.customer?.name ||
+      payload?.client?.name ||
+      payload?.name ||
+      'Aluno Pozzoli Melódico';
+
+    const rawStatus = String(
+      data?.status ||
+      data?.payment_status ||
+      data?.transaction_status ||
+      payload?.status ||
+      payload?.event ||
+      'paid'
+    ).toLowerCase();
+
+    const approvedStatuses = [
+      'paid',
+      'approved',
+      'completed',
+      'confirmed',
+      'active',
+      'succeeded',
+      'success',
+      'authorized',
+      'payment.approved',
+      'payment_approved',
+      'order.paid',
+      'pix.paid',
+      'cash_out.completed',
+      'cash_in.completed',
+    ];
+
+    const isApproved = approvedStatuses.some((s) => rawStatus.includes(s)) || !data?.status;
+
+    if (!email) {
+      return new Response(
+        JSON.stringify({ error: 'E-mail do comprador não encontrado no payload', payload }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!isApproved) {
+      return new Response(
+        JSON.stringify({ message: `Status '${rawStatus}' ignorado (aguardando pagamento).`, email }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const expiresAtDate = new Date();
+    expiresAtDate.setDate(expiresAtDate.getDate() + 365);
+    const expiresAtIso = expiresAtDate.toISOString();
+
+    let userId: string | null = null;
+    const defaultPassword = email;
+
+    const { data: createdUser, error: createError } = await supabase.auth.admin.createUser({
+      email,
+      password: defaultPassword,
+      email_confirm: true,
+      user_metadata: {
+        name,
+        plano: 'anual',
+        expires_at: expiresAtIso,
+      },
+    });
+
+    if (createdUser?.user) {
+      userId = createdUser.user.id;
+    } else {
+      const found = await findUserByEmail(supabase, email);
+      userId = found.userId;
+
+      if (userId) {
+        await supabase.auth.admin.updateUserById(userId, {
+          email_confirm: true,
+          user_metadata: {
+            name,
+            plano: 'anual',
+            expires_at: expiresAtIso,
+          },
+        });
+      } else if (createError) {
+        console.error('Erro ao criar/localizar usuário no Auth:', createError);
+      }
+    }
+
+    if (userId) {
+      const { error: profileError } = await supabase.from('profiles').upsert(
+        {
+          id: userId,
+          email,
+          name,
+          plano: 'anual',
+          status: 'ativo',
+          expires_at: expiresAtIso,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'id' }
+      );
+      if (profileError) console.error('Erro ao salvar em profiles:', profileError);
+    }
+
+    const { error: planoError } = await supabase.from('users_plano').upsert(
+      {
+        email,
+        name,
+        plano: 'anual',
+        status: 'ativo',
+        expires_at: expiresAtIso,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'email' }
+    );
+    if (planoError) console.error('Erro ao salvar em users_plano:', planoError);
+
+    const emailResult = await sendBrevoEmail(email, name, userId, 'welcome');
+
     return new Response(
-      JSON.stringify({ received: true, status: rawStatus }),
+      JSON.stringify({
+        success: true,
+        message: 'Acesso ANUAL (365 dias) liberado com sucesso e e-mail enviado!',
+        email,
+        user_id: userId,
+        plano: 'anual',
+        expires_at: expiresAtIso,
+        brevo: emailResult,
+      }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (err) {
-    console.error('Erro no webhook-anual:', err);
+    console.error('Erro inesperado no webhook-anual:', err);
     return new Response(
-      JSON.stringify({ error: 'Internal server error', details: String(err) }),
+      JSON.stringify({ error: 'Erro interno no processamento do webhook', details: err instanceof Error ? err.message : String(err) }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
