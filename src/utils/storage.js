@@ -998,7 +998,54 @@ export const SERIES_FOLDERS = [
     title: '4ª SÉRIE',
     subtitle: 'Exercícios sobre intervalos de segunda e de terça em compassos compostos',
     description: 'Pasta da 4ª Série - Exercícios sobre intervalos de segunda e de terça em compassos compostos.',
-    exercises: []
+    exercises: [
+      {
+        id: 'serie-4-ex-1',
+        seriesId: 'quarta-serie',
+        seriesTitle: '4ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de segunda e de terça em compassos compostos',
+        title: 'Quarta Série - Exercício Número 1',
+        subtitle: '⏱ 60 BPM',
+        description: 'Exercício N.1 da 4ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/k3bhodlns7b9q3r8ksn2s/ex1.mp4?rlkey=memamgic4jso8bghqhycm3icl&st=7m7702qy&dl=0',
+        embedUrl: '',
+        timeSignature: '6/8',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 1,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        hasScrollbar: true,
+        isAvailable: true,
+        isBuiltin: true
+      },
+      {
+        id: 'serie-4-ex-2',
+        seriesId: 'quarta-serie',
+        seriesTitle: '4ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de segunda e de terça em compassos compostos',
+        title: 'Quarta Série - Exercício Número 2',
+        subtitle: '⏱ 60 BPM',
+        description: 'Exercício N.2 da 4ª Série do Método Pozzoli Melódico.',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: 'https://www.dropbox.com/scl/fi/xfcsdnob58fouobregtrc/ex2.mp4?rlkey=izzxldwn3jsq21lc6rpr8ag6p&st=4hn57pas&dl=0',
+        embedUrl: '',
+        timeSignature: '6/8',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 2,
+        videoScale: 1.0,
+        videoTranslateY: '0px',
+        hasScrollbar: true,
+        isAvailable: true,
+        isBuiltin: true
+      }
+    ]
   }
 ];
 
