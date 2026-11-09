@@ -6,9 +6,77 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
+const APP_BASE_URL = 'https://pozzoli-melodico.vercel.app';
+
+async function sendBrevoWelcomeEmail(email: string, name: string, userId: string | null) {
+  try {
+    const brevoApiKey = Deno.env.get('BREVO_API_KEY') || '';
+    if (!brevoApiKey) {
+      console.warn('BREVO_API_KEY not set in environment');
+      return { ok: false, error: 'Missing BREVO_API_KEY' };
+    }
+    const token = crypto.randomUUID();
+    const createPasswordUrl = `${APP_BASE_URL}/criar-senha?id=${encodeURIComponent(
+      userId || ''
+    )}&email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+
+    const htmlContent = `
+      <div style="font-family: Arial, Helvetica, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px 16px; color: #1f2937;">
+        <h2 style="color: #ea580c; font-size: 22px; font-weight: 700; margin: 0 0 18px 0;">
+          Bem-vindo ao Pozzoli Melódico no Bolso!
+        </h2>
+        <p style="font-size: 15px; line-height: 1.6; color: #1f2937; margin: 0 0 14px 0;">
+          Sua conta foi criada com sucesso. Agora é só cadastrar a sua senha para acessar o aplicativo.
+        </p>
+        <p style="font-size: 15px; line-height: 1.6; color: #1f2937; margin: 0 0 24px 0;">
+          Clique no botão abaixo para cadastrar a sua senha. O link expira em 24 horas.
+        </p>
+        <div style="margin: 26px 0;">
+          <a href="${createPasswordUrl}"
+             style="background-color: #ea580c; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 16px; padding: 14px 28px; border-radius: 8px; display: inline-block;">
+            Criar minha senha
+          </a>
+        </div>
+        <p style="font-size: 13px; color: #6b7280; margin: 26px 0 8px 0;">
+          Se o botão acima não abrir, copie e cole o link abaixo no seu navegador:
+        </p>
+        <p style="font-size: 13px; word-break: break-all; margin: 0;">
+          <a href="${createPasswordUrl}" style="color: #2563eb; text-decoration: underline;">
+            ${createPasswordUrl}
+          </a>
+        </p>
+      </div>
+    `;
+
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        'api-key': brevoApiKey,
+      },
+      body: JSON.stringify({
+        sender: {
+          name: 'Pozzoli no Bolso',
+          email: 'darlanmarley@gmail.com',
+        },
+        to: [{ email, name: name || email.split('@')[0] }],
+        subject: 'Crie sua senha - Pozzoli Melódico no Bolso',
+        htmlContent,
+      }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+    return { sent: res.ok, status: res.status, data };
+  } catch (err) {
+    console.error('Erro ao enviar e-mail pela Brevo:', err);
+    return { sent: false, error: String(err) };
+  }
+}
+
 // ============================================================================
-// ENDPOINT EXCLUSIVO: PLANO VITALÍCIO (SYNCPAY)
-// URL: https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/webhook-vitalicio
+// ENDPOINT EXCLUSIVO: PLANO VITALÍCIO (SYNCPAY) -> super-worker
+// URL: https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker
 // ============================================================================
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -42,7 +110,6 @@ Deno.serve(async (req: Request) => {
 
     const planType = 'vitalicio';
 
-    // 1. Salva o log bruto em webhook_raw_events
     await supabaseAdmin.from('webhook_raw_events').insert({
       provider: 'syncpay-vitalicio',
       event_type: String(payload?.event || rawStatus || 'unknown'),
@@ -114,14 +181,23 @@ Deno.serve(async (req: Request) => {
           id: userId,
           plano_id: planoRow?.id || '413e1deb-62db-493e-88ad-787d10dd955d',
           data_inicio: nowIso,
-          data_final: null, // Vitalício = NULL
+          data_final: null,
           status: 'primeiro-acesso',
           updated_at: nowIso,
         });
       }
 
+      // Dispara o e-mail de "Crie sua senha" via Brevo automaticamente
+      const emailResult = await sendBrevoWelcomeEmail(email, name, userId);
+
       return new Response(
-        JSON.stringify({ success: true, plan: 'vitalicio', email, user_id: userId }),
+        JSON.stringify({
+          success: true,
+          plan: 'vitalicio',
+          email,
+          user_id: userId,
+          brevo_email_sent: emailResult.sent,
+        }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -159,4 +235,3 @@ Deno.serve(async (req: Request) => {
     );
   }
 });
-

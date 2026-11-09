@@ -30,6 +30,13 @@ import { supabase, isSupabaseConfigured } from './lib/supabase';
 
 export default function App() {
   const [authUser, setAuthUser] = useState(() => getAuthUser());
+  const [isCreatePasswordUrl, setIsCreatePasswordUrl] = useState(() => {
+    try {
+      return window.location.pathname.toLowerCase().includes('/criar-senha');
+    } catch {
+      return false;
+    }
+  });
   const [allSeries, setAllSeries] = useState(() => {
     const custom = getCustomSeries();
     return [...INITIAL_SERIES, ...custom];
@@ -288,10 +295,11 @@ export default function App() {
     setAllSeries([...INITIAL_SERIES, ...updatedCustom]);
   };
 
-  if (!authUser) {
+  if (!authUser || isCreatePasswordUrl) {
     return (
       <LoginPage 
         onLoginSuccess={(user) => {
+          setIsCreatePasswordUrl(false);
           setAuthUser(user);
           setProfile(getProfile());
           setFavorites(getFavorites());

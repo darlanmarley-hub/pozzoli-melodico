@@ -46,6 +46,15 @@ export default function LoginPage({ onLoginSuccess }) {
   const [pausedDeviceInfo, setPausedDeviceInfo] = useState(() => getPausedDeviceUser());
   const [isQuickReconnecting, setIsQuickReconnecting] = useState(false);
 
+  // Estado da rota /criar-senha (vinda do botão "Criar minha senha" do e-mail da Brevo)
+  const [isCreatePasswordMode, setIsCreatePasswordMode] = useState(false);
+  const [createPwdEmail, setCreatePwdEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [createPwdLoading, setCreatePwdLoading] = useState(false);
+  const [createPwdError, setCreatePwdError] = useState('');
+  const [createPwdSuccess, setCreatePwdSuccess] = useState(false);
+
   useEffect(() => {
     try {
       setPausedDeviceInfo(getPausedDeviceUser());
@@ -54,10 +63,118 @@ export default function LoginPage({ onLoginSuccess }) {
         setErrorMessage(kickedReason);
         sessionStorage.removeItem('pozzoli_kicked_reason');
       }
+
+      const path = window.location.pathname.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      const emailParam = params.get('email') || '';
+      const tokenParam = params.get('token') || '';
+      if (path.includes('/criar-senha') || tokenParam) {
+        setIsCreatePasswordMode(true);
+        if (emailParam) {
+          setCreatePwdEmail(emailParam.trim().toLowerCase());
+          setEmail(emailParam.trim().toLowerCase());
+        }
+      }
     } catch {
       // ignore
     }
   }, []);
+
+  // Cadastrar nova senha pelo link enviado no e-mail da Brevo (/criar-senha)
+  const handleCreatePasswordSubmit = async (e) => {
+    if (e) e.preventDefault();
+    setCreatePwdError('');
+    setCreatePwdSuccess(false);
+
+    const targetEmail = createPwdEmail.trim().toLowerCase();
+    if (!targetEmail || !targetEmail.includes('@')) {
+      setCreatePwdError('Por favor, informe o e-mail usado na sua compra.');
+      return;
+    }
+    if (!newPassword || newPassword.length < 6) {
+      setCreatePwdError('Sua nova senha deve ter pelo menos 6 caracteres.');
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      setCreatePwdError('As senhas digitadas não conferem.');
+      return;
+    }
+
+    setCreatePwdLoading(true);
+
+    try {
+      if (isSupabaseConfigured && supabase) {
+        // 1. Tenta autenticar com a senha inicial gerada pelo Webhook da SyncPay
+        let authRes = await supabase.auth.signInWithPassword({
+          email: targetEmail,
+          password: 'Pozzoli123!'
+        });
+
+        if (authRes.error) {
+          // Caso o aluno já tenha trocado para essa mesma senha antes
+          authRes = await supabase.auth.signInWithPassword({
+            email: targetEmail,
+            password: newPassword
+          });
+        }
+
+        if (authRes.error || !authRes.data?.user) {
+          setCreatePwdLoading(false);
+          setIsCreatePasswordMode(false);
+          window.history.replaceState({}, '', '/');
+          setEmail(targetEmail);
+          setErrorMessage(
+            'Sua senha já foi cadastrada anteriormente ou o e-mail não foi localizado. Faça login com sua senha ou clique em "Esqueceu a senha?".'
+          );
+          return;
+        }
+
+        const sbUser = authRes.data.user;
+
+        // 2. Atualiza a senha do usuário no Supabase Auth para a senha escolhida por ele
+        const { error: updateErr } = await supabase.auth.updateUser({
+          password: newPassword
+        });
+
+        if (updateErr) {
+          setCreatePwdLoading(false);
+          setCreatePwdError('Não foi possível salvar a nova senha: ' + updateErr.message);
+          return;
+        }
+
+        // 3. Ativa o plano em users_plano
+        const nowIso = new Date().toISOString();
+        await supabase
+          .from('users_plano')
+          .update({ status: 'ativo', updated_at: nowIso })
+          .eq('id', sbUser.id);
+
+        await loadUserDataFromSupabase(sbUser.id);
+        await registerActiveDeviceSession(sbUser.id);
+
+        const user = {
+          id: sbUser.id,
+          email: targetEmail,
+          name: sbUser.user_metadata?.full_name || targetEmail.split('@')[0],
+          provider: 'supabase',
+          avatar: '🎵',
+          loginTime: nowIso
+        };
+
+        saveAuthUser(user);
+        setCreatePwdLoading(false);
+        setCreatePwdSuccess(true);
+        window.history.replaceState({}, '', '/');
+
+        setTimeout(() => {
+          if (onLoginSuccess) onLoginSuccess(user);
+        }, 500);
+      }
+    } catch {
+      setCreatePwdLoading(false);
+      setCreatePwdError('Erro ao conectar ao servidor para salvar sua senha.');
+    }
+  };
 
   // Botão de 1 Clique para voltar a entrar no dispositivo que foi desconectado
   const handleQuickReconnectDevice = async () => {
@@ -588,9 +705,106 @@ export default function LoginPage({ onLoginSuccess }) {
           </button>
         </div>
 
-        {/* 3. Card Principal (Login ou Validação) */}
+        {/* 3. Card Principal (Criar Senha, Validação ou Login) */}
         <div className="login-card">
-          {isValidationMode ? (
+          {isCreatePasswordMode ? (
+            <>
+              <div className="login-card-header validation-card-header">
+                <h3 className="login-card-title">CRIE SUA SENHA</h3>
+                <p className="login-card-subtitle validation-card-subtitle">
+                  Cadastre sua senha de acesso ao Pozzoli Melódico no Bolso
+                </p>
+              </div>
+
+              {createPwdError && (
+                <div className="login-alert login-alert-error">
+                  <AlertCircle size={18} />
+                  <span>{createPwdError}</span>
+                </div>
+              )}
+
+              {createPwdSuccess && (
+                <div className="login-alert login-alert-success">
+                  <CheckCircle2 size={18} />
+                  <span>Senha criada com sucesso! Entrando no aplicativo...</span>
+                </div>
+              )}
+
+              <form onSubmit={handleCreatePasswordSubmit} className="login-form">
+                <div className="login-input-group">
+                  <input
+                    type="email"
+                    className="login-input"
+                    placeholder="Seu e-mail de compra"
+                    value={createPwdEmail}
+                    onChange={(e) => setCreatePwdEmail(e.target.value)}
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+
+                <div className="login-input-group login-password-group">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className="login-input login-password-input"
+                    placeholder="Digite sua nova senha (mín. 6 caracteres)"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    autoComplete="new-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle-btn"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+
+                <div className="login-input-group">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className="login-input"
+                    placeholder="Confirme sua nova senha"
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    autoComplete="new-password"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="validation-card-submit-btn"
+                  disabled={createPwdLoading}
+                >
+                  {createPwdLoading ? (
+                    <span className="btn-spinner btn-spinner-dark"></span>
+                  ) : (
+                    <>
+                      <KeyRound size={20} className="shield-icon" />
+                      <span>SALVAR SENHA E ENTRAR</span>
+                    </>
+                  )}
+                </button>
+              </form>
+
+              <div className="login-forgot-wrapper" style={{ marginTop: '12px' }}>
+                <button
+                  type="button"
+                  className="login-forgot-link"
+                  onClick={() => {
+                    setIsCreatePasswordMode(false);
+                    window.history.replaceState({}, '', '/');
+                  }}
+                >
+                  Já tenho senha — Voltar para o Login
+                </button>
+              </div>
+            </>
+          ) : isValidationMode ? (
             <>
               <div className="login-card-header validation-card-header">
                 <h3 className="login-card-title">VALIDE SEU ACESSO</h3>
