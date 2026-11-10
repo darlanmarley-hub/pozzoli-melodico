@@ -12,13 +12,57 @@ async function sendBrevoEmail(
   email: string,
   name: string,
   userId: string | null,
-  mode: 'welcome' | 'recovery' = 'welcome'
+  mode: 'welcome' | 'recovery' | 'refund' = 'welcome'
 ) {
   try {
     const brevoApiKey = Deno.env.get('BREVO_API_KEY') || '';
     if (!brevoApiKey) {
       console.warn('BREVO_API_KEY not set in environment');
       return { ok: false, error: 'Missing BREVO_API_KEY' };
+    }
+
+    if (mode === 'refund') {
+      const htmlContent = `
+        <div style="font-family: Arial, Helvetica, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px 16px; color: #1f2937;">
+          <h2 style="color: #dc2626; font-size: 22px; font-weight: 700; margin: 0 0 18px 0;">
+            Reembolso Confirmado - Pozzoli Melódico no Bolso
+          </h2>
+          <p style="font-size: 15px; line-height: 1.6; color: #1f2937; margin: 0 0 14px 0;">
+            Olá, <strong>${name || email.split('@')[0]}</strong>.
+          </p>
+          <p style="font-size: 15px; line-height: 1.6; color: #1f2937; margin: 0 0 14px 0;">
+            Confirmamos que o reembolso/cancelamento da sua compra do aplicativo <strong>Pozzoli Melódico no Bolso</strong> foi processado com sucesso.
+          </p>
+          <p style="font-size: 15px; line-height: 1.6; color: #1f2937; margin: 0 0 20px 0;">
+            Com isso, o seu acesso ao aplicativo foi encerrado automaticamente. Caso queira voltar a estudar conosco no futuro, será sempre muito bem-vindo!
+          </p>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+          <p style="font-size: 12px; color: #6b7280; margin: 0;">
+            Equipe Pozzoli Melódico no Bolso
+          </p>
+        </div>
+      `;
+
+      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': brevoApiKey,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          sender: {
+            name: 'Pozzoli Melódico no Bolso',
+            email: 'darlanmarley@gmail.com',
+          },
+          to: [{ email, name: name || email.split('@')[0] }],
+          subject: 'Pozzoli Melódico no Bolso - Reembolso Confirmado',
+          htmlContent,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      return { ok: res.ok, status: res.status, data };
     }
 
     const token = crypto.randomUUID();
@@ -162,6 +206,19 @@ Deno.serve(async (req: Request) => {
         );
       }
 
+      const { data: userPlano } = await supabase
+        .from('users_plano')
+        .select('status')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (userPlano?.status === 'cancelado') {
+        return new Response(
+          JSON.stringify({ error: 'O acesso desta compra encontra-se cancelado ou reembolsado.' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
       const emailResult = await sendBrevoEmail(targetEmail, userName, userId, 'recovery');
       return new Response(
         JSON.stringify({
@@ -202,6 +259,19 @@ Deno.serve(async (req: Request) => {
         );
       }
 
+      const { data: userPlano } = await supabase
+        .from('users_plano')
+        .select('status')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (userPlano?.status === 'cancelado') {
+        return new Response(
+          JSON.stringify({ error: 'O acesso desta compra encontra-se cancelado ou reembolsado.' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
       const { error: updateErr } = await supabase.auth.admin.updateUserById(userId, {
         password: newPassword,
         email_confirm: true,
@@ -227,7 +297,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // ========================================================================
-    // AÇÃO 3: WEBHOOK SYNCPAY (PLANO VITALÍCIO)
+    // AÇÃO 3: WEBHOOK SYNCPAY (COMPRA APROVADA OU REEMBOLSO AUTOMÁTICO)
     // ========================================================================
     console.log('Webhook Vitalício (SyncPay) recebido:', JSON.stringify(payload));
 
@@ -260,20 +330,148 @@ Deno.serve(async (req: Request) => {
       'Aluno Pozzoli Melódico';
 
     const rawStatus = String(
-      data?.status ||
-      data?.payment_status ||
-      data?.transaction_status ||
-      payload?.status ||
-      payload?.event ||
-      'paid'
+      payload?.action === 'refund'
+        ? 'refunded'
+        : data?.status ||
+          data?.payment_status ||
+          data?.transaction_status ||
+          payload?.status ||
+          payload?.event ||
+          'paid'
     ).toLowerCase();
 
+    const transactionId = String(
+      data?.identifier ||
+        data?.idTransaction ||
+        data?.reference_id ||
+        data?.id ||
+        payload?.identifier ||
+        `syncpay_vit_${Date.now()}`
+    );
+
+    await supabase.from('webhook_raw_events').insert({
+      provider: 'syncpay-vitalicio',
+      event_type: String(payload?.event || rawStatus || 'unknown'),
+      transaction_id: transactionId,
+      email: email || null,
+      status: rawStatus,
+      payload,
+    });
+
+    if (!email) {
+      return new Response(
+        JSON.stringify({ error: 'E-mail do comprador não encontrado no payload', payload }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ------------------------------------------------------------------------
+    // VERIFICA SE É REEMBOLSO / ESTORNO / CHARGEBACK / CANCELAMENTO
+    // ------------------------------------------------------------------------
+    const revokedStatuses = [
+      'refunded',
+      'refund',
+      'chargedback',
+      'chargeback',
+      'canceled',
+      'cancelled',
+      'expired',
+      'reembolsado',
+      'estornado',
+      'cancelado',
+      'med',
+      'dispute',
+      'pix.refunded',
+      'order.refunded',
+      'payment.refunded',
+      'cash_in.refunded',
+      'cash_out.refunded',
+    ];
+
+    const isRevoked = revokedStatuses.some((s) => rawStatus.includes(s));
+
+    if (isRevoked) {
+      const nowIso = new Date().toISOString();
+
+      // 1. Remove das compras autorizadas
+      await supabase.from('authorized_purchases').delete().ilike('email', email);
+
+      // 2. Localiza o usuário para bloquear imediatamente no banco e no Auth
+      const { userId, userName } = await findUserByEmail(supabase, email);
+
+      if (userId) {
+        // Cancela o plano na tabela users_plano
+        await supabase
+          .from('users_plano')
+          .update({
+            status: 'cancelado',
+            data_final: nowIso,
+            updated_at: nowIso,
+          })
+          .eq('id', userId);
+
+        // Marca accessRevoked = true em profiles para desconectar em tempo real qualquer aparelho aberto
+        const { data: profileRow } = await supabase
+          .from('profiles')
+          .select('stats')
+          .eq('id', userId)
+          .maybeSingle();
+
+        const currentStats =
+          profileRow?.stats && typeof profileRow.stats === 'object' ? profileRow.stats : {};
+
+        await supabase
+          .from('profiles')
+          .update({
+            plan: 'cancelado',
+            stats: {
+              ...currentStats,
+              activeDeviceSession: null,
+              accessRevoked: true,
+              revokedAt: nowIso,
+            },
+            updated_at: nowIso,
+          })
+          .eq('id', userId);
+
+        // Invalida a senha no Supabase Auth para impedir novos logins
+        await supabase.auth.admin.updateUserById(userId, {
+          password: `${crypto.randomUUID()}!Revoked9`,
+          user_metadata: {
+            name: userName,
+            plan: 'cancelado',
+            status: 'reembolsado',
+          },
+        });
+      }
+
+      // 3. Dispara e-mail automático de confirmação de reembolso via Brevo
+      const emailResult = await sendBrevoEmail(email, name || userName, userId, 'refund');
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          action: 'access_revoked',
+          message: 'Reembolso processado: acesso bloqueado imediatamente e e-mail enviado!',
+          email,
+          user_id: userId,
+          status: 'cancelado',
+          brevo: emailResult,
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ------------------------------------------------------------------------
+    // VERIFICA SE É COMPRA APROVADA / PAGA
+    // ------------------------------------------------------------------------
     const approvedStatuses = [
       'paid',
       'approved',
       'completed',
       'confirmed',
       'active',
+      'ativo',
       'succeeded',
       'success',
       'authorized',
@@ -287,19 +485,29 @@ Deno.serve(async (req: Request) => {
 
     const isApproved = approvedStatuses.some((s) => rawStatus.includes(s)) || !data?.status;
 
-    if (!email) {
-      return new Response(
-        JSON.stringify({ error: 'E-mail do comprador não encontrado no payload', payload }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
     if (!isApproved) {
       return new Response(
         JSON.stringify({ message: `Status '${rawStatus}' ignorado (aguardando pagamento).`, email }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    const nowIso = new Date().toISOString();
+
+    await supabase.from('authorized_purchases').upsert(
+      {
+        email,
+        plan: 'vitalicio',
+        transaction_code: transactionId,
+      },
+      { onConflict: 'email' }
+    );
+
+    const { data: planoRow } = await supabase
+      .from('planos')
+      .select('id')
+      .eq('nome', 'vitalicio')
+      .maybeSingle();
 
     let userId: string | null = null;
     const defaultPassword = email;
@@ -310,6 +518,8 @@ Deno.serve(async (req: Request) => {
       email_confirm: true,
       user_metadata: {
         name,
+        full_name: name,
+        plan: 'vitalicio',
         plano: 'vitalicio',
         expires_at: null,
       },
@@ -326,6 +536,8 @@ Deno.serve(async (req: Request) => {
           email_confirm: true,
           user_metadata: {
             name,
+            full_name: name,
+            plan: 'vitalicio',
             plano: 'vitalicio',
             expires_at: null,
           },
@@ -336,33 +548,46 @@ Deno.serve(async (req: Request) => {
     }
 
     if (userId) {
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('stats')
+        .eq('id', userId)
+        .maybeSingle();
+
+      const currentStats =
+        existingProfile?.stats && typeof existingProfile.stats === 'object'
+          ? existingProfile.stats
+          : {};
+
       const { error: profileError } = await supabase.from('profiles').upsert(
         {
           id: userId,
           email,
           name,
-          plano: 'vitalicio',
-          status: 'ativo',
-          expires_at: null,
-          updated_at: new Date().toISOString(),
+          plan: 'vitalicio',
+          stats: {
+            ...currentStats,
+            accessRevoked: false,
+          },
+          updated_at: nowIso,
         },
         { onConflict: 'id' }
       );
       if (profileError) console.error('Erro ao salvar em profiles:', profileError);
-    }
 
-    const { error: planoError } = await supabase.from('users_plano').upsert(
-      {
-        email,
-        name,
-        plano: 'vitalicio',
-        status: 'ativo',
-        expires_at: null,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'email' }
-    );
-    if (planoError) console.error('Erro ao salvar em users_plano:', planoError);
+      const { error: planoError } = await supabase.from('users_plano').upsert(
+        {
+          id: userId,
+          plano_id: planoRow?.id || '413e1deb-62db-493e-88ad-787d10dd955d',
+          data_inicio: nowIso,
+          data_final: null,
+          status: 'primeiro-acesso',
+          updated_at: nowIso,
+        },
+        { onConflict: 'id' }
+      );
+      if (planoError) console.error('Erro ao salvar em users_plano:', planoError);
+    }
 
     const emailResult = await sendBrevoEmail(email, name, userId, 'welcome');
 
@@ -381,7 +606,10 @@ Deno.serve(async (req: Request) => {
   } catch (err) {
     console.error('Erro inesperado no webhook-vitalicio:', err);
     return new Response(
-      JSON.stringify({ error: 'Erro interno no processamento do webhook', details: err instanceof Error ? err.message : String(err) }),
+      JSON.stringify({
+        error: 'Erro interno no processamento do webhook',
+        details: err instanceof Error ? err.message : String(err),
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

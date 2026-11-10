@@ -1226,11 +1226,20 @@ export const verifyCurrentDeviceIsActive = async (userId) => {
   try {
     const { data, error } = await supabase
       .from('profiles')
-      .select('stats')
+      .select('plan, stats')
       .eq('id', userId)
       .maybeSingle();
 
     if (error || !data) return { isValid: true, replacedBy: null };
+
+    // Se a compra foi reembolsada ou cancelada, revoga o acesso imediatamente
+    if (data.plan === 'cancelado' || data?.stats?.accessRevoked === true) {
+      return {
+        isValid: false,
+        isRevoked: true,
+        replacedBy: null
+      };
+    }
 
     const activeSession = data?.stats?.activeDeviceSession;
     const currentDeviceId = getDeviceId();

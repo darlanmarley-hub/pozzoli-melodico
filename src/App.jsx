@@ -89,9 +89,22 @@ export default function App() {
 
       const sbUser = session.user;
 
-      // 1. Verifica se outro dispositivo assumiu a sessão
+      // 1. Verifica se a compra foi reembolsada ou se outro dispositivo assumiu a sessão
       const deviceCheck = await verifyCurrentDeviceIsActive(sbUser.id);
       if (!deviceCheck.isValid) {
+        if (deviceCheck.isRevoked) {
+          try {
+            sessionStorage.setItem(
+              'pozzoli_kicked_reason',
+              'O acesso desta compra foi encerrado devido ao reembolso ou cancelamento.'
+            );
+          } catch {
+            // ignore
+          }
+          await clearAuthUser(true);
+          setAuthUser(null);
+          return;
+        }
         await kickToLogin(
           `Sua conta foi conectada em ${deviceCheck.replacedBy}. Este dispositivo foi desconectado.`,
           deviceCheck.replacedBy
@@ -110,6 +123,16 @@ export default function App() {
         userPlano?.status === 'cancelado' ||
         (userPlano?.data_final && new Date(userPlano.data_final) < new Date())
       ) {
+        try {
+          sessionStorage.setItem(
+            'pozzoli_kicked_reason',
+            userPlano?.status === 'cancelado'
+              ? 'O acesso desta compra foi encerrado devido ao reembolso ou cancelamento.'
+              : 'Seu plano anual expirou. Renove sua assinatura para continuar acessando.'
+          );
+        } catch {
+          // ignore
+        }
         await clearAuthUser(true);
         setAuthUser(null);
         return;
@@ -169,6 +192,19 @@ export default function App() {
       if (isCancelled || !navigator.onLine) return;
       const result = await verifyCurrentDeviceIsActive(authUser.id);
       if (!isCancelled && navigator.onLine && !result.isValid) {
+        if (result.isRevoked) {
+          try {
+            sessionStorage.setItem(
+              'pozzoli_kicked_reason',
+              'O acesso desta compra foi encerrado devido ao reembolso ou cancelamento.'
+            );
+          } catch {
+            // ignore
+          }
+          await clearAuthUser(true);
+          setAuthUser(null);
+          return;
+        }
         try {
           sessionStorage.setItem(
             'pozzoli_kicked_reason',
@@ -198,7 +234,9 @@ export default function App() {
         },
         (payload) => {
           const newDevice = payload?.new?.stats?.activeDeviceSession;
-          if (newDevice?.deviceId && newDevice.deviceId !== getDeviceId()) {
+          const isRevokedNow =
+            payload?.new?.plan === 'cancelado' || payload?.new?.stats?.accessRevoked === true;
+          if (isRevokedNow || (newDevice?.deviceId && newDevice.deviceId !== getDeviceId())) {
             checkSessionLock();
           }
         }

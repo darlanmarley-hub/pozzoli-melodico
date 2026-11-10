@@ -166,12 +166,25 @@ export default function LoginPage({ onLoginSuccess }) {
 
         const sbUser = authRes.data.user;
 
-        // 3. Ativa o plano em users_plano
+        // 3. Verifica se a compra não foi reembolsada/cancelada e ativa o plano em users_plano
+        const { data: userPlano } = await supabase
+          .from('users_plano')
+          .select('id, status, data_final')
+          .eq('id', sbUser.id)
+          .maybeSingle();
+
+        if (userPlano?.status === 'cancelado') {
+          await supabase.auth.signOut();
+          setCreatePwdLoading(false);
+          setCreatePwdError('O acesso desta compra encontra-se cancelado ou reembolsado.');
+          return;
+        }
+
         const nowIso = new Date().toISOString();
         await supabase
           .from('users_plano')
           .update({ status: 'ativo', updated_at: nowIso })
-          .eq('email', targetEmail);
+          .eq('id', sbUser.id);
 
         await loadUserDataFromSupabase(sbUser.id);
         await registerActiveDeviceSession(sbUser.id);
@@ -217,6 +230,22 @@ export default function LoginPage({ onLoginSuccess }) {
             password: 'Pozzoli123!'
           });
         }
+
+        const { data: userPlano } = await supabase
+          .from('users_plano')
+          .select('id, status, data_final')
+          .eq('id', targetUser.id)
+          .maybeSingle();
+
+        if (userPlano?.status === 'cancelado') {
+          clearPausedDeviceUser();
+          setPausedDeviceInfo(null);
+          await supabase.auth.signOut();
+          setIsQuickReconnecting(false);
+          setErrorMessage('O acesso desta compra encontra-se cancelado ou reembolsado.');
+          return;
+        }
+
         await loadUserDataFromSupabase(targetUser.id);
         await registerActiveDeviceSession(targetUser.id);
       }
