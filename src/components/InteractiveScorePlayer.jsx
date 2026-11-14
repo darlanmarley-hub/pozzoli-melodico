@@ -353,70 +353,116 @@ export default function InteractiveScorePlayer({
     activeNodesRef.current = [];
   }, []);
 
-  // Síntese de timbre de Piano / Órgão de Solfejo suave e afinado para cantar junto
+  // Síntese realista de Violino Acústico (arco suave, harmônicos de corda friccionada, formantes de madeira e vibrato expressivo)
   const playMelodicNote = useCallback((freq, startWallTime, realDurationSec) => {
     const ctx = audioCtxRef.current;
     if (!ctx || !freq || isMutedRef.current) return;
 
     try {
       const safeStart = Math.max(ctx.currentTime + 0.005, startWallTime);
-      const oscFundamental = ctx.createOscillator();
-      const oscWarm = ctx.createOscillator();
-      const oscHarmonic = ctx.createOscillator();
-      const filter = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
 
-      oscFundamental.type = 'triangle';
-      oscFundamental.frequency.setValueAtTime(freq, safeStart);
+      // 1. Osciladores de corda friccionada (2 sawtooth levemente desafinados + 1 triangle fundamental quente)
+      const oscBow1 = ctx.createOscillator();
+      const oscBow2 = ctx.createOscillator();
+      const oscBody = ctx.createOscillator();
 
-      oscWarm.type = 'sine';
-      oscWarm.frequency.setValueAtTime(freq, safeStart);
+      oscBow1.type = 'sawtooth';
+      oscBow1.frequency.setValueAtTime(freq, safeStart);
+      oscBow1.detune.setValueAtTime(-4, safeStart);
 
-      // 2º harmônico suave para corpo de piano acústico
-      oscHarmonic.type = 'sine';
-      oscHarmonic.frequency.setValueAtTime(freq * 2, safeStart);
+      oscBow2.type = 'sawtooth';
+      oscBow2.frequency.setValueAtTime(freq, safeStart);
+      oscBow2.detune.setValueAtTime(4, safeStart);
 
-      const harmonicGain = ctx.createGain();
-      harmonicGain.gain.setValueAtTime(0.14, safeStart);
+      oscBody.type = 'triangle';
+      oscBody.frequency.setValueAtTime(freq, safeStart);
 
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(freq * 4.5, safeStart);
+      // 2. Vibrato natural de violino (5.6 Hz) que entra suavemente após o ataque do arco
+      const vibratoLfo = ctx.createOscillator();
+      const vibratoDepth = ctx.createGain();
+      vibratoLfo.type = 'sine';
+      vibratoLfo.frequency.setValueAtTime(5.6, safeStart);
 
-      const attack = 0.015;
-      const decay = Math.min(0.12, Math.max(0.02, realDurationSec * 0.25));
-      const sustainLevel = 0.30;
-      const peakLevel = 0.45;
-      const release = 0.05;
-      const noteEnd = Math.max(
-        safeStart + attack + decay + 0.01,
-        safeStart + Math.max(0.06, realDurationSec - 0.015)
+      const maxVibratoHz = freq * 0.0075; // ~13 cents de vibrato expressivo
+      vibratoDepth.gain.setValueAtTime(0.0001, safeStart);
+      vibratoDepth.gain.linearRampToValueAtTime(
+        realDurationSec > 0.45 ? maxVibratoHz : maxVibratoHz * 0.35,
+        safeStart + Math.min(0.22, realDurationSec * 0.5)
       );
 
-      gain.gain.setValueAtTime(0.0001, safeStart);
-      gain.gain.linearRampToValueAtTime(peakLevel, safeStart + attack);
-      gain.gain.exponentialRampToValueAtTime(sustainLevel, safeStart + attack + decay);
-      gain.gain.setValueAtTime(sustainLevel, noteEnd);
-      gain.gain.exponentialRampToValueAtTime(0.0001, noteEnd + release);
+      vibratoLfo.connect(vibratoDepth);
+      vibratoDepth.connect(oscBow1.frequency);
+      vibratoDepth.connect(oscBow2.frequency);
+      vibratoDepth.connect(oscBody.frequency);
 
-      oscFundamental.connect(filter);
-      oscWarm.connect(filter);
-      oscHarmonic.connect(harmonicGain);
-      harmonicGain.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
+      // 3. Filtros de Ressonância do Corpo de Madeira do Violino (Formantes + Lowpass aveludado)
+      const bodyFormant1 = ctx.createBiquadFilter();
+      bodyFormant1.type = 'peaking';
+      bodyFormant1.frequency.setValueAtTime(320, safeStart); // Ressonância da caixa acústica
+      bodyFormant1.Q.setValueAtTime(1.5, safeStart);
+      bodyFormant1.gain.setValueAtTime(4.5, safeStart);
 
-      oscFundamental.start(safeStart);
-      oscWarm.start(safeStart);
-      oscHarmonic.start(safeStart);
+      const bodyFormant2 = ctx.createBiquadFilter();
+      bodyFormant2.type = 'peaking';
+      bodyFormant2.frequency.setValueAtTime(1100, safeStart); // Projeção doce do violino
+      bodyFormant2.Q.setValueAtTime(1.8, safeStart);
+      bodyFormant2.gain.setValueAtTime(3.5, safeStart);
 
-      const stopAt = noteEnd + release + 0.02;
-      oscFundamental.stop(stopAt);
-      oscWarm.stop(stopAt);
-      oscHarmonic.stop(stopAt);
+      const warmLowpass = ctx.createBiquadFilter();
+      warmLowpass.type = 'lowpass';
+      warmLowpass.frequency.setValueAtTime(Math.min(3400, freq * 5.8), safeStart);
+      warmLowpass.Q.setValueAtTime(0.7, safeStart);
 
-      activeNodesRef.current.push(oscFundamental, oscWarm, oscHarmonic);
+      // Mixagem entre as cordas e o corpo fundamental
+      const bowGain = ctx.createGain();
+      bowGain.gain.setValueAtTime(0.22, safeStart);
+
+      const bodyGain = ctx.createGain();
+      bodyGain.gain.setValueAtTime(0.32, safeStart);
+
+      // 4. Envelope de Arco de Violino (ataque macio de arco, sustentação contínua cantabile e saída suave)
+      const masterGain = ctx.createGain();
+      const attack = Math.min(0.065, Math.max(0.025, realDurationSec * 0.16));
+      const swell = Math.min(0.14, Math.max(0.03, realDurationSec * 0.22));
+      const peakLevel = 0.46;
+      const sustainLevel = 0.40;
+      const release = 0.085;
+      const noteEnd = Math.max(
+        safeStart + attack + swell + 0.01,
+        safeStart + Math.max(0.07, realDurationSec - 0.01)
+      );
+
+      masterGain.gain.setValueAtTime(0.0001, safeStart);
+      masterGain.gain.linearRampToValueAtTime(peakLevel * 0.82, safeStart + attack);
+      masterGain.gain.linearRampToValueAtTime(peakLevel, safeStart + attack + swell);
+      masterGain.gain.setValueAtTime(sustainLevel, noteEnd);
+      masterGain.gain.exponentialRampToValueAtTime(0.0001, noteEnd + release);
+
+      oscBow1.connect(bowGain);
+      oscBow2.connect(bowGain);
+      oscBody.connect(bodyGain);
+
+      bowGain.connect(bodyFormant1);
+      bodyGain.connect(bodyFormant1);
+      bodyFormant1.connect(bodyFormant2);
+      bodyFormant2.connect(warmLowpass);
+      warmLowpass.connect(masterGain);
+      masterGain.connect(ctx.destination);
+
+      const stopAt = noteEnd + release + 0.03;
+      oscBow1.start(safeStart);
+      oscBow2.start(safeStart);
+      oscBody.start(safeStart);
+      vibratoLfo.start(safeStart);
+
+      oscBow1.stop(stopAt);
+      oscBow2.stop(stopAt);
+      oscBody.stop(stopAt);
+      vibratoLfo.stop(stopAt);
+
+      activeNodesRef.current.push(oscBow1, oscBow2, oscBody, vibratoLfo);
     } catch (err) {
-      console.warn('Erro ao tocar nota:', err);
+      console.warn('Erro ao tocar nota de violino:', err);
     }
   }, []);
 
