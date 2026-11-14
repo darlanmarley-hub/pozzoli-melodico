@@ -1136,6 +1136,27 @@ export const SERIES_FOLDERS = [
         hasScrollbar: true,
         isAvailable: true,
         isBuiltin: true
+      },
+      {
+        id: 'serie-4-ex-7',
+        seriesId: 'quarta-serie',
+        seriesTitle: '4ª SÉRIE',
+        seriesSubtitle: 'Exercícios sobre intervalos de segunda e de terça em compassos compostos',
+        title: 'Quarta Série - Exercício Número 7',
+        subtitle: '🎼 Partitura Interativa • 9/8 • 60 BPM',
+        description: 'Exercício N.7 da 4ª Série do Método Pozzoli Melódico (Partitura Interativa 9/8).',
+        mxlUrl: '',
+        midiUrl: '',
+        audioUrl: '',
+        videoUrl: '/partituras/serie4-ex7.png',
+        embedUrl: '',
+        timeSignature: '9/8',
+        defaultBpm: 60,
+        difficulty: 'Intermediário',
+        displayOrder: 7,
+        isInteractiveScore: true,
+        isAvailable: true,
+        isBuiltin: true
       }
     ]
   }

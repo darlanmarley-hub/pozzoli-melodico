@@ -3,6 +3,7 @@ import { OpenSheetMusicDisplay } from 'opensheetmusicdisplay';
 import { extractMusicXml } from '../utils/xmlExtractor';
 import { AlertCircle, RefreshCw, Zap, Music, Timer, ZoomIn, ZoomOut, Maximize2, ExternalLink, Code, Video } from 'lucide-react';
 import VerticalVideoPlayer from './VerticalVideoPlayer';
+import InteractiveScorePlayer from './InteractiveScorePlayer';
 
 /**
  * ScoreViewer / MusicXMLViewer Component
@@ -257,19 +258,31 @@ export function MusicXMLViewer({
           overflow: 'hidden'
         }}
       >
-        <VerticalVideoPlayer
-          videoUrl={videoUrl || currentSeries?.videoUrl}
-          currentSeries={currentSeries}
-          bpm={currentBpm}
-          isDesktopMode={isDesktopMode}
-          syncEngine={syncEngine}
-          onVideoRef={onVideoRef}
-          onTimeUpdate={onTimeUpdate}
-          isPlaying={isPlaying}
-          onTogglePlay={onTogglePlay}
-          onToggleMenu={onToggleMenu}
-          playerControls={playerControls}
-        />
+        {currentSeries?.isInteractiveScore ? (
+          <InteractiveScorePlayer
+            currentSeries={currentSeries}
+            bpm={currentBpm}
+            isDesktopMode={isDesktopMode}
+            onVideoRef={onVideoRef}
+            onTimeUpdate={onTimeUpdate}
+            onToggleMenu={onToggleMenu}
+            playerControls={playerControls}
+          />
+        ) : (
+          <VerticalVideoPlayer
+            videoUrl={videoUrl || currentSeries?.videoUrl}
+            currentSeries={currentSeries}
+            bpm={currentBpm}
+            isDesktopMode={isDesktopMode}
+            syncEngine={syncEngine}
+            onVideoRef={onVideoRef}
+            onTimeUpdate={onTimeUpdate}
+            isPlaying={isPlaying}
+            onTogglePlay={onTogglePlay}
+            onToggleMenu={onToggleMenu}
+            playerControls={playerControls}
+          />
+        )}
       </div>
     </div>
   );
