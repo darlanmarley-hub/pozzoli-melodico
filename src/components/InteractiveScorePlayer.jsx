@@ -359,6 +359,7 @@ export default function InteractiveScorePlayer({
     if (!ctx || !freq || isMutedRef.current) return;
 
     try {
+      const safeStart = Math.max(ctx.currentTime + 0.005, startWallTime);
       const oscFundamental = ctx.createOscillator();
       const oscWarm = ctx.createOscillator();
       const oscHarmonic = ctx.createOscillator();
@@ -366,31 +367,34 @@ export default function InteractiveScorePlayer({
       const gain = ctx.createGain();
 
       oscFundamental.type = 'triangle';
-      oscFundamental.frequency.setValueAtTime(freq, startWallTime);
+      oscFundamental.frequency.setValueAtTime(freq, safeStart);
 
       oscWarm.type = 'sine';
-      oscWarm.frequency.setValueAtTime(freq, startWallTime);
+      oscWarm.frequency.setValueAtTime(freq, safeStart);
 
       // 2º harmônico suave para corpo de piano acústico
       oscHarmonic.type = 'sine';
-      oscHarmonic.frequency.setValueAtTime(freq * 2, startWallTime);
+      oscHarmonic.frequency.setValueAtTime(freq * 2, safeStart);
 
       const harmonicGain = ctx.createGain();
-      harmonicGain.gain.setValueAtTime(0.14, startWallTime);
+      harmonicGain.gain.setValueAtTime(0.14, safeStart);
 
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(freq * 4.5, startWallTime);
+      filter.frequency.setValueAtTime(freq * 4.5, safeStart);
 
       const attack = 0.015;
-      const decay = Math.min(0.18, realDurationSec * 0.25);
-      const sustainLevel = 0.28;
-      const peakLevel = 0.42;
-      const release = 0.06;
-      const noteEnd = startWallTime + Math.max(0.05, realDurationSec - 0.015);
+      const decay = Math.min(0.12, Math.max(0.02, realDurationSec * 0.25));
+      const sustainLevel = 0.30;
+      const peakLevel = 0.45;
+      const release = 0.05;
+      const noteEnd = Math.max(
+        safeStart + attack + decay + 0.01,
+        safeStart + Math.max(0.06, realDurationSec - 0.015)
+      );
 
-      gain.gain.setValueAtTime(0.0001, startWallTime);
-      gain.gain.linearRampToValueAtTime(peakLevel, startWallTime + attack);
-      gain.gain.exponentialRampToValueAtTime(sustainLevel, startWallTime + attack + decay);
+      gain.gain.setValueAtTime(0.0001, safeStart);
+      gain.gain.linearRampToValueAtTime(peakLevel, safeStart + attack);
+      gain.gain.exponentialRampToValueAtTime(sustainLevel, safeStart + attack + decay);
       gain.gain.setValueAtTime(sustainLevel, noteEnd);
       gain.gain.exponentialRampToValueAtTime(0.0001, noteEnd + release);
 
@@ -401,9 +405,9 @@ export default function InteractiveScorePlayer({
       filter.connect(gain);
       gain.connect(ctx.destination);
 
-      oscFundamental.start(startWallTime);
-      oscWarm.start(startWallTime);
-      oscHarmonic.start(startWallTime);
+      oscFundamental.start(safeStart);
+      oscWarm.start(safeStart);
+      oscHarmonic.start(safeStart);
 
       const stopAt = noteEnd + release + 0.02;
       oscFundamental.stop(stopAt);
@@ -411,8 +415,8 @@ export default function InteractiveScorePlayer({
       oscHarmonic.stop(stopAt);
 
       activeNodesRef.current.push(oscFundamental, oscWarm, oscHarmonic);
-    } catch {
-      // ignore
+    } catch (err) {
+      console.warn('Erro ao tocar nota:', err);
     }
   }, []);
 
@@ -422,6 +426,7 @@ export default function InteractiveScorePlayer({
     if (!ctx || !metronomeEnabledRef.current || isMutedRef.current) return;
 
     try {
+      const safeStart = Math.max(ctx.currentTime + 0.005, startWallTime);
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 
@@ -431,21 +436,21 @@ export default function InteractiveScorePlayer({
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(
         isDownbeat ? 1320 : isCompoundBeat ? 980 : 720,
-        startWallTime
+        safeStart
       );
 
       const vol = isDownbeat ? 0.16 : isCompoundBeat ? 0.10 : 0.045;
       const clickDur = isDownbeat ? 0.035 : 0.022;
 
-      gain.gain.setValueAtTime(0.0001, startWallTime);
-      gain.gain.linearRampToValueAtTime(vol, startWallTime + 0.003);
-      gain.gain.exponentialRampToValueAtTime(0.0001, startWallTime + clickDur);
+      gain.gain.setValueAtTime(0.0001, safeStart);
+      gain.gain.linearRampToValueAtTime(vol, safeStart + 0.003);
+      gain.gain.exponentialRampToValueAtTime(0.0001, safeStart + clickDur);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
 
-      osc.start(startWallTime);
-      osc.stop(startWallTime + clickDur + 0.005);
+      osc.start(safeStart);
+      osc.stop(safeStart + clickDur + 0.005);
       activeNodesRef.current.push(osc);
     } catch {
       // ignore
@@ -507,6 +512,11 @@ export default function InteractiveScorePlayer({
     [audioEvents, baseEighthDurationSec, playMelodicNote, playMetronomeClick]
   );
 
+  const onTimeUpdateRef = useRef(onTimeUpdate);
+  useEffect(() => {
+    onTimeUpdateRef.current = onTimeUpdate;
+  }, [onTimeUpdate]);
+
   const stopPlaybackLoop = useCallback(() => {
     if (animFrameRef.current) {
       cancelAnimationFrame(animFrameRef.current);
@@ -523,15 +533,26 @@ export default function InteractiveScorePlayer({
     emitMediaEvent('pause');
   }, [stopPlaybackLoop, stopAllActiveSoundNodes, emitMediaEvent]);
 
-  const startPlayback = useCallback(() => {
-    ensureAudioContext();
-    if (currentTimeRef.current >= totalBaseDurationSec - 0.05) {
-      currentTimeRef.current = 0;
-      setCurrentTimeSec(0);
+  const startPlayback = useCallback(async () => {
+    const ctx = ensureAudioContext();
+    if (ctx && ctx.state === 'suspended') {
+      try {
+        await ctx.resume();
+      } catch {
+        // ignore
+      }
+    }
+
+    if (currentTimeRef.current >= totalBaseDurationSec - 0.05 || currentTimeRef.current <= 0.01) {
+      if (currentTimeRef.current >= totalBaseDurationSec - 0.05) {
+        currentTimeRef.current = 0;
+        setCurrentTimeSec(0);
+      }
       scheduledAudioIdsRef.current.clear();
       scheduledTicksRef.current.clear();
     }
 
+    stopPlaybackLoop();
     isPlayingRef.current = true;
     setIsPlaying(true);
     lastFrameWallTimeRef.current = performance.now();
@@ -559,7 +580,7 @@ export default function InteractiveScorePlayer({
       setCurrentTimeSec(nextBaseSec);
       scheduleLookahead(nextBaseSec);
       emitMediaEvent('timeupdate');
-      if (onTimeUpdate) onTimeUpdate(nextBaseSec);
+      if (onTimeUpdateRef.current) onTimeUpdateRef.current(nextBaseSec);
 
       animFrameRef.current = requestAnimationFrame(step);
     };
@@ -569,10 +590,10 @@ export default function InteractiveScorePlayer({
   }, [
     ensureAudioContext,
     totalBaseDurationSec,
+    stopPlaybackLoop,
     emitMediaEvent,
     stopAllActiveSoundNodes,
-    scheduleLookahead,
-    onTimeUpdate
+    scheduleLookahead
   ]);
 
   const seekToTime = useCallback(
@@ -601,7 +622,7 @@ export default function InteractiveScorePlayer({
       }
 
       emitMediaEvent('timeupdate');
-      if (onTimeUpdate) onTimeUpdate(clamped);
+      if (onTimeUpdateRef.current) onTimeUpdateRef.current(clamped);
     },
     [
       totalBaseDurationSec,
@@ -609,21 +630,29 @@ export default function InteractiveScorePlayer({
       audioEvents,
       baseEighthDurationSec,
       scheduleLookahead,
-      emitMediaEvent,
-      onTimeUpdate
+      emitMediaEvent
     ]
   );
+
+  const startPlaybackRef = useRef(startPlayback);
+  const pausePlaybackRef = useRef(pausePlayback);
+  const seekToTimeRef = useRef(seekToTime);
+  useEffect(() => {
+    startPlaybackRef.current = startPlayback;
+    pausePlaybackRef.current = pausePlayback;
+    seekToTimeRef.current = seekToTime;
+  }, [startPlayback, pausePlayback, seekToTime]);
 
   // Expõe objeto compatível com HTMLMediaElement para o AudioPlayerControls da barra inferior
   const virtualMediaRef = useRef(null);
   if (!virtualMediaRef.current) {
     const mediaProxy = {
       play: () => {
-        startPlayback();
+        if (startPlaybackRef.current) startPlaybackRef.current();
         return Promise.resolve();
       },
       pause: () => {
-        pausePlayback();
+        if (pausePlaybackRef.current) pausePlaybackRef.current();
       },
       addEventListener: (type, fn) => {
         if (listenersRef.current[type]) {
@@ -643,7 +672,9 @@ export default function InteractiveScorePlayer({
     Object.defineProperties(mediaProxy, {
       currentTime: {
         get: () => currentTimeRef.current,
-        set: (val) => seekToTime(Number(val) || 0)
+        set: (val) => {
+          if (seekToTimeRef.current) seekToTimeRef.current(Number(val) || 0);
+        }
       },
       duration: {
         get: () => totalBaseDurationSec
@@ -673,11 +704,15 @@ export default function InteractiveScorePlayer({
     if (onVideoRef && virtualMediaRef.current) {
       onVideoRef(virtualMediaRef.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     return () => {
       stopPlaybackLoop();
       stopAllActiveSoundNodes();
     };
-  }, [onVideoRef, stopPlaybackLoop, stopAllActiveSoundNodes]);
+  }, [stopPlaybackLoop, stopAllActiveSoundNodes]);
 
   // Determina a nota visual ativa, o compasso ativo (1..16) e a colcheia ativa (1..9)
   const activeVisualNote = useMemo(() => {
