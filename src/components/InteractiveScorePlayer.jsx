@@ -954,83 +954,36 @@ export default function InteractiveScorePlayer({
           </div>
         </div>
 
-        {/* Painel de Contagem Inicial (9/8) antes de iniciar o Compasso 1 */}
+        {/* Contagem Inicial simples: somente os números */}
         {isCountingIn && (
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
+              justifyContent: 'center',
               gap: '8px',
-              padding: '10px 12px',
-              marginBottom: '12px',
-              borderRadius: '12px',
-              background: 'linear-gradient(90deg, #fff7ed 0%, #ffedd5 100%)',
-              border: '2px solid #ea580c',
-              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.18)'
+              padding: '6px 0 12px 0'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  background: '#ea580c',
-                  color: '#ffffff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.05rem',
-                  fontWeight: 900,
-                  boxShadow: '0 2px 8px rgba(234, 88, 12, 0.4)'
-                }}
-              >
-                {countInBeat}
-              </div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#9a3412' }}>
-                Contagem: {countInBeat}/9
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((b) => {
-                const isAccent = b === 1 || b === 4 || b === 7;
-                const isActive = countInBeat === b;
-                const isPast = countInBeat > b;
-                return (
-                  <div
-                    key={`ci_${b}`}
-                    style={{
-                      width: isAccent ? '23px' : '20px',
-                      height: '23px',
-                      borderRadius: '6px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.74rem',
-                      fontWeight: isAccent ? 900 : 700,
-                      background: isActive
-                        ? '#ea580c'
-                        : isPast
-                        ? '#fdba74'
-                        : '#ffffff',
-                      color: isActive ? '#ffffff' : isPast ? '#7c2d12' : '#9a3412',
-                      border: isActive
-                        ? '2px solid #9a3412'
-                        : isAccent
-                        ? '1.5px solid #ea580c'
-                        : '1px solid #fed7aa',
-                      transform: isActive ? 'scale(1.14)' : 'scale(1)',
-                      transition: 'all 0.08s ease'
-                    }}
-                  >
-                    {b}
-                  </div>
-                );
-              })}
-            </div>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((b) => {
+              const isActive = countInBeat === b;
+              return (
+                <span
+                  key={`ci_${b}`}
+                  style={{
+                    fontSize: isActive ? '1.35rem' : '0.95rem',
+                    fontWeight: isActive ? 900 : 600,
+                    color: isActive ? '#ea580c' : '#cbb596',
+                    transform: isActive ? 'scale(1.15)' : 'scale(1)',
+                    transition: 'all 0.08s ease',
+                    minWidth: '18px',
+                    textAlign: 'center'
+                  }}
+                >
+                  {b}
+                </span>
+              );
+            })}
           </div>
         )}
 
