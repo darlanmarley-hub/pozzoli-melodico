@@ -876,7 +876,7 @@ export default function InteractiveScorePlayer({
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
             borderBottom: '1px solid #eee2cf',
             paddingBottom: '10px',
             marginBottom: '12px',
@@ -884,28 +884,6 @@ export default function InteractiveScorePlayer({
             gap: '8px'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span
-              style={{
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                fontSize: '1.25rem',
-                fontWeight: 700,
-                color: '#1f1610'
-              }}
-            >
-              Nº. 7.
-            </span>
-            <span
-              style={{
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                color: '#6b563e'
-              }}
-            >
-              4ª Série (9/8)
-            </span>
-          </div>
-
           <div
             onClick={(e) => e.stopPropagation()}
             style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
