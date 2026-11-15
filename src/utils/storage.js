@@ -1143,7 +1143,7 @@ export const SERIES_FOLDERS = [
         seriesTitle: '4ª SÉRIE',
         seriesSubtitle: 'Exercícios sobre intervalos de segunda e de terça em compassos compostos',
         title: 'Quarta Série - Exercício Número 7',
-        subtitle: '🎼 Partitura Interativa • 9/8 • 60 BPM',
+        subtitle: '9/8',
         description: 'Exercício N.7 da 4ª Série do Método Pozzoli Melódico (Partitura Interativa 9/8).',
         mxlUrl: '',
         midiUrl: '',
@@ -1161,6 +1161,17 @@ export const SERIES_FOLDERS = [
     ]
   }
 ];
+
+// Garante que todos os exercícios individuais exibam apenas a unidade de tempo / fórmula de compasso (ex: 2/4, 3/4, 4/4, 6/8, 9/8)
+SERIES_FOLDERS.forEach((folder) => {
+  if (Array.isArray(folder.exercises)) {
+    folder.exercises.forEach((ex) => {
+      if (!ex.isDesktopMode && ex.timeSignature) {
+        ex.subtitle = ex.timeSignature;
+      }
+    });
+  }
+});
 
 export const INITIAL_SERIES = SERIES_FOLDERS.flatMap(folder => folder.exercises);
 

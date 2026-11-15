@@ -182,7 +182,7 @@ export default function SavedExercisesView({
                         : series.title}
                     </div>
                     <div className="exercise-subtitle" style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", marginTop: '2px', fontWeight: 500 }}>
-                      {series.subtitle || series.moduleName || 'Pozzoli Melódico'}
+                      {series.isDesktopMode ? series.subtitle : (series.timeSignature || series.subtitle || 'Pozzoli Melódico')}
                     </div>
                     <div className="exercise-meta-badges" style={{ marginTop: '6px' }}>
                       <span className="meta-pill" style={{ fontSize: '1.05rem', padding: '4px 10px' }}>⏱ {series.defaultBpm || 60} BPM</span>

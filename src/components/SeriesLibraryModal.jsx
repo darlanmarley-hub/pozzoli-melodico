@@ -475,9 +475,9 @@ export default function SeriesLibraryView({
                               </span>
                             )}
                           </div>
-                          {series.subtitle && (
+                          {(series.isDesktopMode ? series.subtitle : (series.timeSignature || series.subtitle)) && (
                             <div className="exercise-subtitle" style={{ fontSize: '0.76rem', color: series.isDesktopMode ? 'rgba(255, 255, 255, 0.72)' : 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", marginTop: '2px', fontWeight: 500 }}>
-                              {series.subtitle}
+                              {series.isDesktopMode ? series.subtitle : (series.timeSignature || series.subtitle)}
                             </div>
                           )}
                         </div>
@@ -774,7 +774,7 @@ export default function SeriesLibraryView({
                                   </span>
                                 )}
                               </div>
-                              {exercise.subtitle || (!exercise.isDesktopMode && `⏱ ${exercise.defaultBpm || 60} BPM`) ? (
+                              {(exercise.isDesktopMode ? exercise.subtitle : (exercise.timeSignature || exercise.subtitle)) ? (
                                 <div
                                   className="exercise-subtitle"
                                   style={{
@@ -788,7 +788,7 @@ export default function SeriesLibraryView({
                                     fontWeight: 400
                                   }}
                                 >
-                                  <span>{exercise.subtitle || (!exercise.isDesktopMode ? `⏱ ${exercise.defaultBpm || 60} BPM` : '')}</span>
+                                  <span>{exercise.isDesktopMode ? exercise.subtitle : (exercise.timeSignature || exercise.subtitle)}</span>
                                 </div>
                               ) : null}
                             </div>
