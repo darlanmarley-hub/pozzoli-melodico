@@ -159,11 +159,18 @@ export default function AudioPlayerControls({
       if (onTimeUpdate) onTimeUpdate(t);
     };
 
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => {
+      setIsPlaying(true);
+      if (onHideMenu) onHideMenu();
+    };
+    const handlePause = () => {
+      setIsPlaying(false);
+      if (onShowMenu) onShowMenu();
+    };
     const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
+      if (onShowMenu) onShowMenu();
     };
 
     activeMedia.addEventListener('timeupdate', handleTimeUpdate);
@@ -181,7 +188,7 @@ export default function AudioPlayerControls({
       activeMedia.removeEventListener('pause', handlePause);
       activeMedia.removeEventListener('ended', handleEnded);
     };
-  }, [activeMedia, onTimeUpdate]);
+  }, [activeMedia, onTimeUpdate, onHideMenu, onShowMenu]);
 
   useEffect(() => {
     if (syncEngine && !currentSeries?.isInteractiveScore) {
@@ -203,9 +210,11 @@ export default function AudioPlayerControls({
   const togglePlayPause = () => {
     if (currentSeries?.isInteractiveScore && activeMedia) {
       if (isPlaying) {
+        if (onShowMenu) onShowMenu();
         activeMedia.pause();
         setIsPlaying(false);
       } else {
+        if (onHideMenu) onHideMenu();
         activeMedia.play();
         setIsPlaying(true);
       }

@@ -802,9 +802,8 @@ export default function InteractiveScorePlayer({
     ? 0
     : ((Math.max(0, currentTimeSec) / baseEighthDurationSec) % 9) / 9;
 
-  // Ao clicar na tela ou na partitura: começa ou para a reprodução
+  // Ao clicar na tela ou na partitura: começa a tocar (e esconde o menu) ou pausa (e mostra o menu de volta)
   const handleScreenClick = () => {
-    if (onToggleMenu) onToggleMenu();
     if (isPlayingRef.current) {
       pausePlayback();
     } else {
@@ -876,66 +875,68 @@ export default function InteractiveScorePlayer({
           cursor: 'pointer'
         }}
       >
-        {/* Cabeçalho Compacto da Partitura Vertical */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            borderBottom: '1px solid #eee2cf',
-            paddingBottom: '10px',
-            marginBottom: '12px',
-            flexWrap: 'wrap',
-            gap: '8px'
-          }}
-        >
+        {/* Cabeçalho Compacto da Partitura Vertical (visível quando pausado) */}
+        {!isPlaying && (
           <div
-            onClick={(e) => e.stopPropagation()}
-            style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              borderBottom: '1px solid #eee2cf',
+              paddingBottom: '10px',
+              marginBottom: '12px',
+              flexWrap: 'wrap',
+              gap: '8px'
+            }}
           >
-            <button
-              type="button"
-              onClick={() => setShowSolfegeNames((v) => !v)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '4px 9px',
-                borderRadius: '8px',
-                fontSize: '0.73rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                border: showSolfegeNames ? '1.5px solid #ea580c' : '1px solid #d4c4ac',
-                background: showSolfegeNames ? 'rgba(234, 88, 12, 0.12)' : '#ffffff',
-                color: showSolfegeNames ? '#c2410c' : '#574635'
-              }}
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
             >
-              <Music size={13} />
-              <span>Notas</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setShowSolfegeNames((v) => !v)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 9px',
+                  borderRadius: '8px',
+                  fontSize: '0.73rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  border: showSolfegeNames ? '1.5px solid #ea580c' : '1px solid #d4c4ac',
+                  background: showSolfegeNames ? 'rgba(234, 88, 12, 0.12)' : '#ffffff',
+                  color: showSolfegeNames ? '#c2410c' : '#574635'
+                }}
+              >
+                <Music size={13} />
+                <span>Notas</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setMetronomeEnabled((v) => !v)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '4px 9px',
-                borderRadius: '8px',
-                fontSize: '0.73rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                border: metronomeEnabled ? '1.5px solid #d97706' : '1px solid #d4c4ac',
-                background: metronomeEnabled ? 'rgba(217, 119, 6, 0.12)' : '#ffffff',
-                color: metronomeEnabled ? '#b45309' : '#574635'
-              }}
-            >
-              {metronomeEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
-              <span>Metrônomo</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setMetronomeEnabled((v) => !v)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 9px',
+                  borderRadius: '8px',
+                  fontSize: '0.73rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  border: metronomeEnabled ? '1.5px solid #d97706' : '1px solid #d4c4ac',
+                  background: metronomeEnabled ? 'rgba(217, 119, 6, 0.12)' : '#ffffff',
+                  color: metronomeEnabled ? '#b45309' : '#574635'
+                }}
+              >
+                {metronomeEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+                <span>Metrônomo</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Sistemas da Partitura SVG em formato vertical (2 compassos por linha) */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
