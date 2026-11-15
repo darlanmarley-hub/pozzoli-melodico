@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Eye, Image as ImageIcon, Sparkles, Music } from 'lucide-react';
+import { Volume2, VolumeX, Music } from 'lucide-react';
 
 /**
  * Dados musicais exatos do Exercício Nº 7 da 4ª Série do Pozzoli Melódico
@@ -273,21 +273,7 @@ export default function InteractiveScorePlayer({
   const [currentTimeSec, setCurrentTimeSec] = useState(0); // Tempo na escala base (0 .. totalBaseDurationSec)
   const [showSolfegeNames, setShowSolfegeNames] = useState(true);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
-  const [showOriginalImage, setShowOriginalImage] = useState(false);
-  const [layoutCols, setLayoutCols] = useState(() => (window.innerWidth < 768 ? 4 : 8));
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (!isDesktopMode && window.innerWidth < 768) {
-        setLayoutCols(4);
-      } else {
-        setLayoutCols(8);
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isDesktopMode]);
+  const rowRefs = useRef([]);
 
   // Refs para o motor de áudio em tempo real
   const audioCtxRef = useRef(null);
@@ -826,14 +812,24 @@ export default function InteractiveScorePlayer({
     }
   };
 
-  // Agrupa os 16 compassos em linhas de `layoutCols` compassos (8 por linha no modo paisagem/original, 4 por linha no celular)
+  // Formato vertical para mobile: 2 compassos por linha (8 sistemas empilhados verticalmente, preservando cada fraseado de 2 compassos)
   const measureRows = useMemo(() => {
     const rows = [];
-    for (let i = 0; i < measures.length; i += layoutCols) {
-      rows.push(measures.slice(i, i + layoutCols));
+    for (let i = 0; i < measures.length; i += 2) {
+      rows.push(measures.slice(i, i + 2));
     }
     return rows;
-  }, [measures, layoutCols]);
+  }, [measures]);
+
+  // Rola suavemente a tela verticalmente para acompanhar a linha do compasso ativo
+  const activeRowIndex = activeMeasureNumber > 0 ? Math.floor((activeMeasureNumber - 1) / 2) : 0;
+  useEffect(() => {
+    if (!isPlaying) return;
+    const rowEl = rowRefs.current[activeRowIndex];
+    if (rowEl && typeof rowEl.scrollIntoView === 'function') {
+      rowEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [activeRowIndex, isPlaying]);
 
   // Mapa rápido (measureNumber, noteIndexInMeasure) -> visualTimeline item
   const noteLookup = useMemo(() => {
@@ -859,331 +855,27 @@ export default function InteractiveScorePlayer({
         userSelect: 'none'
       }}
     >
-      {/* Barra Superior de Status Musical Interativo e Controles Rápidos */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '10px',
-          padding: '10px 16px',
-          background: 'linear-gradient(180deg, #fff8ee 0%, #f7efe2 100%)',
-          borderBottom: '1px solid #e5d5bc',
-          position: 'sticky',
-          top: 0,
-          zIndex: 25,
-          boxShadow: '0 2px 10px rgba(0,0,0,0.05)'
-        }}
-      >
-        {/* Indicadores ao vivo: Compasso, Tempo 9/8 e Nota Atual */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={() => (isPlaying ? pausePlayback() : startPlayback())}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: isPlaying ? '#dc2626' : '#ea580c',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '999px',
-              padding: '6px 14px',
-              fontSize: '0.82rem',
-              fontWeight: 800,
-              cursor: 'pointer',
-              boxShadow: '0 3px 10px rgba(234, 88, 12, 0.3)'
-            }}
-          >
-            {isPlaying ? <Pause size={15} fill="#fff" /> : <Play size={15} fill="#fff" />}
-            <span>{isPlaying ? 'PAUSAR' : 'TOCAR PARTITURA'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              pausePlayback();
-              seekToTime(0);
-            }}
-            title="Voltar ao início"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              border: '1px solid #d6c4a8',
-              background: '#ffffff',
-              color: '#4b3b2a',
-              cursor: 'pointer'
-            }}
-          >
-            <RotateCcw size={15} />
-          </button>
-
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: isCountingIn ? '#fff7ed' : '#ffffff',
-              border: isCountingIn ? '1.5px solid #ea580c' : '1.5px solid #e2cdb0',
-              borderRadius: '10px',
-              padding: '4px 10px',
-              fontSize: '0.8rem',
-              fontWeight: 700,
-              color: '#3f2e1e'
-            }}
-          >
-            {isCountingIn ? (
-              <span style={{ color: '#ea580c', fontWeight: 800 }}>
-                CONTAGEM INICIAL: {countInBeat}/9 (Prepare-se: Sol4)
-              </span>
-            ) : (
-              <>
-                <span>
-                  Compasso <strong style={{ color: '#ea580c' }}>{activeMeasureNumber}/16</strong>
-                </span>
-                <span style={{ color: '#cbb596' }}>|</span>
-                <span>
-                  Tempo 9/8: <strong style={{ color: '#ea580c' }}>{activeBeatInMeasure}/9</strong>
-                </span>
-                <span style={{ color: '#cbb596' }}>|</span>
-                <span>
-                  Nota:{' '}
-                  <strong
-                    style={{
-                      color: activeVisualNote?.isRest ? '#6b7280' : '#ea580c',
-                      fontSize: '0.88rem'
-                    }}
-                  >
-                    {activeVisualNote?.solfege || 'Sol'}{' '}
-                    {!activeVisualNote?.isRest && `(${activeVisualNote?.pitch || 'G4'})`}
-                  </strong>
-                </span>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Botões de apoio: Nomes das Notas, Metrônomo 9/8, Layout e Imagem Original */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={() => setShowSolfegeNames((v) => !v)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              padding: '5px 10px',
-              borderRadius: '8px',
-              fontSize: '0.76rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              border: showSolfegeNames ? '1.5px solid #ea580c' : '1px solid #d4c4ac',
-              background: showSolfegeNames ? 'rgba(234, 88, 12, 0.12)' : '#ffffff',
-              color: showSolfegeNames ? '#c2410c' : '#574635'
-            }}
-          >
-            <Music size={14} />
-            <span>Notas ({showSolfegeNames ? 'Sim' : 'Não'})</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setMetronomeEnabled((v) => !v)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              padding: '5px 10px',
-              borderRadius: '8px',
-              fontSize: '0.76rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              border: metronomeEnabled ? '1.5px solid #d97706' : '1px solid #d4c4ac',
-              background: metronomeEnabled ? 'rgba(217, 119, 6, 0.12)' : '#ffffff',
-              color: metronomeEnabled ? '#b45309' : '#574635'
-            }}
-          >
-            {metronomeEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
-            <span>Metrônomo 9/8</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setLayoutCols((c) => (c === 8 ? 4 : 8))}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              padding: '5px 10px',
-              borderRadius: '8px',
-              fontSize: '0.76rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              border: '1px solid #d4c4ac',
-              background: '#ffffff',
-              color: '#574635'
-            }}
-            title="Alternar entre 4 compassos por linha (ampliado) ou 8 compassos por linha (original)"
-          >
-            <Eye size={14} />
-            <span>{layoutCols === 8 ? 'Zoom Mobile (4/linha)' : 'Visão Completa (8/linha)'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setShowOriginalImage((v) => !v)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              padding: '5px 10px',
-              borderRadius: '8px',
-              fontSize: '0.76rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              border: showOriginalImage ? '1.5px solid #2563eb' : '1px solid #d4c4ac',
-              background: showOriginalImage ? 'rgba(37, 99, 235, 0.1)' : '#ffffff',
-              color: showOriginalImage ? '#1d4ed8' : '#574635'
-            }}
-          >
-            <ImageIcon size={14} />
-            <span>{showOriginalImage ? 'Ocultar Imagem Original' : 'Ver Imagem Original'}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Visualizador da Imagem Original com Cursor Sincronizado (quando ativado) */}
-      {showOriginalImage && (
-        <div
-          style={{
-            margin: '14px auto 4px auto',
-            width: '96%',
-            maxWidth: '1080px',
-            background: '#ffffff',
-            border: '1.5px solid #e2cdb0',
-            borderRadius: '14px',
-            padding: '12px',
-            boxShadow: '0 6px 20px rgba(0,0,0,0.06)'
-          }}
-        >
-          <div
-            style={{
-              fontSize: '0.76rem',
-              fontWeight: 700,
-              color: '#786248',
-              marginBottom: '8px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}
-          >
-            <span>IMAGEM ORIGINAL DA PARTITURA (Nº. 7 — 9/8) COM CURSOR SINCRONIZADO</span>
-            <span style={{ color: '#ea580c' }}>Clique em qualquer ponto da imagem para ir até o compasso</span>
-          </div>
-
-          <div
-            onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const relY = (e.clientY - rect.top) / rect.height;
-              const relX = (e.clientX - rect.left) / rect.width;
-              const systemIdx = relY < 0.5 ? 0 : 1;
-              // Na primeira linha, os compassos começam após a clave/fórmula (~12% da largura)
-              const startXRatio = systemIdx === 0 ? 0.125 : 0.055;
-              const normX = Math.max(0, Math.min(0.999, (relX - startXRatio) / (0.985 - startXRatio)));
-              const targetMeasureIdx = systemIdx * 8 + Math.floor(normX * 8);
-              const measureOffset = (normX * 8) % 1;
-              const targetSec = (targetMeasureIdx * 9 + measureOffset * 9) * baseEighthDurationSec;
-              seekToTime(targetSec);
-            }}
-            style={{
-              position: 'relative',
-              width: '100%',
-              cursor: 'pointer',
-              borderRadius: '8px',
-              overflow: 'hidden'
-            }}
-          >
-            <img
-              src="/partituras/serie4-ex7.png"
-              alt="Partitura Pozzoli 4ª Série Exercício 7"
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-            />
-
-            {/* Cursor luminoso acompanhando exatamente os 2 sistemas da imagem original */}
-            {(() => {
-              const sysIdx = activeMeasureNumber <= 8 ? 0 : 1;
-              const mInSys = (activeMeasureNumber - 1) % 8;
-              const startPct = sysIdx === 0 ? 12.5 : 5.5;
-              const endPct = 98.5;
-              const measureWidthPct = (endPct - startPct) / 8;
-              const cursorLeftPct =
-                startPct + (mInSys + progressInsideMeasure) * measureWidthPct;
-              const measureBoxLeftPct = startPct + mInSys * measureWidthPct;
-
-              return (
-                <>
-                  {/* Destaque suave no compasso ativo da imagem */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: sysIdx === 0 ? '6%' : '54%',
-                      height: '40%',
-                      left: `${measureBoxLeftPct}%`,
-                      width: `${measureWidthPct}%`,
-                      background: 'rgba(234, 88, 12, 0.14)',
-                      border: '1.5px solid rgba(234, 88, 12, 0.45)',
-                      borderRadius: '4px',
-                      pointerEvents: 'none',
-                      transition: 'left 0.08s linear, top 0.15s ease'
-                    }}
-                  />
-                  {/* Linha vertical do cursor em tempo real */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: sysIdx === 0 ? '4%' : '52%',
-                      height: '44%',
-                      left: `${cursorLeftPct}%`,
-                      width: '3px',
-                      background: '#ea580c',
-                      boxShadow: '0 0 10px rgba(234, 88, 12, 0.9)',
-                      borderRadius: '2px',
-                      pointerEvents: 'none'
-                    }}
-                  />
-                </>
-              );
-            })()}
-          </div>
-        </div>
-      )}
-
-      {/* Partitura Vetorial Interativa (SVG) */}
+      {/* Partitura Vetorial Interativa no Formato Vertical para Mobile */}
       <div
         onClick={() => {
           if (onToggleMenu) onToggleMenu();
         }}
         style={{
           width: '96%',
-          maxWidth: '1120px',
-          margin: '14px auto',
+          maxWidth: '560px',
+          margin: '10px auto',
           background: '#ffffff',
           border: '1.5px solid #e4d4bc',
           borderRadius: '18px',
-          padding: '20px 14px 26px 14px',
+          padding: '16px 10px 24px 10px',
           boxShadow: '0 10px 30px rgba(30, 22, 16, 0.07)'
         }}
       >
-        {/* Cabeçalho Clássico da Partitura */}
+        {/* Cabeçalho Compacto da Partitura Vertical */}
         <div
           style={{
             display: 'flex',
-            alignItems: 'baseline',
+            alignItems: 'center',
             justifyContent: 'space-between',
             borderBottom: '1px solid #eee2cf',
             paddingBottom: '10px',
@@ -1192,11 +884,11 @@ export default function InteractiveScorePlayer({
             gap: '8px'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
             <span
               style={{
                 fontFamily: 'Georgia, "Times New Roman", serif',
-                fontSize: '1.35rem',
+                fontSize: '1.25rem',
                 fontWeight: 700,
                 color: '#1f1610'
               }}
@@ -1205,51 +897,60 @@ export default function InteractiveScorePlayer({
             </span>
             <span
               style={{
-                fontSize: '0.88rem',
+                fontSize: '0.8rem',
                 fontWeight: 600,
                 color: '#6b563e'
               }}
             >
-              4ª Série — Compassos Compostos (9/8) • Toque em qualquer nota para ouvir ou pular
+              4ª Série (9/8)
             </span>
           </div>
 
-          {/* Pulsador visual das 9 colcheias do compasso 9/8 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((b) => {
-              const isAccent = b === 1 || b === 4 || b === 7;
-              const isCurrent = isPlaying && activeBeatInMeasure === b;
-              return (
-                <div
-                  key={b}
-                  style={{
-                    width: isAccent ? '22px' : '18px',
-                    height: '22px',
-                    borderRadius: '6px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.72rem',
-                    fontWeight: isAccent ? 800 : 600,
-                    background: isCurrent
-                      ? '#ea580c'
-                      : isAccent
-                      ? '#f5ebe0'
-                      : '#faf6f0',
-                    color: isCurrent ? '#ffffff' : isAccent ? '#9a3412' : '#786248',
-                    border: isCurrent
-                      ? '1.5px solid #ea580c'
-                      : isAccent
-                      ? '1px solid #d6bfa3'
-                      : '1px solid #e7dac6',
-                    transform: isCurrent ? 'scale(1.12)' : 'scale(1)',
-                    transition: 'all 0.1s ease'
-                  }}
-                >
-                  {b}
-                </div>
-              );
-            })}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            <button
+              type="button"
+              onClick={() => setShowSolfegeNames((v) => !v)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '4px 9px',
+                borderRadius: '8px',
+                fontSize: '0.73rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                border: showSolfegeNames ? '1.5px solid #ea580c' : '1px solid #d4c4ac',
+                background: showSolfegeNames ? 'rgba(234, 88, 12, 0.12)' : '#ffffff',
+                color: showSolfegeNames ? '#c2410c' : '#574635'
+              }}
+            >
+              <Music size={13} />
+              <span>Notas</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMetronomeEnabled((v) => !v)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '4px 9px',
+                borderRadius: '8px',
+                fontSize: '0.73rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                border: metronomeEnabled ? '1.5px solid #d97706' : '1px solid #d4c4ac',
+                background: metronomeEnabled ? 'rgba(217, 119, 6, 0.12)' : '#ffffff',
+                color: metronomeEnabled ? '#b45309' : '#574635'
+              }}
+            >
+              {metronomeEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+              <span>Metrônomo</span>
+            </button>
           </div>
         </div>
 
@@ -1261,44 +962,39 @@ export default function InteractiveScorePlayer({
               alignItems: 'center',
               justifyContent: 'space-between',
               flexWrap: 'wrap',
-              gap: '10px',
-              padding: '10px 16px',
-              marginBottom: '14px',
+              gap: '8px',
+              padding: '10px 12px',
+              marginBottom: '12px',
               borderRadius: '12px',
               background: 'linear-gradient(90deg, #fff7ed 0%, #ffedd5 100%)',
               border: '2px solid #ea580c',
               boxShadow: '0 4px 14px rgba(234, 88, 12, 0.18)'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div
                 style={{
-                  width: '36px',
-                  height: '36px',
+                  width: '32px',
+                  height: '32px',
                   borderRadius: '50%',
                   background: '#ea580c',
                   color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '1.15rem',
+                  fontSize: '1.05rem',
                   fontWeight: 900,
                   boxShadow: '0 2px 8px rgba(234, 88, 12, 0.4)'
                 }}
               >
                 {countInBeat}
               </div>
-              <div>
-                <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#9a3412' }}>
-                  CONTAGEM INICIAL (9/8): {countInBeat} de 9
-                </div>
-                <div style={{ fontSize: '0.76rem', fontWeight: 600, color: '#c2410c' }}>
-                  Respire no tempo e entre na nota Sol (1º Compasso) após o 9!
-                </div>
+              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#9a3412' }}>
+                Contagem: {countInBeat}/9
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((b) => {
                 const isAccent = b === 1 || b === 4 || b === 7;
                 const isActive = countInBeat === b;
@@ -1307,13 +1003,13 @@ export default function InteractiveScorePlayer({
                   <div
                     key={`ci_${b}`}
                     style={{
-                      width: isAccent ? '26px' : '22px',
-                      height: '26px',
-                      borderRadius: '7px',
+                      width: isAccent ? '23px' : '20px',
+                      height: '23px',
+                      borderRadius: '6px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '0.8rem',
+                      fontSize: '0.74rem',
                       fontWeight: isAccent ? 900 : 700,
                       background: isActive
                         ? '#ea580c'
@@ -1326,7 +1022,7 @@ export default function InteractiveScorePlayer({
                         : isAccent
                         ? '1.5px solid #ea580c'
                         : '1px solid #fed7aa',
-                      transform: isActive ? 'scale(1.16)' : 'scale(1)',
+                      transform: isActive ? 'scale(1.14)' : 'scale(1)',
                       transition: 'all 0.08s ease'
                     }}
                   >
@@ -1338,19 +1034,19 @@ export default function InteractiveScorePlayer({
           </div>
         )}
 
-        {/* Sistemas da Partitura SVG */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+        {/* Sistemas da Partitura SVG em formato vertical (2 compassos por linha) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {measureRows.map((rowMeasures, rowIdx) => {
-            const svgWidth = 1000;
-            const svgHeight = 148;
-            const staffTopY = 46;
-            const lineSpacing = 10; // 5 linhas: y = 46, 56, 66, 76, 86
-            const staffBottomY = staffTopY + 4 * lineSpacing; // 86 (1ª linha = E4)
+            const svgWidth = 440;
+            const svgHeight = 142;
+            const staffTopY = 44;
+            const lineSpacing = 10; // 5 linhas: y = 44, 54, 64, 74, 84
+            const staffBottomY = staffTopY + 4 * lineSpacing; // 84 (1ª linha = E4)
             const stepSpacing = lineSpacing / 2; // 5px por grau diatônico
 
             const isFirstRow = rowIdx === 0;
-            const leftHeaderWidth = isFirstRow ? 82 : 52;
-            const rightMargin = 12;
+            const leftHeaderWidth = isFirstRow ? 74 : 46;
+            const rightMargin = 8;
             const usableWidth = svgWidth - leftHeaderWidth - rightMargin;
             const measureWidth = usableWidth / rowMeasures.length;
 
@@ -1358,13 +1054,18 @@ export default function InteractiveScorePlayer({
             const renderedNotesInRow = [];
 
             return (
-              <div key={rowIdx} style={{ width: '100%', overflowX: 'auto' }}>
+              <div
+                key={rowIdx}
+                ref={(el) => {
+                  rowRefs.current[rowIdx] = el;
+                }}
+                style={{ width: '100%', overflow: 'hidden' }}
+              >
                 <svg
                   viewBox={`0 0 ${svgWidth} ${svgHeight}`}
                   style={{
                     width: '100%',
                     height: 'auto',
-                    minWidth: layoutCols === 8 ? '680px' : '320px',
                     display: 'block',
                     overflow: 'visible'
                   }}
