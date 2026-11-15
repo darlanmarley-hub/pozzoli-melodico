@@ -20,8 +20,8 @@ const PITCH_INFO = {
 };
 
 // Construtor compacto de nota/pausa:
-// type: 'wd' (semibreve pontuada = 12 colcheias), 'hd' (mínima pontuada = 6 colcheias), 'qd' (semínima pontuada = 3),
-// 'q' (semínima = 2), 'e' (colcheia = 1), 'r4' (pausa de semínima = 2), 'r8' (pausa de colcheia = 1)
+// type: 'wd' (semibreve pontuada = 12 colcheias), 'w' (semibreve = 8), 'hd' (mínima pontuada = 6), 'h' (mínima = 4),
+// 'qd' (semínima pontuada = 3), 'q' (semínima = 2), 'e' (colcheia = 1), 'r4' (pausa de semínima = 2), 'r8' (pausa de colcheia = 1)
 function n(pitch, type, extra = {}) {
   if (type === 'r8' || type === 'r4' || pitch === 'REST') {
     const isQuarterRest = type === 'r4';
@@ -38,7 +38,19 @@ function n(pitch, type, extra = {}) {
   }
   const info = PITCH_INFO[pitch] || { solfege: 'Dó', midi: 60 };
   const eighthDur =
-    type === 'wd' ? 12 : type === 'hd' ? 6 : type === 'qd' ? 3 : type === 'q' ? 2 : 1;
+    type === 'wd'
+      ? 12
+      : type === 'w'
+      ? 8
+      : type === 'hd'
+      ? 6
+      : type === 'h'
+      ? 4
+      : type === 'qd'
+      ? 3
+      : type === 'q'
+      ? 2
+      : 1;
   const dotted = type === 'wd' || type === 'hd' || type === 'qd';
   return {
     pitch,
@@ -53,6 +65,12 @@ function n(pitch, type, extra = {}) {
 }
 
 // Helpers compactos para grupos de colcheias unidas por barra (beam)
+const b4 = (p1, p2, p3, p4) => [
+  n(p1, 'e', { beam: 'start' }),
+  n(p2, 'e', { beam: 'mid' }),
+  n(p3, 'e', { beam: 'mid' }),
+  n(p4, 'e', { beam: 'end' })
+];
 const b3 = (p1, p2, p3) => [
   n(p1, 'e', { beam: 'start' }),
   n(p2, 'e', { beam: 'mid' }),
@@ -459,7 +477,210 @@ export const POZZOLI_SERIE4_EX18_MEASURES = [
   { measure: 16, localSlurs: [[2, 6]], notes: [n('REST', 'r4'), n('REST', 'r8'), ...b3('D4', 'C4', 'B3'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
+/**
+ * 1ª SÉRIE — EXERCÍCIOS Nº 1 A Nº 10 (Intervalos de Segunda — 2/4, 3/4 e 4/4)
+ */
+export const POZZOLI_SERIE1_EX1_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('C4', 'h')] },
+  { measure: 2, slurEnd: 0, notes: [n('D4', 'q'), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('D4', 'h')] },
+  { measure: 4, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('C4', 'q'), n('D4', 'q')] },
+  { measure: 6, slurEnd: 0, notes: [n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('E4', 'q'), n('F4', 'q')] },
+  { measure: 8, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('G4', 'h')] },
+  { measure: 10, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'h')] },
+  { measure: 12, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('G4', 'q'), n('F4', 'q')] },
+  { measure: 14, slurEnd: 0, notes: [n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'q'), n('D4', 'q')] },
+  { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4')] }
+];
+
+export const POZZOLI_SERIE1_EX2_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('E4', 'q'), n('D4', 'q')] },
+  { measure: 2, slurEnd: 0, notes: [n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'q'), n('F4', 'q')] },
+  { measure: 4, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'q')] },
+  { measure: 6, slurEnd: 0, notes: [n('B4', 'q'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('B4', 'h')] },
+  { measure: 8, slurEnd: 0, notes: [n('C5', 'q'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'q'), n('B4', 'q')] },
+  { measure: 10, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'q'), n('G4', 'q')] },
+  { measure: 12, slurEnd: 0, notes: [n('F4', 'q'), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('F4', 'q'), n('E4', 'q')] },
+  { measure: 14, slurEnd: 0, notes: [n('D4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('D4', 'h')] },
+  { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4')] }
+];
+
+export const POZZOLI_SERIE1_EX3_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('G4', 'q'), ...b2('A4', 'B4')] },
+  { measure: 2, slurEnd: 0, notes: [n('C5', 'q'), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('C5', 'h')] },
+  { measure: 4, slurEnd: 0, notes: [n('B4', 'q'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('B4', 'q'), ...b2('C5', 'D5')] },
+  { measure: 6, slurEnd: 0, notes: [n('E5', 'q'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('E5', 'h')] },
+  { measure: 8, slurEnd: 0, notes: [n('D5', 'q'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('D5', 'q'), ...b2('C5', 'B4')] },
+  { measure: 10, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'q'), n('B4', 'q')] },
+  { measure: 12, slurEnd: 0, notes: [n('C5', 'q'), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('C5', 'q'), ...b2('B4', 'A4')] },
+  { measure: 14, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [...b2('G4', 'F4'), ...b2('E4', 'D4')] },
+  { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4')] }
+];
+
+export const POZZOLI_SERIE1_EX4_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('C4', 'h'), n('D4', 'q')] },
+  { measure: 2, slurEnd: 0, notes: [n('E4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'q'), n('D4', 'q'), n('C4', 'q')] },
+  { measure: 4, slurEnd: 0, notes: [n('D4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('D4', 'q'), n('E4', 'q'), n('F4', 'q')] },
+  { measure: 6, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'q'), n('B4', 'q')] },
+  { measure: 8, slurEnd: 0, notes: [n('C5', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'h'), n('B4', 'q')] },
+  { measure: 10, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'q'), n('G4', 'q'), n('F4', 'q')] },
+  { measure: 12, slurEnd: 0, notes: [n('E4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('E4', 'q'), n('F4', 'q'), n('G4', 'q')] },
+  { measure: 14, slurEnd: 0, notes: [n('F4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('F4', 'q'), n('E4', 'q'), n('D4', 'q')] },
+  { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4')] }
+];
+
+export const POZZOLI_SERIE1_EX5_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('C4', 'q'), n('D4', 'q'), n('E4', 'q')] },
+  { measure: 2, slurEnd: 0, notes: [n('F4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('F4', 'q'), n('G4', 'q'), n('F4', 'q')] },
+  { measure: 4, slurEnd: 0, notes: [n('E4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('E4', 'q'), n('F4', 'q'), n('G4', 'q')] },
+  { measure: 6, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('A4', 'h'), ...b2('B4', 'C5')] },
+  { measure: 8, slurEnd: 0, notes: [n('D5', 'hd')] },
+  { measure: 9, slurStart: 0, notes: [n('D5', 'q'), n('E5', 'q'), n('D5', 'q')] },
+  { measure: 10, slurEnd: 0, notes: [n('C5', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('C5', 'q'), n('B4', 'q'), n('A4', 'q')] },
+  { measure: 12, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'q'), n('G4', 'q')] },
+  { measure: 14, slurEnd: 0, notes: [n('F4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('F4', 'h'), ...b2('E4', 'D4')] },
+  { measure: 16, slurEnd: 0, notes: [n('C4', 'hd')] }
+];
+
+export const POZZOLI_SERIE1_EX6_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('E4', 'h'), ...b2('F4', 'G4')] },
+  { measure: 2, slurEnd: 1, notes: [n('A4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('G4', 'h'), ...b2('A4', 'B4')] },
+  { measure: 4, slurEnd: 1, notes: [n('C5', 'q'), n('B4', 'q'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('B4', 'q'), ...b2('C5', 'D5'), ...b2('E5', 'D5')] },
+  { measure: 6, slurEnd: 0, notes: [n('C5', 'hd')] },
+  { measure: 7, slurStart: 0, notes: [n('C5', 'q'), n('B4', 'q'), n('A4', 'q')] },
+  { measure: 8, slurEnd: 0, notes: [n('G4', 'hd')] },
+  { measure: 9, slurStart: 0, notes: [n('G4', 'h'), ...b2('A4', 'G4')] },
+  { measure: 10, slurEnd: 1, notes: [n('F4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('E4', 'h'), ...b2('F4', 'E4')] },
+  { measure: 12, slurEnd: 0, notes: [n('D4', 'hd')] },
+  { measure: 13, slurStart: 0, notes: [n('D4', 'q'), n('E4', 'q'), n('F4', 'q')] },
+  { measure: 14, slurEnd: 2, notes: [...b2('E4', 'D4'), n('C4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [...b2('C4', 'D4'), n('C4', 'q'), n('B3', 'q')] },
+  { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4')] }
+];
+
+export const POZZOLI_SERIE1_EX7_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'q'), n('B4', 'q')] },
+  { measure: 2, slurEnd: 0, notes: [n('C5', 'hd')] },
+  { measure: 3, slurStart: 0, notes: [...b2('C5', 'B4'), ...b2('A4', 'G4'), ...b2('F4', 'E4')] },
+  { measure: 4, slurEnd: 0, notes: [n('D4', 'hd')] },
+  { measure: 5, slurStart: 0, notes: [n('D4', 'q'), n('E4', 'q'), n('F4', 'q')] },
+  { measure: 6, slurEnd: 0, notes: [n('G4', 'hd')] },
+  { measure: 7, slurStart: 0, notes: [...b2('G4', 'F4'), ...b2('E4', 'D4'), ...b2('C4', 'B3')] },
+  { measure: 8, slurEnd: 0, notes: [n('C4', 'hd')] },
+  { measure: 9, slurStart: 0, notes: [n('C4', 'q'), ...b2('B3', 'C4'), ...b2('D4', 'E4')] },
+  { measure: 10, slurEnd: 1, notes: [n('F4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('E4', 'q'), ...b2('D4', 'E4'), ...b2('F4', 'G4')] },
+  { measure: 12, slurEnd: 1, notes: [n('A4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'q'), n('B4', 'q')] },
+  { measure: 14, slurEnd: 0, notes: [n('C5', 'hd')] },
+  { measure: 15, slurStart: 0, notes: [...b2('C5', 'B4'), ...b2('A4', 'G4'), ...b2('F4', 'E4')] },
+  { measure: 16, slurEnd: 1, notes: [n('D4', 'q'), n('C4', 'q'), n('REST', 'r4')] }
+];
+
+export const POZZOLI_SERIE1_EX8_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('C4', 'h'), n('D4', 'h')] },
+  { measure: 2, slurEnd: 1, notes: [n('E4', 'h', { tieStart: true }), n('E4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'h'), n('F4', 'h')] },
+  { measure: 4, slurEnd: 1, notes: [n('G4', 'h', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'h'), n('A4', 'q'), n('G4', 'q')] },
+  { measure: 6, slurEnd: 1, notes: [n('F4', 'h', { tieStart: true }), n('F4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('F4', 'q'), n('G4', 'q'), n('A4', 'q'), n('B4', 'q')] },
+  { measure: 8, slurEnd: 0, notes: [n('C5', 'w')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'h'), n('B4', 'h')] },
+  { measure: 10, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'h'), n('G4', 'h')] },
+  { measure: 12, slurEnd: 1, notes: [n('F4', 'h', { tieStart: true }), n('F4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('F4', 'q'), n('G4', 'q'), n('F4', 'q'), n('E4', 'q')] },
+  { measure: 14, slurEnd: 1, notes: [n('D4', 'h', { tieStart: true }), n('D4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('D4', 'h'), n('E4', 'q'), n('D4', 'q')] },
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'h', { tieStart: true }), n('C4', 'q', { tieStop: true }), n('REST', 'r4')] }
+];
+
+export const POZZOLI_SERIE1_EX9_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('E4', 'q'), n('F4', 'q'), n('G4', 'q'), n('A4', 'q')] },
+  { measure: 2, slurEnd: 2, notes: [n('G4', 'q'), n('F4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'q'), n('F4', 'q'), n('G4', 'q'), n('A4', 'q')] },
+  { measure: 4, slurEnd: 2, notes: [n('B4', 'q'), n('A4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'h'), n('A4', 'q'), n('B4', 'q')] },
+  { measure: 6, slurEnd: 2, notes: [n('C5', 'q'), n('D5', 'q'), n('E5', 'q'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('E5', 'q'), n('D5', 'q'), n('C5', 'q'), n('B4', 'q')] },
+  { measure: 8, slurEnd: 1, notes: [n('A4', 'h'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'q'), n('B4', 'q'), n('C5', 'q')] },
+  { measure: 10, slurEnd: 2, notes: [n('B4', 'q'), n('A4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'q'), n('G4', 'q'), n('F4', 'q')] },
+  { measure: 12, slurEnd: 2, notes: [n('E4', 'q'), n('D4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('E4', 'h'), n('F4', 'q'), n('G4', 'q')] },
+  { measure: 14, slurEnd: 2, notes: [n('F4', 'q'), n('E4', 'q'), n('D4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('D4', 'h'), n('C4', 'q'), n('B3', 'q')] },
+  { measure: 16, slurEnd: 1, notes: [n('B3', 'h'), n('C4', 'q'), n('REST', 'r4')] }
+];
+
+export const POZZOLI_SERIE1_EX10_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('G4', 'q'), ...b2('A4', 'B4'), n('C5', 'q'), ...b2('B4', 'A4')] },
+  { measure: 2, slurEnd: 1, notes: [n('G4', 'h', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('G4', 'h'), ...b2('A4', 'G4'), ...b2('F4', 'E4')] },
+  { measure: 4, slurEnd: 1, notes: [n('D4', 'h', { tieStart: true }), n('D4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('D4', 'q'), ...b2('E4', 'F4'), n('G4', 'h')] },
+  { measure: 6, slurEnd: 2, notes: [n('E4', 'q'), n('F4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('G4', 'q'), ...b2('A4', 'B4'), n('C5', 'q'), ...b2('B4', 'C5')] },
+  { measure: 8, slurEnd: 1, notes: [n('D5', 'h', { tieStart: true }), n('D5', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('D5', 'h'), ...b4('C5', 'B4', 'A4', 'B4')] },
+  { measure: 10, slurEnd: 1, notes: [n('C5', 'h', { tieStart: true }), n('C5', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('C5', 'h'), ...b4('B4', 'A4', 'G4', 'A4')] },
+  { measure: 12, slurEnd: 1, notes: [n('B4', 'h', { tieStart: true }), n('B4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('B4', 'q'), ...b2('C5', 'B4'), n('A4', 'q'), ...b2('G4', 'F4')] },
+  { measure: 14, slurEnd: 2, notes: [n('E4', 'q'), n('D4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'h'), ...b4('F4', 'E4', 'D4', 'C4')] },
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'h', { tieStart: true }), n('C4', 'q', { tieStop: true }), n('REST', 'r4')] }
+];
+
 export const POZZOLI_SERIE4_SCORES = {
+  'serie-1-ex-1': POZZOLI_SERIE1_EX1_MEASURES,
+  'serie-1-ex-2': POZZOLI_SERIE1_EX2_MEASURES,
+  'serie-1-ex-3': POZZOLI_SERIE1_EX3_MEASURES,
+  'serie-1-ex-4': POZZOLI_SERIE1_EX4_MEASURES,
+  'serie-1-ex-5': POZZOLI_SERIE1_EX5_MEASURES,
+  'serie-1-ex-6': POZZOLI_SERIE1_EX6_MEASURES,
+  'serie-1-ex-7': POZZOLI_SERIE1_EX7_MEASURES,
+  'serie-1-ex-8': POZZOLI_SERIE1_EX8_MEASURES,
+  'serie-1-ex-9': POZZOLI_SERIE1_EX9_MEASURES,
+  'serie-1-ex-10': POZZOLI_SERIE1_EX10_MEASURES,
   'serie-4-ex-1': POZZOLI_SERIE4_EX1_MEASURES,
   'serie-4-ex-2': POZZOLI_SERIE4_EX2_MEASURES,
   'serie-4-ex-3': POZZOLI_SERIE4_EX3_MEASURES,
@@ -522,14 +743,17 @@ export default function InteractiveScorePlayer({
 
   const timeSignature = currentSeries?.timeSignature || (currentSeries?.id === 'serie-4-ex-7' ? '9/8' : '6/8');
   const [timeSigNumStr, timeSigDenStr] = timeSignature.split('/');
-  const eighthsPerMeasure = parseInt(timeSigNumStr, 10) || 6;
+  const isSimpleMeter = timeSigDenStr === '4';
+  const eighthsPerMeasure = isSimpleMeter
+    ? (parseInt(timeSigNumStr, 10) || 2) * 2
+    : parseInt(timeSigNumStr, 10) || 6;
   const totalEighthsInScore = measures.length * eighthsPerMeasure;
 
   const defaultBpm = currentSeries?.defaultBpm || 60;
 
-  // Nos compassos compostos 6/8 e 9/8 a 60 BPM (Pozzoli), cada tempo composto (semínima pontuada = 3 colcheias)
-  // dura (60 / bpm) segundos, ou seja, 1 colcheia = (60 / bpm) / 3 segundos.
-  const baseEighthDurationSec = (60 / defaultBpm) / 3;
+  // Nos compassos simples (2/4, 3/4, 4/4) 1 semínima = 2 colcheias = (60 / bpm) s -> 1 colcheia = (60 / bpm) / 2 s.
+  // Nos compassos compostos (6/8, 9/8, 12/8) 1 semínima pontuada = 3 colcheias = (60 / bpm) s -> 1 colcheia = (60 / bpm) / 3 s.
+  const baseEighthDurationSec = isSimpleMeter ? (60 / defaultBpm) / 2 : (60 / defaultBpm) / 3;
 
   // Constrói a linha do tempo linear de todas as notas + eventos sonoros (unindo notas ligadas por tie)
   const { visualTimeline, audioEvents, totalBaseDurationSec } = useMemo(() => {
@@ -913,7 +1137,7 @@ export default function InteractiveScorePlayer({
         }
       }
 
-      // 2. Agendar cliques de colcheia do compasso composto (ticks -eighthsPerMeasure a -1 = contagem inicial; 0 a totalEighthsInScore - 1 = partitura)
+      // 2. Agendar cliques do metrônomo (em compasso simples clica a cada semínima = 2 colcheias; em composto a cada colcheia)
       const currentEighthFloat = baseSecNow / baseEighthDurationSec;
       const maxEighthFloat = (baseSecNow + lookaheadBaseSec) / baseEighthDurationSec;
       const startTick = Math.max(-eighthsPerMeasure, Math.floor(currentEighthFloat));
@@ -921,12 +1145,20 @@ export default function InteractiveScorePlayer({
 
       for (let tick = startTick; tick <= endTick; tick++) {
         if (scheduledTicksRef.current.has(tick)) continue;
+        if (isSimpleMeter && ((tick % 2) + 2) % 2 !== 0) continue;
+
         const tickBaseSec = tick * baseEighthDurationSec;
         if (tickBaseSec >= baseSecNow - 0.025 && tickBaseSec <= baseSecNow + lookaheadBaseSec) {
           scheduledTicksRef.current.add(tick);
           const delayWallSec = Math.max(0, (tickBaseSec - baseSecNow) / rate);
           const modTick = ((tick % eighthsPerMeasure) + eighthsPerMeasure) % eighthsPerMeasure;
-          const beatInMeasure = modTick + 1;
+          const beatInMeasure = isSimpleMeter
+            ? modTick === 0
+              ? 1
+              : modTick === 4 && eighthsPerMeasure === 8
+              ? 4
+              : 2
+            : modTick + 1;
           playMetronomeClick(beatInMeasure, ctx.currentTime + delayWallSec, tick < 0);
         }
       }
@@ -935,6 +1167,7 @@ export default function InteractiveScorePlayer({
       audioEvents,
       baseEighthDurationSec,
       eighthsPerMeasure,
+      isSimpleMeter,
       totalEighthsInScore,
       playMelodicNote,
       playMetronomeClick
@@ -1925,8 +2158,8 @@ export default function InteractiveScorePlayer({
                       );
                     }
 
-                    const isWholeHead = n.type === 'wd'; // Semibreve pontuada (cabeça aberta e sem haste)
-                    const isOpenHead = n.type === 'hd' || isWholeHead; // Mínima pontuada ou semibreve pontuada têm cabeça aberta (branca)
+                    const isWholeHead = n.type === 'wd' || n.type === 'w'; // Semibreve (cabeça aberta e sem haste)
+                    const isOpenHead = n.type === 'hd' || n.type === 'h' || isWholeHead; // Mínima ou semibreve têm cabeça aberta (branca)
                     const stemUp = stepFromE4 < 4; // Notas abaixo de B4 têm haste para cima; B4+ para baixo
                     const stemX = stemUp ? nx + 6 : nx - 6;
                     const stemY1 = ny;
