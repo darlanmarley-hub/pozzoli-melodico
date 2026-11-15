@@ -802,14 +802,19 @@ export default function InteractiveScorePlayer({
     ? 0
     : ((Math.max(0, currentTimeSec) / baseEighthDurationSec) % 9) / 9;
 
-  // Ao clicar em uma nota na partitura: pula para ela, toca um preview se estiver pausado ou continua tocando
-  const handleNoteClick = (noteItem, e) => {
-    if (e) e.stopPropagation();
-    ensureAudioContext();
-    seekToTime(noteItem.startTimeSec);
-    if (!isPlayingRef.current && !noteItem.isRest && noteItem.freq && audioCtxRef.current) {
-      playMelodicNote(noteItem.freq, audioCtxRef.current.currentTime, 0.55);
+  // Ao clicar na tela ou na partitura: começa ou para a reprodução
+  const handleScreenClick = () => {
+    if (onToggleMenu) onToggleMenu();
+    if (isPlayingRef.current) {
+      pausePlayback();
+    } else {
+      startPlayback();
     }
+  };
+
+  const handleNoteClick = (_noteItem, e) => {
+    if (e) e.stopPropagation();
+    handleScreenClick();
   };
 
   // Formato vertical para mobile: 2 compassos por linha (8 sistemas empilhados verticalmente, preservando cada fraseado de 2 compassos)
@@ -842,6 +847,7 @@ export default function InteractiveScorePlayer({
 
   return (
     <div
+      onClick={handleScreenClick}
       style={{
         flex: 1,
         width: '100%',
@@ -852,14 +858,12 @@ export default function InteractiveScorePlayer({
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingBottom: '130px',
-        userSelect: 'none'
+        userSelect: 'none',
+        cursor: 'pointer'
       }}
     >
       {/* Partitura Vetorial Interativa no Formato Vertical para Mobile */}
       <div
-        onClick={() => {
-          if (onToggleMenu) onToggleMenu();
-        }}
         style={{
           width: '96%',
           maxWidth: '560px',
@@ -868,7 +872,8 @@ export default function InteractiveScorePlayer({
           border: '1.5px solid #e4d4bc',
           borderRadius: '18px',
           padding: '16px 10px 24px 10px',
-          boxShadow: '0 10px 30px rgba(30, 22, 16, 0.07)'
+          boxShadow: '0 10px 30px rgba(30, 22, 16, 0.07)',
+          cursor: 'pointer'
         }}
       >
         {/* Cabeçalho Compacto da Partitura Vertical */}
@@ -931,39 +936,6 @@ export default function InteractiveScorePlayer({
             </button>
           </div>
         </div>
-
-        {/* Contagem Inicial simples: somente os números */}
-        {isCountingIn && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '6px 0 12px 0'
-            }}
-          >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((b) => {
-              const isActive = countInBeat === b;
-              return (
-                <span
-                  key={`ci_${b}`}
-                  style={{
-                    fontSize: isActive ? '1.35rem' : '0.95rem',
-                    fontWeight: isActive ? 900 : 600,
-                    color: isActive ? '#ea580c' : '#cbb596',
-                    transform: isActive ? 'scale(1.15)' : 'scale(1)',
-                    transition: 'all 0.08s ease',
-                    minWidth: '18px',
-                    textAlign: 'center'
-                  }}
-                >
-                  {b}
-                </span>
-              );
-            })}
-          </div>
-        )}
 
         {/* Sistemas da Partitura SVG em formato vertical (2 compassos por linha) */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1393,7 +1365,7 @@ export default function InteractiveScorePlayer({
       </div>
 
       {/* Renderiza os controles do player da barra inferior se passados */}
-      {playerControls}
+      <div onClick={(e) => e.stopPropagation()}>{playerControls}</div>
     </div>
   );
 }
