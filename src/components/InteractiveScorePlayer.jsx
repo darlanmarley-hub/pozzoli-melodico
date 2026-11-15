@@ -466,44 +466,69 @@ export default function InteractiveScorePlayer({
     }
   }, []);
 
-  // Clique do metrônomo 9/8 (forte no tempo 1, médio nos tempos 4 e 7, suave nas subdivisões 2, 3, 5, 6, 8, 9)
-  const playMetronomeClick = useCallback((beatInMeasure1to9, startWallTime) => {
+  // Clique do metrônomo 9/8 de alta presença (madeira/woodblock nítido: forte no tempo 1, médio nos tempos 4 e 7, claro nas subdivisões)
+  const playMetronomeClick = useCallback((beatInMeasure1to9, startWallTime, isCountIn = false) => {
     const ctx = audioCtxRef.current;
-    if (!ctx || !metronomeEnabledRef.current || isMutedRef.current) return;
+    if (!ctx || isMutedRef.current) return;
+    if (!metronomeEnabledRef.current && !isCountIn) return;
 
     try {
       const safeStart = Math.max(ctx.currentTime + 0.005, startWallTime);
-      const osc = ctx.createOscillator();
+      const oscPrimary = ctx.createOscillator();
+      const oscTransient = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
       const gain = ctx.createGain();
 
       const isDownbeat = beatInMeasure1to9 === 1;
       const isCompoundBeat = beatInMeasure1to9 === 4 || beatInMeasure1to9 === 7;
 
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(
-        isDownbeat ? 1320 : isCompoundBeat ? 980 : 720,
-        safeStart
-      );
+      // Envelope de altura percussivo (efeito "tac" de metrônomo mecânico/woodblock)
+      const startFreq = isDownbeat ? 1850 : isCompoundBeat ? 1380 : 1020;
+      const endFreq = isDownbeat ? 1080 : isCompoundBeat ? 820 : 640;
+      const clickDur = isDownbeat ? 0.055 : isCompoundBeat ? 0.045 : 0.032;
 
-      const vol = isDownbeat ? 0.16 : isCompoundBeat ? 0.10 : 0.045;
-      const clickDur = isDownbeat ? 0.035 : 0.022;
+      oscPrimary.type = 'triangle';
+      oscPrimary.frequency.setValueAtTime(startFreq, safeStart);
+      oscPrimary.frequency.exponentialRampToValueAtTime(endFreq, safeStart + clickDur);
+
+      oscTransient.type = 'square';
+      oscTransient.frequency.setValueAtTime(startFreq * 1.5, safeStart);
+      oscTransient.frequency.exponentialRampToValueAtTime(endFreq, safeStart + 0.015);
+
+      filter.type = 'peaking';
+      filter.frequency.setValueAtTime(1400, safeStart);
+      filter.Q.setValueAtTime(1.8, safeStart);
+      filter.gain.setValueAtTime(6, safeStart);
+
+      // Volume reforçado para destacar claramente sobre o violino (e ainda mais presente na contagem inicial)
+      const baseVol = isDownbeat ? 0.92 : isCompoundBeat ? 0.70 : 0.44;
+      const vol = isCountIn ? Math.min(1.0, baseVol * 1.08) : baseVol;
+
+      const transientGain = ctx.createGain();
+      transientGain.gain.setValueAtTime(vol * 0.35, safeStart);
+      transientGain.gain.exponentialRampToValueAtTime(0.0001, safeStart + 0.016);
 
       gain.gain.setValueAtTime(0.0001, safeStart);
-      gain.gain.linearRampToValueAtTime(vol, safeStart + 0.003);
+      gain.gain.linearRampToValueAtTime(vol, safeStart + 0.002);
       gain.gain.exponentialRampToValueAtTime(0.0001, safeStart + clickDur);
 
-      osc.connect(gain);
+      oscPrimary.connect(filter);
+      oscTransient.connect(transientGain);
+      transientGain.connect(filter);
+      filter.connect(gain);
       gain.connect(ctx.destination);
 
-      osc.start(safeStart);
-      osc.stop(safeStart + clickDur + 0.005);
-      activeNodesRef.current.push(osc);
+      oscPrimary.start(safeStart);
+      oscTransient.start(safeStart);
+      oscPrimary.stop(safeStart + clickDur + 0.008);
+      oscTransient.stop(safeStart + 0.02);
+      activeNodesRef.current.push(oscPrimary, oscTransient);
     } catch {
       // ignore
     }
   }, []);
 
-  // Agenda notas e cliques do metrônomo na janela de lookahead
+  // Agenda notas e cliques do metrônomo na janela de lookahead (incluindo contagem negativa -9..-1)
   const scheduleLookahead = useCallback(
     (baseSecNow) => {
       const ctx = audioCtxRef.current;
@@ -512,7 +537,7 @@ export default function InteractiveScorePlayer({
       const rate = playbackRateRef.current;
       const lookaheadBaseSec = 0.14 * rate;
 
-      // 1. Agendar notas melódicas
+      // 1. Agendar notas melódicas (começam em t >= 0)
       for (let i = 0; i < audioEvents.length; i++) {
         const ev = audioEvents[i];
         if (scheduledAudioIdsRef.current.has(ev.id)) continue;
@@ -521,6 +546,7 @@ export default function InteractiveScorePlayer({
         const startsInWindow =
           ev.startTimeSec >= baseSecNow - 0.02 && ev.startTimeSec <= baseSecNow + lookaheadBaseSec;
         const alreadyStartedButOngoing =
+          baseSecNow >= 0 &&
           ev.startTimeSec < baseSecNow - 0.02 &&
           ev.endTimeSec > baseSecNow + 0.04 &&
           scheduledAudioIdsRef.current.size === 0;
@@ -538,10 +564,10 @@ export default function InteractiveScorePlayer({
         }
       }
 
-      // 2. Agendar cliques de colcheia do compasso 9/8
+      // 2. Agendar cliques de colcheia do compasso 9/8 (ticks -9 a -1 = contagem inicial; 0 a 143 = partitura)
       const currentEighthFloat = baseSecNow / baseEighthDurationSec;
       const maxEighthFloat = (baseSecNow + lookaheadBaseSec) / baseEighthDurationSec;
-      const startTick = Math.max(0, Math.floor(currentEighthFloat));
+      const startTick = Math.max(-9, Math.floor(currentEighthFloat));
       const endTick = Math.min(143, Math.floor(maxEighthFloat));
 
       for (let tick = startTick; tick <= endTick; tick++) {
@@ -550,8 +576,9 @@ export default function InteractiveScorePlayer({
         if (tickBaseSec >= baseSecNow - 0.025 && tickBaseSec <= baseSecNow + lookaheadBaseSec) {
           scheduledTicksRef.current.add(tick);
           const delayWallSec = Math.max(0, (tickBaseSec - baseSecNow) / rate);
-          const beat1to9 = (tick % 9) + 1;
-          playMetronomeClick(beat1to9, ctx.currentTime + delayWallSec);
+          const modTick = ((tick % 9) + 9) % 9;
+          const beat1to9 = modTick + 1;
+          playMetronomeClick(beat1to9, ctx.currentTime + delayWallSec, tick < 0);
         }
       }
     },
@@ -576,6 +603,10 @@ export default function InteractiveScorePlayer({
     setIsPlaying(false);
     stopPlaybackLoop();
     stopAllActiveSoundNodes();
+    if (currentTimeRef.current < 0) {
+      currentTimeRef.current = 0;
+      setCurrentTimeSec(0);
+    }
     emitMediaEvent('pause');
   }, [stopPlaybackLoop, stopAllActiveSoundNodes, emitMediaEvent]);
 
@@ -589,11 +620,11 @@ export default function InteractiveScorePlayer({
       }
     }
 
-    if (currentTimeRef.current >= totalBaseDurationSec - 0.05 || currentTimeRef.current <= 0.01) {
-      if (currentTimeRef.current >= totalBaseDurationSec - 0.05) {
-        currentTimeRef.current = 0;
-        setCurrentTimeSec(0);
-      }
+    // Se estiver no início (ou no fim), faz 1 compasso completo de contagem inicial 9/8 (-9 colcheias até 0)
+    const countInDurationSec = 9 * baseEighthDurationSec;
+    if (currentTimeRef.current >= totalBaseDurationSec - 0.05 || currentTimeRef.current <= 0.05) {
+      currentTimeRef.current = -countInDurationSec;
+      setCurrentTimeSec(-countInDurationSec);
       scheduledAudioIdsRef.current.clear();
       scheduledTicksRef.current.clear();
     }
@@ -626,7 +657,7 @@ export default function InteractiveScorePlayer({
       setCurrentTimeSec(nextBaseSec);
       scheduleLookahead(nextBaseSec);
       emitMediaEvent('timeupdate');
-      if (onTimeUpdateRef.current) onTimeUpdateRef.current(nextBaseSec);
+      if (onTimeUpdateRef.current) onTimeUpdateRef.current(Math.max(0, nextBaseSec));
 
       animFrameRef.current = requestAnimationFrame(step);
     };
@@ -635,6 +666,7 @@ export default function InteractiveScorePlayer({
     animFrameRef.current = requestAnimationFrame(step);
   }, [
     ensureAudioContext,
+    baseEighthDurationSec,
     totalBaseDurationSec,
     stopPlaybackLoop,
     emitMediaEvent,
@@ -717,7 +749,7 @@ export default function InteractiveScorePlayer({
 
     Object.defineProperties(mediaProxy, {
       currentTime: {
-        get: () => currentTimeRef.current,
+        get: () => Math.max(0, currentTimeRef.current),
         set: (val) => {
           if (seekToTimeRef.current) seekToTimeRef.current(Number(val) || 0);
         }
@@ -760,8 +792,14 @@ export default function InteractiveScorePlayer({
     };
   }, [stopPlaybackLoop, stopAllActiveSoundNodes]);
 
+  const isCountingIn = isPlaying && currentTimeSec < 0;
+  const countInBeat = isCountingIn
+    ? Math.min(9, Math.max(1, Math.floor((currentTimeSec + 9 * baseEighthDurationSec) / baseEighthDurationSec) + 1))
+    : null;
+
   // Determina a nota visual ativa, o compasso ativo (1..16) e a colcheia ativa (1..9)
   const activeVisualNote = useMemo(() => {
+    if (currentTimeSec < 0) return null;
     const found = visualTimeline.find(
       (item) => currentTimeSec >= item.startTimeSec && currentTimeSec < item.endTimeSec
     );
@@ -770,11 +808,13 @@ export default function InteractiveScorePlayer({
 
   const currentEighthGlobal = Math.min(
     143,
-    Math.max(0, Math.floor(currentTimeSec / baseEighthDurationSec))
+    Math.max(0, Math.floor(Math.max(0, currentTimeSec) / baseEighthDurationSec))
   );
-  const activeMeasureNumber = Math.floor(currentEighthGlobal / 9) + 1;
-  const activeBeatInMeasure = (currentEighthGlobal % 9) + 1;
-  const progressInsideMeasure = (currentTimeSec / baseEighthDurationSec) % 9 / 9;
+  const activeMeasureNumber = isCountingIn ? 0 : Math.floor(currentEighthGlobal / 9) + 1;
+  const activeBeatInMeasure = isCountingIn ? countInBeat : (currentEighthGlobal % 9) + 1;
+  const progressInsideMeasure = isCountingIn
+    ? 0
+    : ((Math.max(0, currentTimeSec) / baseEighthDurationSec) % 9) / 9;
 
   // Ao clicar em uma nota na partitura: pula para ela, toca um preview se estiver pausado ou continua tocando
   const handleNoteClick = (noteItem, e) => {
@@ -888,8 +928,8 @@ export default function InteractiveScorePlayer({
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              background: '#ffffff',
-              border: '1.5px solid #e2cdb0',
+              background: isCountingIn ? '#fff7ed' : '#ffffff',
+              border: isCountingIn ? '1.5px solid #ea580c' : '1.5px solid #e2cdb0',
               borderRadius: '10px',
               padding: '4px 10px',
               fontSize: '0.8rem',
@@ -897,26 +937,34 @@ export default function InteractiveScorePlayer({
               color: '#3f2e1e'
             }}
           >
-            <span>
-              Compasso <strong style={{ color: '#ea580c' }}>{activeMeasureNumber}/16</strong>
-            </span>
-            <span style={{ color: '#cbb596' }}>|</span>
-            <span>
-              Tempo 9/8: <strong style={{ color: '#ea580c' }}>{activeBeatInMeasure}/9</strong>
-            </span>
-            <span style={{ color: '#cbb596' }}>|</span>
-            <span>
-              Nota:{' '}
-              <strong
-                style={{
-                  color: activeVisualNote?.isRest ? '#6b7280' : '#ea580c',
-                  fontSize: '0.88rem'
-                }}
-              >
-                {activeVisualNote?.solfege || 'Sol'}{' '}
-                {!activeVisualNote?.isRest && `(${activeVisualNote?.pitch})`}
-              </strong>
-            </span>
+            {isCountingIn ? (
+              <span style={{ color: '#ea580c', fontWeight: 800 }}>
+                CONTAGEM INICIAL: {countInBeat}/9 (Prepare-se: Sol4)
+              </span>
+            ) : (
+              <>
+                <span>
+                  Compasso <strong style={{ color: '#ea580c' }}>{activeMeasureNumber}/16</strong>
+                </span>
+                <span style={{ color: '#cbb596' }}>|</span>
+                <span>
+                  Tempo 9/8: <strong style={{ color: '#ea580c' }}>{activeBeatInMeasure}/9</strong>
+                </span>
+                <span style={{ color: '#cbb596' }}>|</span>
+                <span>
+                  Nota:{' '}
+                  <strong
+                    style={{
+                      color: activeVisualNote?.isRest ? '#6b7280' : '#ea580c',
+                      fontSize: '0.88rem'
+                    }}
+                  >
+                    {activeVisualNote?.solfege || 'Sol'}{' '}
+                    {!activeVisualNote?.isRest && `(${activeVisualNote?.pitch || 'G4'})`}
+                  </strong>
+                </span>
+              </>
+            )}
           </div>
         </div>
 
@@ -1204,6 +1252,91 @@ export default function InteractiveScorePlayer({
             })}
           </div>
         </div>
+
+        {/* Painel de Contagem Inicial (9/8) antes de iniciar o Compasso 1 */}
+        {isCountingIn && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '10px',
+              padding: '10px 16px',
+              marginBottom: '14px',
+              borderRadius: '12px',
+              background: 'linear-gradient(90deg, #fff7ed 0%, #ffedd5 100%)',
+              border: '2px solid #ea580c',
+              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.18)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  background: '#ea580c',
+                  color: '#ffffff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.15rem',
+                  fontWeight: 900,
+                  boxShadow: '0 2px 8px rgba(234, 88, 12, 0.4)'
+                }}
+              >
+                {countInBeat}
+              </div>
+              <div>
+                <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#9a3412' }}>
+                  CONTAGEM INICIAL (9/8): {countInBeat} de 9
+                </div>
+                <div style={{ fontSize: '0.76rem', fontWeight: 600, color: '#c2410c' }}>
+                  Respire no tempo e entre na nota Sol (1º Compasso) após o 9!
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((b) => {
+                const isAccent = b === 1 || b === 4 || b === 7;
+                const isActive = countInBeat === b;
+                const isPast = countInBeat > b;
+                return (
+                  <div
+                    key={`ci_${b}`}
+                    style={{
+                      width: isAccent ? '26px' : '22px',
+                      height: '26px',
+                      borderRadius: '7px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.8rem',
+                      fontWeight: isAccent ? 900 : 700,
+                      background: isActive
+                        ? '#ea580c'
+                        : isPast
+                        ? '#fdba74'
+                        : '#ffffff',
+                      color: isActive ? '#ffffff' : isPast ? '#7c2d12' : '#9a3412',
+                      border: isActive
+                        ? '2px solid #9a3412'
+                        : isAccent
+                        ? '1.5px solid #ea580c'
+                        : '1px solid #fed7aa',
+                      transform: isActive ? 'scale(1.16)' : 'scale(1)',
+                      transition: 'all 0.08s ease'
+                    }}
+                  >
+                    {b}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Sistemas da Partitura SVG */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
