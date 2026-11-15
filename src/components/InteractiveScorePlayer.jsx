@@ -1,164 +1,221 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Volume2, VolumeX, Music } from 'lucide-react';
 
+// Mapa de alturas (Pitch -> Solfejo e nota MIDI)
+const PITCH_INFO = {
+  B3: { solfege: 'Si', midi: 59 },
+  C4: { solfege: 'Dó', midi: 60 },
+  D4: { solfege: 'Ré', midi: 62 },
+  E4: { solfege: 'Mi', midi: 64 },
+  F4: { solfege: 'Fá', midi: 65 },
+  G4: { solfege: 'Sol', midi: 67 },
+  A4: { solfege: 'Lá', midi: 69 },
+  B4: { solfege: 'Si', midi: 71 },
+  C5: { solfege: 'Dó', midi: 72 },
+  D5: { solfege: 'Ré', midi: 74 },
+  E5: { solfege: 'Mi', midi: 76 },
+  F5: { solfege: 'Fá', midi: 77 },
+  REST: { solfege: 'Pausa', midi: null }
+};
+
+// Construtor compacto de nota/pausa:
+// type: 'hd' (mínima pontuada = 6 colcheias), 'qd' (semínima pontuada = 3), 'q' (semínima = 2), 'e' (colcheia = 1), 'r8' (pausa de colcheia = 1)
+function n(pitch, type, extra = {}) {
+  if (type === 'r8' || pitch === 'REST') {
+    return {
+      pitch: 'REST',
+      solfege: 'Pausa',
+      midi: null,
+      eighthDur: 1,
+      type: 'r8',
+      dotted: false,
+      isRest: true,
+      ...extra
+    };
+  }
+  const info = PITCH_INFO[pitch] || { solfege: 'Dó', midi: 60 };
+  const eighthDur = type === 'hd' ? 6 : type === 'qd' ? 3 : type === 'q' ? 2 : 1;
+  const dotted = type === 'hd' || type === 'qd';
+  return {
+    pitch,
+    solfege: info.solfege,
+    midi: info.midi,
+    eighthDur,
+    type,
+    dotted,
+    isRest: false,
+    ...extra
+  };
+}
+
 /**
- * Dados musicais exatos do Exercício Nº 7 da 4ª Série do Pozzoli Melódico
- * Compasso: 9/8 (9 colcheias por compasso = 3 tempos compostos de semínima pontuada)
- * Tonalidade: Dó Maior (Clave de Sol)
- *
- * Tipos de figura (type):
- * - 'hd': mínima pontuada (6 colcheias)
- * - 'qd': semínima pontuada (3 colcheias)
- * - 'q' : semínima (2 colcheias)
- * - 'e' : colcheia (1 colcheia)
- * - 'r8': pausa de colcheia (1 colcheia)
+ * EXERCÍCIO Nº 1 — 4ª Série (6/8, 16 compassos)
+ */
+export const POZZOLI_SERIE4_EX1_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('C4', 'qd'), n('B3', 'qd')] },
+  { measure: 2, slurEnd: 1, notes: [n('D4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'qd'), n('D4', 'qd')] },
+  { measure: 4, slurEnd: 1, notes: [n('F4', 'qd'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'e'), n('F4', 'q'), n('E4', 'e')] },
+  { measure: 6, slurEnd: 1, notes: [n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 0, notes: [n('D4', 'q'), n('F4', 'e'), n('E4', 'q'), n('C4', 'e')] },
+  { measure: 8, slurEnd: 1, notes: [n('B3', 'qd', { tieStart: true }), n('B3', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('C4', 'qd'), n('B3', 'q'), n('C4', 'e')] },
+  { measure: 10, slurEnd: 1, notes: [n('D4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('E4', 'qd'), n('D4', 'q'), n('E4', 'e')] },
+  { measure: 12, slurEnd: 2, notes: [n('G4', 'q'), n('F4', 'e'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('G4', 'q'), n('F4', 'e'), n('E4', 'q'), n('G4', 'e')] },
+  { measure: 14, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 15, slurStart: 0, notes: [n('A4', 'q'), n('G4', 'e'), n('A4', 'q'), n('B4', 'e')] },
+  { measure: 16, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
+];
+
+/**
+ * EXERCÍCIO Nº 2 — 4ª Série (6/8, 16 compassos)
+ */
+export const POZZOLI_SERIE4_EX2_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('E4', 'qd'), n('D4', 'e', { beam: 'start' }), n('C4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' })] },
+  { measure: 2, slurEnd: 1, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'qd'), n('F4', 'e', { beam: 'start' }), n('G4', 'e', { beam: 'mid' }), n('F4', 'e', { beam: 'end' })] },
+  { measure: 4, slurEnd: 1, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'e'), n('B4', 'q'), n('C5', 'e')] },
+  { measure: 6, slurEnd: 1, notes: [n('E5', 'qd'), n('D5', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 0, notes: [n('D5', 'q'), n('C5', 'e'), n('A4', 'q'), n('B4', 'e')] },
+  { measure: 8, slurEnd: 0, notes: [n('D5', 'hd')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'qd'), n('B4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' })] },
+  { measure: 10, slurEnd: 1, notes: [n('C5', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'qd'), n('G4', 'e', { beam: 'start' }), n('F4', 'e', { beam: 'mid' }), n('G4', 'e', { beam: 'end' })] },
+  { measure: 12, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('A4', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end' }), n('B4', 'e', { beam: 'start' }), n('C5', 'e', { beam: 'mid' }), n('D5', 'e', { beam: 'end' })] },
+  { measure: 14, slurEnd: 3, notes: [n('C5', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' }), n('G4', 'qd')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'qd'), n('D4', 'e', { beam: 'start' }), n('C4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' })] },
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
+];
+
+/**
+ * EXERCÍCIO Nº 3 — 4ª Série (6/8, 16 compassos)
+ */
+export const POZZOLI_SERIE4_EX3_MEASURES = [
+  { measure: 1, localSlurs: [[0, 3]], notes: [n('E4', 'e', { beam: 'start' }), n('F4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' }), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 2, localSlurs: [[0, 3]], notes: [n('F4', 'e', { beam: 'start' }), n('G4', 'e', { beam: 'mid' }), n('E4', 'e', { beam: 'end' }), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('G4', 'q'), n('A4', 'e'), n('C5', 'q'), n('A4', 'e')] },
+  { measure: 4, slurEnd: 0, notes: [n('G4', 'hd')] },
+  { measure: 5, localSlurs: [[0, 3]], notes: [n('F4', 'e', { beam: 'start' }), n('G4', 'e', { beam: 'mid' }), n('E4', 'e', { beam: 'end' }), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 6, localSlurs: [[0, 3]], notes: [n('E4', 'e', { beam: 'start' }), n('F4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' }), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 0, notes: [n('D4', 'q'), n('E4', 'e'), n('G4', 'q'), n('E4', 'e')] },
+  { measure: 8, slurEnd: 0, notes: [n('D4', 'hd')] },
+  { measure: 9, localSlurs: [[0, 3]], notes: [n('C4', 'e', { beam: 'start' }), n('D4', 'e', { beam: 'mid' }), n('B3', 'e', { beam: 'end' }), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 10, localSlurs: [[0, 3]], notes: [n('D4', 'e', { beam: 'start' }), n('E4', 'e', { beam: 'mid' }), n('C4', 'e', { beam: 'end' }), n('D4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('E4', 'e', { beam: 'start' }), n('F4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' }), n('E4', 'e', { beam: 'start' }), n('F4', 'e', { beam: 'mid' }), n('G4', 'e', { beam: 'end' })] },
+  { measure: 12, slurEnd: 0, notes: [n('A4', 'hd')] },
+  { measure: 13, localSlurs: [[0, 3]], notes: [n('G4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('F4', 'e', { beam: 'end' }), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 14, localSlurs: [[0, 3]], notes: [n('A4', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('G4', 'e', { beam: 'end' }), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 15, slurStart: 0, notes: [n('B4', 'e', { beam: 'start' }), n('C5', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' }), n('G4', 'e', { beam: 'start' }), n('F4', 'e', { beam: 'mid' }), n('E4', 'e', { beam: 'end' })] },
+  { measure: 16, slurEnd: 1, localSlurs: [[0, 1]], notes: [n('D4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
+];
+
+/**
+ * EXERCÍCIO Nº 4 — 4ª Série (6/8, 16 compassos)
+ */
+export const POZZOLI_SERIE4_EX4_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('G4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' }), n('C5', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' })] },
+  { measure: 2, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('G4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' }), n('C5', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end' })] },
+  { measure: 4, slurEnd: 1, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('C5', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('D5', 'e', { beam: 'end' }), n('C5', 'qd')] },
+  { measure: 6, slurEnd: 3, notes: [n('B4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end' }), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 0, notes: [n('A4', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end' }), n('B4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('G4', 'e', { beam: 'end' })] },
+  { measure: 8, slurEnd: 1, notes: [n('A4', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('G4', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('D5', 'e', { beam: 'end' }), n('C5', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' })] },
+  { measure: 10, slurEnd: 1, notes: [n('B4', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('G4', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('D5', 'e', { beam: 'end' }), n('C5', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' })] },
+  { measure: 12, slurEnd: 1, notes: [n('C5', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('G4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end' }), n('B4', 'e', { beam: 'start' }), n('D5', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end' })] },
+  { measure: 14, slurEnd: 1, notes: [n('E5', 'qd'), n('D5', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 15, slurStart: 0, notes: [n('C5', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' }), n('B4', 'e', { beam: 'start' }), n('C5', 'e', { beam: 'mid' }), n('D5', 'e', { beam: 'end' })] },
+  { measure: 16, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
+];
+
+/**
+ * EXERCÍCIO Nº 5 — 4ª Série (6/8, 16 compassos)
+ */
+export const POZZOLI_SERIE4_EX5_MEASURES = [
+  { measure: 1, slurStart: 0, notes: [n('C4', 'q'), n('E4', 'e'), n('D4', 'q'), n('F4', 'e')] },
+  { measure: 2, slurEnd: 1, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('C4', 'q'), n('E4', 'e'), n('D4', 'e', { beam: 'start' }), n('F4', 'e', { beam: 'mid' }), n('E4', 'e', { beam: 'end' })] },
+  { measure: 4, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'q'), n('B4', 'e'), n('A4', 'q'), n('C5', 'e')] },
+  { measure: 6, slurEnd: 1, notes: [n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 0, notes: [n('G4', 'q'), n('B4', 'e'), n('A4', 'e', { beam: 'start' }), n('C5', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' })] },
+  { measure: 8, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'q'), n('A4', 'e'), n('B4', 'q'), n('G4', 'e')] },
+  { measure: 10, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('C5', 'q'), n('A4', 'e'), n('B4', 'e', { beam: 'start' }), n('G4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' })] },
+  { measure: 12, slurEnd: 1, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('A4', 'q'), n('F4', 'e'), n('G4', 'q'), n('E4', 'e')] },
+  { measure: 14, slurEnd: 1, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'q'), n('D4', 'e'), n('E4', 'e', { beam: 'start' }), n('C4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' })] },
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
+];
+
+/**
+ * EXERCÍCIO Nº 6 — 4ª Série (6/8, 16 compassos)
+ */
+export const POZZOLI_SERIE4_EX6_MEASURES = [
+  { measure: 1, localSlurs: [[0, 1], [2, 3]], notes: [n('E4', 'e'), n('G4', 'q'), n('E4', 'e'), n('D4', 'q')] },
+  { measure: 2, localSlurs: [[0, 3]], notes: [n('E4', 'e', { beam: 'start' }), n('C4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' }), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, localSlurs: [[0, 1], [2, 3]], notes: [n('E4', 'e'), n('G4', 'q'), n('A4', 'e'), n('F4', 'q')] },
+  { measure: 4, notes: [n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 1, notes: [n('REST', 'r8'), n('D4', 'e', { beam: 'start' }), n('E4', 'e', { beam: 'end' }), n('F4', 'e', { beam: 'start' }), n('G4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' })] },
+  { measure: 6, slurEnd: 3, notes: [n('B4', 'e', { beam: 'start' }), n('C5', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' }), n('G4', 'qd')] },
+  { measure: 7, localSlurs: [[0, 1], [2, 3]], notes: [n('A4', 'e'), n('B4', 'q'), n('A4', 'e'), n('D5', 'q')] },
+  { measure: 8, localSlurs: [[0, 3]], notes: [n('B4', 'e', { beam: 'start' }), n('G4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' }), n('B4', 'qd')] },
+  { measure: 9, localSlurs: [[0, 1], [2, 3]], notes: [n('C5', 'e'), n('E5', 'q'), n('C5', 'e'), n('B4', 'q')] },
+  { measure: 10, localSlurs: [[0, 3]], notes: [n('A4', 'e', { beam: 'start' }), n('B4', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end' }), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, localSlurs: [[0, 1], [2, 3]], notes: [n('A4', 'e'), n('C5', 'q'), n('B4', 'e'), n('G4', 'q')] },
+  { measure: 12, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), n('F4', 'e', { beam: 'start' }), n('E4', 'e', { beam: 'end' }), n('D4', 'e', { beam: 'start' }), n('E4', 'e', { beam: 'mid' }), n('F4', 'e', { beam: 'end' })] },
+  { measure: 14, slurEnd: 3, notes: [n('G4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('F4', 'e', { beam: 'end' }), n('E4', 'qd')] },
+  { measure: 15, localSlurs: [[0, 1], [2, 3]], notes: [n('F4', 'e'), n('G4', 'q'), n('F4', 'e'), n('D4', 'q')] },
+  { measure: 16, localSlurs: [[0, 3]], notes: [n('C4', 'e', { beam: 'start' }), n('E4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' }), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
+];
+
+/**
+ * EXERCÍCIO Nº 7 — 4ª Série (9/8, 16 compassos)
  */
 export const POZZOLI_SERIE4_EX7_MEASURES = [
-  // ================= SISTEMA 1 (Compassos 1 a 8) =================
-  {
-    measure: 1,
-    slurStart: 0,
-    notes: [
-      { pitch: 'G4', solfege: 'Sol', midi: 67, eighthDur: 6, type: 'hd', dotted: true },
-      { pitch: 'A4', solfege: 'Lá', midi: 69, eighthDur: 3, type: 'qd', dotted: true }
-    ]
-  },
-  {
-    measure: 2,
-    slurEnd: 1,
-    notes: [
-      { pitch: 'B4', solfege: 'Si', midi: 71, eighthDur: 3, type: 'qd', dotted: true },
-      { pitch: 'C5', solfege: 'Dó', midi: 72, eighthDur: 6, type: 'hd', dotted: true }
-    ]
-  },
-  {
-    measure: 3,
-    slurStart: 0,
-    notes: [
-      { pitch: 'B4', solfege: 'Si', midi: 71, eighthDur: 6, type: 'hd', dotted: true },
-      { pitch: 'A4', solfege: 'Lá', midi: 69, eighthDur: 3, type: 'qd', dotted: true }
-    ]
-  },
-  {
-    measure: 4,
-    slurEnd: 1,
-    notes: [
-      { pitch: 'G4', solfege: 'Sol', midi: 67, eighthDur: 3, type: 'qd', dotted: true },
-      { pitch: 'E4', solfege: 'Mi', midi: 64, eighthDur: 6, type: 'hd', dotted: true }
-    ]
-  },
-  {
-    measure: 5,
-    slurStart: 0,
-    notes: [
-      { pitch: 'D4', solfege: 'Ré', midi: 62, eighthDur: 6, type: 'hd', dotted: true },
-      { pitch: 'F4', solfege: 'Fá', midi: 65, eighthDur: 3, type: 'qd', dotted: true }
-    ]
-  },
-  {
-    measure: 6,
-    slurEnd: 2,
-    notes: [
-      { pitch: 'E4', solfege: 'Mi', midi: 64, eighthDur: 2, type: 'q', dotted: false },
-      { pitch: 'F4', solfege: 'Fá', midi: 65, eighthDur: 1, type: 'e', dotted: false },
-      { pitch: 'G4', solfege: 'Sol', midi: 67, eighthDur: 6, type: 'hd', dotted: true }
-    ]
-  },
-  {
-    measure: 7,
-    slurStart: 0,
-    notes: [
-      { pitch: 'F4', solfege: 'Fá', midi: 65, eighthDur: 6, type: 'hd', dotted: true },
-      { pitch: 'A4', solfege: 'Lá', midi: 69, eighthDur: 3, type: 'qd', dotted: true }
-    ]
-  },
-  {
-    measure: 8,
-    slurEnd: 2,
-    notes: [
-      { pitch: 'G4', solfege: 'Sol', midi: 67, eighthDur: 2, type: 'q', dotted: false },
-      { pitch: 'A4', solfege: 'Lá', midi: 69, eighthDur: 1, type: 'e', dotted: false },
-      { pitch: 'B4', solfege: 'Si', midi: 71, eighthDur: 6, type: 'hd', dotted: true }
-    ]
-  },
-
-  // ================= SISTEMA 2 (Compassos 9 a 16) =================
-  {
-    measure: 9,
-    slurStart: 0,
-    notes: [
-      { pitch: 'C5', solfege: 'Dó', midi: 72, eighthDur: 6, type: 'hd', dotted: true },
-      { pitch: 'B4', solfege: 'Si', midi: 71, eighthDur: 3, type: 'qd', dotted: true }
-    ]
-  },
-  {
-    measure: 10,
-    slurEnd: 1,
-    notes: [
-      { pitch: 'D5', solfege: 'Ré', midi: 74, eighthDur: 3, type: 'qd', dotted: true },
-      { pitch: 'C5', solfege: 'Dó', midi: 72, eighthDur: 6, type: 'hd', dotted: true }
-    ]
-  },
-  {
-    measure: 11,
-    slurStart: 0,
-    notes: [
-      { pitch: 'B4', solfege: 'Si', midi: 71, eighthDur: 3, type: 'qd', dotted: true },
-      { pitch: 'C5', solfege: 'Dó', midi: 72, eighthDur: 3, type: 'qd', dotted: true },
-      { pitch: 'B4', solfege: 'Si', midi: 71, eighthDur: 3, type: 'qd', dotted: true }
-    ]
-  },
-  {
-    measure: 12,
-    slurEnd: 1,
-    notes: [
-      { pitch: 'A4', solfege: 'Lá', midi: 69, eighthDur: 6, type: 'hd', dotted: true, tieStart: true },
-      { pitch: 'A4', solfege: 'Lá', midi: 69, eighthDur: 3, type: 'qd', dotted: true, tieStop: true }
-    ]
-  },
-  {
-    measure: 13,
-    slurStart: 0,
-    notes: [
-      { pitch: 'G4', solfege: 'Sol', midi: 67, eighthDur: 3, type: 'qd', dotted: true },
-      { pitch: 'A4', solfege: 'Lá', midi: 69, eighthDur: 3, type: 'qd', dotted: true },
-      { pitch: 'F4', solfege: 'Fá', midi: 65, eighthDur: 3, type: 'qd', dotted: true }
-    ]
-  },
-  {
-    measure: 14,
-    slurEnd: 2,
-    notes: [
-      { pitch: 'E4', solfege: 'Mi', midi: 64, eighthDur: 2, type: 'q', dotted: false },
-      { pitch: 'F4', solfege: 'Fá', midi: 65, eighthDur: 1, type: 'e', dotted: false },
-      { pitch: 'G4', solfege: 'Sol', midi: 67, eighthDur: 6, type: 'hd', dotted: true }
-    ]
-  },
-  {
-    measure: 15,
-    slurStart: 0,
-    notes: [
-      { pitch: 'E4', solfege: 'Mi', midi: 64, eighthDur: 6, type: 'hd', dotted: true },
-      { pitch: 'D4', solfege: 'Ré', midi: 62, eighthDur: 2, type: 'q', dotted: false },
-      { pitch: 'E4', solfege: 'Mi', midi: 64, eighthDur: 1, type: 'e', dotted: false }
-    ]
-  },
-  {
-    measure: 16,
-    slurEnd: 2,
-    notes: [
-      { pitch: 'D4', solfege: 'Ré', midi: 62, eighthDur: 3, type: 'qd', dotted: true },
-      { pitch: 'C4', solfege: 'Dó', midi: 60, eighthDur: 3, type: 'qd', dotted: true, tieStart: true },
-      { pitch: 'C4', solfege: 'Dó', midi: 60, eighthDur: 1, type: 'e', dotted: false, tieStop: true },
-      { pitch: 'REST', solfege: 'Pausa', midi: null, eighthDur: 1, type: 'r8', isRest: true },
-      { pitch: 'REST', solfege: 'Pausa', midi: null, eighthDur: 1, type: 'r8', isRest: true }
-    ]
-  }
+  { measure: 1, slurStart: 0, notes: [n('G4', 'hd'), n('A4', 'qd')] },
+  { measure: 2, slurEnd: 1, notes: [n('B4', 'qd'), n('C5', 'hd')] },
+  { measure: 3, slurStart: 0, notes: [n('B4', 'hd'), n('A4', 'qd')] },
+  { measure: 4, slurEnd: 1, notes: [n('G4', 'qd'), n('E4', 'hd')] },
+  { measure: 5, slurStart: 0, notes: [n('D4', 'hd'), n('F4', 'qd')] },
+  { measure: 6, slurEnd: 2, notes: [n('E4', 'q'), n('F4', 'e'), n('G4', 'hd')] },
+  { measure: 7, slurStart: 0, notes: [n('F4', 'hd'), n('A4', 'qd')] },
+  { measure: 8, slurEnd: 2, notes: [n('G4', 'q'), n('A4', 'e'), n('B4', 'hd')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'hd'), n('B4', 'qd')] },
+  { measure: 10, slurEnd: 1, notes: [n('D5', 'qd'), n('C5', 'hd')] },
+  { measure: 11, slurStart: 0, notes: [n('B4', 'qd'), n('C5', 'qd'), n('B4', 'qd')] },
+  { measure: 12, slurEnd: 1, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'qd', { tieStop: true })] },
+  { measure: 13, slurStart: 0, notes: [n('G4', 'qd'), n('A4', 'qd'), n('F4', 'qd')] },
+  { measure: 14, slurEnd: 2, notes: [n('E4', 'q'), n('F4', 'e'), n('G4', 'hd')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'hd'), n('D4', 'q'), n('E4', 'e')] },
+  { measure: 16, slurEnd: 2, notes: [n('D4', 'qd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
+
+export const POZZOLI_SERIE4_SCORES = {
+  'serie-4-ex-1': POZZOLI_SERIE4_EX1_MEASURES,
+  'serie-4-ex-2': POZZOLI_SERIE4_EX2_MEASURES,
+  'serie-4-ex-3': POZZOLI_SERIE4_EX3_MEASURES,
+  'serie-4-ex-4': POZZOLI_SERIE4_EX4_MEASURES,
+  'serie-4-ex-5': POZZOLI_SERIE4_EX5_MEASURES,
+  'serie-4-ex-6': POZZOLI_SERIE4_EX6_MEASURES,
+  'serie-4-ex-7': POZZOLI_SERIE4_EX7_MEASURES
+};
 
 // Posição vertical diatônica na pauta (Clave de Sol):
 // E4 (1ª linha de baixo) = step 0; cada linha/espaço acima soma +1 (stepSpacing = 5px)
 const DIATONIC_STEP_FROM_E4 = {
+  B3: -3, // Abaixo da linha suplementar inferior
   C4: -2, // Linha suplementar inferior
   D4: -1, // Espaço abaixo da 1ª linha
   E4: 0,  // 1ª linha
@@ -186,13 +243,23 @@ export default function InteractiveScorePlayer({
   onToggleMenu = null,
   playerControls = null
 }) {
-  const measures = currentSeries?.interactiveMeasures || POZZOLI_SERIE4_EX7_MEASURES;
+  const measures = useMemo(() => {
+    if (currentSeries?.interactiveMeasures) return currentSeries.interactiveMeasures;
+    if (currentSeries?.id && POZZOLI_SERIE4_SCORES[currentSeries.id]) {
+      return POZZOLI_SERIE4_SCORES[currentSeries.id];
+    }
+    return POZZOLI_SERIE4_EX7_MEASURES;
+  }, [currentSeries?.id, currentSeries?.interactiveMeasures]);
+
+  const timeSignature = currentSeries?.timeSignature || (currentSeries?.id === 'serie-4-ex-7' ? '9/8' : '6/8');
+  const [timeSigNumStr, timeSigDenStr] = timeSignature.split('/');
+  const eighthsPerMeasure = parseInt(timeSigNumStr, 10) || 6;
+  const totalEighthsInScore = measures.length * eighthsPerMeasure;
+
   const defaultBpm = currentSeries?.defaultBpm || 60;
 
-  // No compasso composto 9/8 a 60 BPM (Pozzoli), cada tempo composto (semínima pontuada = 3 colcheias)
+  // Nos compassos compostos 6/8 e 9/8 a 60 BPM (Pozzoli), cada tempo composto (semínima pontuada = 3 colcheias)
   // dura (60 / bpm) segundos, ou seja, 1 colcheia = (60 / bpm) / 3 segundos.
-  // Na velocidade base (60 BPM), 1 colcheia = 1/3 s (0.3333s) e cada compasso 9/8 dura 3.0 segundos.
-  // Total de 16 compassos = 144 colcheias = 48.0 segundos na base de 60 BPM.
   const baseEighthDurationSec = (60 / defaultBpm) / 3;
 
   // Constrói a linha do tempo linear de todas as notas + eventos sonoros (unindo notas ligadas por tie)
@@ -203,12 +270,12 @@ export default function InteractiveScorePlayer({
 
     measures.forEach((mObj, mIdx) => {
       let beatInMeasureEighth = 0;
-      mObj.notes.forEach((n, nIdx) => {
+      mObj.notes.forEach((nItem, nIdx) => {
         const startEighth = currentEighth;
-        const endEighth = currentEighth + n.eighthDur;
+        const endEighth = currentEighth + nItem.eighthDur;
         const startTimeSec = startEighth * baseEighthDurationSec;
         const endTimeSec = endEighth * baseEighthDurationSec;
-        const durationSec = n.eighthDur * baseEighthDurationSec;
+        const durationSec = nItem.eighthDur * baseEighthDurationSec;
 
         const visualItem = {
           id: `m${mObj.measure}_n${nIdx}`,
@@ -216,17 +283,18 @@ export default function InteractiveScorePlayer({
           measureNumber: mObj.measure,
           measureIndex: mIdx,
           noteIndexInMeasure: nIdx,
-          pitch: n.pitch,
-          solfege: n.solfege,
-          midi: n.midi,
-          freq: midiToFreq(n.midi),
-          eighthDur: n.eighthDur,
-          beatStartInMeasure: beatInMeasureEighth + 1, // 1..9
-          type: n.type,
-          dotted: !!n.dotted,
-          isRest: !!n.isRest,
-          tieStart: !!n.tieStart,
-          tieStop: !!n.tieStop,
+          pitch: nItem.pitch,
+          solfege: nItem.solfege,
+          midi: nItem.midi,
+          freq: midiToFreq(nItem.midi),
+          eighthDur: nItem.eighthDur,
+          beatStartInMeasure: beatInMeasureEighth + 1,
+          type: nItem.type,
+          dotted: !!nItem.dotted,
+          isRest: !!nItem.isRest,
+          tieStart: !!nItem.tieStart,
+          tieStop: !!nItem.tieStop,
+          beam: nItem.beam || null,
           startEighth,
           endEighth,
           startTimeSec,
@@ -238,17 +306,17 @@ export default function InteractiveScorePlayer({
 
         // Se esta nota é continuação de ligadura (tieStop), prolonga o evento de áudio anterior
         // para que o som não seja re-atacado no meio da ligadura!
-        if (n.tieStop && aList.length > 0 && !n.isRest) {
+        if (nItem.tieStop && aList.length > 0 && !nItem.isRest) {
           const prevAudio = aList[aList.length - 1];
           prevAudio.endEighth = endEighth;
           prevAudio.endTimeSec = endTimeSec;
           prevAudio.durationSec = prevAudio.endTimeSec - prevAudio.startTimeSec;
-        } else if (!n.isRest && n.midi) {
+        } else if (!nItem.isRest && nItem.midi) {
           aList.push({
             id: visualItem.id,
-            midi: n.midi,
+            midi: nItem.midi,
             freq: visualItem.freq,
-            solfege: n.solfege,
+            solfege: nItem.solfege,
             startEighth,
             endEighth,
             startTimeSec,
@@ -258,7 +326,7 @@ export default function InteractiveScorePlayer({
         }
 
         currentEighth = endEighth;
-        beatInMeasureEighth += n.eighthDur;
+        beatInMeasureEighth += nItem.eighthDur;
       });
     });
 
@@ -514,7 +582,7 @@ export default function InteractiveScorePlayer({
     }
   }, []);
 
-  // Agenda notas e cliques do metrônomo na janela de lookahead (incluindo contagem negativa -9..-1)
+  // Agenda notas e cliques do metrônomo na janela de lookahead (incluindo contagem negativa -eighthsPerMeasure..-1)
   const scheduleLookahead = useCallback(
     (baseSecNow) => {
       const ctx = audioCtxRef.current;
@@ -550,11 +618,11 @@ export default function InteractiveScorePlayer({
         }
       }
 
-      // 2. Agendar cliques de colcheia do compasso 9/8 (ticks -9 a -1 = contagem inicial; 0 a 143 = partitura)
+      // 2. Agendar cliques de colcheia do compasso composto (ticks -eighthsPerMeasure a -1 = contagem inicial; 0 a totalEighthsInScore - 1 = partitura)
       const currentEighthFloat = baseSecNow / baseEighthDurationSec;
       const maxEighthFloat = (baseSecNow + lookaheadBaseSec) / baseEighthDurationSec;
-      const startTick = Math.max(-9, Math.floor(currentEighthFloat));
-      const endTick = Math.min(143, Math.floor(maxEighthFloat));
+      const startTick = Math.max(-eighthsPerMeasure, Math.floor(currentEighthFloat));
+      const endTick = Math.min(totalEighthsInScore - 1, Math.floor(maxEighthFloat));
 
       for (let tick = startTick; tick <= endTick; tick++) {
         if (scheduledTicksRef.current.has(tick)) continue;
@@ -562,13 +630,20 @@ export default function InteractiveScorePlayer({
         if (tickBaseSec >= baseSecNow - 0.025 && tickBaseSec <= baseSecNow + lookaheadBaseSec) {
           scheduledTicksRef.current.add(tick);
           const delayWallSec = Math.max(0, (tickBaseSec - baseSecNow) / rate);
-          const modTick = ((tick % 9) + 9) % 9;
-          const beat1to9 = modTick + 1;
-          playMetronomeClick(beat1to9, ctx.currentTime + delayWallSec, tick < 0);
+          const modTick = ((tick % eighthsPerMeasure) + eighthsPerMeasure) % eighthsPerMeasure;
+          const beatInMeasure = modTick + 1;
+          playMetronomeClick(beatInMeasure, ctx.currentTime + delayWallSec, tick < 0);
         }
       }
     },
-    [audioEvents, baseEighthDurationSec, playMelodicNote, playMetronomeClick]
+    [
+      audioEvents,
+      baseEighthDurationSec,
+      eighthsPerMeasure,
+      totalEighthsInScore,
+      playMelodicNote,
+      playMetronomeClick
+    ]
   );
 
   const onTimeUpdateRef = useRef(onTimeUpdate);
@@ -606,8 +681,8 @@ export default function InteractiveScorePlayer({
       }
     }
 
-    // Se estiver no início (ou no fim), faz 1 compasso completo de contagem inicial 9/8 (-9 colcheias até 0)
-    const countInDurationSec = 9 * baseEighthDurationSec;
+    // Se estiver no início (ou no fim), faz 1 compasso completo de contagem inicial (-eighthsPerMeasure colcheias até 0)
+    const countInDurationSec = eighthsPerMeasure * baseEighthDurationSec;
     if (currentTimeRef.current >= totalBaseDurationSec - 0.05 || currentTimeRef.current <= 0.05) {
       currentTimeRef.current = -countInDurationSec;
       setCurrentTimeSec(-countInDurationSec);
@@ -652,6 +727,7 @@ export default function InteractiveScorePlayer({
     animFrameRef.current = requestAnimationFrame(step);
   }, [
     ensureAudioContext,
+    eighthsPerMeasure,
     baseEighthDurationSec,
     totalBaseDurationSec,
     stopPlaybackLoop,
@@ -701,11 +777,24 @@ export default function InteractiveScorePlayer({
   const startPlaybackRef = useRef(startPlayback);
   const pausePlaybackRef = useRef(pausePlayback);
   const seekToTimeRef = useRef(seekToTime);
+  const totalBaseDurationSecRef = useRef(totalBaseDurationSec);
   useEffect(() => {
     startPlaybackRef.current = startPlayback;
     pausePlaybackRef.current = pausePlayback;
     seekToTimeRef.current = seekToTime;
-  }, [startPlayback, pausePlayback, seekToTime]);
+    totalBaseDurationSecRef.current = totalBaseDurationSec;
+  }, [startPlayback, pausePlayback, seekToTime, totalBaseDurationSec]);
+
+  // Reinicia quando o usuário troca de exercício
+  useEffect(() => {
+    pausePlayback();
+    currentTimeRef.current = 0;
+    setCurrentTimeSec(0);
+    scheduledAudioIdsRef.current.clear();
+    scheduledTicksRef.current.clear();
+    emitMediaEvent('timeupdate');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSeries?.id]);
 
   // Expõe objeto compatível com HTMLMediaElement para o AudioPlayerControls da barra inferior
   const virtualMediaRef = useRef(null);
@@ -741,7 +830,7 @@ export default function InteractiveScorePlayer({
         }
       },
       duration: {
-        get: () => totalBaseDurationSec
+        get: () => totalBaseDurationSecRef.current
       },
       paused: {
         get: () => !isPlayingRef.current
@@ -780,10 +869,18 @@ export default function InteractiveScorePlayer({
 
   const isCountingIn = isPlaying && currentTimeSec < 0;
   const countInBeat = isCountingIn
-    ? Math.min(9, Math.max(1, Math.floor((currentTimeSec + 9 * baseEighthDurationSec) / baseEighthDurationSec) + 1))
+    ? Math.min(
+        eighthsPerMeasure,
+        Math.max(
+          1,
+          Math.floor(
+            (currentTimeSec + eighthsPerMeasure * baseEighthDurationSec) / baseEighthDurationSec
+          ) + 1
+        )
+      )
     : null;
 
-  // Determina a nota visual ativa, o compasso ativo (1..16) e a colcheia ativa (1..9)
+  // Determina a nota visual ativa, o compasso ativo (1..16) e a colcheia ativa
   const activeVisualNote = useMemo(() => {
     if (currentTimeSec < 0) return null;
     const found = visualTimeline.find(
@@ -793,14 +890,19 @@ export default function InteractiveScorePlayer({
   }, [visualTimeline, currentTimeSec]);
 
   const currentEighthGlobal = Math.min(
-    143,
+    totalEighthsInScore - 1,
     Math.max(0, Math.floor(Math.max(0, currentTimeSec) / baseEighthDurationSec))
   );
-  const activeMeasureNumber = isCountingIn ? 0 : Math.floor(currentEighthGlobal / 9) + 1;
-  const activeBeatInMeasure = isCountingIn ? countInBeat : (currentEighthGlobal % 9) + 1;
+  const activeMeasureNumber = isCountingIn
+    ? 0
+    : Math.floor(currentEighthGlobal / eighthsPerMeasure) + 1;
+  const activeBeatInMeasure = isCountingIn
+    ? countInBeat
+    : (currentEighthGlobal % eighthsPerMeasure) + 1;
   const progressInsideMeasure = isCountingIn
     ? 0
-    : ((Math.max(0, currentTimeSec) / baseEighthDurationSec) % 9) / 9;
+    : ((Math.max(0, currentTimeSec) / baseEighthDurationSec) % eighthsPerMeasure) /
+      eighthsPerMeasure;
 
   // Ao clicar na tela ou na partitura: começa a tocar (e esconde o menu) ou pausa (e mostra o menu de volta)
   const handleScreenClick = () => {
@@ -954,7 +1056,7 @@ export default function InteractiveScorePlayer({
             const usableWidth = svgWidth - leftHeaderWidth - rightMargin;
             const measureWidth = usableWidth / rowMeasures.length;
 
-            // Coordenadas calculadas de todas as notas desta linha para desenhar ligaduras (slurs e ties)
+            // Coordenadas calculadas de todas as notas desta linha para desenhar ligaduras (slurs e ties) e barras de colcheia (beams)
             const renderedNotesInRow = [];
 
             return (
@@ -986,7 +1088,7 @@ export default function InteractiveScorePlayer({
                     let accumEighth = 0;
                     const notePositions = mObj.notes.map((n, nIdx) => {
                       const item = noteLookup.get(`${mObj.measure}_${nIdx}`);
-                      const centerRatio = (accumEighth + n.eighthDur * 0.42) / 9;
+                      const centerRatio = (accumEighth + n.eighthDur * 0.42) / eighthsPerMeasure;
                       const nx = mX + padLeft + centerRatio * innerW;
                       const stepFromE4 = DIATONIC_STEP_FROM_E4[n.pitch] ?? 2;
                       const ny = staffBottomY - stepFromE4 * stepSpacing;
@@ -1099,7 +1201,7 @@ export default function InteractiveScorePlayer({
                     𝄞
                   </text>
 
-                  {/* Fórmula de Compasso 9/8 na primeira linha */}
+                  {/* Fórmula de Compasso (6/8 ou 9/8) na primeira linha */}
                   {isFirstRow && (
                     <g>
                       <text
@@ -1111,7 +1213,7 @@ export default function InteractiveScorePlayer({
                         textAnchor="middle"
                         fill="#1f1610"
                       >
-                        9
+                        {timeSigNumStr}
                       </text>
                       <text
                         x={60}
@@ -1122,7 +1224,7 @@ export default function InteractiveScorePlayer({
                         textAnchor="middle"
                         fill="#1f1610"
                       >
-                        8
+                        {timeSigDenStr}
                       </text>
                     </g>
                   )}
@@ -1130,7 +1232,7 @@ export default function InteractiveScorePlayer({
                   {/* Barras divisórias de compasso (e barra dupla final no compasso 16) */}
                   {rowMeasures.map((mObj, mColIdx) => {
                     const barX = leftHeaderWidth + (mColIdx + 1) * measureWidth;
-                    const isFinalMeasure = mObj.measure === 16;
+                    const isFinalMeasure = mObj.measure === measures.length;
                     return (
                       <g key={`bar_${mObj.measure}`}>
                         {isFinalMeasure ? (
@@ -1166,15 +1268,16 @@ export default function InteractiveScorePlayer({
                     );
                   })}
 
-                  {/* Ligaduras de Prolongamento (Ties) — ex: Compasso 12 (Lá-Lá) e Compasso 16 (Dó-Dó) */}
+                  {/* Ligaduras de Prolongamento (Ties) */}
                   {renderedNotesInRow.map((pos, idx) => {
                     if (!pos.n.tieStart) return null;
                     const nextPos = renderedNotesInRow[idx + 1];
                     if (!nextPos) return null;
-                    const x1 = pos.nx + 6;
-                    const x2 = nextPos.nx - 6;
-                    const y = pos.ny + 8;
-                    const ctrlY = y + 12;
+                    const x1 = pos.nx + 5;
+                    const x2 = nextPos.nx - 5;
+                    const tieBelow = pos.stepFromE4 <= 4;
+                    const y = tieBelow ? pos.ny + 7 : pos.ny - 7;
+                    const ctrlY = y + (tieBelow ? 10 : -10);
                     return (
                       <path
                         key={`tie_${pos.item?.id}`}
@@ -1186,7 +1289,7 @@ export default function InteractiveScorePlayer({
                     );
                   })}
 
-                  {/* Ligaduras de Expressão / Fraseado (Slurs de 2 em 2 compassos conforme o original) */}
+                  {/* Ligaduras de Expressão entre 2 compassos (slurStart -> slurEnd) */}
                   {rowMeasures.map((mObj, mColIdx) => {
                     if (typeof mObj.slurStart !== 'number') return null;
                     const nextMeasureObj = rowMeasures[mColIdx + 1];
@@ -1222,13 +1325,130 @@ export default function InteractiveScorePlayer({
                     );
                   })}
 
+                  {/* Ligaduras de Expressão dentro do mesmo compasso (localSlurs) */}
+                  {rowMeasures.map((mObj) => {
+                    if (!Array.isArray(mObj.localSlurs)) return null;
+                    return mObj.localSlurs.map(([sIdx, eIdx], lIdx) => {
+                      const startNotePos = renderedNotesInRow.find(
+                        (p) => p.measureNumber === mObj.measure && p.nIdx === sIdx
+                      );
+                      const endNotePos = renderedNotesInRow.find(
+                        (p) => p.measureNumber === mObj.measure && p.nIdx === eIdx
+                      );
+                      if (!startNotePos || !endNotePos) return null;
+
+                      const avgStep = (startNotePos.stepFromE4 + endNotePos.stepFromE4) / 2;
+                      const slurBelow = avgStep <= 3.5;
+                      const x1 = startNotePos.nx;
+                      const x2 = endNotePos.nx;
+                      const y1 = slurBelow ? startNotePos.ny + 10 : startNotePos.ny - 10;
+                      const y2 = slurBelow ? endNotePos.ny + 10 : endNotePos.ny - 10;
+                      const midX = (x1 + x2) / 2;
+                      const midY = (y1 + y2) / 2 + (slurBelow ? 15 : -15);
+
+                      return (
+                        <path
+                          key={`localslur_${mObj.measure}_${lIdx}`}
+                          d={`M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`}
+                          fill="none"
+                          stroke="#37291d"
+                          strokeWidth="1.5"
+                        />
+                      );
+                    });
+                  })}
+
+                  {/* Grupos de Colcheias Unidas por Barra (Beams de 3 colcheias nos compassos compostos) */}
+                  {(() => {
+                    const beamGroups = [];
+                    let currentGroup = [];
+                    renderedNotesInRow.forEach((pos) => {
+                      if (pos.n.beam === 'start') {
+                        currentGroup = [pos];
+                      } else if (pos.n.beam === 'mid' && currentGroup.length > 0) {
+                        currentGroup.push(pos);
+                      } else if (pos.n.beam === 'end' && currentGroup.length > 0) {
+                        currentGroup.push(pos);
+                        beamGroups.push(currentGroup);
+                        currentGroup = [];
+                      }
+                    });
+
+                    return beamGroups.map((group) => {
+                      const avgStep =
+                        group.reduce((acc, p) => acc + p.stepFromE4, 0) / group.length;
+                      const stemUp = avgStep < 4;
+                      const first = group[0];
+                      const last = group[group.length - 1];
+                      const x1 = stemUp ? first.nx + 6 : first.nx - 6;
+                      const x2 = stemUp ? last.nx + 6 : last.nx - 6;
+
+                      // Calcula altura da barra garantindo haste mínima de 26px para todas as notas do grupo
+                      const rawY1 = stemUp ? first.ny - 30 : first.ny + 30;
+                      const rawY2 = stemUp ? last.ny - 30 : last.ny + 30;
+                      const slope = x2 !== x1 ? Math.max(-0.22, Math.min(0.22, (rawY2 - rawY1) / (x2 - x1))) : 0;
+                      let baseY1 = rawY1;
+
+                      group.forEach((p) => {
+                        const sx = stemUp ? p.nx + 6 : p.nx - 6;
+                        const beamYAtNode = baseY1 + slope * (sx - x1);
+                        if (stemUp) {
+                          const minAllowedY = p.ny - 25;
+                          if (beamYAtNode > minAllowedY) {
+                            baseY1 -= beamYAtNode - minAllowedY;
+                          }
+                        } else {
+                          const maxAllowedY = p.ny + 25;
+                          if (beamYAtNode < maxAllowedY) {
+                            baseY1 += maxAllowedY - beamYAtNode;
+                          }
+                        }
+                      });
+
+                      const y1 = baseY1;
+                      const y2 = baseY1 + slope * (x2 - x1);
+
+                      return (
+                        <g key={`beam_${first.item?.id}`}>
+                          {/* Hastes das notas do grupo conectadas exatamente na barra */}
+                          {group.map((p) => {
+                            const sx = stemUp ? p.nx + 6 : p.nx - 6;
+                            const sy2 = y1 + slope * (sx - x1);
+                            const isNoteActive = activeVisualNote?.id === p.item?.id;
+                            return (
+                              <line
+                                key={`beamstem_${p.item?.id}`}
+                                x1={sx}
+                                y1={p.ny}
+                                x2={sx}
+                                y2={sy2}
+                                stroke={isNoteActive ? '#ea580c' : '#18120d'}
+                                strokeWidth="1.8"
+                              />
+                            );
+                          })}
+                          {/* Barra grossa (beam) ligando o grupo de colcheias */}
+                          <line
+                            x1={x1}
+                            y1={y1}
+                            x2={x2}
+                            y2={y2}
+                            stroke="#18120d"
+                            strokeWidth="4.2"
+                            strokeLinecap="butt"
+                          />
+                        </g>
+                      );
+                    });
+                  })()}
+
                   {/* Desenho de cada Nota e Pausa */}
                   {renderedNotesInRow.map((pos) => {
                     const { n, item, nx, ny, stepFromE4 } = pos;
                     const isNoteActive = activeVisualNote?.id === item?.id;
                     const noteColor = isNoteActive ? '#ea580c' : '#18120d';
 
-                    // Pausas de colcheia no compasso 16
+                    // Pausas de colcheia
                     if (n.isRest) {
                       const restY = staffTopY + 2 * lineSpacing;
                       return (
@@ -1282,8 +1502,8 @@ export default function InteractiveScorePlayer({
                           />
                         )}
 
-                        {/* Linha suplementar inferior para o Dó4 (C4) no compasso 16 */}
-                        {n.pitch === 'C4' && (
+                        {/* Linha suplementar inferior para o Dó4 (C4) e o Si3 (B3) */}
+                        {(n.pitch === 'C4' || n.pitch === 'B3') && (
                           <line
                             x1={nx - 11}
                             y1={staffBottomY + lineSpacing}
@@ -1294,18 +1514,20 @@ export default function InteractiveScorePlayer({
                           />
                         )}
 
-                        {/* Haste da nota */}
-                        <line
-                          x1={stemX}
-                          y1={stemY1}
-                          x2={stemX}
-                          y2={stemY2}
-                          stroke={noteColor}
-                          strokeWidth="1.8"
-                        />
+                        {/* Haste individual (somente para notas que não fazem parte de barra de colcheias) */}
+                        {!n.beam && (
+                          <line
+                            x1={stemX}
+                            y1={stemY1}
+                            x2={stemX}
+                            y2={stemY2}
+                            stroke={noteColor}
+                            strokeWidth="1.8"
+                          />
+                        )}
 
-                        {/* Colchete (flag) quando a figura for colcheia ('e') */}
-                        {n.type === 'e' && (
+                        {/* Colchete individual (flag) quando for colcheia isolada sem barra ('e' && !n.beam) */}
+                        {n.type === 'e' && !n.beam && (
                           <path
                             d={
                               stemUp
@@ -1341,7 +1563,7 @@ export default function InteractiveScorePlayer({
                           />
                         )}
 
-                        {/* Nome da nota (Solfejo) abaixo/acima para guiar o estudo */}
+                        {/* Nome da nota (Solfejo) abaixo para guiar o estudo */}
                         {showSolfegeNames && (
                           <text
                             x={nx}
