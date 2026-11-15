@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Volume2, VolumeX, Music } from 'lucide-react';
+import { Volume2, VolumeX, Music, Minus, Plus } from 'lucide-react';
 
 // Mapa de alturas (Pitch -> Solfejo e nota MIDI)
 const PITCH_INFO = {
@@ -341,6 +341,18 @@ export default function InteractiveScorePlayer({
   const [currentTimeSec, setCurrentTimeSec] = useState(0); // Tempo na escala base (0 .. totalBaseDurationSec)
   const [showSolfegeNames, setShowSolfegeNames] = useState(true);
   const [metronomeEnabled, setMetronomeEnabled] = useState(true);
+  const [metronomeVolume, setMetronomeVolume] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pozzoli_metronome_volume');
+      if (saved !== null) {
+        const parsed = parseFloat(saved);
+        if (!Number.isNaN(parsed)) return Math.max(0, Math.min(1.5, parsed));
+      }
+    } catch {
+      // ignore
+    }
+    return 1.0;
+  });
   const rowRefs = useRef([]);
 
   // Refs para o motor de áudio em tempo real
@@ -351,6 +363,7 @@ export default function InteractiveScorePlayer({
   const playbackRateRef = useRef(bpm / defaultBpm);
   const isMutedRef = useRef(false);
   const metronomeEnabledRef = useRef(metronomeEnabled);
+  const metronomeVolumeRef = useRef(metronomeVolume);
   const lastFrameWallTimeRef = useRef(null);
   const animFrameRef = useRef(null);
   const scheduledAudioIdsRef = useRef(new Set());
@@ -365,6 +378,15 @@ export default function InteractiveScorePlayer({
   useEffect(() => {
     metronomeEnabledRef.current = metronomeEnabled;
   }, [metronomeEnabled]);
+
+  useEffect(() => {
+    metronomeVolumeRef.current = metronomeVolume;
+    try {
+      localStorage.setItem('pozzoli_metronome_volume', String(metronomeVolume));
+    } catch {
+      // ignore
+    }
+  }, [metronomeVolume]);
 
   useEffect(() => {
     playbackRateRef.current = Math.max(0.3, Math.min(3.0, bpm / defaultBpm));
@@ -554,9 +576,12 @@ export default function InteractiveScorePlayer({
       filter.Q.setValueAtTime(1.8, safeStart);
       filter.gain.setValueAtTime(6, safeStart);
 
-      // Volume reforçado para destacar claramente sobre o violino (e ainda mais presente na contagem inicial)
-      const baseVol = isDownbeat ? 0.92 : isCompoundBeat ? 0.70 : 0.44;
-      const vol = isCountIn ? Math.min(1.0, baseVol * 1.08) : baseVol;
+      // Volume controlado pelo usuário (0% a 150%)
+      const userVolMultiplier = metronomeVolumeRef.current;
+      if (userVolMultiplier <= 0.001) return;
+
+      const baseVol = (isDownbeat ? 0.92 : isCompoundBeat ? 0.70 : 0.44) * userVolMultiplier;
+      const vol = Math.min(1.35, isCountIn ? baseVol * 1.08 : baseVol);
 
       const transientGain = ctx.createGain();
       transientGain.gain.setValueAtTime(vol * 0.35, safeStart);
@@ -993,7 +1018,13 @@ export default function InteractiveScorePlayer({
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                flexWrap: 'wrap',
+                justifyContent: 'flex-end'
+              }}
             >
               <button
                 type="button"
@@ -1016,26 +1047,157 @@ export default function InteractiveScorePlayer({
                 <span>Notas</span>
               </button>
 
-              <button
-                type="button"
-                onClick={() => setMetronomeEnabled((v) => !v)}
+              {/* Controle de Metrônomo + Ajuste de Volume (- / slider / +) */}
+              <div
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '4px',
-                  padding: '4px 9px',
-                  borderRadius: '8px',
-                  fontSize: '0.73rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  border: metronomeEnabled ? '1.5px solid #d97706' : '1px solid #d4c4ac',
-                  background: metronomeEnabled ? 'rgba(217, 119, 6, 0.12)' : '#ffffff',
-                  color: metronomeEnabled ? '#b45309' : '#574635'
+                  padding: '3px 6px',
+                  borderRadius: '10px',
+                  border:
+                    metronomeEnabled && metronomeVolume > 0
+                      ? '1.5px solid #d97706'
+                      : '1px solid #d4c4ac',
+                  background:
+                    metronomeEnabled && metronomeVolume > 0
+                      ? 'rgba(217, 119, 6, 0.09)'
+                      : '#ffffff'
                 }}
               >
-                {metronomeEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
-                <span>Metrônomo</span>
-              </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!metronomeEnabled && metronomeVolume === 0) {
+                      setMetronomeVolume(1.0);
+                    }
+                    setMetronomeEnabled((v) => !v);
+                  }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '2px 5px',
+                    borderRadius: '6px',
+                    fontSize: '0.73rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    border: 'none',
+                    background: 'transparent',
+                    color:
+                      metronomeEnabled && metronomeVolume > 0 ? '#b45309' : '#574635'
+                  }}
+                  title="Ativar / desativar metrônomo"
+                >
+                  {metronomeEnabled && metronomeVolume > 0 ? (
+                    <Volume2 size={13} />
+                  ) : (
+                    <VolumeX size={13} />
+                  )}
+                  <span>Metrônomo</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = Math.max(0, Math.round((metronomeVolume - 0.1) * 10) / 10);
+                    metronomeVolumeRef.current = next;
+                    setMetronomeVolume(next);
+                    if (next === 0) {
+                      setMetronomeEnabled(false);
+                    } else {
+                      setMetronomeEnabled(true);
+                      metronomeEnabledRef.current = true;
+                      const ctx = ensureAudioContext();
+                      if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                    }
+                  }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '6px',
+                    border: '1px solid #dccbb3',
+                    background: '#fffaf2',
+                    color: '#574635',
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                  title="Diminuir volume do metrônomo"
+                >
+                  <Minus size={12} />
+                </button>
+
+                <input
+                  type="range"
+                  min={0}
+                  max={1.5}
+                  step={0.05}
+                  value={metronomeEnabled ? metronomeVolume : 0}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value);
+                    metronomeVolumeRef.current = val;
+                    setMetronomeVolume(val);
+                    if (val <= 0) {
+                      setMetronomeEnabled(false);
+                    } else if (!metronomeEnabled) {
+                      setMetronomeEnabled(true);
+                      metronomeEnabledRef.current = true;
+                    }
+                  }}
+                  style={{
+                    width: '62px',
+                    height: '4px',
+                    accentColor: '#d97706',
+                    cursor: 'pointer'
+                  }}
+                  title="Volume do metrônomo"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const base = metronomeEnabled ? metronomeVolume : 0;
+                    const next = Math.min(1.5, Math.round((base + 0.1) * 10) / 10);
+                    metronomeVolumeRef.current = next;
+                    setMetronomeVolume(next);
+                    setMetronomeEnabled(true);
+                    metronomeEnabledRef.current = true;
+                    const ctx = ensureAudioContext();
+                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                  }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '6px',
+                    border: '1px solid #dccbb3',
+                    background: '#fffaf2',
+                    color: '#574635',
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                  title="Aumentar volume do metrônomo"
+                >
+                  <Plus size={12} />
+                </button>
+
+                <span
+                  style={{
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    color: metronomeEnabled && metronomeVolume > 0 ? '#b45309' : '#8a7968',
+                    minWidth: '30px',
+                    textAlign: 'right'
+                  }}
+                >
+                  {metronomeEnabled ? `${Math.round(metronomeVolume * 100)}%` : '0%'}
+                </span>
+              </div>
             </div>
           </div>
         )}
