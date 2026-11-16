@@ -461,13 +461,7 @@ export default function SeriesLibraryView({
                         <div>
                           <div className="exercise-name" style={{ fontSize: '0.84rem', fontWeight: series.isDesktopMode ? 800 : 700, color: series.isDesktopMode ? '#ffffff' : 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                             <span>
-                              {series.isDesktopMode && series.seriesTitle
-                                ? `${series.seriesTitle} - ${series.title}`
-                                : series.title?.toLowerCase().includes('série')
-                                ? series.title
-                                : series.seriesTitle
-                                ? `${series.seriesTitle} - ${series.title}`
-                                : series.title}
+                              {(series.title || '').replace(/^(Primeira|Segunda|Terceira|Quarta)\s+Série\s*-\s*/i, '')}
                             </span>
                             {isSeriesStudied && (
                               <span className="studied-badge" style={{ background: '#10b981', color: '#ffffff', fontSize: '0.75rem', fontWeight: 800, padding: '2px 8px', borderRadius: '6px' }}>
@@ -757,7 +751,7 @@ export default function SeriesLibraryView({
                                   flexWrap: 'wrap'
                                 }}
                               >
-                                <span>{exercise.title}</span>
+                                <span>{(exercise.title || '').replace(/^(Primeira|Segunda|Terceira|Quarta)\s+Série\s*-\s*/i, '')}</span>
                                 {isExStudied && (
                                   <span
                                     className="studied-badge"

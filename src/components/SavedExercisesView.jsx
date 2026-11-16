@@ -173,13 +173,7 @@ export default function SavedExercisesView({
 
                   <div>
                     <div className="exercise-name" style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--text-main)', fontFamily: "'Inter', -apple-system, sans-serif" }}>
-                      {series.isDesktopMode && series.seriesTitle
-                        ? `${series.seriesTitle} - ${series.title}`
-                        : series.title?.toLowerCase().includes('série')
-                        ? series.title
-                        : series.seriesTitle
-                        ? `${series.seriesTitle} - ${series.title}`
-                        : series.title}
+                      {(series.title || '').replace(/^(Primeira|Segunda|Terceira|Quarta)\s+Série\s*-\s*/i, '')}
                     </div>
                     <div className="exercise-subtitle" style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontFamily: "'Inter', -apple-system, sans-serif", marginTop: '2px', fontWeight: 500 }}>
                       {series.isDesktopMode ? series.subtitle : (series.timeSignature || series.subtitle || 'Pozzoli Melódico')}

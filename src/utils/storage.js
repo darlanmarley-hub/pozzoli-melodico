@@ -64,7 +64,7 @@ export const SERIES_FOLDERS = [
         seriesId: 'primeira-serie',
         seriesTitle: '1ª SÉRIE',
         seriesSubtitle: 'Exercícios em intervalos de segunda',
-        title: 'Primeira Série - Exercício Número 1',
+        title: 'Exercício Número 1',
         subtitle: '⏱ 60 BPM',
         description: 'Exercício N.1 da 1ª Série do Método Pozzoli Melódico.',
         mxlUrl: '/partituras/Pozzolli--1-PRIMEIRA-SERIE-mxl.xml',
@@ -1365,10 +1365,13 @@ export const SERIES_FOLDERS = [
   }
 ];
 
-// Garante que todos os exercícios individuais exibam apenas a unidade de tempo / fórmula de compasso (ex: 2/4, 3/4, 4/4, 6/8, 9/8)
+// Garante que todos os exercícios individuais exibam apenas "Exercício Número X" e a unidade de tempo / fórmula de compasso (ex: 2/4, 3/4, 4/4, 6/8, 9/8, 12/8)
 SERIES_FOLDERS.forEach((folder) => {
   if (Array.isArray(folder.exercises)) {
     folder.exercises.forEach((ex) => {
+      if (!ex.isDesktopMode && ex.title) {
+        ex.title = ex.title.replace(/^(Primeira|Segunda|Terceira|Quarta)\s+Série\s*-\s*/i, '');
+      }
       if (!ex.isDesktopMode && ex.timeSignature) {
         ex.subtitle = ex.timeSignature;
       }
