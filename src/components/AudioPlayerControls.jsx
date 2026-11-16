@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Play, Pause, Square, SkipBack, SkipForward, Home, CheckCircle2, Monitor, Download, Volume2, VolumeX, RotateCcw } from 'lucide-react';
+import { Play, Pause, Square, SkipBack, SkipForward, Home, CheckCircle2, Monitor, Download, Volume2, VolumeX, RotateCcw, Repeat } from 'lucide-react';
 import { timeStretchEngine } from '../utils/TimeStretchAudioEngine';
 import { getDirectVideoUrl } from '../utils/storage';
 import { isVideoSavedOffline, saveVideoOffline, removeVideoOffline } from '../utils/offlineStorage';
@@ -33,6 +33,28 @@ export default function AudioPlayerControls({
   const [duration, setDuration] = useState(0);
   const [isOfflineSaved, setIsOfflineSaved] = useState(false);
   const [isDownloadingOffline, setIsDownloadingOffline] = useState(false);
+  const [loopMap, setLoopMap] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pozzoli_exercise_loops');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+  const seriesId = currentSeries?.id || 'default';
+  const isLooping = Boolean(loopMap[seriesId]);
+
+  const toggleLoop = () => {
+    setLoopMap((prev) => {
+      const next = { ...prev, [seriesId]: !prev[seriesId] };
+      try {
+        localStorage.setItem('pozzoli_exercise_loops', JSON.stringify(next));
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  };
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [audioError, setAudioError] = useState(false);
   const [isMetronomeMuted, setIsMetronomeMuted] = useState(false);
@@ -168,6 +190,13 @@ export default function AudioPlayerControls({
       if (onShowMenu) onShowMenu();
     };
     const handleEnded = () => {
+      if (activeMedia.loop) {
+        activeMedia.currentTime = 0;
+        if (typeof activeMedia.play === 'function') {
+          activeMedia.play().catch(() => {});
+        }
+        return;
+      }
       setIsPlaying(false);
       setCurrentTime(0);
       if (onShowMenu) onShowMenu();
@@ -189,6 +218,15 @@ export default function AudioPlayerControls({
       activeMedia.removeEventListener('ended', handleEnded);
     };
   }, [activeMedia, onTimeUpdate, onHideMenu, onShowMenu]);
+
+  useEffect(() => {
+    if (!activeMedia) return;
+    try {
+      activeMedia.loop = isLooping;
+    } catch {
+      // ignore
+    }
+  }, [activeMedia, isLooping]);
 
   useEffect(() => {
     if (syncEngine && !currentSeries?.isInteractiveScore) {
@@ -294,6 +332,24 @@ export default function AudioPlayerControls({
 
       {/* Row 1: Action Buttons above Scrubber */}
       <div className="player-actions-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '2px 0' }}>
+        <button
+          type="button"
+          className={`action-pill-btn ${isLooping ? 'active' : ''}`}
+          onClick={toggleLoop}
+          aria-pressed={isLooping}
+          title={isLooping ? 'Desativar loop deste exercício' : 'Ativar loop neste exercício'}
+          style={{
+            padding: '5px 12px',
+            fontSize: '0.75rem',
+            borderColor: isLooping ? '#f97316' : undefined,
+            background: isLooping ? 'rgba(249, 115, 22, 0.22)' : undefined,
+            color: isLooping ? '#fb923c' : undefined
+          }}
+        >
+          <Repeat size={14} />
+          <span>{isLooping ? 'Loop Ativo' : 'Loop'}</span>
+        </button>
+
         <button
           className={`action-pill-btn ${isOfflineSaved ? 'green' : ''}`}
           onClick={handleToggleOfflineDownload}

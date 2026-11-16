@@ -1876,6 +1876,46 @@ export const SERIES_FOLDERS = [
         [17, '9/8'], [18, '9/8'], [19, '9/8'], [20, '9/8'],
         [21, '12/8'], [22, '12/8'], [23, '12/8'], [24, '12/8']
       ]
+    },
+    {
+      num: 12,
+      id: 'decima-segunda-serie',
+      title: '12ª SÉRIE',
+      subtitle: 'Tercinas - Compasso simples',
+      description: 'Exercícios sobre tercinas em compassos simples (N.1 a N.10).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '2/4'], [2, '2/4'], [3, '2/4'], [4, '2/4'], [5, '2/4'],
+        [6, '2/4'], [7, '2/4'], [8, '2/4'], [9, '2/4'], [10, '2/4']
+      ]
+    },
+    {
+      num: 13,
+      id: 'decima-terceira-serie',
+      title: '13ª SÉRIE',
+      subtitle: 'Tonalidades com sustenidos (Sol - Ré - Lá maior)',
+      description: 'Exercícios em Sol maior, Ré maior e Lá maior em compassos simples e compostos (N.1 a N.20).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '2/4'], [2, '2/4'], [3, '2/4'], [4, '2/4'], [5, '2/4'],
+        [6, '2/4'], [7, '2/4'], [8, '2/4'], [9, '2/4'], [10, '2/4'],
+        [11, '2/4'], [12, '2/4'], [13, '2/4'], [14, '2/4'], [15, '2/4'],
+        [16, '2/4'], [17, '2/4'], [18, '2/4'], [19, '2/4'], [20, '2/4']
+      ]
+    },
+    {
+      num: 14,
+      id: 'decima-quarta-serie',
+      title: '14ª SÉRIE',
+      subtitle: 'Tonalidades com sustenidos (Mi - Si - Fá# menor)',
+      description: 'Exercícios em Mi menor, Si menor e Fá# menor em compassos simples e compostos (N.1 a N.20).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '2/4'], [2, '2/4'], [3, '3/4'], [4, '4/4'], [5, '2/4'],
+        [6, '3/4'], [7, '4/4'], [8, '2/4'], [9, '3/4'], [10, '4/4'],
+        [11, '6/8'], [12, '6/8'], [13, '9/8'], [14, '12/8'], [15, '6/8'],
+        [16, '9/8'], [17, '12/8'], [18, '6/8'], [19, '9/8'], [20, '12/8']
+      ]
     }
   ].map((s) => ({
     id: s.id,
@@ -1911,7 +1951,7 @@ SERIES_FOLDERS.forEach((folder) => {
   if (Array.isArray(folder.exercises)) {
     folder.exercises.forEach((ex) => {
       if (!ex.isDesktopMode && ex.title) {
-        ex.title = ex.title.replace(/^(Primeira|Segunda|Terceira|Quarta|Quinta|Sexta|Sétima|Oitava|Nona|Décima(?:\s+Primeira)?)\s+Série\s*-\s*/i, '');
+        ex.title = ex.title.replace(/^(Primeira|Segunda|Terceira|Quarta|Quinta|Sexta|Sétima|Oitava|Nona|Décima(?:\s+(?:Primeira|Segunda|Terceira|Quarta))?)\s+Série\s*-\s*/i, '');
       }
       if (!ex.isDesktopMode && ex.timeSignature) {
         ex.subtitle = ex.timeSignature;
