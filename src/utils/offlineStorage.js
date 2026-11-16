@@ -158,3 +158,4 @@ export const removeVideoOffline = async (exerciseId) => {
     return false;
   }
 };
+

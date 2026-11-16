@@ -335,7 +335,7 @@ export default function App() {
 
   if (!authUser || isCreatePasswordUrl) {
     return (
-      <LoginPage 
+      <LoginPage
         onLoginSuccess={(user) => {
           setIsCreatePasswordUrl(false);
           setAuthUser(user);
@@ -344,7 +344,7 @@ export default function App() {
           setStudied(getStudied());
           setStats(getStats());
           setAllSeries([...INITIAL_SERIES, ...getCustomSeries()]);
-        }} 
+        }}
       />
     );
   }
@@ -353,17 +353,17 @@ export default function App() {
     <div className={`app-container ${activeTab === 'reader' ? 'reader-active' : ''}`}>
       {/* Tab View: Partitura / Leitura / Player em Formato Vertical */}
       {activeTab === 'reader' && (
-        <div 
+        <div
           className="score-reader-page-bg"
-          style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            flex: 1, 
-            height: '100dvh', 
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            height: '100dvh',
             maxHeight: '100dvh',
-            overflow: 'hidden', 
-            background: '#ffffff', 
-            position: 'relative' 
+            overflow: 'hidden',
+            background: '#ffffff',
+            position: 'relative'
           }}
         >
           <ScoreViewer
