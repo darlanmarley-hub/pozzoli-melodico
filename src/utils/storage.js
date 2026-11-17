@@ -1885,8 +1885,8 @@ export const SERIES_FOLDERS = [
       description: 'Exercícios sobre tercinas em compassos simples (N.1 a N.10).',
       difficulty: 'Avançado',
       items: [
-        [1, '2/4'], [2, '2/4'], [3, '2/4'], [4, '2/4'], [5, '2/4'],
-        [6, '2/4'], [7, '2/4'], [8, '2/4'], [9, '2/4'], [10, '2/4']
+        [1, '2/4'], [2, '3/4'], [3, '4/4'], [4, '4/4'], [5, '2/4'],
+        [6, '3/4'], [7, '4/4'], [8, '3/4'], [9, '3/4'], [10, '2/4']
       ]
     },
     {
@@ -1897,10 +1897,10 @@ export const SERIES_FOLDERS = [
       description: 'Exercícios em Sol maior, Ré maior e Lá maior em compassos simples e compostos (N.1 a N.20).',
       difficulty: 'Avançado',
       items: [
-        [1, '2/4'], [2, '2/4'], [3, '2/4'], [4, '2/4'], [5, '2/4'],
-        [6, '2/4'], [7, '2/4'], [8, '2/4'], [9, '2/4'], [10, '2/4'],
-        [11, '2/4'], [12, '2/4'], [13, '2/4'], [14, '2/4'], [15, '2/4'],
-        [16, '2/4'], [17, '2/4'], [18, '2/4'], [19, '2/4'], [20, '2/4']
+        [1, '2/4'], [2, '2/4'], [3, '3/4'], [4, '4/4'], [5, '2/4'],
+        [6, '3/4'], [7, '4/4'], [8, '2/4'], [9, '3/4'], [10, '4/4'],
+        [11, '6/8'], [12, '6/8'], [13, '9/8'], [14, '12/8'], [15, '6/8'],
+        [16, '9/8'], [17, '12/8'], [18, '6/8'], [19, '9/8'], [20, '12/8']
       ]
     },
     {
@@ -1915,6 +1915,131 @@ export const SERIES_FOLDERS = [
         [6, '3/4'], [7, '4/4'], [8, '2/4'], [9, '3/4'], [10, '4/4'],
         [11, '6/8'], [12, '6/8'], [13, '9/8'], [14, '12/8'], [15, '6/8'],
         [16, '9/8'], [17, '12/8'], [18, '6/8'], [19, '9/8'], [20, '12/8']
+      ]
+    },
+    {
+      num: 15,
+      id: 'decima-quinta-serie',
+      title: '15ª SÉRIE',
+      subtitle: 'Tonalidade dos bemóis (Fá - Sib - Mib Maior)',
+      description: 'Exercícios em Fá Maior, Sib Maior e Mib Maior em compassos simples e compostos (N.1 a N.20).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '2/4'], [2, '2/4'], [3, '3/4'], [4, '4/4'], [5, '2/4'],
+        [6, '3/4'], [7, '4/4'], [8, '2/4'], [9, '3/4'], [10, '4/4'],
+        [11, '6/8'], [12, '6/8'], [13, '9/8'], [14, '12/8'], [15, '6/8'],
+        [16, '9/8'], [17, '12/8'], [18, '6/8'], [19, '9/8'], [20, '12/8']
+      ]
+    },
+    {
+      num: 16,
+      id: 'decima-sexta-serie',
+      title: '16ª SÉRIE',
+      subtitle: 'Tonalidades com bemóis (Ré - Sol - Dó menor)',
+      description: 'Exercícios em Ré menor, Sol menor e Dó menor em compassos simples e compostos (N.1 a N.20).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '2/4'], [2, '2/4'], [3, '3/4'], [4, '4/4'], [5, '2/4'],
+        [6, '3/4'], [7, '4/4'], [8, '2/4'], [9, '3/4'], [10, '4/4'],
+        [11, '6/8'], [12, '6/8'], [13, '9/8'], [14, '12/8'], [15, '6/8'],
+        [16, '9/8'], [17, '12/8'], [18, '6/8'], [19, '9/8'], [20, '12/8']
+      ]
+    },
+    {
+      num: 17,
+      id: 'decima-setima-serie',
+      title: '17ª SÉRIE',
+      subtitle: 'Várias formas de ataque in levare (anacruse)',
+      description: 'Exercícios sobre várias formas de ataque in levare / anacruse (N.1 a N.12).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '3/4'], [2, '2/4'], [3, '3/4'], [4, '4/4'],
+        [5, '4/4'], [6, '2/4'], [7, '6/8'], [8, '6/8'],
+        [9, '6/8'], [10, '6/8'], [11, '4/4'], [12, '9/8']
+      ]
+    },
+    {
+      num: 18,
+      id: 'decima-oitava-serie',
+      title: '18ª SÉRIE',
+      subtitle: 'Tonalidades com sustenidos (Mi - Si - Fá# - Dó# Maior)',
+      description: 'Exercícios em Mi Maior, Si Maior, Fá# Maior e Dó# Maior em compassos simples e compostos (N.1 a N.10).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '2/4'], [2, '4/4'], [3, '6/8'], [4, '9/8'], [5, '4/4'],
+        [6, '6/8'], [7, '3/4'], [8, '9/8'], [9, '2/4'], [10, '6/8']
+      ]
+    },
+    {
+      num: 19,
+      id: 'decima-nona-serie',
+      title: '19ª SÉRIE',
+      subtitle: 'Tonalidades com sustenidos (Dó# - Sol# - Ré# - Lá# menor)',
+      description: 'Exercícios em Dó# menor, Sol# menor, Ré# menor e Lá# menor em compassos simples e compostos (N.1 a N.10).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '2/4'], [2, '3/4'], [3, '6/8'], [4, '9/8'], [5, '2/4'],
+        [6, '6/8'], [7, '3/4'], [8, '9/8'], [9, '4/4'], [10, '12/8']
+      ]
+    },
+    {
+      num: 20,
+      id: 'vigesima-serie',
+      title: '20ª SÉRIE',
+      subtitle: 'Tonalidades com bemóis (Láb - Réb - Solb - Dób Maior)',
+      description: 'Exercícios em Láb Maior, Réb Maior, Solb Maior e Dób Maior em compassos simples e compostos (N.1 a N.10).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '2/4'], [2, '3/4'], [3, '6/8'], [4, '9/8'], [5, '3/4'],
+        [6, '6/8'], [7, '4/4'], [8, '6/8'], [9, '4/4'], [10, '9/8']
+      ]
+    },
+    {
+      num: 21,
+      id: 'vigesima-primeira-serie',
+      title: '21ª SÉRIE',
+      subtitle: 'Tonalidades com bemóis (Fá - Sib - Mib - Láb menor)',
+      description: 'Exercícios em Fá menor, Sib menor, Mib menor e Láb menor em compassos simples e compostos (N.1 a N.10).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '3/4'], [2, '4/4'], [3, '6/8'], [4, '9/8'], [5, '2/4'],
+        [6, '6/8'], [7, '4/4'], [8, '9/8'], [9, '2/4'], [10, '6/8']
+      ]
+    },
+    {
+      num: 22,
+      id: 'vigesima-segunda-serie',
+      title: '22ª SÉRIE',
+      subtitle: 'Intervalos de difícil entonação',
+      description: 'Exercícios sobre intervalos de difícil entonação em compassos simples e compostos (N.1 a N.15).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '6/8'], [2, '3/4'], [3, '3/4'], [4, '2/4'], [5, '6/8'],
+        [6, '4/4'], [7, '6/8'], [8, '9/8'], [9, '3/4'], [10, '4/4'],
+        [11, '3/4'], [12, '6/8'], [13, '3/4'], [14, '3/4'], [15, '6/8']
+      ]
+    },
+    {
+      num: 23,
+      id: 'vigesima-terceira-serie',
+      title: '23ª SÉRIE',
+      subtitle: 'Modulação a tom afastado',
+      description: 'Exercícios sobre modulação a tom afastado em compassos simples e compostos (N.1 a N.10).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '3/4'], [2, '4/4'], [3, '4/4'], [4, '3/4'], [5, '4/4'],
+        [6, '6/8'], [7, '3/4'], [8, '6/8'], [9, '3/4'], [10, '2/4']
+      ]
+    },
+    {
+      num: 24,
+      id: 'vigesima-quarta-serie',
+      title: '24ª SÉRIE',
+      subtitle: 'Exemplos de compassos pouco usados',
+      description: 'Exercícios com exemplos de compassos pouco usados (5/4 e 7/4, N.1 a N.5).',
+      difficulty: 'Avançado',
+      items: [
+        [1, '5/4'], [2, '5/4'], [3, '5/4'], [4, '7/4'], [5, '7/4']
       ]
     }
   ].map((s) => ({
