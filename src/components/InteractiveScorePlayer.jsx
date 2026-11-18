@@ -7433,6 +7433,45 @@ function midiToFreq(midi) {
   return 440 * Math.pow(2, (midi - 69) / 12);
 }
 
+/**
+ * Detecta se uma partitura possui compassos densos (muitas notas, semicolcheias ou compassos amplos 5/4, 7/4, 9/8, 12/8)
+ * que exigem 1 compasso por linha para máxima legibilidade e evitar qualquer proximidade excessiva de notas.
+ */
+export function shouldExerciseUseSingleMeasureRow(measures, currentSeries) {
+  if (currentSeries?.measuresPerRow === 1) return true;
+  if (!Array.isArray(measures) || measures.length === 0) {
+    return currentSeries?.measuresPerRow === 1;
+  }
+
+  const timeSig = measures[0]?.timeSignature || currentSeries?.timeSignature || currentSeries?.subtitle;
+  // Compassos com 5 ou mais tempos/pulsos ou compassos compostos de 3 ou 4 tempos (5/4, 7/4, 9/8, 12/8, 5/8, 7/8)
+  if (['5/4', '7/4', '9/8', '12/8', '5/8', '7/8'].includes(timeSig)) {
+    return true;
+  }
+
+  for (const m of measures) {
+    const notes = m?.notes || [];
+    const count = notes.length;
+    // 8 ou mais notas/pausas num único compasso em 2 por linha deixa menos de 20px por nota
+    if (count >= 8) return true;
+
+    // Contagem de semicolcheias e acidentes
+    let sixteenths = 0;
+    let accidentals = 0;
+    for (let i = 0; i < count; i++) {
+      const n = notes[i];
+      if (n.type === 's' || (n.eighthDur && n.eighthDur <= 0.5)) sixteenths++;
+      if (n.accidental) accidentals++;
+    }
+
+    // Se tiver 4 ou mais semicolcheias ou 6+ notas com semicolcheias
+    if (sixteenths >= 4 && count >= 6) return true;
+    if (count >= 7 && (sixteenths >= 2 || accidentals >= 2)) return true;
+  }
+
+  return false;
+}
+
 export default function InteractiveScorePlayer({
   currentSeries,
   bpm = 60,
@@ -7442,6 +7481,12 @@ export default function InteractiveScorePlayer({
   onToggleMenu = null,
   playerControls = null
 }) {
+  const [userLayoutPerRow, setUserLayoutPerRow] = useState(null);
+
+  useEffect(() => {
+    setUserLayoutPerRow(null);
+  }, [currentSeries?.id]);
+
   const [activeClef, setActiveClef] = useState(() => {
     try {
       return localStorage.getItem('pozzoli_active_clef') || 'G';
@@ -8196,15 +8241,22 @@ export default function InteractiveScorePlayer({
     handleScreenClick();
   };
 
-  // Formato vertical para mobile: permite 1 ou 2 compassos por linha (Série 24 Ex 2 utiliza 1 por linha para máxima legibilidade)
+  // Detecta se a partitura tem compassos densos para usar automaticamente 1 compasso por linha
+  const autoPerRow = useMemo(() => {
+    return shouldExerciseUseSingleMeasureRow(measures, currentSeries) ? 1 : 2;
+  }, [measures, currentSeries]);
+
+  const activePerRow = userLayoutPerRow ?? autoPerRow;
+
+  // Formato vertical para mobile: 1 ou 2 compassos por linha (adaptativo para notas legíveis e sem aperto)
   const measureRows = useMemo(() => {
     const rows = [];
-    const perRow = currentSeries?.measuresPerRow || (currentSeries?.id === 'serie-24-ex-2' ? 1 : 2);
+    const perRow = activePerRow;
     for (let i = 0; i < measures.length; i += perRow) {
       rows.push(measures.slice(i, i + perRow));
     }
     return rows;
-  }, [measures, currentSeries?.measuresPerRow, currentSeries?.id]);
+  }, [measures, activePerRow]);
 
   // Rola suavemente a tela verticalmente para acompanhar a linha do compasso ativo
   const activeRowIndex = useMemo(() => {
@@ -8327,6 +8379,33 @@ export default function InteractiveScorePlayer({
               >
                 <Music size={13} />
                 <span>Notas</span>
+              </button>
+
+              {/* Alternador de Layout: 1 ou 2 compassos por linha */}
+              <button
+                type="button"
+                onClick={() => setUserLayoutPerRow((prev) => ((prev ?? autoPerRow) === 1 ? 2 : 1))}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 9px',
+                  borderRadius: '8px',
+                  fontSize: '0.73rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  border: activePerRow === 1 ? '1.5px solid #d97706' : '1px solid #d4c4ac',
+                  background: activePerRow === 1 ? 'rgba(217, 119, 6, 0.12)' : '#ffffff',
+                  color: activePerRow === 1 ? '#b45309' : '#574635'
+                }}
+                title={
+                  activePerRow === 1
+                    ? 'Exibindo 1 compasso por linha (modo expandido para notas espaçadas). Clique para alternar para 2 compassos por linha.'
+                    : 'Exibindo 2 compassos por linha. Clique para alternar para 1 compasso por linha (expandido).'
+                }
+              >
+                <span style={{ fontSize: '0.82rem', lineHeight: 1 }}>{activePerRow === 1 ? '❚' : '❚❚'}</span>
+                <span>{activePerRow === 1 ? '1 comp / linha' : '2 comp / linha'}</span>
               </button>
 
               {/* Controle de Metrônomo + Ajuste de Volume (- / slider / +) */}
@@ -8772,59 +8851,155 @@ export default function InteractiveScorePlayer({
 
                   {/* Ligaduras de Prolongamento (Ties) */}
                   {renderedNotesInRow.map((pos, idx) => {
-                    if (!pos.n.tieStart) return null;
-                    const nextPos = renderedNotesInRow[idx + 1];
-                    if (!nextPos) return null;
-                    const x1 = pos.nx + 5;
-                    const x2 = nextPos.nx - 5;
-                    const tieBelow = pos.stepFromE4 <= 4;
-                    const y = tieBelow ? pos.ny + 7 : pos.ny - 7;
-                    const ctrlY = y + (tieBelow ? 10 : -10);
-                    return (
-                      <path
-                        key={`tie_${pos.item?.id}`}
-                        d={`M ${x1} ${y} Q ${(x1 + x2) / 2} ${ctrlY} ${x2} ${y}`}
-                        fill="none"
-                        stroke="#1f1610"
-                        strokeWidth="1.8"
-                      />
-                    );
+                    const isCrossSystemTieEnd = pos.n.tieStart && !renderedNotesInRow[idx + 1];
+                    const isCrossSystemTieStart =
+                      pos.n.tieStop &&
+                      (!renderedNotesInRow[idx - 1] ||
+                        renderedNotesInRow[idx - 1].measureNumber !== pos.measureNumber);
+
+                    // 1) Ligadura normal dentro da mesma linha
+                    if (pos.n.tieStart && renderedNotesInRow[idx + 1]) {
+                      const nextPos = renderedNotesInRow[idx + 1];
+                      const x1 = pos.nx + 5;
+                      const x2 = nextPos.nx - 5;
+                      const tieBelow = pos.stepFromE4 <= 4;
+                      const y = tieBelow ? pos.ny + 7 : pos.ny - 7;
+                      const ctrlY = y + (tieBelow ? 10 : -10);
+                      return (
+                        <path
+                          key={`tie_${pos.item?.id}`}
+                          d={`M ${x1} ${y} Q ${(x1 + x2) / 2} ${ctrlY} ${x2} ${y}`}
+                          fill="none"
+                          stroke="#1f1610"
+                          strokeWidth="1.8"
+                        />
+                      );
+                    }
+
+                    // 2) Ligadura saindo no final do sistema (última nota da linha ligada à primeira da próxima)
+                    if (isCrossSystemTieEnd) {
+                      const x1 = pos.nx + 5;
+                      const x2 = svgWidth - rightMargin - 2;
+                      const tieBelow = pos.stepFromE4 <= 4;
+                      const y = tieBelow ? pos.ny + 7 : pos.ny - 7;
+                      const ctrlY = y + (tieBelow ? 8 : -8);
+                      return (
+                        <path
+                          key={`tie_out_${pos.item?.id}`}
+                          d={`M ${x1} ${y} Q ${(x1 + x2) / 2} ${ctrlY} ${x2} ${y}`}
+                          fill="none"
+                          stroke="#1f1610"
+                          strokeWidth="1.8"
+                        />
+                      );
+                    }
+
+                    // 3) Ligadura entrando no início do sistema (primeira nota da linha vinda da anterior)
+                    if (isCrossSystemTieStart) {
+                      const x1 = leftHeaderWidth + 2;
+                      const x2 = pos.nx - 5;
+                      const tieBelow = pos.stepFromE4 <= 4;
+                      const y = tieBelow ? pos.ny + 7 : pos.ny - 7;
+                      const ctrlY = y + (tieBelow ? 8 : -8);
+                      return (
+                        <path
+                          key={`tie_in_${pos.item?.id}`}
+                          d={`M ${x1} ${y} Q ${(x1 + x2) / 2} ${ctrlY} ${x2} ${y}`}
+                          fill="none"
+                          stroke="#1f1610"
+                          strokeWidth="1.8"
+                        />
+                      );
+                    }
+
+                    return null;
                   })}
 
                   {/* Ligaduras de Expressão entre 2 compassos (slurStart -> slurEnd) */}
                   {rowMeasures.map((mObj, mColIdx) => {
-                    if (typeof mObj.slurStart !== 'number') return null;
                     const nextMeasureObj = rowMeasures[mColIdx + 1];
-                    if (!nextMeasureObj || typeof nextMeasureObj.slurEnd !== 'number') return null;
 
-                    const startNotePos = renderedNotesInRow.find(
-                      (p) => p.measureNumber === mObj.measure && p.nIdx === mObj.slurStart
-                    );
-                    const endNotePos = renderedNotesInRow.find(
-                      (p) =>
-                        p.measureNumber === nextMeasureObj.measure &&
-                        p.nIdx === nextMeasureObj.slurEnd
-                    );
-                    if (!startNotePos || !endNotePos) return null;
+                    // 1) Ambos compassos na mesma linha
+                    if (typeof mObj.slurStart === 'number' && nextMeasureObj && typeof nextMeasureObj.slurEnd === 'number') {
+                      const startNotePos = renderedNotesInRow.find(
+                        (p) => p.measureNumber === mObj.measure && p.nIdx === mObj.slurStart
+                      );
+                      const endNotePos = renderedNotesInRow.find(
+                        (p) =>
+                          p.measureNumber === nextMeasureObj.measure &&
+                          p.nIdx === nextMeasureObj.slurEnd
+                      );
+                      if (!startNotePos || !endNotePos) return null;
 
-                    const avgStep = (startNotePos.stepFromE4 + endNotePos.stepFromE4) / 2;
-                    const slurBelow = avgStep <= 3.5;
-                    const x1 = startNotePos.nx;
-                    const x2 = endNotePos.nx;
-                    const y1 = slurBelow ? startNotePos.ny + 11 : startNotePos.ny - 11;
-                    const y2 = slurBelow ? endNotePos.ny + 11 : endNotePos.ny - 11;
-                    const midX = (x1 + x2) / 2;
-                    const midY = (y1 + y2) / 2 + (slurBelow ? 22 : -22);
+                      const avgStep = (startNotePos.stepFromE4 + endNotePos.stepFromE4) / 2;
+                      const slurBelow = avgStep <= 3.5;
+                      const x1 = startNotePos.nx;
+                      const x2 = endNotePos.nx;
+                      const y1 = slurBelow ? startNotePos.ny + 11 : startNotePos.ny - 11;
+                      const y2 = slurBelow ? endNotePos.ny + 11 : endNotePos.ny - 11;
+                      const midX = (x1 + x2) / 2;
+                      const midY = (y1 + y2) / 2 + (slurBelow ? 22 : -22);
 
-                    return (
-                      <path
-                        key={`slur_${mObj.measure}`}
-                        d={`M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`}
-                        fill="none"
-                        stroke="#37291d"
-                        strokeWidth="1.6"
-                      />
-                    );
+                      return (
+                        <path
+                          key={`slur_${mObj.measure}`}
+                          d={`M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`}
+                          fill="none"
+                          stroke="#37291d"
+                          strokeWidth="1.6"
+                        />
+                      );
+                    }
+
+                    // 2) Compasso tem slurStart mas o próximo compasso está na linha seguinte
+                    if (typeof mObj.slurStart === 'number' && !nextMeasureObj) {
+                      const startNotePos = renderedNotesInRow.find(
+                        (p) => p.measureNumber === mObj.measure && p.nIdx === mObj.slurStart
+                      );
+                      if (!startNotePos) return null;
+                      const slurBelow = startNotePos.stepFromE4 <= 3.5;
+                      const x1 = startNotePos.nx;
+                      const x2 = svgWidth - rightMargin - 4;
+                      const y1 = slurBelow ? startNotePos.ny + 11 : startNotePos.ny - 11;
+                      const y2 = y1 + (slurBelow ? 6 : -6);
+                      const midX = (x1 + x2) / 2;
+                      const midY = y1 + (slurBelow ? 16 : -16);
+                      return (
+                        <path
+                          key={`slur_out_${mObj.measure}`}
+                          d={`M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`}
+                          fill="none"
+                          stroke="#37291d"
+                          strokeWidth="1.6"
+                        />
+                      );
+                    }
+
+                    // 3) Compasso tem slurEnd e é o primeiro da linha vindo da linha anterior
+                    if (typeof mObj.slurEnd === 'number' && mColIdx === 0 && rowIdx > 0) {
+                      const endNotePos = renderedNotesInRow.find(
+                        (p) => p.measureNumber === mObj.measure && p.nIdx === mObj.slurEnd
+                      );
+                      if (!endNotePos) return null;
+                      const slurBelow = endNotePos.stepFromE4 <= 3.5;
+                      const x1 = leftHeaderWidth + 4;
+                      const x2 = endNotePos.nx;
+                      const y2 = slurBelow ? endNotePos.ny + 11 : endNotePos.ny - 11;
+                      const y1 = y2 + (slurBelow ? 6 : -6);
+                      const midX = (x1 + x2) / 2;
+                      const midY = y2 + (slurBelow ? 16 : -16);
+                      return (
+                        <path
+                          key={`slur_in_${mObj.measure}`}
+                          d={`M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`}
+                          fill="none"
+                          stroke="#37291d"
+                          strokeWidth="1.6"
+                        />
+                      );
+                    }
+
+                    return null;
                   })}
 
                   {/* Ligaduras de Expressão dentro do mesmo compasso (localSlurs) */}

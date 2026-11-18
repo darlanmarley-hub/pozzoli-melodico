@@ -2065,7 +2065,7 @@ export const SERIES_FOLDERS = [
       difficulty: s.difficulty,
       displayOrder: idx + 1,
       isInteractiveScore: true,
-      measuresPerRow: (s.num === 24 && n === 2) ? 1 : 2,
+      measuresPerRow: (['5/4', '7/4', '9/8', '12/8', '5/8', '7/8'].includes(ts) || s.num === 24) ? 1 : 2,
       isAvailable: true,
       isBuiltin: true
     }))
