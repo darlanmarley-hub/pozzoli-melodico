@@ -213,25 +213,28 @@ export default function ProfileModal({ profile = {}, onClose, onSave, onLogout }
 
         {/* Botão Recarregar App */}
         <button
+          type="button"
           onClick={() => window.location.reload()}
           style={{
-            padding: '16px',
-            borderRadius: 'var(--radius-lg)',
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.14)',
-            color: 'var(--text-main)',
+            width: '100%',
+            padding: '15px 22px',
+            borderRadius: '14px',
+            background: 'linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-hover) 100%)',
+            border: '1px solid var(--accent-orange-hover)',
+            color: '#ffffff',
             fontWeight: 700,
             fontSize: '1.05rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '8px',
+            gap: '10px',
             cursor: 'pointer',
+            boxShadow: '0 6px 18px var(--accent-orange-glow)',
             transition: 'all 0.2s ease',
             fontFamily: 'inherit'
           }}
         >
-          <RotateCw size={20} color="var(--text-muted)" />
+          <RotateCw size={20} color="#ffffff" />
           Recarregar App
         </button>
 
