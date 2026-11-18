@@ -2208,6 +2208,16 @@ export const registerActiveDeviceSession = async (userId) => {
     const sessionToken = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     localStorage.setItem(STORAGE_KEYS.DEVICE_SESSION_TOKEN, sessionToken);
 
+    const activeDeviceSession = {
+      deviceId,
+      sessionToken,
+      deviceName,
+      connectedAt: new Date().toISOString(),
+      lastSeenAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(STORAGE_KEYS.ACTIVE_DEVICE_SESSION, JSON.stringify(activeDeviceSession));
+
     const { data: profileRow } = await supabase
       .from('profiles')
       .select('stats')
@@ -2219,16 +2229,6 @@ export const registerActiveDeviceSession = async (userId) => {
         ? profileRow.stats
         : getStats();
 
-    const activeDeviceSession = {
-      deviceId,
-      sessionToken,
-      deviceName,
-      connectedAt: new Date().toISOString(),
-      lastSeenAt: new Date().toISOString()
-    };
-
-    localStorage.setItem(STORAGE_KEYS.ACTIVE_DEVICE_SESSION, JSON.stringify(activeDeviceSession));
-
     const updatedStats = {
       ...baseStats,
       activeDeviceSession
@@ -2236,16 +2236,24 @@ export const registerActiveDeviceSession = async (userId) => {
 
     localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(updatedStats));
 
-    const { error: updateErr } = await supabase
+    // Usa upsert para garantir criação mesmo se o perfil ainda não existir na tabela
+    const { error: upsertErr } = await supabase
       .from('profiles')
-      .update({
+      .upsert({
+        id: userId,
         stats: updatedStats,
         updated_at: new Date().toISOString()
-      })
-      .eq('id', userId);
+      }, { onConflict: 'id' });
 
-    if (updateErr) {
-      console.warn('Erro ao atualizar stats.activeDeviceSession:', updateErr);
+    if (upsertErr) {
+      console.warn('Erro ao atualizar stats.activeDeviceSession via upsert:', upsertErr);
+      await supabase
+        .from('profiles')
+        .update({
+          stats: updatedStats,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', userId);
     }
 
     return activeDeviceSession;
@@ -2266,7 +2274,15 @@ export const verifyCurrentDeviceIsActive = async (userId) => {
       .eq('id', userId)
       .maybeSingle();
 
-    if (error || !data) return { isValid: true, replacedBy: null };
+    if (error) {
+      return { isValid: true, replacedBy: null };
+    }
+
+    // Se o perfil ainda não existe no banco, cria e registra agora
+    if (!data) {
+      await registerActiveDeviceSession(userId);
+      return { isValid: true, replacedBy: null };
+    }
 
     // Se a compra foi reembolsada ou cancelada, revoga o acesso imediatamente
     if (data.plan === 'cancelado' || data?.stats?.accessRevoked === true) {
@@ -2281,13 +2297,13 @@ export const verifyCurrentDeviceIsActive = async (userId) => {
     const currentDeviceId = getDeviceId();
     const localToken = localStorage.getItem(STORAGE_KEYS.DEVICE_SESSION_TOKEN);
 
-    // Se ainda não há sessão registrada no banco (ex: usuário já estava logado antes da atualização),
-    // registra este aparelho agora mesmo para ativar a proteção de sessão única!
+    // Se ainda não há sessão registrada no banco, registra este aparelho como o ativo
     if (!activeSession || !activeSession.deviceId) {
       await registerActiveDeviceSession(userId);
       return { isValid: true, replacedBy: null };
     }
 
+    // Se o deviceId ativo no banco pertence a OUTRO aparelho: DESCONECTA ESTE APARELHO!
     if (activeSession.deviceId !== currentDeviceId) {
       return {
         isValid: false,
@@ -2298,7 +2314,7 @@ export const verifyCurrentDeviceIsActive = async (userId) => {
     if (localToken && activeSession.sessionToken && activeSession.sessionToken !== localToken) {
       return {
         isValid: false,
-        replacedBy: activeSession.deviceName || 'outra janela/navegador'
+        replacedBy: activeSession.deviceName || 'outra janela ou aba'
       };
     }
 
@@ -2389,14 +2405,27 @@ export const syncUserDataToSupabase = async (overrides = {}) => {
     const userId = session?.user?.id;
     if (!userId) return;
 
+    // Busca o stats atual no Supabase para NUNCA corromper nem sobrescrever activeDeviceSession do servidor
+    const { data: profileRow } = await supabase
+      .from('profiles')
+      .select('stats')
+      .eq('id', userId)
+      .maybeSingle();
+
+    const serverActiveSession =
+      profileRow?.stats && typeof profileRow.stats === 'object'
+        ? profileRow.stats.activeDeviceSession
+        : null;
+
     const currentProfile = overrides.profile || getProfile();
     const currentFavorites = overrides.favorites || getFavorites();
     const currentStudied = overrides.studied || getStudied();
     const rawStats = overrides.stats || getStats();
-    const localDeviceSession = getLocalActiveDeviceSession();
+
+    // Mantém estritamente a sessão de dispositivo que está gravada no servidor
     const currentStats = {
       ...rawStats,
-      activeDeviceSession: localDeviceSession || rawStats?.activeDeviceSession || null
+      activeDeviceSession: serverActiveSession
     };
     const currentCustom = overrides.customSeries || getCustomSeries();
 
@@ -2415,7 +2444,7 @@ export const syncUserDataToSupabase = async (overrides = {}) => {
       custom_series: currentCustom,
       stats: currentStats,
       updated_at: new Date().toISOString()
-    });
+    }, { onConflict: 'id' });
 
     // Ativa status inicial 'primeiro-acesso' -> 'ativo' quando aplicável (sem criar/alterar plano pelo cliente)
     const { data: existingUserPlano } = await supabase
@@ -2483,10 +2512,9 @@ export const loadUserDataFromSupabase = async (userId) => {
       localStorage.setItem(STORAGE_KEYS.STUDIED, JSON.stringify(data.studied));
     }
     if (data.stats && typeof data.stats === 'object') {
-      const localDev = getLocalActiveDeviceSession();
       const mergedStats = {
         ...data.stats,
-        activeDeviceSession: localDev || data.stats.activeDeviceSession || null
+        activeDeviceSession: data.stats.activeDeviceSession || null
       };
       localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(mergedStats));
     }

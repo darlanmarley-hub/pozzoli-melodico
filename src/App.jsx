@@ -192,6 +192,13 @@ export default function App() {
       if (isCancelled || !navigator.onLine) return;
       const result = await verifyCurrentDeviceIsActive(authUser.id);
       if (!isCancelled && navigator.onLine && !result.isValid) {
+        if (syncEngineRef.current) {
+          try {
+            syncEngineRef.current.stop();
+          } catch {
+            // ignore
+          }
+        }
         if (result.isRevoked) {
           try {
             sessionStorage.setItem(
@@ -208,7 +215,7 @@ export default function App() {
         try {
           sessionStorage.setItem(
             'pozzoli_kicked_reason',
-            `Sua conta foi conectada em ${result.replacedBy}. Este dispositivo foi desconectado.`
+            `Sua conta foi conectada em ${result.replacedBy}. Este dispositivo foi desconectado porque o acesso simultâneo não é permitido.`
           );
         } catch {
           // ignore
@@ -243,7 +250,7 @@ export default function App() {
       )
       .subscribe();
 
-    const intervalId = setInterval(checkSessionLock, 3000);
+    const intervalId = setInterval(checkSessionLock, 1500);
     const handleFocus = () => checkSessionLock();
     window.addEventListener('focus', handleFocus);
     document.addEventListener('visibilitychange', handleFocus);
