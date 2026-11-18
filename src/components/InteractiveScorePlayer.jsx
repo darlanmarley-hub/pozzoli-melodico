@@ -8196,17 +8196,23 @@ export default function InteractiveScorePlayer({
     handleScreenClick();
   };
 
-  // Formato vertical para mobile: 2 compassos por linha (8 sistemas empilhados verticalmente, preservando cada fraseado de 2 compassos)
+  // Formato vertical para mobile: permite 1 ou 2 compassos por linha (Série 24 Ex 2 utiliza 1 por linha para máxima legibilidade)
   const measureRows = useMemo(() => {
     const rows = [];
-    for (let i = 0; i < measures.length; i += 2) {
-      rows.push(measures.slice(i, i + 2));
+    const perRow = currentSeries?.measuresPerRow || (currentSeries?.id === 'serie-24-ex-2' ? 1 : 2);
+    for (let i = 0; i < measures.length; i += perRow) {
+      rows.push(measures.slice(i, i + perRow));
     }
     return rows;
-  }, [measures]);
+  }, [measures, currentSeries?.measuresPerRow, currentSeries?.id]);
 
   // Rola suavemente a tela verticalmente para acompanhar a linha do compasso ativo
-  const activeRowIndex = activeMeasureNumber > 0 ? Math.floor((activeMeasureNumber - 1) / 2) : 0;
+  const activeRowIndex = useMemo(() => {
+    if (!activeMeasureNumber) return 0;
+    const idx = measureRows.findIndex((row) => row.some((m) => m.measure === activeMeasureNumber));
+    return idx >= 0 ? idx : 0;
+  }, [measureRows, activeMeasureNumber]);
+
   useEffect(() => {
     if (!isPlaying) return;
     const rowEl = rowRefs.current[activeRowIndex];
@@ -8522,17 +8528,57 @@ export default function InteractiveScorePlayer({
                     const padRight = 14;
                     const innerW = Math.max(40, measureWidth - padLeft - padRight);
 
-                    // Calcula posição X proporcional de cada nota dentro do compasso
-                    let accumEighth = 0;
-                    const notePositions = mObj.notes.map((n, nIdx) => {
+                    // Calcula posicionamento óptico musical e prevenção de colisão de notas e acidentes
+                    const weights = mObj.notes.map((n) => {
+                      let w = 1.0;
+                      if (n.type === 's') w = 1.0;
+                      else if (n.type === 'e') w = 1.35;
+                      else if (n.type === 'ed') w = 1.6;
+                      else if (n.type === 'q' || n.type === 'r4') w = 1.85;
+                      else if (n.type === 'qd') w = 2.15;
+                      else if (n.type === 'h' || n.type === 'r2') w = 2.5;
+                      else if (n.type === 'hd') w = 2.9;
+                      else if (n.type === 'w') w = 3.6;
+                      else w = Math.max(1.0, Math.sqrt(n.eighthDur || 1) * 1.3);
+
+                      // Folga extra para acidente musical (#, b, n) para nunca sobrepor à nota anterior
+                      if (n.accidental) {
+                        w += 0.55;
+                      }
+                      return w;
+                    });
+
+                    const totalWeight = weights.reduce((acc, v) => acc + v, 0);
+
+                    let accumW = 0;
+                    const notePositions = [];
+
+                    for (let nIdx = 0; nIdx < mObj.notes.length; nIdx++) {
+                      const n = mObj.notes[nIdx];
                       const item = noteLookup.get(`${mObj.measure}_${nIdx}`);
-                      const centerRatio = (accumEighth + n.eighthDur * 0.42) / eighthsPerMeasure;
-                      const nx = mX + padLeft + centerRatio * innerW;
+                      const w = weights[nIdx];
+
+                      // Posicionamento óptico dentro do compasso
+                      const slotStart = (accumW / totalWeight) * innerW;
+                      const slotW = (w / totalWeight) * innerW;
+                      let nx = mX + padLeft + slotStart + slotW * 0.42;
+
+                      // Garante folga mínima da nota anterior para total legibilidade
+                      if (nIdx > 0) {
+                        const prevNx = notePositions[nIdx - 1].nx;
+                        const minGap = n.accidental ? 24 : 17;
+                        if (nx - prevNx < minGap) {
+                          nx = prevNx + minGap;
+                        }
+                      }
+
                       const stepFromE4 = activeClef === 'F'
                         ? (BASS_CLEF_DIATONIC_STEP[n.pitch] ?? 3)
                         : (DIATONIC_STEP_FROM_E4[n.pitch] ?? 2);
                       const ny = staffBottomY - stepFromE4 * stepSpacing;
-                      accumEighth += n.eighthDur;
+
+                      accumW += w;
+
                       const posObj = {
                         n,
                         nIdx,
@@ -8542,9 +8588,24 @@ export default function InteractiveScorePlayer({
                         stepFromE4,
                         measureNumber: mObj.measure
                       };
+                      notePositions.push(posObj);
                       renderedNotesInRow.push(posObj);
-                      return posObj;
-                    });
+                    }
+
+                    // Se o ajuste de folgas mínimas empurrou a última nota além da margem direita, ajusta proporcionalmente
+                    const maxAllowedNx = mX + measureWidth - padRight;
+                    const lastNx = notePositions[notePositions.length - 1]?.nx;
+                    if (lastNx && lastNx > maxAllowedNx && notePositions.length > 1) {
+                      const firstNx = notePositions[0].nx;
+                      const span = lastNx - firstNx;
+                      const targetSpan = maxAllowedNx - firstNx;
+                      const scale = targetSpan / span;
+                      notePositions.forEach((pos, idx) => {
+                        if (idx > 0) {
+                          pos.nx = firstNx + (pos.nx - firstNx) * scale;
+                        }
+                      });
+                    }
 
                     return (
                       <g key={mObj.measure}>

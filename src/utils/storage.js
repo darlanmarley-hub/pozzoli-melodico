@@ -2065,6 +2065,7 @@ export const SERIES_FOLDERS = [
       difficulty: s.difficulty,
       displayOrder: idx + 1,
       isInteractiveScore: true,
+      measuresPerRow: (s.num === 24 && n === 2) ? 1 : 2,
       isAvailable: true,
       isBuiltin: true
     }))
