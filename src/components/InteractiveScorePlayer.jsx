@@ -7386,8 +7386,8 @@ export const POZZOLI_SERIE4_SCORES = {
   'serie-24-ex-5': POZZOLI_SERIE24_EX5_MEASURES
 };
 
-// Posição vertical diatônica na pauta (Clave de Sol):
-// E4 (1ª linha de baixo) = step 0; cada linha/espaço acima soma +1 (stepSpacing = 5px)
+// Posição vertical diatônica na pauta (Clave de Sol e Clave de Fá na 4ª linha):
+// Clave de Sol: E4 (1ª linha de baixo) = step 0; cada linha/espaço acima soma +1 (stepSpacing = 5px)
 const DIATONIC_STEP_FROM_E4 = {
   G3: -5, // Abaixo da 2ª linha suplementar inferior
   A3: -4, // 2ª linha suplementar inferior
@@ -7407,6 +7407,27 @@ const DIATONIC_STEP_FROM_E4 = {
   A5: 10  // 1ª linha suplementar superior
 };
 
+// Mapeamento transposto real para Clave de Fá (oitava grave confortável para voz/baixo):
+// G2 (1ª linha de baixo) = step 0; F3 (4ª linha de Fá) = step 6; C4 (Dó central - 1ª linha sup.) = step 10
+const BASS_CLEF_DIATONIC_STEP = {
+  G3: 0,  // 1ª linha de baixo (G2)
+  A3: 1,  // 1º espaço (A2)
+  B3: 2,  // 2ª linha (B2)
+  C4: 3,  // 2º espaço (C3)
+  D4: 4,  // 3ª linha (D3)
+  E4: 5,  // 3º espaço (E3)
+  F4: 6,  // 4ª linha de Fá (F3)
+  G4: 7,  // 4º espaço (G3)
+  A4: 8,  // 5ª linha (A3)
+  B4: 9,  // Espaço acima da 5ª linha (B3)
+  C5: 10, // 1ª linha suplementar superior (C4 - Dó central)
+  D5: 11, // Espaço acima da 1ª sup. (D4)
+  E5: 12, // 2ª linha suplementar superior (E4)
+  F5: 13, // Espaço acima da 2ª sup. (F4)
+  G5: 14, // 3ª linha suplementar superior (G4)
+  A5: 15  // Espaço acima da 3ª sup. (A4)
+};
+
 function midiToFreq(midi) {
   if (!midi) return null;
   return 440 * Math.pow(2, (midi - 69) / 12);
@@ -7421,6 +7442,26 @@ export default function InteractiveScorePlayer({
   onToggleMenu = null,
   playerControls = null
 }) {
+  const [activeClef, setActiveClef] = useState(() => {
+    try {
+      return localStorage.getItem('pozzoli_active_clef') || 'G';
+    } catch {
+      return 'G';
+    }
+  });
+
+  const toggleClef = () => {
+    setActiveClef((prev) => {
+      const next = prev === 'G' ? 'F' : 'G';
+      try {
+        localStorage.setItem('pozzoli_active_clef', next);
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  };
+
   const measures = useMemo(() => {
     if (currentSeries?.interactiveMeasures) return currentSeries.interactiveMeasures;
     if (currentSeries?.id && POZZOLI_SERIE4_SCORES[currentSeries.id]) {
@@ -7458,6 +7499,8 @@ export default function InteractiveScorePlayer({
         const endTimeSec = endEighth * baseEighthDurationSec;
         const durationSec = nItem.eighthDur * baseEighthDurationSec;
 
+        const isBass = activeClef === 'F';
+        const noteMidi = isBass ? (nItem.midi ? nItem.midi - 12 : null) : nItem.midi;
         const visualItem = {
           id: `m${mObj.measure}_n${nIdx}`,
           globalIndex: vList.length,
@@ -7466,8 +7509,8 @@ export default function InteractiveScorePlayer({
           noteIndexInMeasure: nIdx,
           pitch: nItem.pitch,
           solfege: nItem.solfege,
-          midi: nItem.midi,
-          freq: midiToFreq(nItem.midi),
+          midi: noteMidi,
+          freq: midiToFreq(noteMidi),
           eighthDur: nItem.eighthDur,
           beatStartInMeasure: beatInMeasureEighth + 1,
           type: nItem.type,
@@ -7516,7 +7559,7 @@ export default function InteractiveScorePlayer({
       audioEvents: aList,
       totalBaseDurationSec: currentEighth * baseEighthDurationSec
     };
-  }, [measures, baseEighthDurationSec]);
+  }, [measures, baseEighthDurationSec, activeClef]);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTimeSec, setCurrentTimeSec] = useState(0); // Tempo na escala base (0 .. totalBaseDurationSec)
@@ -8236,6 +8279,29 @@ export default function InteractiveScorePlayer({
                 justifyContent: 'flex-end'
               }}
             >
+              {/* Seletor de Clave (Clave de Sol 𝄞 / Clave de Fá 𝄢) */}
+              <button
+                type="button"
+                onClick={toggleClef}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 9px',
+                  borderRadius: '8px',
+                  fontSize: '0.73rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  border: activeClef === 'F' ? '1.5px solid #2563eb' : '1px solid #d4c4ac',
+                  background: activeClef === 'F' ? 'rgba(37, 99, 235, 0.12)' : '#ffffff',
+                  color: activeClef === 'F' ? '#1d4ed8' : '#574635'
+                }}
+                title={activeClef === 'F' ? "Clave de Fá ativa (clique para alternar para Clave de Sol)" : "Clave de Sol ativa (clique para alternar para Clave de Fá)"}
+              >
+                <span style={{ fontSize: '1.05rem', lineHeight: 1 }}>{activeClef === 'F' ? '𝄢' : '𝄞'}</span>
+                <span>{activeClef === 'F' ? 'Clave de Fá' : 'Clave de Sol'}</span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => setShowSolfegeNames((v) => !v)}
@@ -8462,7 +8528,9 @@ export default function InteractiveScorePlayer({
                       const item = noteLookup.get(`${mObj.measure}_${nIdx}`);
                       const centerRatio = (accumEighth + n.eighthDur * 0.42) / eighthsPerMeasure;
                       const nx = mX + padLeft + centerRatio * innerW;
-                      const stepFromE4 = DIATONIC_STEP_FROM_E4[n.pitch] ?? 2;
+                      const stepFromE4 = activeClef === 'F'
+                        ? (BASS_CLEF_DIATONIC_STEP[n.pitch] ?? 3)
+                        : (DIATONIC_STEP_FROM_E4[n.pitch] ?? 2);
                       const ny = staffBottomY - stepFromE4 * stepSpacing;
                       accumEighth += n.eighthDur;
                       const posObj = {
@@ -8561,16 +8629,16 @@ export default function InteractiveScorePlayer({
                     strokeWidth="2.2"
                   />
 
-                  {/* Clave de Sol estilizada */}
+                  {/* Clave estilizada (Sol ou Fá) */}
                   <text
-                    x={18}
-                    y={staffBottomY - 6}
-                    fontSize="46"
+                    x={activeClef === 'F' ? 16 : 18}
+                    y={activeClef === 'F' ? staffTopY + 28 : staffBottomY - 6}
+                    fontSize={activeClef === 'F' ? '38' : '46'}
                     fontFamily="Georgia, serif"
                     fill="#1f1610"
                     style={{ userSelect: 'none' }}
                   >
-                    𝄞
+                    {activeClef === 'F' ? '𝄢' : '𝄞'}
                   </text>
 
                   {/* Fórmula de Compasso (6/8, 9/8 ou 12/8) na primeira linha */}
@@ -8946,40 +9014,86 @@ export default function InteractiveScorePlayer({
                           />
                         )}
 
-                        {/* 1ª linha suplementar inferior para C4, B3, A3 e G3 */}
-                        {(n.pitch === 'C4' || n.pitch === 'B3' || n.pitch === 'A3' || n.pitch === 'G3') && (
-                          <line
-                            x1={nx - 11}
-                            y1={staffBottomY + lineSpacing}
-                            x2={nx + 11}
-                            y2={staffBottomY + lineSpacing}
-                            stroke={noteColor}
-                            strokeWidth="1.6"
-                          />
+                        {/* Linhas suplementares (Clave de Sol) */}
+                        {activeClef !== 'F' && (
+                          <>
+                            {/* 1ª linha suplementar inferior para C4, B3, A3 e G3 */}
+                            {(n.pitch === 'C4' || n.pitch === 'B3' || n.pitch === 'A3' || n.pitch === 'G3') && (
+                              <line
+                                x1={nx - 11}
+                                y1={staffBottomY + lineSpacing}
+                                x2={nx + 11}
+                                y2={staffBottomY + lineSpacing}
+                                stroke={noteColor}
+                                strokeWidth="1.6"
+                              />
+                            )}
+
+                            {/* 2ª linha suplementar inferior para A3 e G3 */}
+                            {(n.pitch === 'A3' || n.pitch === 'G3') && (
+                              <line
+                                x1={nx - 11}
+                                y1={staffBottomY + 2 * lineSpacing}
+                                x2={nx + 11}
+                                y2={staffBottomY + 2 * lineSpacing}
+                                stroke={noteColor}
+                                strokeWidth="1.6"
+                              />
+                            )}
+
+                            {/* 1ª linha suplementar superior para A5 */}
+                            {n.pitch === 'A5' && (
+                              <line
+                                x1={nx - 11}
+                                y1={staffTopY - lineSpacing}
+                                x2={nx + 11}
+                                y2={staffTopY - lineSpacing}
+                                stroke={noteColor}
+                                strokeWidth="1.6"
+                              />
+                            )}
+                          </>
                         )}
 
-                        {/* 2ª linha suplementar inferior para A3 e G3 */}
-                        {(n.pitch === 'A3' || n.pitch === 'G3') && (
-                          <line
-                            x1={nx - 11}
-                            y1={staffBottomY + 2 * lineSpacing}
-                            x2={nx + 11}
-                            y2={staffBottomY + 2 * lineSpacing}
-                            stroke={noteColor}
-                            strokeWidth="1.6"
-                          />
-                        )}
+                        {/* Linhas suplementares (Clave de Fá) */}
+                        {activeClef === 'F' && (
+                          <>
+                            {/* 1ª linha suplementar superior para C5 (Dó central - C4), D5 e E5 */}
+                            {(n.pitch === 'C5' || n.pitch === 'D5' || n.pitch === 'E5' || n.pitch === 'F5' || n.pitch === 'G5' || n.pitch === 'A5') && (
+                              <line
+                                x1={nx - 11}
+                                y1={staffTopY - lineSpacing}
+                                x2={nx + 11}
+                                y2={staffTopY - lineSpacing}
+                                stroke={noteColor}
+                                strokeWidth="1.6"
+                              />
+                            )}
 
-                        {/* 1ª linha suplementar superior para A5 */}
-                        {n.pitch === 'A5' && (
-                          <line
-                            x1={nx - 11}
-                            y1={staffTopY - lineSpacing}
-                            x2={nx + 11}
-                            y2={staffTopY - lineSpacing}
-                            stroke={noteColor}
-                            strokeWidth="1.6"
-                          />
+                            {/* 2ª linha suplementar superior para E5, F5, G5 e A5 */}
+                            {(n.pitch === 'E5' || n.pitch === 'F5' || n.pitch === 'G5' || n.pitch === 'A5') && (
+                              <line
+                                x1={nx - 11}
+                                y1={staffTopY - 2 * lineSpacing}
+                                x2={nx + 11}
+                                y2={staffTopY - 2 * lineSpacing}
+                                stroke={noteColor}
+                                strokeWidth="1.6"
+                              />
+                            )}
+
+                            {/* 3ª linha suplementar superior para G5 e A5 */}
+                            {(n.pitch === 'G5' || n.pitch === 'A5') && (
+                              <line
+                                x1={nx - 11}
+                                y1={staffTopY - 3 * lineSpacing}
+                                x2={nx + 11}
+                                y2={staffTopY - 3 * lineSpacing}
+                                stroke={noteColor}
+                                strokeWidth="1.6"
+                              />
+                            )}
+                          </>
                         )}
 
                         {/* Acidente musical (#, b, bequadro) */}
