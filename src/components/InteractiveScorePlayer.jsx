@@ -8595,30 +8595,43 @@ export default function InteractiveScorePlayer({
                   gap: '6px',
                   padding: '3px 10px',
                   borderRadius: '10px',
-                  border: '1px solid #d4c4ac',
-                  background: '#ffffff',
+                  border: '1.5px solid #d97706',
+                  background: 'rgba(217, 119, 6, 0.09)',
                   minWidth: '220px'
                 }}
               >
-                <div
+                <button
+                  type="button"
+                  onClick={() => {
+                    const ctx = ensureAudioContext();
+                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                  }}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '4px',
-                    padding: '2px 4px',
-                    fontSize: '0.75rem',
-                    fontWeight: 800,
-                    color: '#574635'
+                    padding: '2px 5px',
+                    borderRadius: '6px',
+                    fontSize: '0.73rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    border: 'none',
+                    background: 'transparent',
+                    color: '#b45309'
                   }}
-                  title="Andamento (BPM)"
+                  title="Andamento (BPM) - clique para ouvir o beat"
                 >
                   <Timer size={14} />
                   <span>BPM</span>
-                </div>
+                </button>
 
                 <button
                   type="button"
-                  onClick={() => handleBpmChange(currentBpm - 5)}
+                  onClick={() => {
+                    handleBpmChange(currentBpm - 5);
+                    const ctx = ensureAudioContext();
+                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                  }}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -8643,7 +8656,11 @@ export default function InteractiveScorePlayer({
                   max={200}
                   step={1}
                   value={currentBpm}
-                  onChange={(e) => handleBpmChange(parseInt(e.target.value, 10))}
+                  onChange={(e) => {
+                    handleBpmChange(parseInt(e.target.value, 10));
+                    const ctx = ensureAudioContext();
+                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                  }}
                   style={{
                     flex: 1,
                     minWidth: '95px',
@@ -8657,7 +8674,11 @@ export default function InteractiveScorePlayer({
 
                 <button
                   type="button"
-                  onClick={() => handleBpmChange(currentBpm + 5)}
+                  onClick={() => {
+                    handleBpmChange(currentBpm + 5);
+                    const ctx = ensureAudioContext();
+                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                  }}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -8678,10 +8699,10 @@ export default function InteractiveScorePlayer({
 
                 <span
                   style={{
-                    fontSize: '0.72rem',
-                    fontWeight: 800,
-                    color: '#574635',
-                    minWidth: '34px',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    color: '#b45309',
+                    minWidth: '28px',
                     textAlign: 'right'
                   }}
                 >
