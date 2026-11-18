@@ -381,6 +381,7 @@ export default function App() {
             syncEngine={syncEngineRef.current}
             activeNoteInfo={activeNoteInfo}
             currentBpm={bpm}
+            onBpmChange={(newBpm) => setBpm(newBpm)}
             playbackPhase={playbackPhase}
             countInTick={countInTick}
             isMenuVisible={isMenuVisible}

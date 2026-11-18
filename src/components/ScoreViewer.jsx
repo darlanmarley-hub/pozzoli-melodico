@@ -22,6 +22,7 @@ export function MusicXMLViewer({
   syncEngine = null,
   activeNoteInfo = null,
   currentBpm = 90,
+  onBpmChange = null,
   playbackPhase = 'idle',
   countInTick = null,
   isMenuVisible = true,
@@ -262,6 +263,7 @@ export function MusicXMLViewer({
           <InteractiveScorePlayer
             currentSeries={currentSeries}
             bpm={currentBpm}
+            onBpmChange={onBpmChange}
             isDesktopMode={isDesktopMode}
             onVideoRef={onVideoRef}
             onTimeUpdate={onTimeUpdate}

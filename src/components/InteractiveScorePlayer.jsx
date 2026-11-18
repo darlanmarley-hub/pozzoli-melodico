@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Volume2, VolumeX, Music, Minus, Plus } from 'lucide-react';
+import { Volume2, VolumeX, Music, Minus, Plus, Timer } from 'lucide-react';
 
 // Mapa de alturas (Pitch -> Solfejo e nota MIDI)
 const PITCH_INFO = {
@@ -7475,6 +7475,7 @@ export function shouldExerciseUseSingleMeasureRow(measures, currentSeries) {
 export default function InteractiveScorePlayer({
   currentSeries,
   bpm = 60,
+  onBpmChange = null,
   isDesktopMode = false,
   onVideoRef = null,
   onTimeUpdate = null,
@@ -7486,6 +7487,34 @@ export default function InteractiveScorePlayer({
   useEffect(() => {
     setUserLayoutPerRow(null);
   }, [currentSeries?.id]);
+
+  const defaultBpm = currentSeries?.defaultBpm || 60;
+  const [localBpm, setLocalBpm] = useState(() => bpm || defaultBpm || 60);
+
+  useEffect(() => {
+    if (bpm) {
+      setLocalBpm(bpm);
+    }
+  }, [bpm]);
+
+  useEffect(() => {
+    if (currentSeries?.defaultBpm) {
+      setLocalBpm(currentSeries.defaultBpm);
+    }
+  }, [currentSeries?.id, currentSeries?.defaultBpm]);
+
+  const currentBpm = localBpm;
+
+  const handleBpmChange = useCallback(
+    (newVal) => {
+      const clamped = Math.max(30, Math.min(220, Math.round(newVal)));
+      setLocalBpm(clamped);
+      if (typeof onBpmChange === 'function') {
+        onBpmChange(clamped);
+      }
+    },
+    [onBpmChange]
+  );
 
   const [activeClef, setActiveClef] = useState(() => {
     try {
@@ -7522,8 +7551,6 @@ export default function InteractiveScorePlayer({
     ? (parseInt(timeSigNumStr, 10) || 2) * 2
     : parseInt(timeSigNumStr, 10) || 6;
   const totalEighthsInScore = measures.length * eighthsPerMeasure;
-
-  const defaultBpm = currentSeries?.defaultBpm || 60;
 
   // Nos compassos simples (2/4, 3/4, 4/4) 1 semínima = 2 colcheias = (60 / bpm) s -> 1 colcheia = (60 / bpm) / 2 s.
   // Nos compassos compostos (6/8, 9/8, 12/8) 1 semínima pontuada = 3 colcheias = (60 / bpm) s -> 1 colcheia = (60 / bpm) / 3 s.
@@ -7629,7 +7656,7 @@ export default function InteractiveScorePlayer({
   const activeNodesRef = useRef([]);
   const isPlayingRef = useRef(false);
   const currentTimeRef = useRef(0);
-  const playbackRateRef = useRef(bpm / defaultBpm);
+  const playbackRateRef = useRef(currentBpm / defaultBpm);
   const isMutedRef = useRef(false);
   const loopRef = useRef(false);
   const metronomeEnabledRef = useRef(metronomeEnabled);
@@ -7659,8 +7686,8 @@ export default function InteractiveScorePlayer({
   }, [metronomeVolume]);
 
   useEffect(() => {
-    playbackRateRef.current = Math.max(0.3, Math.min(3.0, bpm / defaultBpm));
-  }, [bpm, defaultBpm]);
+    playbackRateRef.current = Math.max(0.3, Math.min(3.0, currentBpm / defaultBpm));
+  }, [currentBpm, defaultBpm]);
 
   const emitMediaEvent = useCallback((eventName) => {
     const set = listenersRef.current[eventName];
@@ -8408,7 +8435,7 @@ export default function InteractiveScorePlayer({
                 <span>{activePerRow === 1 ? '1 comp / linha' : '2 comp / linha'}</span>
               </button>
 
-              {/* Controle de Metrônomo + Ajuste de Volume (- / slider / +) */}
+              {/* Controle de Volume do Metrônomo (- / slider / +) */}
               <div
                 style={{
                   display: 'inline-flex',
@@ -8448,14 +8475,14 @@ export default function InteractiveScorePlayer({
                     color:
                       metronomeEnabled && metronomeVolume > 0 ? '#b45309' : '#574635'
                   }}
-                  title="Ativar / desativar metrônomo"
+                  title="Ativar / desativar som do metrônomo"
                 >
                   {metronomeEnabled && metronomeVolume > 0 ? (
                     <Volume2 size={13} />
                   ) : (
                     <VolumeX size={13} />
                   )}
-                  <span>Metrônomo</span>
+                  <span>Volume</span>
                 </button>
 
                 <button
@@ -8486,7 +8513,7 @@ export default function InteractiveScorePlayer({
                     cursor: 'pointer',
                     padding: 0
                   }}
-                  title="Diminuir volume do metrônomo"
+                  title="Diminuir volume"
                 >
                   <Minus size={12} />
                 </button>
@@ -8509,12 +8536,12 @@ export default function InteractiveScorePlayer({
                     }
                   }}
                   style={{
-                    width: '62px',
+                    width: '54px',
                     height: '4px',
                     accentColor: '#d97706',
                     cursor: 'pointer'
                   }}
-                  title="Volume do metrônomo"
+                  title="Ajustar volume"
                 />
 
                 <button
@@ -8542,7 +8569,7 @@ export default function InteractiveScorePlayer({
                     cursor: 'pointer',
                     padding: 0
                   }}
-                  title="Aumentar volume do metrônomo"
+                  title="Aumentar volume"
                 >
                   <Plus size={12} />
                 </button>
@@ -8552,11 +8579,110 @@ export default function InteractiveScorePlayer({
                     fontSize: '0.68rem',
                     fontWeight: 700,
                     color: metronomeEnabled && metronomeVolume > 0 ? '#b45309' : '#8a7968',
-                    minWidth: '30px',
+                    minWidth: '28px',
                     textAlign: 'right'
                   }}
                 >
                   {metronomeEnabled ? `${Math.round(metronomeVolume * 100)}%` : '0%'}
+                </span>
+              </div>
+
+              {/* Controle de BPM (- / slider / +) para subir e diminuir o andamento */}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '3px 6px',
+                  borderRadius: '10px',
+                  border: '1px solid #d4c4ac',
+                  background: '#ffffff'
+                }}
+              >
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '3px',
+                    padding: '2px 4px',
+                    fontSize: '0.73rem',
+                    fontWeight: 700,
+                    color: '#574635'
+                  }}
+                  title="Andamento (BPM)"
+                >
+                  <Timer size={13} />
+                  <span>BPM</span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleBpmChange(currentBpm - 5)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '6px',
+                    border: '1px solid #dccbb3',
+                    background: '#fffaf2',
+                    color: '#574635',
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                  title="Diminuir andamento (-5 BPM)"
+                >
+                  <Minus size={12} />
+                </button>
+
+                <input
+                  type="range"
+                  min={35}
+                  max={200}
+                  step={1}
+                  value={currentBpm}
+                  onChange={(e) => handleBpmChange(parseInt(e.target.value, 10))}
+                  style={{
+                    width: '54px',
+                    height: '4px',
+                    accentColor: '#d97706',
+                    cursor: 'pointer'
+                  }}
+                  title={`Andamento: ${currentBpm} BPM`}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => handleBpmChange(currentBpm + 5)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '6px',
+                    border: '1px solid #dccbb3',
+                    background: '#fffaf2',
+                    color: '#574635',
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                  title="Aumentar andamento (+5 BPM)"
+                >
+                  <Plus size={12} />
+                </button>
+
+                <span
+                  style={{
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    color: '#574635',
+                    minWidth: '28px',
+                    textAlign: 'right'
+                  }}
+                >
+                  {currentBpm}
                 </span>
               </div>
             </div>
