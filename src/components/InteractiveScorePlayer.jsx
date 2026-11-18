@@ -8592,26 +8592,27 @@ export default function InteractiveScorePlayer({
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
-                  padding: '3px 6px',
+                  gap: '6px',
+                  padding: '3px 10px',
                   borderRadius: '10px',
                   border: '1px solid #d4c4ac',
-                  background: '#ffffff'
+                  background: '#ffffff',
+                  minWidth: '220px'
                 }}
               >
                 <div
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '3px',
+                    gap: '4px',
                     padding: '2px 4px',
-                    fontSize: '0.73rem',
-                    fontWeight: 700,
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
                     color: '#574635'
                   }}
                   title="Andamento (BPM)"
                 >
-                  <Timer size={13} />
+                  <Timer size={14} />
                   <span>BPM</span>
                 </div>
 
@@ -8622,8 +8623,8 @@ export default function InteractiveScorePlayer({
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '22px',
-                    height: '22px',
+                    width: '24px',
+                    height: '24px',
                     borderRadius: '6px',
                     border: '1px solid #dccbb3',
                     background: '#fffaf2',
@@ -8633,7 +8634,7 @@ export default function InteractiveScorePlayer({
                   }}
                   title="Diminuir andamento (-5 BPM)"
                 >
-                  <Minus size={12} />
+                  <Minus size={13} />
                 </button>
 
                 <input
@@ -8644,8 +8645,10 @@ export default function InteractiveScorePlayer({
                   value={currentBpm}
                   onChange={(e) => handleBpmChange(parseInt(e.target.value, 10))}
                   style={{
-                    width: '54px',
-                    height: '4px',
+                    flex: 1,
+                    minWidth: '95px',
+                    maxWidth: '130px',
+                    height: '5px',
                     accentColor: '#d97706',
                     cursor: 'pointer'
                   }}
@@ -8659,8 +8662,8 @@ export default function InteractiveScorePlayer({
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '22px',
-                    height: '22px',
+                    width: '24px',
+                    height: '24px',
                     borderRadius: '6px',
                     border: '1px solid #dccbb3',
                     background: '#fffaf2',
@@ -8670,15 +8673,15 @@ export default function InteractiveScorePlayer({
                   }}
                   title="Aumentar andamento (+5 BPM)"
                 >
-                  <Plus size={12} />
+                  <Plus size={13} />
                 </button>
 
                 <span
                   style={{
-                    fontSize: '0.68rem',
-                    fontWeight: 700,
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
                     color: '#574635',
-                    minWidth: '28px',
+                    minWidth: '34px',
                     textAlign: 'right'
                   }}
                 >

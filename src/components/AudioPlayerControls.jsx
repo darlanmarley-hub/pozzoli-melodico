@@ -387,42 +387,15 @@ export default function AudioPlayerControls({
 
       {/* Row 4: Main Controls Row */}
       <div className="controls-dock-bar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-        {/* Combined Home & BPM Control Pill */}
-        <div className="bpm-pill-control" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '14px', padding: '4px 10px' }}>
-          <button className="dock-icon-btn" onClick={onGoHome} title="Ir para Biblioteca" style={{ width: '28px', height: '28px', padding: 0 }}>
-            <Home size={18} />
-          </button>
-
-          <button
-            className="bpm-step-btn"
-            onMouseDown={() => startBpmChange(-1)}
-            onMouseUp={stopBpmChange}
-            onMouseLeave={stopBpmChange}
-            onTouchStart={() => startBpmChange(-1)}
-            onTouchEnd={stopBpmChange}
-            onClick={() => onBpmChange((prev) => Math.max(30, prev - 1))}
-            title="Diminuir BPM (segure para diminuir rápido)"
-            style={{ padding: '0 4px', fontSize: '1.2rem', fontWeight: 800, cursor: 'pointer', color: 'var(--text-muted)' }}
-          >
-            -
-          </button>
-
-          <span style={{ fontSize: '0.85rem', fontWeight: 700, whiteSpace: 'nowrap' }}>{bpm} BPM</span>
-
-          <button
-            className="bpm-step-btn"
-            onMouseDown={() => startBpmChange(1)}
-            onMouseUp={stopBpmChange}
-            onMouseLeave={stopBpmChange}
-            onTouchStart={() => startBpmChange(1)}
-            onTouchEnd={stopBpmChange}
-            onClick={() => onBpmChange((prev) => Math.min(240, prev + 1))}
-            title="Aumentar BPM (segure para aumentar rápido)"
-            style={{ padding: '0 4px', fontSize: '1.2rem', fontWeight: 800, cursor: 'pointer', color: 'var(--text-muted)' }}
-          >
-            +
-          </button>
-        </div>
+        {/* Home Button (Biblioteca) */}
+        <button
+          className="dock-icon-btn"
+          onClick={onGoHome}
+          title="Ir para Biblioteca"
+          style={{ width: '38px', height: '38px', padding: 0 }}
+        >
+          <Home size={20} />
+        </button>
 
         {/* Previous score button */}
         <button
