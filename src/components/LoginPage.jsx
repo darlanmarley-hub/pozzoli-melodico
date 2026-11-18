@@ -50,6 +50,7 @@ export default function LoginPage({ onLoginSuccess }) {
   const [isCreatePasswordMode, setIsCreatePasswordMode] = useState(false);
   const [isPasswordResetMode, setIsPasswordResetMode] = useState(false);
   const [createPwdEmail, setCreatePwdEmail] = useState('');
+  const [createPwdToken, setCreatePwdToken] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [createPwdLoading, setCreatePwdLoading] = useState(false);
@@ -70,10 +71,14 @@ export default function LoginPage({ onLoginSuccess }) {
       const emailParam = params.get('email') || '';
       const tokenParam = params.get('token') || '';
       const modeParam = params.get('mode') || '';
-      if (path.includes('/criar-senha') || tokenParam) {
+      const hashStr = (window.location.hash || '').toLowerCase();
+      if (path.includes('/criar-senha') || tokenParam || hashStr.includes('type=recovery')) {
         setIsCreatePasswordMode(true);
-        if (modeParam === 'reset') {
+        if (modeParam === 'reset' || hashStr.includes('type=recovery')) {
           setIsPasswordResetMode(true);
+        }
+        if (tokenParam) {
+          setCreatePwdToken(tokenParam);
         }
         if (emailParam) {
           setCreatePwdEmail(emailParam.trim().toLowerCase());
@@ -109,64 +114,61 @@ export default function LoginPage({ onLoginSuccess }) {
 
     try {
       if (isSupabaseConfigured && supabase) {
-        // 1. Atualiza a senha diretamente via Edge Function (suporta 1º acesso e recuperação de senha)
-        try {
+        let sbUser = null;
+
+        if (createPwdToken) {
+          // 1. Valida o token único no servidor e atualiza a senha
           const edgeRes = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               action: 'set_password',
               email: targetEmail,
-              password: newPassword
+              password: newPassword,
+              token: createPwdToken
             })
           });
           const edgeData = await edgeRes.json().catch(() => ({}));
-          if (!edgeRes.ok && edgeData?.error) {
+          if (!edgeRes.ok) {
             setCreatePwdLoading(false);
-            setCreatePwdError(edgeData.error);
+            setCreatePwdError(
+              edgeData?.error || 'Link inválido ou expirado. Solicite um novo link em "Esqueceu a senha?".'
+            );
             return;
           }
-        } catch {
-          // Fallback caso a Edge Function ainda não tenha o action 'set_password'
-        }
 
-        // 2. Autentica com a nova senha (ou com a senha inicial caso fallback)
-        let authRes = await supabase.auth.signInWithPassword({
-          email: targetEmail,
-          password: newPassword
-        });
-
-        if (authRes.error) {
-          authRes = await supabase.auth.signInWithPassword({
+          const authRes = await supabase.auth.signInWithPassword({
             email: targetEmail,
-            password: targetEmail
+            password: newPassword
           });
-          if (!authRes.error && authRes.data?.user) {
-            await supabase.auth.updateUser({ password: newPassword });
+          if (authRes.error || !authRes.data?.user) {
+            setCreatePwdLoading(false);
+            setCreatePwdError('Senha salva, mas não foi possível entrar automaticamente. Faça login abaixo.');
+            return;
           }
-        }
-
-        if (authRes.error) {
-          authRes = await supabase.auth.signInWithPassword({
-            email: targetEmail,
-            password: 'Pozzoli123!'
+          sbUser = authRes.data.user;
+        } else {
+          // Fluxo alternativo: link nativo do Supabase Auth (sessão de recovery já ativa na URL)
+          const { data: { session } } = await supabase.auth.getSession();
+          if (!session?.user) {
+            setCreatePwdLoading(false);
+            setCreatePwdError(
+              'Link de segurança ausente ou expirado. Clique em "Esqueceu a senha?" para receber um novo link.'
+            );
+            return;
+          }
+          const { data: updatedData, error: updateErr } = await supabase.auth.updateUser({
+            password: newPassword
           });
-          if (!authRes.error && authRes.data?.user) {
-            await supabase.auth.updateUser({ password: newPassword });
+          if (updateErr || !updatedData?.user) {
+            setCreatePwdLoading(false);
+            setCreatePwdError(updateErr?.message || 'Não foi possível atualizar sua senha.');
+            return;
           }
+          sbUser = updatedData.user;
         }
 
-        if (authRes.error || !authRes.data?.user) {
-          setCreatePwdLoading(false);
-          setCreatePwdError(
-            'Não foi possível localizar sua conta com este e-mail. Verifique se digitou o mesmo e-mail da compra.'
-          );
-          return;
-        }
-
-        const sbUser = authRes.data.user;
-
-        // 3. Verifica se a compra não foi reembolsada/cancelada e ativa o plano em users_plano
+        // 2. Verifica se a compra não foi reembolsada/cancelada ou expirada (plano anual)
         const { data: userPlano } = await supabase
           .from('users_plano')
           .select('id, status, data_final')
@@ -180,18 +182,28 @@ export default function LoginPage({ onLoginSuccess }) {
           return;
         }
 
-        const nowIso = new Date().toISOString();
-        await supabase
-          .from('users_plano')
-          .update({ status: 'ativo', updated_at: nowIso })
-          .eq('id', sbUser.id);
+        if (userPlano?.data_final && new Date(userPlano.data_final) < new Date()) {
+          await supabase.auth.signOut();
+          setCreatePwdLoading(false);
+          setCreatePwdError('Seu plano anual expirou. Renove sua assinatura para continuar acessando.');
+          return;
+        }
+
+        if (userPlano?.status === 'primeiro-acesso') {
+          const nowIso = new Date().toISOString();
+          await supabase
+            .from('users_plano')
+            .update({ status: 'ativo', updated_at: nowIso })
+            .eq('id', sbUser.id);
+        }
 
         await loadUserDataFromSupabase(sbUser.id);
         await registerActiveDeviceSession(sbUser.id);
 
+        const nowIso = new Date().toISOString();
         const user = {
           id: sbUser.id,
-          email: targetEmail,
+          email: sbUser.email || targetEmail,
           name: sbUser.user_metadata?.name || sbUser.user_metadata?.full_name || targetEmail.split('@')[0],
           provider: 'supabase',
           avatar: '🎵',
@@ -224,11 +236,12 @@ export default function LoginPage({ onLoginSuccess }) {
 
       if (isSupabaseConfigured && supabase && targetUser.id) {
         const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user && targetUser.provider === 'purchase_validation' && targetUser.email) {
-          await supabase.auth.signInWithPassword({
-            email: targetUser.email,
-            password: 'Pozzoli123!'
-          });
+        if (!session?.user) {
+          clearPausedDeviceUser();
+          setPausedDeviceInfo(null);
+          setIsQuickReconnecting(false);
+          setErrorMessage('Sua sessão expirou neste dispositivo. Faça login abaixo com seu e-mail e senha.');
+          return;
         }
 
         const { data: userPlano } = await supabase
@@ -243,6 +256,15 @@ export default function LoginPage({ onLoginSuccess }) {
           await supabase.auth.signOut();
           setIsQuickReconnecting(false);
           setErrorMessage('O acesso desta compra encontra-se cancelado ou reembolsado.');
+          return;
+        }
+
+        if (userPlano?.data_final && new Date(userPlano.data_final) < new Date()) {
+          clearPausedDeviceUser();
+          setPausedDeviceInfo(null);
+          await supabase.auth.signOut();
+          setIsQuickReconnecting(false);
+          setErrorMessage('Seu plano anual expirou. Renove sua assinatura para continuar acessando.');
           return;
         }
 
@@ -270,11 +292,13 @@ export default function LoginPage({ onLoginSuccess }) {
   const [validationLoading, setValidationLoading] = useState(false);
   const [validationError, setValidationError] = useState('');
   const [validationSuccess, setValidationSuccess] = useState(false);
+  const [validationSuccessMsg, setValidationSuccessMsg] = useState('');
 
   // Forgot password fields
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotSent, setForgotSent] = useState(false);
+  const [forgotError, setForgotError] = useState('');
 
   // Handle standard email/password login
   const handleLogin = async (e) => {
@@ -379,30 +403,8 @@ export default function LoginPage({ onLoginSuccess }) {
       }
     }
 
-    setTimeout(() => {
-      setIsLoading(false);
-      const user = {
-        id: `user_${Date.now()}`,
-        email: email.trim(),
-        name: email.split('@')[0],
-        provider: 'email',
-        avatar: '🎵',
-        loginTime: new Date().toISOString()
-      };
-
-      saveAuthUser(user);
-      const existingProfile = getProfile();
-      saveProfile({
-        ...existingProfile,
-        name: user.name,
-        email: user.email
-      });
-
-      setSuccessMessage('Login efetuado com sucesso!');
-      if (onLoginSuccess) {
-        setTimeout(() => onLoginSuccess(user), 400);
-      }
-    }, 600);
+    setIsLoading(false);
+    setErrorMessage('Servidor de autenticação não configurado.');
   };
 
   // Handle Purchase Access Validation ("VALIDAR E-MAIL DE COMPRA")
@@ -410,6 +412,7 @@ export default function LoginPage({ onLoginSuccess }) {
     if (e) e.preventDefault();
     setValidationError('');
     setValidationSuccess(false);
+    setValidationSuccessMsg('');
 
     if (!validationEmail.trim() || !validationEmail.includes('@')) {
       setValidationError('Por favor, informe um e-mail válido de compra.');
@@ -418,143 +421,37 @@ export default function LoginPage({ onLoginSuccess }) {
 
     setValidationLoading(true);
 
-    if (isSupabaseConfigured && supabase) {
-      try {
-        const cleanEmail = validationEmail.trim().toLowerCase();
-        const defaultPassword = 'Pozzoli123!';
-
-        // 1. Autentica o comprador que foi cadastrado automaticamente pelo Webhook da SyncPay
-        const authResult = await supabase.auth.signInWithPassword({
-          email: cleanEmail,
-          password: defaultPassword
-        });
-
-        if (authResult.error || !authResult.data?.user) {
-          setValidationLoading(false);
-          setValidationError(
-            'E-mail de compra não encontrado. Verifique se digitou o mesmo e-mail usado na compra ou se o pagamento já foi aprovado.'
-          );
-          return;
-        }
-
-        const sbUser = authResult.data.user;
-
-        // 2. Verifica o plano do comprador na tabela users_plano
-        const { data: userPlano } = await supabase
-          .from('users_plano')
-          .select('id, status, data_inicio, data_final, plano_id, planos(nome, titulo)')
-          .eq('id', sbUser.id)
-          .maybeSingle();
-
-        if (userPlano?.status === 'cancelado') {
-          await supabase.auth.signOut();
-          setValidationLoading(false);
-          setValidationError('O acesso desta compra encontra-se cancelado ou reembolsado.');
-          return;
-        }
-
-        if (userPlano?.data_final && new Date(userPlano.data_final) < new Date()) {
-          await supabase.auth.signOut();
-          setValidationLoading(false);
-          setValidationError('Seu plano anual expirou. Renove sua assinatura para continuar acessando.');
-          return;
-        }
-
-        const planName = userPlano?.planos?.nome || sbUser.user_metadata?.plan || 'vitalicio';
-        const nowIso = new Date().toISOString();
-
-        // 3. Muda o status de 'primeiro-acesso' para 'ativo' na tabela users_plano
-        if (userPlano) {
-          await supabase
-            .from('users_plano')
-            .update({
-              status: 'ativo',
-              data_inicio: userPlano.data_inicio || nowIso,
-              updated_at: nowIso
-            })
-            .eq('id', sbUser.id);
-        }
-
-        const user = {
-          id: sbUser.id,
-          email: cleanEmail,
-          name: sbUser.user_metadata?.full_name || cleanEmail.split('@')[0],
-          provider: 'purchase_validation',
-          transactionCode: sbUser.user_metadata?.transaction_code || 'SYNCPAY',
-          plan: planName,
-          avatar: '⭐',
-          loginTime: nowIso
-        };
-
-        // Verifica se a conta já está conectada em outro dispositivo
-        const conflict = await checkActiveDeviceConflict(sbUser.id);
-        if (conflict.hasConflict) {
-          setValidationLoading(false);
-          setDeviceConflictModal({
-            userId: sbUser.id,
-            user,
-            planName,
-            isFromValidation: true,
-            activeDevice: conflict.activeDevice
-          });
-          return;
-        }
-
-        await loadUserDataFromSupabase(sbUser.id);
-        const existingProfile = getProfile();
-        localStorage.setItem(
-          'pozzoli_profile',
-          JSON.stringify({
-            ...existingProfile,
-            name: user.name,
-            email: user.email,
-            plan: planName
-          })
-        );
-        await registerActiveDeviceSession(sbUser.id);
-        saveAuthUser(user);
-
-        setValidationLoading(false);
-        setValidationSuccess(true);
-        setTimeout(() => {
-          if (onLoginSuccess) onLoginSuccess(user);
-        }, 600);
-        return;
-      } catch (err) {
-        setValidationLoading(false);
-        setValidationError('Não foi possível validar o acesso no servidor.');
-        return;
-      }
-    }
-
-    setTimeout(() => {
-      setValidationLoading(false);
-      setValidationSuccess(true);
-
-      const user = {
-        id: `validated_${Date.now()}`,
-        email: validationEmail.trim(),
-        name: validationEmail.split('@')[0],
-        provider: 'purchase_validation',
-        transactionCode: 'POZZOLI-VIP',
-        plan: 'vitalicio',
-        avatar: '⭐',
-        loginTime: new Date().toISOString()
-      };
-
-      saveAuthUser(user);
-      const existingProfile = getProfile();
-      saveProfile({
-        ...existingProfile,
-        name: user.name,
-        email: user.email,
-        plan: 'vitalicio'
+    try {
+      const cleanEmail = validationEmail.trim().toLowerCase();
+      const res = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'validate_purchase_access',
+          email: cleanEmail
+        })
       });
 
-      setTimeout(() => {
-        if (onLoginSuccess) onLoginSuccess(user);
-      }, 600);
-    }, 800);
+      const data = await res.json().catch(() => ({}));
+      setValidationLoading(false);
+
+      if (!res.ok) {
+        setValidationError(
+          data?.error ||
+            'E-mail de compra não encontrado. Verifique se digitou o mesmo e-mail usado na compra ou se o pagamento já foi aprovado.'
+        );
+        return;
+      }
+
+      setValidationSuccess(true);
+      setValidationSuccessMsg(
+        data?.message ||
+          'Compra confirmada! Enviamos para o seu e-mail o link seguro para você cadastrar sua senha.'
+      );
+    } catch {
+      setValidationLoading(false);
+      setValidationError('Não foi possível validar o acesso no servidor.');
+    }
   };
 
   // Confirmar desconexão do aparelho anterior e entrar neste dispositivo
@@ -615,8 +512,9 @@ export default function LoginPage({ onLoginSuccess }) {
   const handleForgotPassword = async (e) => {
     if (e) e.preventDefault();
     const targetEmail = forgotEmail.trim().toLowerCase();
+    setForgotError('');
     if (!targetEmail || !targetEmail.includes('@')) {
-      alert('Por favor, informe um e-mail válido.');
+      setForgotError('Por favor, informe um e-mail válido.');
       return;
     }
 
@@ -631,21 +529,48 @@ export default function LoginPage({ onLoginSuccess }) {
         })
       });
 
-      if (!res.ok && isSupabaseConfigured && supabase) {
-        await supabase.auth.resetPasswordForEmail(targetEmail, {
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        setForgotLoading(false);
+        setForgotSent(true);
+        return;
+      }
+
+      if (data?.error && res.status >= 400 && res.status < 500) {
+        setForgotLoading(false);
+        setForgotError(data.error);
+        return;
+      }
+
+      if (isSupabaseConfigured && supabase) {
+        const { error: resetErr } = await supabase.auth.resetPasswordForEmail(targetEmail, {
           redirectTo: `${window.location.origin}/criar-senha?email=${encodeURIComponent(targetEmail)}&mode=reset`
         });
+        setForgotLoading(false);
+        if (resetErr) {
+          setForgotError(resetErr.message || 'Erro ao enviar e-mail de recuperação.');
+          return;
+        }
+        setForgotSent(true);
+        return;
       }
     } catch {
       if (isSupabaseConfigured && supabase) {
-        await supabase.auth.resetPasswordForEmail(targetEmail, {
+        const { error: resetErr } = await supabase.auth.resetPasswordForEmail(targetEmail, {
           redirectTo: `${window.location.origin}/criar-senha?email=${encodeURIComponent(targetEmail)}&mode=reset`
         });
+        setForgotLoading(false);
+        if (resetErr) {
+          setForgotError(resetErr.message || 'Erro ao enviar e-mail de recuperação.');
+          return;
+        }
+        setForgotSent(true);
+        return;
       }
     }
 
     setForgotLoading(false);
-    setForgotSent(true);
+    setForgotError('Não foi possível enviar o e-mail de recuperação agora. Tente novamente.');
   };
 
   return (
@@ -893,7 +818,10 @@ export default function LoginPage({ onLoginSuccess }) {
               {validationSuccess && (
                 <div className="login-alert login-alert-success">
                   <CheckCircle2 size={18} />
-                  <span>Acesso validado com sucesso! Entrando...</span>
+                  <span>
+                    {validationSuccessMsg ||
+                      'Compra confirmada! Confira seu e-mail para cadastrar sua senha.'}
+                  </span>
                 </div>
               )}
 
@@ -1009,6 +937,7 @@ export default function LoginPage({ onLoginSuccess }) {
                   onClick={() => {
                     setForgotEmail(email || '');
                     setForgotSent(false);
+                    setForgotError('');
                     setShowForgotModal(true);
                   }}
                 >
@@ -1155,6 +1084,13 @@ export default function LoginPage({ onLoginSuccess }) {
                   <p className="login-modal-desc">
                     Insira o e-mail cadastrado na sua conta para enviarmos as instruções de redefinição de senha.
                   </p>
+
+                  {forgotError && (
+                    <div className="login-alert login-alert-error" style={{ marginBottom: '12px' }}>
+                      <AlertCircle size={18} />
+                      <span>{forgotError}</span>
+                    </div>
+                  )}
 
                   <form onSubmit={handleForgotPassword} className="login-form">
                     <div className="login-input-group">

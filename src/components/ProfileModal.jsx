@@ -6,7 +6,6 @@ export default function ProfileModal({ profile = {}, onClose, onSave, onLogout }
   const [name, setName] = useState(profile.name || 'Estudante Pozzoli');
   const [email, setEmail] = useState(profile.email || 'aluno@pozzolimelodico.com');
   const [photoUrl, setPhotoUrl] = useState(profile.photoUrl || null);
-  const [plan, setPlan] = useState(profile.plan || 'vitalicio'); // 'vitalicio' | 'anual'
 
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
@@ -25,8 +24,7 @@ export default function ProfileModal({ profile = {}, onClose, onSave, onLogout }
       ...profile,
       name,
       email,
-      photoUrl,
-      plan
+      photoUrl
     });
     if (onSave) onSave(updated);
     alert('Perfil atualizado com sucesso!');

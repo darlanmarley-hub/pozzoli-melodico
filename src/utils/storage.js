@@ -2407,7 +2407,6 @@ export const syncUserDataToSupabase = async (overrides = {}) => {
       instrument: currentProfile.instrument || 'Voz / Solfejo',
       avatar: currentProfile.avatar || '🎵',
       photo_url: currentProfile.photoUrl || null,
-      plan: currentProfile.plan || 'vitalicio',
       daily_goal_minutes: currentProfile.dailyGoalMinutes || 15,
       streak_days: currentProfile.streakDays || 1,
       last_practice_date: currentProfile.lastPracticeDate || new Date().toISOString().split('T')[0],
@@ -2418,37 +2417,21 @@ export const syncUserDataToSupabase = async (overrides = {}) => {
       updated_at: new Date().toISOString()
     });
 
-    // Sincroniza/ativa registro na tabela users_plano (anual ou vitalicio)
-    const planName = currentProfile.plan === 'anual' ? 'anual' : 'vitalicio';
-    const { data: planoRow } = await supabase
-      .from('planos')
-      .select('id')
-      .eq('nome', planName)
+    // Ativa status inicial 'primeiro-acesso' -> 'ativo' quando aplicável (sem criar/alterar plano pelo cliente)
+    const { data: existingUserPlano } = await supabase
+      .from('users_plano')
+      .select('id, status, data_inicio')
+      .eq('id', userId)
       .maybeSingle();
 
-    if (planoRow?.id) {
-      const { data: existingUserPlano } = await supabase
+    if (existingUserPlano?.status === 'primeiro-acesso') {
+      await supabase
         .from('users_plano')
-        .select('id, status, data_inicio')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (!existingUserPlano) {
-        await supabase.from('users_plano').insert({
-          id: userId,
-          plano_id: planoRow.id,
-          data_inicio: new Date().toISOString(),
-          status: 'ativo'
-        });
-      } else if (existingUserPlano.status === 'primeiro-acesso') {
-        await supabase
-          .from('users_plano')
-          .update({
-            status: 'ativo',
-            data_inicio: existingUserPlano.data_inicio || new Date().toISOString()
-          })
-          .eq('id', userId);
-      }
+        .update({
+          status: 'ativo',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', userId);
     }
   } catch (err) {
     console.warn('Falha ao sincronizar com o Supabase:', err);

@@ -52,20 +52,22 @@ create policy "Usuário lê o próprio plano"
   using ( (select auth.uid()) = id );
 
 drop policy if exists "Usuário insere o próprio plano" on public.users_plano;
-create policy "Usuário insere o próprio plano"
-  on public.users_plano for insert
-  to authenticated
-  with check ( (select auth.uid()) = id );
-
 drop policy if exists "Usuário atualiza o próprio plano" on public.users_plano;
-create policy "Usuário atualiza o próprio plano"
+
+-- Usuário autenticado só pode ler o próprio plano; apenas a transição
+-- inicial de 'primeiro-acesso' -> 'ativo' é permitida no cliente, sem alterar
+-- plano_id, data_inicio ou data_final.
+revoke update on public.users_plano from authenticated;
+grant update (status, updated_at) on public.users_plano to authenticated;
+
+create policy "Usuário ativa o primeiro acesso do próprio plano"
   on public.users_plano for update
   to authenticated
-  using ( (select auth.uid()) = id )
-  with check ( (select auth.uid()) = id );
+  using ( (select auth.uid()) = id and status = 'primeiro-acesso' )
+  with check ( (select auth.uid()) = id and status = 'ativo' );
 
--- Trigger para atualizar updated_at e calcular data_final automaticamente
--- Se o plano for 'anual', data_final = data_inicio + 1 year; se for 'vitalicio', data_final = NULL
+-- Trigger para atualizar updated_at, impedir alteração indevida de plano/vigência
+-- por clientes autenticados e calcular data_final automaticamente
 create or replace function public.handle_users_plano_dates()
 returns trigger
 language plpgsql
@@ -73,7 +75,23 @@ security invoker set search_path = ''
 as $$
 declare
   v_nome_plano text;
+  v_jwt_role text;
 begin
+  v_jwt_role := coalesce(
+    current_setting('request.jwt.claim.role', true),
+    (select auth.jwt() ->> 'role'),
+    ''
+  );
+
+  if tg_op = 'UPDATE' and v_jwt_role = 'authenticated' then
+    new.plano_id := old.plano_id;
+    new.data_inicio := old.data_inicio;
+    new.data_final := old.data_final;
+    if old.status <> 'primeiro-acesso' then
+      new.status := old.status;
+    end if;
+  end if;
+
   new.updated_at := now();
 
   if new.plano_id is not null then
@@ -140,6 +158,50 @@ create policy "Usuários atualizam o próprio perfil"
   to authenticated
   using ( (select auth.uid()) = id )
   with check ( (select auth.uid()) = id );
+
+-- Trigger que protege campos críticos de cobrança/revogação em public.profiles
+-- contra alterações diretas vindas de sessões authenticated do navegador
+create or replace function public.protect_profile_billing_fields()
+returns trigger
+language plpgsql
+security invoker set search_path = ''
+as $$
+declare
+  v_jwt_role text;
+begin
+  v_jwt_role := coalesce(
+    current_setting('request.jwt.claim.role', true),
+    (select auth.jwt() ->> 'role'),
+    ''
+  );
+
+  if v_jwt_role = 'authenticated' then
+    new.plan := old.plan;
+    if coalesce((old.stats ->> 'accessRevoked')::boolean, false) = true then
+      new.stats := coalesce(new.stats, '{}'::jsonb) || jsonb_build_object(
+        'accessRevoked', true,
+        'revokedAt', old.stats -> 'revokedAt',
+        'activeDeviceSession', null
+      );
+    elsif new.stats is not null and (new.stats ? 'accessRevoked' or new.stats ? 'revokedAt') then
+      new.stats := (new.stats - 'accessRevoked' - 'revokedAt');
+      if old.stats ? 'accessRevoked' then
+        new.stats := new.stats || jsonb_build_object('accessRevoked', old.stats -> 'accessRevoked');
+      end if;
+      if old.stats ? 'revokedAt' then
+        new.stats := new.stats || jsonb_build_object('revokedAt', old.stats -> 'revokedAt');
+      end if;
+    end if;
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_protect_profile_billing_fields on public.profiles;
+create trigger trg_protect_profile_billing_fields
+  before update on public.profiles
+  for each row execute procedure public.protect_profile_billing_fields();
 
 -- 4. Trigger para criar profile + users_plano automaticamente no cadastro do usuário
 create or replace function public.handle_new_user()
@@ -221,5 +283,46 @@ create table if not exists public.webhook_raw_events (
 );
 
 alter table public.webhook_raw_events enable row level security;
+revoke all on public.webhook_raw_events from public, anon, authenticated;
 create index if not exists idx_webhook_raw_events_email on public.webhook_raw_events(lower(email));
+
+-- 6. Tokens únicos com expiração (24h) para criação e redefinição de senha (/criar-senha)
+create table if not exists public.password_reset_tokens (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  email text not null,
+  token_hash text not null unique,
+  purpose text not null default 'welcome', -- 'welcome' | 'recovery'
+  expires_at timestamptz not null,
+  used_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+alter table public.password_reset_tokens enable row level security;
+revoke all on public.password_reset_tokens from public, anon, authenticated;
+create index if not exists idx_password_reset_tokens_email on public.password_reset_tokens(lower(email));
+create index if not exists idx_password_reset_tokens_user_id on public.password_reset_tokens(user_id);
+
+-- Habilita Realtime em public.profiles para desconexão instantânea ao entrar em outro aparelho
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_publication'
+      and schemaname = 'public'
+      and tablename = 'profiles'
+  ) then
+    -- Tenta publicação padrão do Supabase Realtime ('supabase_realtime')
+    if exists (select 1 from pg_publication where pubname = 'supabase_realtime')
+       and not exists (
+         select 1 from pg_publication_tables
+         where pubname = 'supabase_realtime'
+           and schemaname = 'public'
+           and tablename = 'profiles'
+       ) then
+      alter publication supabase_realtime add table public.profiles;
+    end if;
+  end if;
+end $$;
 
