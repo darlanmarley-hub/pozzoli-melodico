@@ -86,7 +86,7 @@ export default function AudioPlayerControls({
         alert('Você está offline. Este exercício já está salvo e pronto para estudo sem internet!');
         return;
       }
-      const confirmRemove = window.confirm('Deseja remover este vídeo da memória offline do aparelho?');
+      const confirmRemove = window.confirm('Deseja remover este exercício da memória offline do aparelho?');
       if (!confirmRemove) return;
       await removeVideoOffline(exId);
       setIsOfflineSaved(false);
@@ -102,23 +102,26 @@ export default function AudioPlayerControls({
     const rawUrl = currentSeries?.isDesktopMode
       ? (currentSeries?.videoPcUrl || currentSeries?.videoUrl)
       : currentSeries?.videoUrl;
-    const directUrl = getDirectVideoUrl(rawUrl);
-
-    if (!directUrl) return;
+    const directUrl = rawUrl ? getDirectVideoUrl(rawUrl) : null;
 
     try {
       setIsDownloadingOffline(true);
-      setDownloadProgress(5);
-      await saveVideoOffline(exId, directUrl, (pct) => {
-        setDownloadProgress(pct);
-      });
+      setDownloadProgress(10);
+      await saveVideoOffline(
+        exId,
+        directUrl,
+        (pct) => {
+          setDownloadProgress(pct);
+        },
+        currentSeries
+      );
       setIsOfflineSaved(true);
       setIsDownloadingOffline(false);
       window.dispatchEvent(new CustomEvent('pozzoli-offline-updated', { detail: { id: exId, saved: true } }));
     } catch (err) {
-      console.error('Erro ao salvar vídeo offline:', err);
+      console.error('Erro ao salvar exercício offline:', err);
       setIsDownloadingOffline(false);
-      alert('Não foi possível baixar o vídeo agora. Verifique sua conexão e tente novamente.');
+      alert('Não foi possível salvar o exercício offline agora. Tente novamente.');
     }
   };
 
@@ -354,7 +357,7 @@ export default function AudioPlayerControls({
           className={`action-pill-btn ${isOfflineSaved ? 'green' : ''}`}
           onClick={handleToggleOfflineDownload}
           disabled={isDownloadingOffline}
-          title="Salvar vídeo no aparelho para estudar sem internet"
+          title={isOfflineSaved ? "Exercício salvo no aparelho para estudo offline (Clique para remover)" : "Salvar exercício no aparelho para estudar sem internet"}
           style={{ padding: '5px 12px', fontSize: '0.75rem', opacity: isDownloadingOffline ? 0.8 : 1 }}
         >
           <Download size={14} />
