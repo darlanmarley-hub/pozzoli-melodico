@@ -1,5 +1,5 @@
 // Service Worker para funcionamento Offline completo do App Pozzoli Melódico no Bolso
-const CACHE_NAME = 'pozzoli-app-shell-v2';
+const CACHE_NAME = 'pozzoli-app-shell-v4';
 const PRECACHE_URLS = [
   '/',
   '/index.html',

@@ -187,7 +187,7 @@ export function MusicXMLViewer({
           alignItems: 'center',
           justifyContent: 'center',
           background: 'linear-gradient(180deg, #1e1610 0%, #120d09 100%)',
-          borderBottom: isMenuVisible ? '1.5px solid #d4a34b' : 'none',
+          borderBottom: isMenuVisible ? '1px solid rgba(255, 102, 0, 0.25)' : 'none',
           zIndex: 50,
           flexShrink: 0,
           overflow: 'hidden',

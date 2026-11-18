@@ -99,11 +99,11 @@ export default function SeriesLibraryView({
         <div
           className="wifi-tip-badge"
           style={{
-            background: 'linear-gradient(90deg, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.04) 100%)',
-            border: '1px solid rgba(245, 158, 11, 0.22)',
-            borderLeft: '3px solid #f59e0b',
+            background: '#fff7ed',
+            border: '1px solid rgba(255, 102, 0, 0.28)',
+            borderLeft: '3px solid #ff6600',
             borderRadius: '10px',
-            color: '#efe6d5',
+            color: '#334155',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             padding: '7px 14px 7px 10px',
             fontSize: '0.8rem',
@@ -116,7 +116,7 @@ export default function SeriesLibraryView({
             marginBottom: '2px',
             lineHeight: 1.35,
             textAlign: 'left',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.25)'
+            boxShadow: '0 2px 10px rgba(15, 23, 42, 0.06)'
           }}
         >
           <span
@@ -124,17 +124,17 @@ export default function SeriesLibraryView({
               width: '24px',
               height: '24px',
               borderRadius: '50%',
-              background: 'rgba(245, 158, 11, 0.2)',
+              background: 'rgba(255, 102, 0, 0.14)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0
             }}
           >
-            <Wifi size={13} style={{ color: '#fbbf24' }} />
+            <Wifi size={13} style={{ color: '#ea580c' }} />
           </span>
           <span>
-            Conecte-se ao <strong style={{ color: '#fbbf24', fontWeight: 700 }}>Wi-Fi</strong> para economizar seus dados
+            Conecte-se ao <strong style={{ color: '#ea580c', fontWeight: 700 }}>Wi-Fi</strong> para economizar seus dados
           </span>
         </div>
 
@@ -156,7 +156,7 @@ export default function SeriesLibraryView({
             style={{
               fontSize: '0.82rem',
               fontWeight: 700,
-              color: '#dfcfbd',
+              color: '#1e293b',
               letterSpacing: '0.02em',
               fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
             }}
@@ -179,9 +179,9 @@ export default function SeriesLibraryView({
             type="button"
             onClick={handleAndroidInstall}
             style={{
-              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.12) 100%)',
-              border: '1px solid rgba(16, 185, 129, 0.55)',
-              color: '#6ee7b7',
+              background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
+              border: '1px solid rgba(16, 185, 129, 0.5)',
+              color: '#065f46',
               borderRadius: '12px',
               padding: '9px 10px',
               fontSize: '0.78rem',
@@ -191,12 +191,12 @@ export default function SeriesLibraryView({
               justifyContent: 'center',
               gap: '6px',
               cursor: 'pointer',
-              boxShadow: '0 3px 12px rgba(0, 0, 0, 0.25)',
+              boxShadow: '0 2px 8px rgba(16, 185, 129, 0.12)',
               lineHeight: 1.2,
               fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
             }}
           >
-            <Download size={15} style={{ flexShrink: 0, color: '#34d399' }} />
+            <Download size={15} style={{ flexShrink: 0, color: '#059669' }} />
             <span>Baixar App (Android)</span>
           </button>
 
@@ -205,9 +205,9 @@ export default function SeriesLibraryView({
             type="button"
             onClick={() => setShowIosModal(true)}
             style={{
-              background: 'linear-gradient(135deg, rgba(212, 163, 75, 0.2) 0%, rgba(162, 116, 41, 0.12) 100%)',
-              border: '1px solid rgba(212, 163, 75, 0.55)',
-              color: '#f3cf88',
+              background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)',
+              border: '1px solid rgba(255, 102, 0, 0.45)',
+              color: '#c2410c',
               borderRadius: '12px',
               padding: '9px 10px',
               fontSize: '0.78rem',
@@ -217,12 +217,12 @@ export default function SeriesLibraryView({
               justifyContent: 'center',
               gap: '6px',
               cursor: 'pointer',
-              boxShadow: '0 3px 12px rgba(0, 0, 0, 0.25)',
+              boxShadow: '0 2px 8px rgba(255, 102, 0, 0.12)',
               lineHeight: 1.2,
               fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
             }}
           >
-            <Smartphone size={15} style={{ flexShrink: 0, color: '#dfb76c' }} />
+            <Smartphone size={15} style={{ flexShrink: 0, color: '#ea580c' }} />
             <span>Instalar no iPhone (iOS)</span>
           </button>
           </div>
@@ -399,15 +399,15 @@ export default function SeriesLibraryView({
                       className={`favorite-row-card ${series.isDesktopMode ? 'desktop-card-highlight' : ''}`}
                       style={{
                         background: series.isDesktopMode
-                          ? 'linear-gradient(135deg, #2f3440 0%, #22262f 100%)'
+                          ? 'linear-gradient(135deg, #ff7a1a 0%, #ea580c 100%)'
                           : isSeriesStudied
-                          ? 'rgba(16, 185, 129, 0.12)'
-                          : 'rgba(255, 255, 255, 0.04)',
+                          ? 'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)'
+                          : '#ffffff',
                         border: series.isDesktopMode
-                          ? '1.5px solid rgba(255, 255, 255, 0.45)'
+                          ? '1.5px solid #ff6600'
                           : isSeriesStudied
                           ? '1px solid #10b981'
-                          : '1px solid var(--accent-rose-glow)',
+                          : '1px solid rgba(244, 63, 94, 0.28)',
                         borderRadius: 'var(--radius-sm)',
                         padding: '10px 12px',
                         display: 'flex',
@@ -415,8 +415,8 @@ export default function SeriesLibraryView({
                         justifyContent: 'space-between',
                         gap: '8px',
                         boxShadow: series.isDesktopMode
-                          ? '0 4px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                          : 'none',
+                          ? '0 4px 16px rgba(255, 102, 0, 0.28)'
+                          : '0 2px 8px rgba(15, 23, 42, 0.04)',
                         transition: 'all 0.3s ease'
                       }}
                     >
@@ -649,9 +649,9 @@ export default function SeriesLibraryView({
               {isExpanded && (
                 <div
                   style={{
-                    padding: '10px 12px 14px 12px',
-                    borderTop: '1px solid var(--border-color)',
-                    background: 'rgba(0, 0, 0, 0.2)',
+                    padding: '12px 12px 14px 12px',
+                    borderTop: '1px solid rgba(255, 102, 0, 0.16)',
+                    background: '#fffaf5',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '10px'
@@ -674,15 +674,15 @@ export default function SeriesLibraryView({
                           style={{
                             cursor: 'pointer',
                             background: exercise.isDesktopMode
-                              ? 'linear-gradient(135deg, #2f3440 0%, #22262f 100%)'
+                              ? 'linear-gradient(135deg, #ff7a1a 0%, #ea580c 100%)'
                               : isExStudied
-                              ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)'
-                              : 'rgba(255, 255, 255, 0.04)',
+                              ? 'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)'
+                              : '#ffffff',
                             border: exercise.isDesktopMode
-                              ? '1.5px solid rgba(255, 255, 255, 0.45)'
+                              ? '1.5px solid #ff6600'
                               : isExStudied
                               ? '1px solid #10b981'
-                              : '1px solid rgba(255, 102, 0, 0.3)',
+                              : '1px solid rgba(255, 102, 0, 0.25)',
                             borderRadius: 'var(--radius-sm)',
                             padding: '12px 14px',
                             display: 'flex',
@@ -690,8 +690,8 @@ export default function SeriesLibraryView({
                             justifyContent: 'space-between',
                             gap: '10px',
                             boxShadow: exercise.isDesktopMode
-                              ? '0 4px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                              : 'none',
+                              ? '0 4px 16px rgba(255, 102, 0, 0.28)'
+                              : '0 2px 8px rgba(255, 102, 0, 0.06)',
                             transition: 'all 0.2s ease'
                           }}
                         >
@@ -869,33 +869,33 @@ export default function SeriesLibraryView({
             </div>
 
             <div className="login-modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <p style={{ fontSize: '0.9rem', color: '#dfcfbd', lineHeight: 1.45, margin: 0 }}>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.45, margin: 0 }}>
                 Siga estes <strong>3 passos rápidos</strong> no navegador <strong>Safari</strong> para deixar o aplicativo na tela inicial do seu iPhone:
               </p>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(212, 163, 75, 0.25)' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(212, 163, 75, 0.25)', color: '#f3cf88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#f8fafc', padding: '12px', borderRadius: '12px', border: '1px solid rgba(255, 102, 0, 0.25)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255, 102, 0, 0.12)', color: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
                   1
                 </div>
-                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
-                  Toque no botão <strong>Compartilhar</strong> <Share size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#60a5fa' }} /> na barra inferior do Safari.
+                <div style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: 1.4 }}>
+                  Toque no botão <strong>Compartilhar</strong> <Share size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#2563eb' }} /> na barra inferior do Safari.
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(212, 163, 75, 0.25)' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(212, 163, 75, 0.25)', color: '#f3cf88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#f8fafc', padding: '12px', borderRadius: '12px', border: '1px solid rgba(255, 102, 0, 0.25)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255, 102, 0, 0.12)', color: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
                   2
                 </div>
-                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
-                  Role a lista para baixo e toque em <strong>"Adicionar à Tela de Início"</strong> <PlusSquare size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#f3cf88' }} />.
+                <div style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: 1.4 }}>
+                  Role a lista para baixo e toque em <strong>"Adicionar à Tela de Início"</strong> <PlusSquare size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#ea580c' }} />.
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(212, 163, 75, 0.25)' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(212, 163, 75, 0.25)', color: '#f3cf88', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#f8fafc', padding: '12px', borderRadius: '12px', border: '1px solid rgba(255, 102, 0, 0.25)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255, 102, 0, 0.12)', color: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
                   3
                 </div>
-                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
+                <div style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: 1.4 }}>
                   Confirme tocando em <strong>"Adicionar"</strong> no canto superior direito.
                 </div>
               </div>
@@ -940,24 +940,24 @@ export default function SeriesLibraryView({
             </div>
 
             <div className="login-modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <p style={{ fontSize: '0.9rem', color: '#dfcfbd', lineHeight: 1.45, margin: 0 }}>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.45, margin: 0 }}>
                 Para instalar o aplicativo na tela inicial do seu Android:
               </p>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#f8fafc', padding: '12px', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.35)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.15)', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
                   1
                 </div>
-                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
-                  Toque nos <strong>3 pontinhos</strong> <MoreVertical size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#34d399' }} /> no canto superior direito do navegador Chrome.
+                <div style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: 1.4 }}>
+                  Toque nos <strong>3 pontinhos</strong> <MoreVertical size={15} style={{ display: 'inline', verticalAlign: 'middle', color: '#059669' }} /> no canto superior direito do navegador Chrome.
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: 'rgba(255,255,255,0.04)', padding: '12px', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#f8fafc', padding: '12px', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.35)' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.15)', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
                   2
                 </div>
-                <div style={{ fontSize: '0.88rem', color: '#fdf8ee', lineHeight: 1.4 }}>
+                <div style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: 1.4 }}>
                   Toque em <strong>"Instalar aplicativo"</strong> ou <strong>"Adicionar à tela inicial"</strong> e confirme.
                 </div>
               </div>

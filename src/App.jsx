@@ -49,7 +49,7 @@ export default function App() {
   const [stats, setStats] = useState(() => getStats());
   const [bpm, setBpm] = useState(60);
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('pozzoli_app_theme') || 'baroque';
+    return localStorage.getItem('pozzoli_app_theme_v2') || 'modern';
   });
   const [isDesktopMode, setIsDesktopMode] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(true);
@@ -63,7 +63,7 @@ export default function App() {
     document.body.classList.remove('theme-modern', 'theme-baroque');
     document.body.classList.add(`theme-${theme}`);
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('pozzoli_app_theme', theme);
+    localStorage.setItem('pozzoli_app_theme_v2', theme);
   }, [theme]);
 
   // Escuta sessão do Supabase Auth e sincroniza dados da nuvem

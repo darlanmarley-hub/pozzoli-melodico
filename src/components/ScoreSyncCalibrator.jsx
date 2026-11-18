@@ -387,7 +387,7 @@ export default function ScoreSyncCalibrator({
               value={jsonExportString}
               style={{
                 width: '100%',
-                background: '#0b101d',
+                background: 'var(--bg-main)',
                 border: '1px solid var(--border-color)',
                 color: '#34d399',
                 fontFamily: 'monospace',

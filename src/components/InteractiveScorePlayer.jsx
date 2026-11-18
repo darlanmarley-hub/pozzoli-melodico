@@ -358,20 +358,20 @@ export const POZZOLI_SERIE4_EX9_MEASURES = [
  */
 export const POZZOLI_SERIE4_EX10_MEASURES = [
   { measure: 1, slurStart: 0, notes: [n('C4', 'qd'), ...b3('D4', 'E4', 'F4'), ...b3('G4', 'A4', 'B4')] },
-  { measure: 2, slurEnd: 2, notes: [n('C5', 'qd'), n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 2, slurEnd: 2, notes: [n('A4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 3, slurStart: 0, notes: [n('E4', 'qd'), ...b3('F4', 'G4', 'A4'), ...b3('B4', 'C5', 'D5')] },
-  { measure: 4, slurEnd: 2, notes: [n('C5', 'qd'), n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 5, localSlurs: [[0, 3]], notes: [...b3('A4', 'B4', 'C5'), n('A4', 'hd')] },
-  { measure: 6, localSlurs: [[0, 3]], notes: [...b3('G4', 'A4', 'B4'), n('G4', 'hd')] },
-  { measure: 7, slurStart: 0, notes: [...b3('A4', 'B4', 'C5'), ...b3('D5', 'C5', 'B4'), ...b3('A4', 'B4', 'A4')] },
-  { measure: 8, slurEnd: 1, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('G4', 'qd'), ...b3('A4', 'G4', 'F4'), ...b3('E4', 'D4', 'C4')] },
-  { measure: 10, slurEnd: 2, notes: [n('E4', 'qd'), n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('E4', 'qd'), ...b3('F4', 'E4', 'D4'), ...b3('C4', 'B3', 'A3')] },
-  { measure: 12, slurEnd: 2, notes: [n('C4', 'qd'), n('B3', 'qd', { tieStart: true }), n('B3', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 13, localSlurs: [[0, 3]], notes: [...b3('C4', 'D4', 'E4'), n('D4', 'hd')] },
-  { measure: 14, localSlurs: [[0, 3]], notes: [...b3('D4', 'E4', 'F4'), n('E4', 'hd')] },
-  { measure: 15, slurStart: 0, notes: [...b3('F4', 'G4', 'A4'), ...b3('G4', 'F4', 'E4'), ...b3('D4', 'E4', 'D4')] },
+  { measure: 4, slurEnd: 2, notes: [n('C5', 'qd'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, localSlurs: [[0, 3]], notes: [...b3('C5', 'D5', 'E5'), n('A4', 'hd')] },
+  { measure: 6, localSlurs: [[0, 3]], notes: [...b3('G4', 'A4', 'B4'), n('C5', 'hd')] },
+  { measure: 7, slurStart: 0, notes: [...b3('C5', 'D5', 'E5'), ...b3('F5', 'E5', 'D5'), ...b3('C5', 'D5', 'C5')] },
+  { measure: 8, slurEnd: 1, notes: [n('B4', 'hd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'qd'), ...b3('B4', 'A4', 'G4'), ...b3('F4', 'E4', 'D4')] },
+  { measure: 10, slurEnd: 2, notes: [n('F4', 'qd'), n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'qd'), ...b3('G4', 'F4', 'E4'), ...b3('D4', 'C4', 'B3')] },
+  { measure: 12, slurEnd: 2, notes: [n('D4', 'qd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, localSlurs: [[0, 3]], notes: [...b3('E4', 'F4', 'G4'), n('A4', 'hd')] },
+  { measure: 14, localSlurs: [[0, 3]], notes: [...b3('F4', 'G4', 'A4'), n('B4', 'hd')] },
+  { measure: 15, slurStart: 0, notes: [...b3('B4', 'C5', 'D5'), ...b3('C5', 'B4', 'A4'), ...b3('G4', 'A4', 'G4')] },
   { measure: 16, slurEnd: 1, notes: [n('C4', 'hd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
@@ -379,22 +379,22 @@ export const POZZOLI_SERIE4_EX10_MEASURES = [
  * EXERCÍCIO Nº 11 — 4ª Série (9/8, 16 compassos)
  */
 export const POZZOLI_SERIE4_EX11_MEASURES = [
-  { measure: 1, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('D4', 'qd'), n('B3', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 2, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'q'), n('C4', 'e'), n('D4', 'q'), n('F4', 'e')] },
-  { measure: 4, slurEnd: 1, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 5, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'qd'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 6, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'qd'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 7, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'q'), n('E4', 'e'), n('F4', 'q'), n('A4', 'e')] },
-  { measure: 8, slurEnd: 1, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 9, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 10, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'q'), n('B4', 'e'), n('C5', 'q'), n('D5', 'e')] },
-  { measure: 12, slurEnd: 1, notes: [n('C5', 'hd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 13, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 14, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 1, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 2, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'q'), n('E4', 'e'), n('F4', 'q'), n('A4', 'e')] },
+  { measure: 4, slurEnd: 1, notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 6, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'q'), n('A4', 'e'), n('B4', 'q'), n('D5', 'e')] },
+  { measure: 8, slurEnd: 1, notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 10, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'q'), n('B4', 'e'), n('C5', 'q'), n('D5', 'e')] },
+  { measure: 12, slurEnd: 1, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E5', 'qd', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('F5', 'qd', { tieStart: true }), n('F5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 14, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 15, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), ...b3('G4', 'F4', 'E4'), ...b3('F4', 'E4', 'D4')] },
-  { measure: 16, slurEnd: 1, notes: [n('C4', 'hd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
+  { measure: 16, slurEnd: 1, notes: [n('REST', 'r4'), n('REST', 'r8'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -429,7 +429,7 @@ export const POZZOLI_SERIE4_EX13_MEASURES = [
   { measure: 4, slurEnd: 1, notes: [n('F4', 'hd'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 5, slurStart: 0, notes: [n('G4', 'qd'), n('A4', 'qd'), n('G4', 'qd'), n('F4', 'qd')] },
   { measure: 6, slurEnd: 1, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 7, slurStart: 0, notes: [n('E4', 'qd'), n('F4', 'qd'), n('E4', 'qd'), n('C4', 'qd')] },
+  { measure: 7, slurStart: 0, notes: [n('E4', 'qd'), n('F4', 'qd'), n('E4', 'qd'), n('D4', 'qd')] },
   { measure: 8, slurEnd: 1, notes: [n('E4', 'hd'), n('D4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 9, slurStart: 0, notes: [n('C4', 'hd'), n('D4', 'q'), n('C4', 'e'), n('B3', 'q'), n('C4', 'e')] },
   { measure: 10, slurEnd: 1, notes: [n('D4', 'hd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
@@ -469,7 +469,7 @@ export const POZZOLI_SERIE4_EX14_MEASURES = [
 export const POZZOLI_SERIE4_EX15_MEASURES = [
   { measure: 1, slurStart: 0, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'qd', { tieStop: true }), ...b3('D4', 'E4', 'F4')] },
   { measure: 2, slurEnd: 1, notes: [n('E4', 'hd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('D4', 'hd', { tieStart: true }), n('D4', 'qd', { tieStop: true }), ...b3('C4', 'D4', 'E4')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'qd', { tieStop: true }), ...b3('D4', 'F4', 'E4')] },
   { measure: 4, slurEnd: 1, notes: [n('D4', 'hd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 5, slurStart: 0, notes: [n('C4', 'qd'), ...b3('B3', 'C4', 'D4'), n('E4', 'qd'), ...b3('D4', 'E4', 'F4')] },
   { measure: 6, slurEnd: 1, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
@@ -481,7 +481,7 @@ export const POZZOLI_SERIE4_EX15_MEASURES = [
   { measure: 12, slurEnd: 1, notes: [n('A4', 'hd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 13, slurStart: 0, notes: [n('G4', 'qd'), ...b3('A4', 'G4', 'F4'), n('E4', 'qd'), ...b3('F4', 'E4', 'D4')] },
   { measure: 14, slurEnd: 3, notes: [n('C4', 'qd'), n('D4', 'qd'), n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [n('D4', 'hd', { tieStart: true }), n('D4', 'qd', { tieStop: true }), ...b3('E4', 'F4', 'D4')] },
+  { measure: 15, slurStart: 0, notes: [n('D4', 'hd', { tieStart: true }), n('D4', 'qd', { tieStop: true }), ...b3('E4', 'F4', 'E4')] },
   { measure: 16, slurEnd: 1, notes: [n('D4', 'hd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
@@ -498,9 +498,9 @@ export const POZZOLI_SERIE4_EX16_MEASURES = [
   { measure: 7, localSlurs: [[0, 7]], notes: [...b3('B4', 'C5', 'B4'), ...b3('A4', 'B4', 'C5'), n('B4', 'qd'), n('D5', 'qd')] },
   { measure: 8, localSlurs: [[0, 7]], notes: [...b3('C5', 'D5', 'C5'), ...b3('B4', 'C5', 'D5'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 9, localSlurs: [[0, 3], [6, 9]], notes: [...b3('C5', 'D5', 'B4'), n('C5', 'e'), n('REST', 'r8'), n('REST', 'r8'), ...b3('B4', 'C5', 'A4'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 10, localSlurs: [[0, 7]], notes: [...b3('A4', 'B4', 'A4'), ...b3('G4', 'A4', 'G4'), n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 11, localSlurs: [[0, 3], [6, 9]], notes: [...b3('F4', 'G4', 'E4'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8'), ...b3('E4', 'F4', 'D4'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 12, localSlurs: [[0, 7]], notes: [...b3('D4', 'E4', 'D4'), ...b3('C4', 'D4', 'C4'), n('B3', 'qd', { tieStart: true }), n('B3', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 10, localSlurs: [[0, 7]], notes: [...b3('A4', 'B4', 'A4'), ...b3('G4', 'A4', 'B4'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, localSlurs: [[0, 3], [6, 9]], notes: [...b3('G4', 'A4', 'F4'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), ...b3('F4', 'G4', 'E4'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 12, localSlurs: [[0, 7]], notes: [...b3('E4', 'F4', 'E4'), ...b3('D4', 'E4', 'F4'), n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 13, localSlurs: [[0, 6]], notes: [...b3('F4', 'G4', 'F4'), ...b3('G4', 'F4', 'G4'), n('F4', 'hd')] },
   { measure: 14, localSlurs: [[0, 6]], notes: [...b3('E4', 'F4', 'E4'), ...b3('F4', 'E4', 'F4'), n('E4', 'hd')] },
   { measure: 15, slurStart: 0, notes: [...b3('D4', 'E4', 'D4'), ...b3('E4', 'D4', 'E4'), n('D4', 'qd'), ...b3('C4', 'B3', 'D4')] },
@@ -1031,7 +1031,7 @@ export const POZZOLI_SERIE3_EX5_MEASURES = [
   { measure: 12, slurEnd: 2, notes: [...b3('F4', 'E4', 'D4'), n('REST', 'r8')] },
   { measure: 13, slurStart: 0, notes: [...b2('D4', 'E4'), ...b2('G4', 'F4')] },
   { measure: 14, slurEnd: 1, notes: [n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [...b2('G4', 'A4'), ...b2('B4', 'B4')] },
+  { measure: 15, slurStart: 0, notes: [...b2('G4', 'A4'), ...b2('B4', 'D5')] },
   { measure: 16, slurEnd: 1, notes: [n('C5', 'q', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8')] }
 ];
 
@@ -1118,7 +1118,7 @@ export const POZZOLI_SERIE3_EX10_MEASURES = [
   { measure: 4, slurEnd: 0, notes: [n('C5', 'hd')] },
   { measure: 5, slurStart: 1, notes: [n('REST', 'r8'), n('C5', 'e'), ...b2('B4', 'C5'), ...b2('D5', 'C5')] },
   { measure: 6, slurEnd: 1, notes: [n('B4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
-  { measure: 7, slurStart: 0, notes: [n('B4', 'qd'), n('B4', 'e'), ...b2('A4', 'B4')] },
+  { measure: 7, slurStart: 0, notes: [n('B4', 'qd'), n('C5', 'e'), ...b2('A4', 'B4')] },
   { measure: 8, slurEnd: 0, notes: [n('G4', 'hd')] },
   { measure: 9, slurStart: 1, notes: [n('REST', 'r8'), n('G4', 'e'), ...b2('A4', 'G4'), ...b2('E4', 'G4')] },
   { measure: 10, slurEnd: 0, notes: [n('F4', 'hd')] },
@@ -1609,7 +1609,7 @@ export const POZZOLI_SERIE6_EX5_MEASURES = [
   { measure: 13, slurStart: 0, notes: [n('A4', 'h'), ...b2('D4', 'A4')] },
   { measure: 14, slurEnd: 2, notes: [...b2('G4', 'F4'), n('E4', 'q'), n('REST', 'r4')] },
   { measure: 15, localSlurs: [[0, 1]], notes: [n('F4', 'q'), n('B3', 'q'), n('REST', 'r4')] },
-  { measure: 16, localSlurs: [[0, 1]], notes: [n('C4', 'q'), n('C4', 'q'), n('REST', 'r4')] }
+  { measure: 16, localSlurs: [[0, 1]], notes: [n('D4', 'q'), n('C4', 'q'), n('REST', 'r4')] }
 ];
 
 /**
@@ -1685,7 +1685,7 @@ export const POZZOLI_SERIE6_EX9_MEASURES = [
   { measure: 1, localSlurs: [[1, 3]], notes: [n('REST', 'r4'), n('C4', 'q'), n('G4', 'q'), n('C4', 'q')] },
   { measure: 2, localSlurs: [[1, 3]], notes: [n('REST', 'r4'), n('G4', 'q'), n('B4', 'q'), n('G4', 'q')] },
   { measure: 3, localSlurs: [[1, 3]], notes: [n('REST', 'r4'), n('G4', 'q'), n('A4', 'q'), n('G4', 'q')] },
-  { measure: 4, localSlurs: [[1, 4]], notes: [n('REST', 'r4'), ...b2('C5', 'G4'), ...b2('A4', 'D5'), n('C5', 'q'), n('REST', 'r4')] },
+  { measure: 4, localSlurs: [[0, 3]], notes: [...b2('C5', 'G4'), ...b2('A4', 'D5'), n('C5', 'q'), n('REST', 'r4')] },
   { measure: 5, localSlurs: [[1, 3]], notes: [n('REST', 'r4'), n('G4', 'q'), n('B4', 'q'), n('G4', 'q')] },
   { measure: 6, localSlurs: [[1, 3]], notes: [n('REST', 'r4'), n('B4', 'q'), n('G4', 'q'), n('B4', 'q')] },
   { measure: 7, localSlurs: [[1, 3]], notes: [n('REST', 'r4'), n('F4', 'q'), n('A4', 'q'), n('F4', 'q')] },
@@ -1748,8 +1748,8 @@ export const POZZOLI_SERIE7_EX1_MEASURES = [
  * 7ª SÉRIE — EXERCÍCIO Nº 2 (6/8, 16 compassos)
  */
 export const POZZOLI_SERIE7_EX2_MEASURES = [
-  { measure: 1, localSlurs: [[0, 1]], notes: [n('C4', 'qd'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 2, localSlurs: [[0, 1]], notes: [n('C4', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 1, localSlurs: [[0, 1]], notes: [n('C4', 'qd'), n('D4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 2, localSlurs: [[0, 1]], notes: [n('C4', 'qd'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 3, slurStart: 0, notes: [...b3('C4', 'F4', 'E4'), ...b3('D4', 'A4', 'G4')] },
   { measure: 4, slurEnd: 1, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 5, localSlurs: [[0, 1]], notes: [n('G4', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
@@ -1778,13 +1778,13 @@ export const POZZOLI_SERIE7_EX3_MEASURES = [
   { measure: 6, localSlurs: [[0, 3]], notes: [...b3('G4', 'B4', 'D5'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 7, slurStart: 0, notes: [...b3('C5', 'D5', 'B4'), ...b3('C5', 'G4', 'E5')] },
   { measure: 8, slurEnd: 1, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 9, localSlurs: [[0, 3]], notes: [...b3('C5', 'A4', 'G4'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 10, localSlurs: [[0, 3]], notes: [...b3('B4', 'G4', 'B4'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [...b3('B4', 'G4', 'B4'), ...b3('F4', 'G4', 'B4')] },
+  { measure: 9, localSlurs: [[0, 3]], notes: [...b3('A4', 'G4', 'E4'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 10, localSlurs: [[0, 3]], notes: [...b3('B4', 'A4', 'B4'), n('C5', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [...b3('B4', 'A4', 'B4'), ...b3('G4', 'A4', 'E4')] },
   { measure: 12, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 13, localSlurs: [[0, 3]], notes: [...b3('G4', 'E4', 'D4'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 14, localSlurs: [[0, 3]], notes: [...b3('F4', 'D4', 'C4'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [...b3('E4', 'D4', 'C4'), ...b3('G4', 'F4', 'D4')] },
+  { measure: 13, localSlurs: [[0, 3]], notes: [...b3('G4', 'E4', 'F4'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 14, localSlurs: [[0, 3]], notes: [...b3('F4', 'D4', 'E4'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 15, slurStart: 0, notes: [...b3('G4', 'E4', 'F4'), ...b3('D4', 'E4', 'B3')] },
   { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
@@ -1794,20 +1794,20 @@ export const POZZOLI_SERIE7_EX3_MEASURES = [
 export const POZZOLI_SERIE7_EX4_MEASURES = [
   { measure: 1, slurStart: 0, notes: [n('G4', 'q'), ...s2('A4', 'F4'), n('G4', 'q'), ...s2('A4', 'F4')] },
   { measure: 2, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 3, localSlurs: [[1, 6]], notes: [n('REST', 'r8'), ...b2('C4', 'D4'), ...b3('G4', 'E4', 'A4'), n('G4', 'e'), n('REST', 'r8')] },
-  { measure: 4, slurStart: 0, notes: [n('G4', 'q'), ...s2('A4', 'F4'), n('G4', 'q'), ...s2('A4', 'F4')] },
-  { measure: 5, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 6, slurStart: 1, notes: [n('REST', 'r8'), ...b2('D4', 'E4'), ...b3('A4', 'F4', 'B4')] },
-  { measure: 7, slurEnd: 1, notes: [n('C5', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 8, localSlurs: [[0, 3]], notes: [n('C5', 'q'), ...s2('D5', 'B4'), n('C5', 'qd')] },
-  { measure: 9, localSlurs: [[0, 3]], notes: [n('B4', 'q'), ...s2('C5', 'A4'), n('B4', 'qd')] },
-  { measure: 10, slurStart: 0, notes: [n('A4', 'q'), ...s2('B4', 'G4'), n('A4', 'q'), ...s2('B4', 'G4')] },
-  { measure: 11, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 12, localSlurs: [[1, 6]], notes: [n('REST', 'r8'), ...b2('G4', 'F4'), ...b3('E4', 'F4', 'D4'), n('G4', 'e'), n('REST', 'r8')] },
-  { measure: 13, localSlurs: [[1, 6]], notes: [n('REST', 'r8'), ...b2('G4', 'F4'), ...b3('E4', 'F4', 'D4'), n('C4', 'e'), n('REST', 'r8')] },
-  { measure: 14, localSlurs: [[0, 1]], notes: [n('C4', 'qd'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 15, localSlurs: [[0, 1]], notes: [n('C4', 'qd'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 16, localSlurs: [[0, 1]], notes: [n('C4', 'qd'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8')] }
+  { measure: 3, slurStart: 1, notes: [n('REST', 'r8'), ...b2('C4', 'D4'), ...b3('G4', 'E4', 'A4')] },
+  { measure: 4, slurEnd: 1, notes: [n('G4', 'qd'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'q'), ...s2('A4', 'F4'), n('G4', 'q'), ...s2('A4', 'F4')] },
+  { measure: 6, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 1, notes: [n('REST', 'r8'), ...b2('D4', 'E4'), ...b3('A4', 'F4', 'B4')] },
+  { measure: 8, slurEnd: 1, notes: [n('C5', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, localSlurs: [[0, 3]], notes: [n('C5', 'q'), ...s2('D5', 'B4'), n('C5', 'qd')] },
+  { measure: 10, localSlurs: [[0, 3]], notes: [n('B4', 'q'), ...s2('C5', 'A4'), n('B4', 'qd')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'q'), ...s2('B4', 'G4'), n('A4', 'q'), ...s2('B4', 'G4')] },
+  { measure: 12, slurEnd: 1, notes: [n('G4', 'qd'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b2('G4', 'F4'), ...b3('E4', 'F4', 'D4')] },
+  { measure: 14, localSlurs: [[0, 1]], notes: [n('E4', 'qd'), n('D4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 15, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b2('F4', 'E4'), ...b3('D4', 'E4', 'B3')] },
+  { measure: 16, localSlurs: [[0, 1]], notes: [n('D4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -1836,20 +1836,20 @@ export const POZZOLI_SERIE7_EX5_MEASURES = [
  * 7ª SÉRIE — EXERCÍCIO Nº 6 (9/8, 16 compassos)
  */
 export const POZZOLI_SERIE7_EX6_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('G4', 'qd'), ...b3('F4', 'A4', 'G4')] },
+  { measure: 1, slurStart: 0, notes: [n('G4', 'hd'), ...b3('F4', 'A4', 'G4')] },
   { measure: 2, slurEnd: 2, notes: [n('E4', 'qd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('G4', 'qd'), ...b3('E4', 'B4', 'G4')] },
-  { measure: 4, slurEnd: 2, notes: [n('F4', 'qd'), n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 5, localSlurs: [[0, 3]], notes: [n('G4', 'q'), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'qd')] },
-  { measure: 6, localSlurs: [[0, 3]], notes: [n('G4', 'q'), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'qd')] },
-  { measure: 7, slurStart: 0, notes: [n('G4', 'qd'), ...b3('A4', 'B4', 'D5')] },
-  { measure: 8, slurEnd: 0, notes: [n('E5', 'hd'), n('E5', 'qd')] },
-  { measure: 9, slurStart: 0, notes: [n('E5', 'qd'), ...b3('D5', 'C5', 'D5')] },
+  { measure: 3, slurStart: 0, notes: [n('G4', 'hd'), ...b3('E4', 'B4', 'G4')] },
+  { measure: 4, slurEnd: 2, notes: [n('F4', 'qd'), n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, localSlurs: [[0, 3]], notes: [n('G4', 'q'), n('C5', 'e'), n('B4', 'q'), n('A4', 'e'), n('D5', 'qd')] },
+  { measure: 6, localSlurs: [[0, 3]], notes: [n('G4', 'q'), n('C5', 'e'), n('B4', 'q'), n('A4', 'e'), n('D5', 'qd')] },
+  { measure: 7, slurStart: 0, notes: [n('G4', 'hd'), ...b3('A4', 'B4', 'D5')] },
+  { measure: 8, slurEnd: 0, notes: [n('E5', 'hd', { tieStart: true }), n('E5', 'qd', { tieStop: true })] },
+  { measure: 9, slurStart: 0, notes: [n('E5', 'hd'), ...b3('D5', 'C5', 'D5')] },
   { measure: 10, slurEnd: 0, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'qd', { tieStop: true })] },
-  { measure: 11, slurStart: 0, notes: [n('D5', 'qd'), ...b3('C5', 'B4', 'C5')] },
+  { measure: 11, slurStart: 0, notes: [n('D5', 'hd'), ...b3('C5', 'B4', 'C5')] },
   { measure: 12, slurEnd: 0, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'qd', { tieStop: true })] },
-  { measure: 13, localSlurs: [[0, 5]], notes: [n('E4', 'q'), n('F4', 'e'), n('G4', 'q'), n('A4', 'e'), n('B4', 'qd')] },
-  { measure: 14, localSlurs: [[0, 5]], notes: [n('F4', 'q'), n('G4', 'e'), n('A4', 'q'), n('B4', 'e'), n('C5', 'qd')] },
+  { measure: 13, localSlurs: [[0, 5]], notes: [n('E4', 'q'), n('F4', 'e'), n('A4', 'q'), n('G4', 'e'), n('B4', 'qd')] },
+  { measure: 14, localSlurs: [[0, 5]], notes: [n('F4', 'q'), n('G4', 'e'), n('B4', 'q'), n('A4', 'e'), n('C5', 'qd')] },
   { measure: 15, slurStart: 0, notes: [n('A4', 'qd'), n('G4', 'qd'), ...b3('F4', 'A4', 'G4')] },
   { measure: 16, slurEnd: 2, notes: [n('E4', 'qd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
@@ -1903,43 +1903,43 @@ export const POZZOLI_SERIE7_EX8_MEASURES = [
  */
 export const POZZOLI_SERIE7_EX9_MEASURES = [
   { measure: 1, slurStart: 0, notes: [n('C5', 'qd'), n('B4', 'q'), n('C5', 'e'), n('G4', 'q'), n('C5', 'e'), n('G4', 'q'), n('C5', 'e')] },
-  { measure: 2, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 2, slurEnd: 1, notes: [n('G4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 3, slurStart: 0, notes: [n('G4', 'qd'), n('F4', 'q'), n('A4', 'e'), n('E4', 'q'), n('G4', 'e'), n('D4', 'qd')] },
-  { measure: 4, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 4, slurEnd: 1, notes: [n('G4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 5, slurStart: 0, notes: [n('E4', 'q'), n('C4', 'e'), n('G4', 'qd'), n('F4', 'qd'), n('B4', 'qd')] },
-  { measure: 6, slurEnd: 0, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'hd', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 6, slurEnd: 0, notes: [n('A4', 'wd')] },
   { measure: 7, slurStart: 0, notes: [n('G4', 'q'), n('E4', 'e'), n('A4', 'q'), n('G4', 'e'), n('B4', 'q'), n('A4', 'e'), n('C5', 'q'), n('B4', 'e')] },
   { measure: 8, slurEnd: 0, notes: [n('D5', 'wd')] },
   { measure: 9, slurStart: 0, notes: [n('E5', 'qd'), n('D5', 'q'), n('E5', 'e'), n('D5', 'q'), n('E5', 'e'), n('C5', 'qd')] },
-  { measure: 10, slurEnd: 1, notes: [n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 10, slurEnd: 1, notes: [n('B4', 'qd'), n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 11, slurStart: 0, notes: [n('A4', 'qd'), n('G4', 'q'), n('B4', 'e'), n('F4', 'q'), n('A4', 'e'), n('E4', 'qd')] },
-  { measure: 12, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 12, slurEnd: 1, notes: [n('G4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 13, slurStart: 0, notes: [n('E4', 'qd'), n('A4', 'qd'), ...b3('G4', 'F4', 'E4'), n('C4', 'qd')] },
-  { measure: 14, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 14, slurEnd: 1, notes: [n('G4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 15, slurStart: 0, notes: [n('G4', 'q'), n('F4', 'e'), n('F4', 'q'), n('E4', 'e'), n('E4', 'q'), n('D4', 'e'), n('D4', 'q'), n('C4', 'e')] },
-  { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] }
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'qd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
 /**
  * 7ª SÉRIE — EXERCÍCIO Nº 10 (12/8, 16 compassos)
  */
 export const POZZOLI_SERIE7_EX10_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'qd', { tieStop: true }), ...b3('A4', 'G4', 'F4'), n('G4', 'qd')] },
-  { measure: 2, slurEnd: 1, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 3, slurStart: 0, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'qd', { tieStop: true }), ...b3('G4', 'F4', 'E4'), n('F4', 'qd')] },
-  { measure: 4, slurEnd: 1, notes: [n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 5, localSlurs: [[0, 4]], notes: [...b3('C4', 'B3', 'C4'), n('G4', 'qd'), n('G4', 'hd')] },
-  { measure: 6, localSlurs: [[0, 4]], notes: [...b3('F4', 'E4', 'F4'), n('A4', 'qd'), n('A4', 'hd')] },
+  { measure: 1, slurStart: 0, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'qd', { tieStop: true }), ...b3('A4', 'G4', 'E4')] },
+  { measure: 2, slurEnd: 2, notes: [n('F4', 'hd'), n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'qd', { tieStop: true }), ...b3('G4', 'F4', 'C4')] },
+  { measure: 4, slurEnd: 2, notes: [n('E4', 'hd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, localSlurs: [[0, 4]], notes: [...b3('C4', 'B3', 'C4'), n('G4', 'hd'), n('E4', 'qd')] },
+  { measure: 6, localSlurs: [[0, 4]], notes: [...b3('F4', 'E4', 'F4'), n('A4', 'hd'), n('G4', 'qd')] },
   { measure: 7, slurStart: 0, notes: [...b3('G4', 'F4', 'E4'), ...b3('A4', 'G4', 'F4'), ...b3('B4', 'A4', 'G4'), ...b3('C5', 'B4', 'A4')] },
-  { measure: 8, slurEnd: 2, notes: [n('D5', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('E5', 'qd', { tieStart: true }), n('E5', 'qd', { tieStop: true }), ...b3('F5', 'E5', 'D5'), n('E5', 'qd')] },
-  { measure: 10, slurEnd: 1, notes: [n('C5', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'qd', { tieStop: true }), ...b3('E5', 'D5', 'C5'), n('D5', 'qd')] },
-  { measure: 12, slurEnd: 1, notes: [n('B4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 13, localSlurs: [[0, 4]], notes: [...b3('E4', 'D4', 'E4'), n('A4', 'qd'), n('A4', 'hd')] },
-  { measure: 14, localSlurs: [[0, 4]], notes: [...b3('F4', 'E4', 'F4'), n('B4', 'qd'), n('B4', 'hd')] },
-  { measure: 15, slurStart: 0, notes: [...b3('E4', 'D4', 'E4'), ...b3('F4', 'E4', 'F4'), ...b3('G4', 'F4', 'G4'), ...b3('A4', 'G4', 'F4')] },
-  { measure: 16, slurEnd: 2, notes: [n('E4', 'qd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
+  { measure: 8, slurEnd: 2, notes: [n('D5', 'hd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'hd', { tieStart: true }), n('C5', 'qd', { tieStop: true }), ...b3('D5', 'C5', 'G4')] },
+  { measure: 10, slurEnd: 2, notes: [n('C5', 'hd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('D5', 'qd'), ...b3('E5', 'D5', 'G4'), n('D5', 'qd'), ...b3('E5', 'D5', 'G4')] },
+  { measure: 12, slurEnd: 2, notes: [n('D5', 'hd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, localSlurs: [[0, 4]], notes: [...b3('F4', 'E4', 'F4'), n('A4', 'hd'), n('F4', 'qd')] },
+  { measure: 14, localSlurs: [[0, 4]], notes: [...b3('E4', 'D4', 'E4'), n('A4', 'hd'), n('E4', 'qd')] },
+  { measure: 15, slurStart: 0, notes: [...b3('D4', 'C4', 'B3'), ...b3('F4', 'E4', 'C4'), ...b3('G4', 'F4', 'E4'), ...b3('A4', 'G4', 'F4')] },
+  { measure: 16, slurEnd: 2, notes: [n('E4', 'hd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -1978,7 +1978,7 @@ export const POZZOLI_SERIE8_EX2_MEASURES = [
   { measure: 8, slurEnd: 1, notes: [n('G#4', 'q', { tieStart: true }), n('G#4', 'e', { tieStop: true }), n('REST', 'r8')] },
   { measure: 9, slurStart: 0, notes: [...b2('E4', 'F4'), ...b2('F#4', 'G#4')] },
   { measure: 10, slurEnd: 2, notes: [...b2('A4', 'B4'), n('C5', 'e'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [...b2('E4', 'F4'), ...b2('F4', 'G#4')] },
+  { measure: 11, slurStart: 0, notes: [...b2('E4', 'F4'), ...b2('E4', 'G#4')] },
   { measure: 12, slurEnd: 2, notes: [...b2('A4', 'B4'), n('C5', 'e'), n('REST', 'r8')] },
   { measure: 13, slurStart: 0, notes: [...b2('D5', 'C5'), ...b2('B4', 'G#4')] },
   { measure: 14, slurEnd: 2, notes: [...b2('A4', 'Gn4'), n('F4', 'e'), n('REST', 'r8')] },
@@ -1990,7 +1990,7 @@ export const POZZOLI_SERIE8_EX2_MEASURES = [
  * 8ª SÉRIE — EXERCÍCIO Nº 3 (2/4, 16 compassos — Modo menor)
  */
 export const POZZOLI_SERIE8_EX3_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [...eds('A4', 'G#4'), ...eds('A4', 'Gn4')] },
+  { measure: 1, slurStart: 0, notes: [...eds('A4', 'G#4'), ...eds('A4', 'G#4')] },
   { measure: 2, slurEnd: 1, notes: [n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8')] },
   { measure: 3, slurStart: 0, notes: [...eds('A4', 'G#4'), ...eds('A4', 'B4')] },
   { measure: 4, slurEnd: 1, notes: [n('G#4', 'q', { tieStart: true }), n('G#4', 'e', { tieStop: true }), n('REST', 'r8')] },
@@ -2000,11 +2000,11 @@ export const POZZOLI_SERIE8_EX3_MEASURES = [
   { measure: 8, slurEnd: 1, notes: [n('E4', 'q', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8')] },
   { measure: 9, slurStart: 0, notes: [...eds('E4', 'F#4'), ...eds('G#4', 'A4')] },
   { measure: 10, slurEnd: 1, notes: [n('C5', 'q', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [...eds('E4', 'F4'), ...eds('F4', 'G#4')] },
+  { measure: 11, slurStart: 0, notes: [...eds('E4', 'F4'), ...eds('E4', 'G#4')] },
   { measure: 12, slurEnd: 1, notes: [n('B4', 'q', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [...b2('B4', 'D5'), ...b2('A4', 'G4')] },
-  { measure: 14, notes: [...b2('G#4', 'A4'), ...b2('Gn4', 'F4')] },
-  { measure: 15, notes: [n('E4', 'q'), ...b2('F#4', 'G#4')] },
+  { measure: 13, slurStart: 0, notes: [...b2('C5', 'B4'), ...b2('A4', 'G#4')] },
+  { measure: 14, slurEnd: 2, notes: [...b2('A4', 'Gn4'), n('F4', 'e'), n('REST', 'r8')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'q'), ...b2('F#4', 'G#4')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8')] }
 ];
 
@@ -2062,15 +2062,15 @@ export const POZZOLI_SERIE8_EX6_MEASURES = [
   { measure: 4, slurEnd: 1, notes: [n('C5', 'q'), n('B4', 'q', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8')] },
   { measure: 5, slurStart: 0, notes: [n('A4', 'q'), n('E5', 'q'), ...b2('C5', 'B4')] },
   { measure: 6, slurEnd: 2, notes: [n('A4', 'q'), n('G4', 'q', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 7, slurStart: 0, notes: [...b2('F4', 'C5'), ...b2('B4', 'A4'), ...b2('E4', 'G4')] },
-  { measure: 8, slurEnd: 1, notes: [n('F4', 'q', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 0, notes: [n('E4', 'qd'), n('G4', 'e'), ...b2('A4', 'G#4')] },
-  { measure: 10, slurEnd: 1, notes: [n('C5', 'q', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [...b2('F4', 'A4'), ...b2('G4', 'F4'), ...b2('C4', 'D4')] },
+  { measure: 8, slurEnd: 1, notes: [n('E4', 'q', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('E4', 'qd'), n('G4', 'e'), ...b2('B4', 'G#4')] },
+  { measure: 10, slurEnd: 1, notes: [n('B4', 'q', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 11, slurStart: 0, notes: [...b2('E4', 'F4'), ...b2('E4', 'G#4'), ...b2('B4', 'A4')] },
   { measure: 12, slurEnd: 1, notes: [n('C5', 'q', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 13, slurStart: 0, notes: [...b2('D5', 'C5'), ...b2('B4', 'G#4'), ...b2('A4', 'Gn4')] },
   { measure: 14, slurEnd: 2, notes: [...b2('F4', 'E4'), n('D4', 'q', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [n('E4', 'q'), ...b2('F#4', 'G#4'), ...b2('B4', 'C5')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'q'), ...b2('F#4', 'G#4'), ...b2('C5', 'B4')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] }
 ];
 
@@ -2101,13 +2101,13 @@ export const POZZOLI_SERIE8_EX7_MEASURES = [
  */
 export const POZZOLI_SERIE8_EX8_MEASURES = [
   { measure: 1, localSlurs: [[0, 1]], notes: [n('E4', 'h'), n('A4', 'q'), n('REST', 'r4')] },
-  { measure: 2, localSlurs: [[0, 1]], notes: [n('E4', 'h'), n('G#4', 'q'), n('REST', 'r4')] },
+  { measure: 2, localSlurs: [[0, 1]], notes: [n('E4', 'h'), n('F#4', 'q'), n('REST', 'r4')] },
   { measure: 3, slurStart: 0, notes: [n('E4', 'q'), ...b2('F#4', 'G#4'), n('C5', 'q'), ...b2('B4', 'A4')] },
   { measure: 4, slurEnd: 1, notes: [n('G#4', 'h'), n('B4', 'q', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8')] },
   { measure: 5, localSlurs: [[0, 1]], notes: [n('F4', 'h'), n('E4', 'q'), n('REST', 'r4')] },
   { measure: 6, localSlurs: [[0, 1]], notes: [n('G#4', 'h'), n('F4', 'q'), n('REST', 'r4')] },
-  { measure: 7, slurStart: 0, notes: [n('A4', 'q'), ...b2('E4', 'F#4'), n('G4', 'q'), ...b2('D5', 'C5')] },
-  { measure: 8, slurEnd: 1, notes: [n('B4', 'h', { tieStart: true }), n('B4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('G#4', 'q'), ...b2('E4', 'F#4'), n('A4', 'q'), ...b2('D5', 'C5')] },
+  { measure: 8, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'q', { tieStop: true }), n('REST', 'r4')] },
   { measure: 9, localSlurs: [[0, 1]], notes: [n('A4', 'h'), n('G#4', 'q'), n('REST', 'r4')] },
   { measure: 10, localSlurs: [[0, 1]], notes: [n('A4', 'h'), n('Gn4', 'q'), n('REST', 'r4')] },
   { measure: 11, slurStart: 0, notes: [n('A4', 'q'), ...b2('F#4', 'G#4'), n('A4', 'q'), n('Gn4', 'q')] },
@@ -2124,11 +2124,11 @@ export const POZZOLI_SERIE8_EX8_MEASURES = [
 export const POZZOLI_SERIE8_EX9_MEASURES = [
   { measure: 1, slurStart: 0, notes: [n('A4', 'h'), ...b2('E4', 'F4'), ...b2('B4', 'G#4')] },
   { measure: 2, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'q', { tieStop: true }), n('REST', 'r4')] },
-  { measure: 3, slurStart: 0, notes: [...b2('E4', 'F#4'), ...b2('G#4', 'A4'), ...b2('C5', 'B4'), ...b2('An4', 'Gn4')] },
-  { measure: 4, slurEnd: 1, notes: [n('F4', 'h', { tieStart: true }), n('F4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [...b2('E4', 'F#4'), ...b2('G#4', 'A4'), ...b2('C5', 'B4'), ...b2('Gn4', 'Fn4')] },
+  { measure: 4, slurEnd: 1, notes: [n('E4', 'h', { tieStart: true }), n('E4', 'q', { tieStop: true }), n('REST', 'r4')] },
   { measure: 5, slurStart: 0, notes: [n('A4', 'q'), ...b2('E4', 'F#4'), ...b2('G#4', 'A4'), ...b2('C5', 'B4')] },
   { measure: 6, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'q', { tieStop: true }), n('REST', 'r4')] },
-  { measure: 7, slurStart: 0, notes: [...b2('A4', 'G#4'), ...b2('F#4', 'G4'), ...b2('A4', 'B4'), ...b2('C5', 'D5')] },
+  { measure: 7, slurStart: 0, notes: [...b2('A4', 'G#4'), ...b2('F#4', 'G#4'), ...b2('A4', 'B4'), ...b2('C5', 'D5')] },
   { measure: 8, slurEnd: 1, notes: [n('E5', 'h', { tieStart: true }), n('E5', 'q', { tieStop: true }), n('REST', 'r4')] },
   { measure: 9, slurStart: 0, notes: [n('D5', 'q'), ...b2('G#4', 'A4'), ...b2('C5', 'B4'), n('E4', 'q')] },
   { measure: 10, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'q', { tieStop: true }), n('REST', 'r4')] },
@@ -2210,19 +2210,19 @@ export const POZZOLI_SERIE8_EX12_MEASURES = [
  * 8ª SÉRIE — EXERCÍCIO Nº 13 (9/8, 16 compassos — Modo menor)
  */
 export const POZZOLI_SERIE8_EX13_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('A4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('G4', 'e'), n('B4', 'q'), n('A4', 'e')] },
+  { measure: 1, slurStart: 0, notes: [n('A4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('C5', 'e'), n('B4', 'q'), n('A4', 'e')] },
   { measure: 2, slurEnd: 1, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('A4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('G#4', 'e'), n('Gn4', 'q'), n('A4', 'e')] },
-  { measure: 4, slurEnd: 1, notes: [n('F4', 'hd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 5, localSlurs: [[0, 2]], notes: [n('E4', 'q'), n('F#4', 'e'), n('G#4', 'hd')] },
-  { measure: 6, localSlurs: [[0, 2]], notes: [n('E4', 'q'), n('F#4', 'e'), n('B4', 'hd')] },
+  { measure: 3, slurStart: 0, notes: [n('A4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('Gn4', 'e'), n('Fn4', 'q'), n('G4', 'e')] },
+  { measure: 4, slurEnd: 1, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, localSlurs: [[0, 3]], notes: [n('E4', 'q'), n('F#4', 'e'), n('A4', 'qd'), n('G#4', 'qd')] },
+  { measure: 6, localSlurs: [[0, 3]], notes: [n('E4', 'q'), n('F#4', 'e'), n('C5', 'qd'), n('B4', 'qd')] },
   { measure: 7, slurStart: 0, notes: [...b3('E4', 'F#4', 'G#4'), ...b3('A4', 'B4', 'C5'), n('A4', 'q'), n('B4', 'e')] },
   { measure: 8, slurEnd: 1, notes: [n('G#4', 'hd', { tieStart: true }), n('G#4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('A4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('G4', 'e'), n('B4', 'q'), n('A4', 'e')] },
+  { measure: 9, slurStart: 0, notes: [n('A4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('C5', 'e'), n('B4', 'q'), n('A4', 'e')] },
   { measure: 10, slurEnd: 1, notes: [n('C5', 'hd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 11, slurStart: 0, notes: [n('C5', 'q'), n('B4', 'e'), n('C5', 'q'), n('D5', 'e'), n('C5', 'q'), n('B4', 'e')] },
   { measure: 12, slurEnd: 1, notes: [n('E5', 'hd', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [...b3('E5', 'D5', 'B4'), ...b3('A4', 'G#4', 'A4'), ...b3('Gn4', 'F4', 'E4')] },
+  { measure: 13, slurStart: 0, notes: [...b3('E5', 'D5', 'C5'), ...b3('B4', 'A4', 'G#4'), ...b3('A4', 'Gn4', 'F4')] },
   { measure: 14, slurEnd: 1, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 15, slurStart: 0, notes: [n('E4', 'q'), n('F4', 'e'), n('G#4', 'q'), n('E4', 'e'), n('G#4', 'q'), n('F4', 'e')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
@@ -2232,17 +2232,17 @@ export const POZZOLI_SERIE8_EX13_MEASURES = [
  * 8ª SÉRIE — EXERCÍCIO Nº 14 (9/8, 16 compassos — Modo menor)
  */
 export const POZZOLI_SERIE8_EX14_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('A3', 'qd'), ...s4('C4', 'D4', 'E4', 'F#4'), ...s2('G#4', 'A4')] },
+  { measure: 1, slurStart: 0, notes: [n('A3', 'hd'), ...s4('C4', 'D4', 'E4', 'F#4'), ...s2('G#4', 'A4')] },
   { measure: 2, slurEnd: 2, notes: [n('B4', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('C4', 'qd'), ...s4('E4', 'F#4', 'G#4', 'A4'), ...s2('B4', 'C5')] },
+  { measure: 3, slurStart: 0, notes: [n('C4', 'hd'), ...s4('E4', 'F#4', 'G#4', 'A4'), ...s2('B4', 'C5')] },
   { measure: 4, slurEnd: 2, notes: [n('D5', 'qd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 5, localSlurs: [[0, 3]], notes: [...b3('G#4', 'A4', 'B4'), n('E4', 'hd')] },
   { measure: 6, localSlurs: [[0, 3]], notes: [...b3('F#4', 'G#4', 'A4'), n('E4', 'hd')] },
   { measure: 7, slurStart: 0, notes: [n('G#4', 'q'), n('E4', 'e'), n('Gn4', 'q'), n('E4', 'e'), n('F4', 'q'), n('E4', 'e')] },
   { measure: 8, slurEnd: 1, notes: [n('G#4', 'qd'), n('E5', 'hd')] },
-  { measure: 9, slurStart: 0, notes: [n('E5', 'qd'), ...s4('D5', 'C5', 'B4', 'G#4'), ...s2('A4', 'F4')] },
+  { measure: 9, slurStart: 0, notes: [n('E5', 'hd'), ...s4('D5', 'C5', 'B4', 'G#4'), ...s2('A4', 'F4')] },
   { measure: 10, slurEnd: 2, notes: [n('C4', 'qd'), n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('A4', 'qd'), ...s4('G#4', 'F4', 'E4', 'D4'), ...s2('C4', 'B3')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'hd'), ...s4('G#4', 'F4', 'E4', 'D4'), ...s2('C4', 'B3')] },
   { measure: 12, slurEnd: 2, notes: [n('A3', 'qd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 13, localSlurs: [[0, 3]], notes: [...b3('D4', 'E4', 'F4'), n('A4', 'hd')] },
   { measure: 14, localSlurs: [[0, 3]], notes: [...b3('E4', 'F4', 'E4'), n('A4', 'hd')] },
@@ -2254,11 +2254,11 @@ export const POZZOLI_SERIE8_EX14_MEASURES = [
  * 8ª SÉRIE — EXERCÍCIO Nº 15 (12/8, 16 compassos — Modo menor)
  */
 export const POZZOLI_SERIE8_EX15_MEASURES = [
-  { measure: 1, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'q'), n('F4', 'e'), n('G#4', 'q'), n('A4', 'e'), n('B4', 'hd')] },
+  { measure: 1, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'q'), n('F4', 'e'), n('G#4', 'q'), n('A4', 'e'), n('B4', 'qd')] },
   { measure: 2, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'q'), n('F#4', 'e'), n('G#4', 'q'), n('A4', 'e'), n('B4', 'hd')] },
+  { measure: 3, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'q'), n('F#4', 'e'), n('G#4', 'q'), n('A4', 'e'), n('B4', 'qd')] },
   { measure: 4, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, localSlurs: [[0, 3]], notes: [...b3('E5', 'D5', 'C5'), n('A4', 'hd'), n('A4', 'qd')] },
+  { measure: 5, localSlurs: [[0, 4]], notes: [n('E5', 'qd'), ...b3('D5', 'C5', 'B4'), n('A4', 'hd')] },
   { measure: 6, localSlurs: [[0, 3]], notes: [n('E5', 'qd'), ...b3('D5', 'C5', 'B4'), n('G#4', 'hd')] },
   { measure: 7, slurStart: 0, notes: [n('D5', 'q'), n('C5', 'e'), n('B4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('E4', 'e'), n('Gn4', 'q'), n('F4', 'e')] },
   { measure: 8, slurEnd: 1, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
@@ -2267,8 +2267,8 @@ export const POZZOLI_SERIE8_EX15_MEASURES = [
   { measure: 11, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('B4', 'e'), n('C5', 'q'), n('D5', 'e')] },
   { measure: 12, slurEnd: 1, notes: [n('E5', 'qd', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 13, localSlurs: [[0, 6]], notes: [...b3('E5', 'D5', 'C5'), ...b3('B4', 'G#4', 'A4'), n('B4', 'hd')] },
-  { measure: 14, localSlurs: [[0, 6]], notes: [...b3('D5', 'C5', 'B4'), ...b3('A4', 'G#4', 'G#4'), n('A4', 'hd')] },
-  { measure: 15, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'e'), n('Gn4', 'q'), n('Fn4', 'e'), n('E4', 'q'), n('F#4', 'e'), n('G#4', 'q'), n('B4', 'e')] },
+  { measure: 14, localSlurs: [[0, 6]], notes: [...b3('D5', 'C5', 'B4'), ...b3('G#4', 'F#4', 'G#4'), n('A4', 'hd')] },
+  { measure: 15, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'e'), n('Gn4', 'q'), n('Fn4', 'e'), n('E4', 'q'), n('F#4', 'e'), n('G#4', 'q'), n('B4', 'e')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
@@ -2328,12 +2328,12 @@ export const POZZOLI_SERIE9_EX3_MEASURES = [
   { measure: 6, localSlurs: [[0, 2]], notes: [...b2('B4', 'G#4'), n('E4', 'e'), n('REST', 'r8')] },
   { measure: 7, localSlurs: [[0, 1]], notes: [n('G#4', 'q'), ...b2('E5', 'D5')] },
   { measure: 8, localSlurs: [[0, 4]], notes: [...s4('C5', 'D5', 'B4', 'C5'), n('A4', 'e'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('E5', 'q'), ...b2('G4', 'G#4')] },
-  { measure: 10, slurEnd: 1, notes: [n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('C5', 'q'), ...b2('E4', 'F4')] },
-  { measure: 12, slurEnd: 1, notes: [n('G4', 'q', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [n('A4', 'q'), ...b2('B3', 'C4')] },
-  { measure: 14, slurEnd: 4, notes: [...s4('D4', 'E4', 'F4', 'G4'), n('A4', 'e'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'q'), ...b2('E4', 'F#4')] },
+  { measure: 10, slurEnd: 1, notes: [n('G#4', 'q', { tieStart: true }), n('G#4', 'e', { tieStop: true }), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'q'), ...b2('C4', 'D4')] },
+  { measure: 12, slurEnd: 1, notes: [n('E4', 'q', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('F4', 'q'), ...b2('A3', 'B3')] },
+  { measure: 14, slurEnd: 4, notes: [...s4('C4', 'B3', 'C4', 'D4'), n('E4', 'e'), n('REST', 'r8')] },
   { measure: 15, slurStart: 0, notes: [n('E4', 'q'), n('G#3', 'q')] },
   { measure: 16, slurEnd: 1, notes: [n('A3', 'q', { tieStart: true }), n('A3', 'e', { tieStop: true }), n('REST', 'r8')] }
 ];
@@ -2342,18 +2342,18 @@ export const POZZOLI_SERIE9_EX3_MEASURES = [
  * 9ª SÉRIE — EXERCÍCIO Nº 4 (3/4, 16 compassos)
  */
 export const POZZOLI_SERIE9_EX4_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('G4', 'q'), ...s4('A4', 'B4', 'C5', 'D5'), n('E5', 'q')] },
-  { measure: 2, slurEnd: 1, notes: [n('G4', 'q'), n('REST', 'r4'), n('G4', 'q')] },
-  { measure: 3, localSlurs: [[0, 1], [3, 4]], notes: [n('D5', 'qd'), n('F4', 'e'), n('E4', 'q')] },
-  { measure: 4, localSlurs: [[0, 1]], notes: [n('C5', 'h'), n('REST', 'r4')] },
-  { measure: 5, slurStart: 0, notes: [n('E4', 'q'), ...s4('F4', 'G4', 'A4', 'B4'), n('C5', 'q')] },
-  { measure: 6, slurEnd: 0, notes: [n('E4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 7, localSlurs: [[0, 1]], notes: [n('D4', 'qd'), n('B4', 'e'), n('C5', 'q')] },
-  { measure: 8, localSlurs: [[0, 1]], notes: [n('C4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 0, notes: [n('B3', 'q'), ...s4('C4', 'D4', 'E4', 'F4'), ...b2('G4', 'B3')] },
-  { measure: 10, slurEnd: 1, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 11, slurStart: 0, notes: [n('C4', 'q'), ...s4('D4', 'E4', 'F4', 'G4'), ...b2('A4', 'C4')] },
-  { measure: 12, slurEnd: 1, notes: [n('D4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 1, slurStart: 0, notes: [n('G4', 'h'), ...s4('A4', 'B4', 'C5', 'D5')] },
+  { measure: 2, slurEnd: 1, notes: [n('E5', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 3, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('D5', 'qd'), n('F4', 'e')] },
+  { measure: 4, localSlurs: [[0, 1]], notes: [n('E4', 'q'), n('C5', 'q'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('F4', 'h'), ...s4('G4', 'A4', 'B4', 'C5')] },
+  { measure: 6, slurEnd: 1, notes: [n('D5', 'q'), n('F4', 'q'), n('REST', 'r4')] },
+  { measure: 7, localSlurs: [[0, 1]], notes: [n('F4', 'q'), n('B4', 'qd'), n('F4', 'e')] },
+  { measure: 8, localSlurs: [[0, 1]], notes: [n('C4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('B3', 'h'), ...s4('C4', 'D4', 'E4', 'F4')] },
+  { measure: 10, slurEnd: 2, notes: [...b2('G4', 'B3'), n('C4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('C4', 'h'), ...s4('D4', 'E4', 'F4', 'G4')] },
+  { measure: 12, slurEnd: 2, notes: [...b2('A4', 'C4'), n('D4', 'q'), n('REST', 'r4')] },
   { measure: 13, slurStart: 0, notes: [...b2('E4', 'F4'), ...b2('G4', 'A4'), ...b2('B4', 'C5')] },
   { measure: 14, slurEnd: 1, notes: [n('D5', 'q'), n('F4', 'q'), n('REST', 'r4')] },
   { measure: 15, localSlurs: [[0, 1], [2, 3]], notes: [n('A4', 'q'), n('C4', 'q'), ...b2('G4', 'B3')] },
@@ -2365,21 +2365,21 @@ export const POZZOLI_SERIE9_EX4_MEASURES = [
  */
 export const POZZOLI_SERIE9_EX5_MEASURES = [
   { measure: 1, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b5('C5', 'G4', 'E4', 'G4', 'C5')] },
-  { measure: 2, localSlurs: [[0, 1]], notes: [n('B4', 'h'), n('F4', 'q'), n('REST', 'r4')] },
+  { measure: 2, localSlurs: [[0, 1]], notes: [n('B4', 'q'), n('F4', 'q'), n('REST', 'r4')] },
   { measure: 3, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b5('B4', 'F4', 'D4', 'F4', 'B4')] },
-  { measure: 4, localSlurs: [[0, 1]], notes: [n('A4', 'h'), n('C4', 'q'), n('REST', 'r4')] },
+  { measure: 4, localSlurs: [[0, 1]], notes: [n('A4', 'q'), n('C4', 'q'), n('REST', 'r4')] },
   { measure: 5, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b5('A4', 'E4', 'C4', 'E4', 'A4')] },
-  { measure: 6, localSlurs: [[0, 1]], notes: [n('G4', 'h'), n('B3', 'q'), n('REST', 'r4')] },
+  { measure: 6, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('B3', 'q'), n('REST', 'r4')] },
   { measure: 7, slurStart: 0, notes: [n('F4', 'q'), n('B3', 'q'), n('G4', 'q')] },
   { measure: 8, slurEnd: 0, notes: [n('G4', 'hd')] },
   { measure: 9, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b5('C4', 'E4', 'B4', 'E4', 'C4')] },
-  { measure: 10, localSlurs: [[0, 1]], notes: [n('F4', 'q'), n('D5', 'h'), n('REST', 'r4')] },
+  { measure: 10, localSlurs: [[0, 1]], notes: [n('F4', 'q'), n('D5', 'q'), n('REST', 'r4')] },
   { measure: 11, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b5('E4', 'G4', 'C5', 'G4', 'E4')] },
-  { measure: 12, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('E5', 'h'), n('REST', 'r4')] },
+  { measure: 12, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('E5', 'q'), n('REST', 'r4')] },
   { measure: 13, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b5('F4', 'A4', 'D5', 'A4', 'F4')] },
   { measure: 14, localSlurs: [[1, 5]], notes: [n('REST', 'r8'), ...b5('E4', 'G4', 'C5', 'G4', 'E4')] },
   { measure: 15, localSlurs: [[0, 2]], notes: [n('D4', 'q'), n('B4', 'q'), n('D4', 'q')] },
-  { measure: 16, localSlurs: [[0, 1]], notes: [n('C4', 'q'), n('C5', 'h'), n('REST', 'r4')] }
+  { measure: 16, localSlurs: [[0, 1]], notes: [n('C4', 'q'), n('C5', 'q'), n('REST', 'r4')] }
 ];
 
 /**
@@ -2389,19 +2389,19 @@ export const POZZOLI_SERIE9_EX6_MEASURES = [
   { measure: 1, slurStart: 0, notes: [...eds('A4', 'B4'), ...eds('C5', 'D5'), ...eds('E5', 'F5')] },
   { measure: 2, slurEnd: 1, notes: [n('E5', 'q'), n('G#4', 'q'), n('REST', 'r4')] },
   { measure: 3, localSlurs: [[0, 1]], notes: [n('F4', 'q'), n('D5', 'q'), n('REST', 'r4')] },
-  { measure: 4, localSlurs: [[0, 1]], notes: [n('C5', 'h'), n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 4, localSlurs: [[0, 1]], notes: [n('C5', 'q'), n('E4', 'q'), n('REST', 'r4')] },
   { measure: 5, slurStart: 0, notes: [...eds('E4', 'F#4'), ...eds('G#4', 'A4'), ...eds('B4', 'C5')] },
-  { measure: 6, slurEnd: 1, notes: [n('D5', 'h'), n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 6, slurEnd: 1, notes: [n('D5', 'q'), n('E4', 'q'), n('REST', 'r4')] },
   { measure: 7, localSlurs: [[0, 1]], notes: [n('C4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
   { measure: 8, localSlurs: [[0, 1]], notes: [n('G#4', 'q'), n('B3', 'q'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 0, notes: [...eds('G4', 'F4'), ...eds('E4', 'D4'), ...eds('C4', 'B3')] },
+  { measure: 9, slurStart: 0, notes: [...eds('Gn4', 'F4'), ...eds('E4', 'D4'), ...eds('C4', 'B3')] },
   { measure: 10, slurEnd: 1, notes: [n('E4', 'q'), n('C5', 'q'), n('REST', 'r4')] },
   { measure: 11, slurStart: 0, notes: [...eds('A4', 'G#4'), ...eds('F4', 'E4'), ...eds('D4', 'C4')] },
   { measure: 12, slurEnd: 1, notes: [n('D4', 'q'), n('B4', 'q'), n('REST', 'r4')] },
-  { measure: 13, slurStart: 0, notes: [...eds('D5', 'C5'), ...eds('B4', 'A4'), ...eds('G#4', 'F4')] },
-  { measure: 14, localSlurs: [[0, 1]], notes: [n('E4', 'q'), n('E5', 'q'), n('REST', 'r4')] },
-  { measure: 15, localSlurs: [[0, 1]], notes: [n('E4', 'q'), n('D5', 'q'), n('C5', 'q')] },
-  { measure: 16, localSlurs: [[0, 1]], notes: [n('A4', 'h', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] }
+  { measure: 13, slurStart: 0, notes: [...eds('D5', 'C5'), ...eds('B4', 'A4'), ...eds('G4', 'F4')] },
+  { measure: 14, localSlurs: [[0, 1]], notes: [n('E4', 'q'), n('D5', 'q'), n('REST', 'r4')] },
+  { measure: 15, localSlurs: [[0, 1]], notes: [n('D4', 'q'), n('D5', 'q'), n('C5', 'q')] },
+  { measure: 16, localSlurs: [[0, 1]], notes: [n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] }
 ];
 
 /**
@@ -2452,19 +2452,19 @@ export const POZZOLI_SERIE9_EX8_MEASURES = [
  * 9ª SÉRIE — EXERCÍCIO Nº 9 (4/4, 16 compassos — Modo menor)
  */
 export const POZZOLI_SERIE9_EX9_MEASURES = [
-  { measure: 1, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'q'), ...s4('B4', 'C5', 'D5', 'E5')] },
+  { measure: 1, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'h'), ...s4('B4', 'C5', 'D5', 'E5')] },
   { measure: 2, slurEnd: 0, notes: [n('F5', 'q'), n('A4', 'q'), n('G#4', 'h')] },
-  { measure: 3, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'q'), ...s4('B4', 'C5', 'D5', 'E5')] },
+  { measure: 3, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'h'), ...s4('B4', 'C5', 'D5', 'E5')] },
   { measure: 4, slurEnd: 0, notes: [n('F5', 'q'), n('A4', 'q'), n('G#4', 'h')] },
-  { measure: 5, slurStart: 1, notes: [n('REST', 'r4'), n('G#4', 'q'), ...s4('A4', 'B4', 'C5', 'D5')] },
+  { measure: 5, slurStart: 1, notes: [n('REST', 'r4'), n('G#4', 'h'), ...s4('A4', 'B4', 'C5', 'D5')] },
   { measure: 6, slurEnd: 0, notes: [n('E5', 'q'), n('G4', 'q'), n('F4', 'q'), n('D5', 'q')] },
   { measure: 7, localSlurs: [[0, 2]], notes: [n('C5', 'q'), n('D4', 'q'), n('B4', 'q'), n('G4', 'q')] },
   { measure: 8, localSlurs: [[0, 1]], notes: [n('G#4', 'h', { tieStart: true }), n('G#4', 'q', { tieStop: true }), n('REST', 'r4')] },
-  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('E4', 'q'), ...s4('F#4', 'G#4', 'A4', 'B4')] },
+  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('E4', 'h'), ...s4('F#4', 'G#4', 'A4', 'B4')] },
   { measure: 10, slurEnd: 0, notes: [n('C5', 'q'), n('E4', 'q'), n('D4', 'q'), n('B4', 'q')] },
-  { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('E4', 'q'), ...s4('F#4', 'G#4', 'A4', 'B4')] },
+  { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('E4', 'h'), ...s4('F#4', 'G#4', 'A4', 'B4')] },
   { measure: 12, slurEnd: 0, notes: [n('C5', 'q'), n('E4', 'q'), n('D4', 'q'), n('B4', 'q')] },
-  { measure: 13, slurStart: 0, notes: [n('A4', 'qd'), n('E4', 'e'), ...s4('B4', 'C5', 'D5', 'E5')] },
+  { measure: 13, slurStart: 0, notes: [n('A4', 'hd'), ...s4('B4', 'C5', 'D5', 'E5')] },
   { measure: 14, slurEnd: 0, notes: [n('F5', 'q'), n('A4', 'q'), n('G#4', 'q'), n('E5', 'q')] },
   { measure: 15, localSlurs: [[1, 3]], notes: [n('D5', 'q'), n('F4', 'q'), n('E4', 'q'), n('C5', 'q')] },
   { measure: 16, localSlurs: [[0, 1]], notes: [n('B4', 'h'), n('A4', 'q'), n('REST', 'r4')] }
@@ -2596,10 +2596,10 @@ export const POZZOLI_SERIE9_EX15_MEASURES = [
   { measure: 10, slurEnd: 0, notes: [n('C5', 'hd')] },
   { measure: 11, slurStart: 0, notes: [n('Gn4', 'q'), n('F#4', 'q'), ...eds('D5', 'C5')] },
   { measure: 12, slurEnd: 0, notes: [n('B4', 'hd')] },
-  { measure: 13, slurStart: 0, notes: [n('Fn4', 'q'), n('E4', 'q'), ...eds('C5', 'B4')] },
-  { measure: 14, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 15, slurStart: 0, notes: [n('B3', 'h'), n('G4', 'q')] },
-  { measure: 16, slurEnd: 2, notes: [...eds('G#4', 'A4'), n('E4', 'q'), n('A3', 'q'), n('REST', 'r4')] }
+  { measure: 13, slurStart: 0, notes: [n('Fn4', 'q'), n('E4', 'q'), ...eds('D5', 'C5')] },
+  { measure: 14, slurEnd: 1, notes: [n('B4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('B3', 'q'), n('A4', 'q'), ...eds('G#4', 'A4')] },
+  { measure: 16, slurEnd: 1, notes: [n('A4', 'q'), n('A3', 'q'), n('REST', 'r4')] }
 ];
 
 /**
@@ -2628,22 +2628,22 @@ export const POZZOLI_SERIE9_EX16_MEASURES = [
  * 9ª SÉRIE — EXERCÍCIO Nº 17 (4/4, 16 compassos)
  */
 export const POZZOLI_SERIE9_EX17_MEASURES = [
-  { measure: 1, slurStart: 1, notes: [n('REST', 'r4'), n('C4', 'q'), ...b2('B3', 'B4')] },
+  { measure: 1, slurStart: 1, notes: [n('REST', 'r4'), n('C4', 'h'), ...b2('B3', 'B4')] },
   { measure: 2, slurEnd: 2, notes: [n('A4', 'h'), n('G4', 'q', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 3, slurStart: 1, notes: [n('REST', 'r4'), n('D4', 'q'), ...b2('C4', 'C5')] },
+  { measure: 3, slurStart: 1, notes: [n('REST', 'r4'), n('D4', 'h'), ...b2('C4', 'C5')] },
   { measure: 4, slurEnd: 2, notes: [n('B4', 'h'), n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 5, localSlurs: [[0, 1], [2, 3]], notes: [n('G4', 'q'), n('E5', 'q'), ...b2('D5', 'G4')] },
-  { measure: 6, localSlurs: [[0, 1], [2, 3]], notes: [n('F4', 'q'), n('D5', 'q'), ...b2('C5', 'F4')] },
-  { measure: 7, localSlurs: [[0, 1], [2, 3]], notes: [n('E4', 'q'), n('C5', 'q'), ...b2('B4', 'E4')] },
+  { measure: 5, localSlurs: [[0, 1], [2, 3]], notes: [n('G4', 'q'), n('E5', 'h'), ...b2('D5', 'G4')] },
+  { measure: 6, localSlurs: [[0, 1], [2, 3]], notes: [n('F4', 'q'), n('D5', 'h'), ...b2('C5', 'F4')] },
+  { measure: 7, localSlurs: [[0, 1], [2, 3]], notes: [n('E4', 'q'), n('C5', 'h'), ...b2('B4', 'E4')] },
   { measure: 8, localSlurs: [[0, 1]], notes: [n('A4', 'h'), n('B3', 'q'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('C4', 'q'), ...eds('B3', 'B4')] },
+  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('C4', 'h'), ...eds('B3', 'B4')] },
   { measure: 10, slurEnd: 2, notes: [n('A4', 'h'), n('G4', 'q', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('D4', 'q'), ...eds('C4', 'C5')] },
+  { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('D4', 'h'), ...eds('C4', 'C5')] },
   { measure: 12, slurEnd: 2, notes: [n('B4', 'h'), n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 13, localSlurs: [[0, 1], [2, 3]], notes: [n('G4', 'q'), n('E5', 'q'), ...b2('D5', 'F4')] },
-  { measure: 14, slurStart: 0, notes: [n('F4', 'q'), n('D5', 'q'), ...b2('C5', 'E4')] },
+  { measure: 13, localSlurs: [[0, 1], [2, 3]], notes: [n('G4', 'q'), n('E5', 'h'), ...b2('D5', 'F4')] },
+  { measure: 14, slurStart: 0, notes: [n('F4', 'q'), n('D5', 'h'), ...b2('C5', 'E4')] },
   { measure: 15, localSlurs: [[0, 2], [3, 5]], notes: [n('D4', 'q'), ...b2('D5', 'C5'), n('E4', 'q'), ...b2('C5', 'B4')] },
-  { measure: 16, slurEnd: 1, notes: [n('C4', 'h'), n('E5', 'q'), n('REST', 'r4')] }
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'h'), n('C5', 'q'), n('REST', 'r4')] }
 ];
 
 /**
@@ -2719,13 +2719,13 @@ export const POZZOLI_SERIE10_EX3_MEASURES = [
   { measure: 1, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('E4', 'q'), n('G4', 'e')] },
   { measure: 2, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('F4', 'q'), n('C4', 'e')] },
   { measure: 3, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('B3', 'q'), n('C4', 'e')] },
-  { measure: 4, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('C#4', 'q'), n('D4', 'e'), n('REST', 'r8')] },
+  { measure: 4, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('C#4', 'q'), n('D4', 'e')] },
   { measure: 5, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('D4', 'q'), n('A4', 'e')] },
   { measure: 6, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('G4', 'q'), n('B4', 'e')] },
   { measure: 7, slurStart: 1, notes: [n('REST', 'r8'), ...b3('E4', 'F4', 'F#4')] },
   { measure: 8, slurEnd: 2, notes: [...b2('G4', 'C5'), n('G4', 'q')] },
-  { measure: 9, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('G4', 'q'), n('E5', 'e')] },
-  { measure: 10, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('D5', 'q'), n('C5', 'e')] },
+  { measure: 9, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('G4', 'q'), n('C5', 'e')] },
+  { measure: 10, localSlurs: [[1, 2]], notes: [n('REST', 'r8'), n('C5', 'q'), n('B4', 'e')] },
   { measure: 11, slurStart: 1, notes: [n('REST', 'r8'), ...b3('Bb4', 'A4', 'G4')] },
   { measure: 12, slurEnd: 2, notes: [...b2('F4', 'Bb4'), n('A4', 'q')] },
   { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...b3('A4', 'Bn4', 'C5')] },
@@ -2752,7 +2752,7 @@ export const POZZOLI_SERIE10_EX4_MEASURES = [
   { measure: 12, slurEnd: 4, notes: [...s4('G4', 'F4', 'E4', 'D4'), n('C4', 'q')] },
   { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...b3('D5', 'C5', 'Bb4')] },
   { measure: 14, slurEnd: 4, notes: [...b2('A4', 'G4'), ...b2('F4', 'E4')] },
-  { measure: 15, slurStart: 0, notes: [n('D4', 'q', { tieStart: true }), ...s4('D4', 'E4', 'C4', 'B3')] },
+  { measure: 15, slurStart: 0, notes: [n('D4', 'q', { tieStart: true }), ...s4('D4', 'E4', 'C4', 'Bn3')] },
   { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4')] }
 ];
 
@@ -2760,43 +2760,43 @@ export const POZZOLI_SERIE10_EX4_MEASURES = [
  * 10ª SÉRIE — EXERCÍCIO Nº 5 (3/4, 16 compassos)
  */
 export const POZZOLI_SERIE10_EX5_MEASURES = [
-  { measure: 1, localSlurs: [[0, 3]], notes: [n('C4', 'q', { tieStart: true }), ...b2('C4', 'E4'), n('G4', 'q'), n('REST', 'r4')] },
-  { measure: 2, localSlurs: [[0, 3]], notes: [n('C4', 'q', { tieStart: true }), ...b2('C4', 'F4'), n('A4', 'q'), n('REST', 'r4')] },
-  { measure: 3, slurStart: 0, notes: [n('C4', 'q', { tieStart: true }), ...s4('C4', 'B3', 'C4', 'D4'), ...s4('E4', 'F4', 'G4', 'A4')] },
-  { measure: 4, slurEnd: 1, notes: [n('G4', 'q'), n('F4', 'q'), n('REST', 'r4')] },
-  { measure: 5, localSlurs: [[0, 4]], notes: [n('F4', 'q', { tieStart: true }), ...b2('F4', 'A4'), ...b2('F#4', 'C5')] },
-  { measure: 6, notes: [n('G4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 7, slurStart: 0, notes: [n('G4', 'q', { tieStart: true }), ...b2('G4', 'Fn4'), ...b2('E4', 'D4')] },
-  { measure: 8, slurEnd: 1, notes: [n('G4', 'q'), n('F4', 'q'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 0, notes: [n('F4', 'q', { tieStart: true }), ...b2('F4', 'G4'), ...s2('A4', 'Bb4')] },
-  { measure: 10, slurEnd: 1, notes: [n('Bb4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
-  { measure: 11, slurStart: 0, notes: [n('D4', 'q', { tieStart: true }), ...s4('D4', 'E4', 'F4', 'G4'), ...s4('A4', 'Bn4', 'C5', 'D5')] },
-  { measure: 12, slurEnd: 0, notes: [n('E5', 'hd')] },
-  { measure: 13, slurStart: 0, notes: [n('D5', 'h'), ...b2('D5', 'B4')] },
-  { measure: 14, slurEnd: 0, notes: [n('C5', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 15, notes: [n('REST', 'r4'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 16, notes: [n('REST', 'r4'), n('REST', 'r4'), n('REST', 'r4')] }
+  { measure: 1, slurStart: 0, notes: [n('C4', 'h', { tieStart: true }), ...b2('C4', 'E4')] },
+  { measure: 2, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 3, slurStart: 0, notes: [n('C4', 'h', { tieStart: true }), ...b2('C4', 'F4')] },
+  { measure: 4, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('C4', 'q', { tieStart: true }), ...s4('C4', 'B3', 'C4', 'D4'), ...s4('E4', 'F4', 'G4', 'A4')] },
+  { measure: 6, slurEnd: 1, notes: [n('G4', 'q'), n('F4', 'q'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 0, notes: [n('F4', 'q', { tieStart: true }), ...b2('F4', 'A4'), ...b2('F#4', 'C5')] },
+  { measure: 8, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('G4', 'h', { tieStart: true }), ...es2('G4', 'Fn4', 'E4')] },
+  { measure: 10, slurEnd: 1, notes: [n('G4', 'q'), n('F4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('F4', 'h', { tieStart: true }), ...es2('F4', 'G4', 'Bb4')] },
+  { measure: 12, slurEnd: 1, notes: [n('Bb4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
+  { measure: 13, slurStart: 0, notes: [n('D4', 'q', { tieStart: true }), ...s4('D4', 'E4', 'F4', 'G4'), ...s4('A4', 'Bn4', 'C5', 'D5')] },
+  { measure: 14, slurEnd: 0, notes: [n('E5', 'hd')] },
+  { measure: 15, slurStart: 0, notes: [n('D5', 'h', { tieStart: true }), ...b2('D5', 'B4')] },
+  { measure: 16, slurEnd: 0, notes: [n('C5', 'q'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
 /**
  * 10ª SÉRIE — EXERCÍCIO Nº 6 (3/4, 16 compassos)
  */
 export const POZZOLI_SERIE10_EX6_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 's', { tieStop: true }), ...eds('C5', 'B4'), ...eds('C5', 'D5')] },
+  { measure: 1, slurStart: 0, notes: [n('C5', 'qdd'), n('B4', 's'), ...eds('C5', 'B4')] },
   { measure: 2, slurEnd: 1, notes: [n('C5', 'q'), n('G4', 'q'), n('REST', 'r4')] },
-  { measure: 3, slurStart: 0, notes: [n('A4', 'qdd'), n('G#4', 's'), ...eds('A4', 'Gn4'), n('F4', 'q')] },
-  { measure: 4, slurEnd: 0, notes: [n('E4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 5, localSlurs: [[0, 4]], notes: [n('E4', 'q', { tieStart: true }), ...s4('E4', 'F4', 'E4', 'D4'), ...b2('C4', 'A4')] },
+  { measure: 3, slurStart: 0, notes: [n('A4', 'qdd'), n('G#4', 's'), ...eds('A4', 'Gn4')] },
+  { measure: 4, slurEnd: 1, notes: [n('F4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
+  { measure: 5, localSlurs: [[0, 4]], notes: [n('E4', 'q', { tieStart: true }), ...es2('E4', 'F4', 'E4'), ...b2('D4', 'A4')] },
   { measure: 6, localSlurs: [[0, 2]], notes: [...eds('D4', 'C4'), n('B3', 'q'), n('REST', 'r4')] },
-  { measure: 7, localSlurs: [[0, 4]], notes: [n('G4', 'q', { tieStart: true }), ...s4('G4', 'A4', 'G4', 'F#4'), ...b2('G4', 'D5')] },
+  { measure: 7, localSlurs: [[0, 4]], notes: [n('G4', 'q', { tieStart: true }), ...es2('G4', 'A4', 'G4'), ...b2('F#4', 'C5')] },
   { measure: 8, localSlurs: [[0, 2]], notes: [...eds('G4', 'F#4'), n('E4', 'q'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 0, notes: [n('E5', 'qdd'), n('D#5', 's'), ...eds('E5', 'D5'), n('C5', 'q')] },
-  { measure: 10, slurEnd: 2, notes: [n('B4', 'q'), n('B4', 'q'), n('C#5', 'q')] },
-  { measure: 11, slurStart: 0, notes: [n('D5', 'qdd', { accidental: 'n' }), n('C#5', 's'), ...eds('D5', 'C5'), n('B4', 'q')] },
-  { measure: 12, slurEnd: 2, notes: [n('A4', 'q'), n('A4', 'q'), n('B4', 'q')] },
-  { measure: 13, slurStart: 0, notes: [n('Bb4', 'q', { tieStart: true }), ...eds('Bb4', 'A4'), ...s4('G4', 'F4', 'E4', 'D4')] },
-  { measure: 14, slurEnd: 1, notes: [n('C4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
-  { measure: 15, slurStart: 0, notes: [n('E4', 'q', { tieStart: true }), ...eds('E4', 'F4'), ...s4('D4', 'C4', 'B3', 'D4')] },
+  { measure: 9, slurStart: 0, notes: [n('E5', 'qdd'), n('D#5', 's'), ...eds('E5', 'D5')] },
+  { measure: 10, slurEnd: 1, notes: [n('E5', 'q'), n('B4', 'q'), ...b2('C5', 'D#5')] },
+  { measure: 11, slurStart: 0, notes: [n('Dn5', 'qdd'), n('C#5', 's'), ...eds('D5', 'C5')] },
+  { measure: 12, slurEnd: 1, notes: [n('D5', 'q'), n('A4', 'q'), ...b2('B4', 'C5')] },
+  { measure: 13, slurStart: 0, notes: [n('Bn4', 'q', { tieStart: true }), ...eds('B4', 'A4'), ...s4('G4', 'F4', 'E4', 'D4')] },
+  { measure: 14, slurEnd: 1, notes: [n('D4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'q', { tieStart: true }), ...eds('E4', 'F4'), ...s4('E4', 'D4', 'C4', 'B3')] },
   { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
@@ -2810,15 +2810,15 @@ export const POZZOLI_SERIE10_EX7_MEASURES = [
   { measure: 4, slurEnd: 0, notes: [n('G4', 'hd')] },
   { measure: 5, slurStart: 1, notes: [n('REST', 'r8'), ...b3('G4', 'A4', 'G4'), n('D5', 'q', { tieStart: true })] },
   { measure: 6, notes: [...b2('D5', 'G4'), ...b2('B4', 'G4'), n('F4', 'q', { tieStart: true })] },
-  { measure: 7, notes: [...b2('F4', 'E4'), ...b2('G4', 'F#4'), ...b2('G4', 'A4')] },
+  { measure: 7, notes: [...b2('F4', 'E4'), ...b2('F4', 'G4'), ...b2('A4', 'F#4')] },
   { measure: 8, slurEnd: 0, notes: [n('G4', 'hd')] },
   { measure: 9, slurStart: 1, notes: [n('REST', 'r8'), ...b3('C5', 'D5', 'C5'), n('E5', 'q', { tieStart: true })] },
   { measure: 10, slurEnd: 3, notes: [...b2('E5', 'A4'), n('B4', 'q'), n('C#5', 'q')] },
   { measure: 11, slurStart: 1, notes: [n('REST', 'r8'), ...b3('A4', 'B4', 'A4'), n('D5', 'q', { tieStart: true })] },
-  { measure: 12, slurEnd: 3, notes: [...b2('D5', 'G4'), n('A4', 'q'), n('Bn4', 'q')] },
+  { measure: 12, slurEnd: 3, notes: [...b2('D5', 'G4'), n('C5', 'q'), n('Bn4', 'q')] },
   { measure: 13, localSlurs: [[1, 4]], notes: [n('REST', 'r8'), ...b3('G4', 'A4', 'G4'), n('C5', 'q')] },
   { measure: 14, localSlurs: [[1, 4]], notes: [n('REST', 'r8'), ...b3('E4', 'F4', 'E4'), n('A4', 'q')] },
-  { measure: 15, slurStart: 1, notes: [n('REST', 'r8'), ...b3('D4', 'E4', 'F4'), n('G4', 'q')] },
+  { measure: 15, slurStart: 1, notes: [n('REST', 'r8'), ...b3('D4', 'E4', 'D4'), n('B3', 'q')] },
   { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
@@ -2835,12 +2835,12 @@ export const POZZOLI_SERIE10_EX8_MEASURES = [
   { measure: 7, slurStart: 0, notes: [n('A4', 'qdd'), n('B4', 's'), ...eds('C5', 'D5')] },
   { measure: 8, slurEnd: 1, notes: [n('C5', 'q'), n('B4', 'q'), n('REST', 'r4')] },
   { measure: 9, slurStart: 0, notes: [n('E5', 'hd', { tieStart: true })] },
-  { measure: 10, slurEnd: 8, notes: [...s4('E5', 'D5', 'C5', 'B4'), ...s4('A4', 'G#4', 'A4', 'F#4'), n('G4', 'q')] },
+  { measure: 10, slurEnd: 8, notes: [...s4('E5', 'D5', 'C5', 'B4'), ...s4('A4', 'G#4', 'F#4', 'G#4'), n('A4', 'q')] },
   { measure: 11, slurStart: 0, notes: [n('D5', 'hd', { tieStart: true })] },
   { measure: 12, slurEnd: 8, notes: [...s4('D5', 'C5', 'B4', 'A4'), ...s4('Gn4', 'F#4', 'E4', 'F#4'), n('G4', 'q')] },
   { measure: 13, slurStart: 0, notes: [n('G4', 'hd', { tieStart: true })] },
-  { measure: 14, slurEnd: 5, notes: [...b2('G4', 'E4'), ...b2('G4', 'Fn4'), n('D4', 'q')] },
-  { measure: 15, slurStart: 0, notes: [n('E4', 'qdd'), n('D4', 's'), ...eds('E4', 'F4')] },
+  { measure: 14, slurEnd: 5, notes: [...b2('G4', 'A4'), ...b2('E4', 'G4'), n('Fn4', 'q')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'qdd'), n('D4', 's'), ...eds('C4', 'B3')] },
   { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
@@ -2854,33 +2854,33 @@ export const POZZOLI_SERIE10_EX9_MEASURES = [
   { measure: 4, slurEnd: 4, notes: [...b2('Bb4', 'A4'), ...b2('F4', 'G4'), n('A4', 'h')] },
   { measure: 5, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'q'), n('G4', 'q'), n('F4', 'q', { tieStart: true })] },
   { measure: 6, notes: [...b2('F4', 'E4'), ...b2('C4', 'D4'), n('E4', 'q'), n('G4', 'q')] },
-  { measure: 7, localSlurs: [[0, 1]], notes: [n('D4', 'q'), n('G4', 'q'), n('F#4', 'q'), n('G4', 'q')] },
+  { measure: 7, localSlurs: [[0, 2]], notes: [n('D4', 'q'), n('G4', 'h'), n('F#4', 'q')] },
   { measure: 8, slurEnd: 1, notes: [n('G4', 'h', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('G4', 'q'), n('E5', 'h', { tieStart: true })] },
   { measure: 10, slurEnd: 4, notes: [...b2('E5', 'D#5'), ...b2('B4', 'C#5'), n('D5', 'h')] },
-  { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('D5', 'q'), n('B4', 'h', { tieStart: true })] },
-  { measure: 12, slurEnd: 4, notes: [...b2('B4', 'A4'), ...b2('G4', 'A4'), n('B4', 'h')] },
-  { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...b3('D5', 'C5', 'A4'), ...b2('G4', 'F4'), n('E4', 'q'), n('F#4', 'q')] },
-  { measure: 14, slurStart: 1, notes: [n('REST', 'r8'), ...b3('G4', 'A4', 'G4'), ...b4('Fn4', 'E4', 'F4', 'G4')] },
-  { measure: 15, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 16, notes: [n('REST', 'r4'), n('REST', 'r4'), n('REST', 'r4'), n('REST', 'r4')] }
+  { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('D5', 'q'), n('G4', 'q'), n('Cn5', 'q', { tieStart: true })] },
+  { measure: 12, slurEnd: 4, notes: [...b2('C5', 'B4'), ...b2('G4', 'A4'), n('B4', 'h')] },
+  { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), n('D5', 'e'), ...b2('E5', 'D5'), ...b2('A4', 'G4'), ...b2('F4', 'E4')] },
+  { measure: 14, slurEnd: 2, notes: [n('E4', 'h'), n('F4', 'q'), n('F#4', 'q')] },
+  { measure: 15, slurStart: 1, notes: [n('REST', 'r8'), n('G4', 'e'), ...b2('A4', 'G4'), ...b2('Fn4', 'E4'), ...b2('F4', 'D4')] },
+  { measure: 16, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
 /**
  * 10ª SÉRIE — EXERCÍCIO Nº 10 (4/4, 16 compassos)
  */
 export const POZZOLI_SERIE10_EX10_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('G4', 'h', { tieStart: true }), ...s4('G4', 'E4', 'F4', 'G4'), ...s2('A4', 'G4')] },
+  { measure: 1, slurStart: 0, notes: [n('G4', 'h', { tieStart: true }), ...s4('G4', 'E4', 'F4', 'G4'), ...b2('A4', 'G4')] },
   { measure: 2, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 3, slurStart: 0, notes: [n('G4', 'h', { tieStart: true }), ...s4('G4', 'E4', 'F4', 'G4'), ...s2('A4', 'G4')] },
+  { measure: 3, slurStart: 0, notes: [n('G4', 'h', { tieStart: true }), ...s4('G4', 'E4', 'F4', 'G4'), ...b2('A4', 'G4')] },
   { measure: 4, slurEnd: 1, notes: [n('B4', 'h', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 5, slurStart: 0, notes: [n('G4', 'h', { tieStart: true }), ...s4('G4', 'A4', 'G4', 'F4'), ...s4('E4', 'F4', 'G4', 'A4')] },
   { measure: 6, slurEnd: 1, notes: [n('D5', 'hd'), n('E5', 'q')] },
   { measure: 7, slurStart: 0, notes: [...b2('D5', 'C5'), n('G4', 'q', { tieStart: true }), ...b2('G4', 'A4'), ...b2('G4', 'F#4')] },
   { measure: 8, slurEnd: 1, notes: [n('G4', 'h', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('C5', 'q', { tieStart: true }), ...s4('C5', 'G4', 'A4', 'B4'), ...s2('C5', 'G4')] },
+  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('C5', 'q', { tieStart: true }), ...s4('C5', 'G4', 'A4', 'B4'), ...b2('C5', 'G4')] },
   { measure: 10, slurEnd: 1, notes: [n('D5', 'h', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('D5', 'q', { tieStart: true }), ...s4('D5', 'C5', 'B4', 'C5'), ...s2('D5', 'B4')] },
+  { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('D5', 'q', { tieStart: true }), ...s4('D5', 'C5', 'B4', 'C5'), ...b2('D5', 'B4')] },
   { measure: 12, slurEnd: 1, notes: [n('E5', 'h', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 13, slurStart: 0, notes: [...b2('E5', 'B4'), n('G#4', 'q', { tieStart: true }), ...b2('G#4', 'A4'), ...b2('B4', 'A4')] },
   { measure: 14, slurEnd: 1, notes: [n('B4', 'h'), n('A4', 'q'), n('REST', 'r4')] },
@@ -2899,7 +2899,7 @@ export const POZZOLI_SERIE10_EX11_MEASURES = [
   { measure: 5, slurStart: 0, notes: [n('E4', 'qd'), ...s2('D#4', 'E4'), n('F#4', 'qd'), ...s2('E4', 'F#4')] },
   { measure: 6, slurEnd: 1, notes: [n('G4', 'qd'), n('C5', 'e'), n('B4', 'q'), n('REST', 'r4')] },
   { measure: 7, slurStart: 0, notes: [n('G4', 'qd'), ...s2('F#4', 'G4'), n('A4', 'qd'), ...s2('G4', 'A4')] },
-  { measure: 8, slurEnd: 2, notes: [n('B4', 'h'), ...b2('C5', 'D5')] },
+  { measure: 8, slurEnd: 2, notes: [n('B4', 'hd'), ...b2('C5', 'D5')] },
   { measure: 9, slurStart: 0, notes: [n('E5', 'qd'), ...s2('D5', 'C5'), n('D5', 'qd'), ...s2('C5', 'B4')] },
   { measure: 10, slurEnd: 1, notes: [n('C5', 'h', { tieStart: true }), n('C5', 'q', { tieStop: true }), n('REST', 'r4')] },
   { measure: 11, slurStart: 0, notes: [n('B4', 'qd'), ...s2('A4', 'G#4'), n('B4', 'qd'), ...s2('A4', 'G#4')] },
@@ -2928,7 +2928,7 @@ export const POZZOLI_SERIE10_EX12_MEASURES = [
   { measure: 12, slurEnd: 1, notes: [n('D4', 'h', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 13, slurStart: 0, notes: [n('D4', 'h', { tieStart: true }), ...b4('D4', 'F#4', 'G4', 'G#4')] },
   { measure: 14, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 15, slurStart: 0, notes: [n('Gn4', 'h', { tieStart: true }), ...b4('G4', 'A4', 'D5', 'C5')] },
+  { measure: 15, slurStart: 0, notes: [n('Gn4', 'h', { tieStart: true }), ...b4('G4', 'A4', 'D5', 'B4')] },
   { measure: 16, slurEnd: 1, notes: [n('C5', 'h', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] }
 ];
 
@@ -2948,8 +2948,8 @@ export const POZZOLI_SERIE10_EX13_MEASURES = [
   { measure: 10, slurEnd: 1, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 11, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), ...b3('G4', 'Fn4', 'D5')] },
   { measure: 12, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [...b3('C5', 'Bb4', 'A4'), ...b3('G4', 'F4', 'E4')] },
-  { measure: 14, notes: [n('D4', 'qd', { tieStart: true }), ...b3('D4', 'A4', 'G4')] },
+  { measure: 13, slurStart: 0, notes: [...b3('C5', 'Bb4', 'A4'), ...b3('G4', 'F4', 'E4', { tieStart: true })] },
+  { measure: 14, slurEnd: 3, notes: [...b3('E4', 'F4', 'G4', { tieStopIdx: 0 }), n('C5', 'qd')] },
   { measure: 15, notes: [...b3('C5', 'Bn4', 'A4'), ...b3('G4', 'F4', 'D4')] },
   { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
@@ -2967,7 +2967,7 @@ export const POZZOLI_SERIE10_EX14_MEASURES = [
   { measure: 7, notes: [n('D4', 'qd'), n('G4', 'qd', { tieStart: true })] },
   { measure: 8, slurEnd: 1, notes: [n('G4', 'qd', { tieStop: true }), n('F#4', 'qd')] },
   { measure: 9, slurStart: 3, notes: [n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('G4', 'qd', { tieStart: true })] },
-  { measure: 10, notes: [...b3('G4', 'F#4', 'G4'), ...b3('A4', 'G4', 'F4')] },
+  { measure: 10, notes: [...b3('G4', 'F#4', 'G4'), ...b3('A4', 'G4', 'E4')] },
   { measure: 11, slurEnd: 0, notes: [n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('G4', 'qd', { tieStart: true })] },
   { measure: 12, notes: [...b3('G4', 'F#4', 'G4'), ...b3('A4', 'G4', 'Fn4')] },
   { measure: 13, slurEnd: 0, notes: [n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('C5', 'qd', { tieStart: true })] },
@@ -3002,22 +3002,22 @@ export const POZZOLI_SERIE10_EX15_MEASURES = [
  * 10ª SÉRIE — EXERCÍCIO Nº 16 (6/8, 16 compassos)
  */
 export const POZZOLI_SERIE10_EX16_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), ...s2('D4', 'C4')] },
+  { measure: 1, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'q', { tieStop: true }), ...s2('D4', 'C4')] },
   { measure: 2, slurEnd: 1, notes: [n('E4', 'qd'), n('D4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 3, slurStart: 1, notes: [n('REST', 'r8'), ...b2('C4', 'D4'), ...b3('E4', 'F4', 'F#4')] },
   { measure: 4, slurEnd: 1, notes: [n('A4', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), ...s2('F#4', 'E4')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), ...s2('F#4', 'E4')] },
   { measure: 6, slurEnd: 1, notes: [n('G4', 'qd'), n('F#4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 7, slurStart: 1, notes: [n('REST', 'r8'), ...b2('E4', 'F#4'), ...b3('G4', 'C5', 'B4')] },
   { measure: 8, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...s4('C5', 'B4', 'A4', 'G#4'), n('A4', 'e')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), ...s2('B4', 'A4'), ...s2('G#4', 'A4')] },
   { measure: 10, slurEnd: 1, notes: [n('C5', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('B4', 'qd', { tieStart: true }), ...s4('B4', 'A4', 'G#4', 'F#4'), n('G#4', 'e')] },
+  { measure: 11, slurStart: 0, notes: [n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), ...s2('A4', 'G#4'), ...s2('F#4', 'G#4')] },
   { measure: 12, slurEnd: 1, notes: [n('B4', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...b2('A4', 'B4'), ...b3('C#5', 'A4', 'B4')] },
+  { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...b2('A4', 'B4'), ...b3('C#5', 'B4', 'A4')] },
   { measure: 14, slurEnd: 1, notes: [n('D5', 'qd'), n('C5', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 15, slurStart: 1, notes: [n('REST', 'r8'), ...b2('E4', 'F4'), ...b3('G4', 'F4', 'D4')] },
-  { measure: 16, slurEnd: 1, notes: [n('C4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
+  { measure: 15, slurStart: 1, notes: [n('REST', 'r8'), ...b2('F4', 'G4'), ...b3('A4', 'G4', 'F4')] },
+  { measure: 16, slurEnd: 1, notes: [n('B4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -3025,8 +3025,8 @@ export const POZZOLI_SERIE10_EX16_MEASURES = [
  */
 export const POZZOLI_SERIE10_EX17_MEASURES = [
   { measure: 1, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('G#4', 'e')] },
-  { measure: 2, slurEnd: 2, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'qd', { tieStop: true }), n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true })] },
-  { measure: 3, slurStart: 0, notes: [n('A4', 'e'), n('Gn4', 'q'), n('F4', 'e'), n('E4', 'q'), n('D4', 'e'), n('C4', 'q')] },
+  { measure: 2, slurEnd: 1, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'qd', { tieStop: true })] },
+  { measure: 3, slurStart: 0, notes: [n('A4', 'q'), n('Gn4', 'e'), n('F4', 'q'), n('E4', 'e'), n('D4', 'q'), n('C4', 'e')] },
   { measure: 4, slurEnd: 1, notes: [n('B3', 'qd', { tieStart: true }), n('B3', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 5, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('A4', 'e')] },
   { measure: 6, slurEnd: 2, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'qd', { tieStop: true }), n('B4', 'q'), n('G#4', 'e')] },
@@ -3035,11 +3035,11 @@ export const POZZOLI_SERIE10_EX17_MEASURES = [
   { measure: 9, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'qd'), n('C#5', 'qd')] },
   { measure: 10, slurEnd: 2, notes: [n('D5', 'qd'), n('A4', 'hd', { tieStart: true })] },
   { measure: 11, slurStart: 0, notes: [n('A4', 'q', { tieStop: true }), n('G#4', 'e'), n('A4', 'qd'), n('B4', 'qd')] },
-  { measure: 12, slurEnd: 0, notes: [n('C5', 'hd', { tieStart: true }), n('Gn4', 'qd')] },
+  { measure: 12, slurEnd: 1, notes: [n('C5', 'qd'), n('Gn4', 'hd')] },
   { measure: 13, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'qd', { tieStart: true }), ...b3('E4', 'F4', 'F#4')] },
   { measure: 14, notes: [n('A4', 'qd'), n('G4', 'hd', { tieStart: true })] },
-  { measure: 15, slurStart: 0, notes: [n('G4', 'q', { tieStop: true }), n('Fn4', 'e'), n('E4', 'q'), n('B3', 'e'), n('D4', 'q'), n('C4', 'e')] },
-  { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
+  { measure: 15, slurStart: 0, notes: [n('G4', 'q', { tieStop: true }), n('Fn4', 'e'), n('E4', 'qd'), n('A3', 'q'), n('B3', 'e')] },
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'hd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -3047,39 +3047,39 @@ export const POZZOLI_SERIE10_EX17_MEASURES = [
  */
 export const POZZOLI_SERIE10_EX18_MEASURES = [
   { measure: 1, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'q', { tieStop: true }), n('D4', 'e'), n('E4', 'q'), n('A4', 'e')] },
-  { measure: 2, slurEnd: 1, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 2, slurEnd: 2, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'qd', { tieStop: true, tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 3, slurStart: 0, notes: [n('C4', 'qd', { tieStart: true }), ...b3('C4', 'B3', 'C4'), ...b3('D4', 'C4', 'D4')] },
   { measure: 4, slurEnd: 1, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('F#4', 'e'), n('G4', 'q'), n('B4', 'e')] },
-  { measure: 6, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('F#4', 'e'), n('A4', 'q'), n('B4', 'e')] },
+  { measure: 6, slurEnd: 2, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'qd', { tieStop: true, tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 7, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), ...b3('G4', 'F#4', 'E4'), ...b3('D4', 'C5', 'B4')] },
   { measure: 8, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 9, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'q', { tieStop: true }), n('B4', 'e'), n('C5', 'q'), n('E5', 'e')] },
-  { measure: 10, slurEnd: 0, notes: [n('D5', 'hd'), n('C#5', 'qd')] },
+  { measure: 10, slurEnd: 1, notes: [n('D5', 'qd'), n('C#5', 'hd')] },
   { measure: 11, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), ...b3('D5', 'Cn5', 'B4'), ...b3('A4', 'G4', 'F#4')] },
-  { measure: 12, slurEnd: 1, notes: [n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 12, slurEnd: 2, notes: [n('B4', 'qd', { tieStart: true }), n('B4', 'qd', { tieStop: true, tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 13, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...b3('C5', 'Bb4', 'A4'), ...b3('G4', 'F4', 'E4')] },
-  { measure: 14, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'qd', { tieStop: true }), n('D4', 'qd')] },
+  { measure: 14, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'qd', { tieStop: true, tieStart: true }), n('G4', 'q', { tieStop: true }), n('D4', 'e')] },
   { measure: 15, notes: [n('G4', 'qd', { tieStart: true }), ...b3('G4', 'F4', 'E4'), ...b3('D4', 'C4', 'Bn3')] },
-  { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'hd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
  * 10ª SÉRIE — EXERCÍCIO Nº 19 (9/8, 16 compassos)
  */
 export const POZZOLI_SERIE10_EX19_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('G4', 'qd'), n('C5', 'q'), n('G4', 'e'), n('G4', 'qd', { tieStart: true })] },
-  { measure: 2, slurEnd: 1, notes: [n('G4', 'qd', { tieStop: true }), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('G4', 'qd'), n('D5', 'q'), n('G4', 'e'), n('G4', 'qd', { tieStart: true })] },
-  { measure: 4, slurEnd: 1, notes: [n('G4', 'qd', { tieStop: true }), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('G4', 'qd'), n('G#4', 'qd'), n('A4', 'qd')] },
-  { measure: 6, slurEnd: 1, notes: [n('Gn4', 'qd', { tieStart: true }), n('G4', 'qd', { tieStop: true }), n('F#4', 'qd')] },
-  { measure: 7, slurStart: 0, notes: [...b3('G4', 'F#4', 'E4'), ...b3('D#4', 'E4', 'F#4')] },
-  { measure: 8, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('E4', 'qd'), n('C5', 'q'), n('G4', 'e')] },
-  { measure: 10, slurEnd: 1, notes: [n('G#4', 'qd', { tieStart: true }), n('G#4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('G#4', 'qd'), n('D5', 'q'), n('A4', 'e')] },
-  { measure: 12, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 1, slurStart: 0, notes: [n('G4', 'hd'), n('C5', 'q'), n('G4', 'e')] },
+  { measure: 2, slurEnd: 2, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'qd', { tieStop: true, tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('G4', 'hd'), n('D5', 'q'), n('G4', 'e')] },
+  { measure: 4, slurEnd: 2, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'qd', { tieStop: true, tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'hd'), n('G#4', 'qd')] },
+  { measure: 6, slurEnd: 1, notes: [n('Gn4', 'hd'), n('F#4', 'qd')] },
+  { measure: 7, slurStart: 0, notes: [n('G#4', 'qd', { tieStart: true }), ...b3('G#4', 'F#4', 'E4', { tieStopIdx: 0 }), ...b3('D#4', 'E4', 'F#4')] },
+  { measure: 8, slurEnd: 1, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('G4', 'hd'), n('C5', 'q'), n('G4', 'e')] },
+  { measure: 10, slurEnd: 1, notes: [n('G#4', 'hd', { tieStart: true }), n('G#4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('G#4', 'hd'), n('D5', 'q'), n('A4', 'e')] },
+  { measure: 12, slurEnd: 1, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 13, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'q', { tieStop: true }), n('Bb4', 'e'), ...b3('A4', 'G4', 'A4')] },
   { measure: 14, slurEnd: 1, notes: [n('Bb4', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 15, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), ...b3('G4', 'F4', 'E4'), ...b3('F4', 'E4', 'D4')] },
@@ -3090,21 +3090,21 @@ export const POZZOLI_SERIE10_EX19_MEASURES = [
  * 10ª SÉRIE — EXERCÍCIO Nº 20 (9/8, 16 compassos)
  */
 export const POZZOLI_SERIE10_EX20_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('C4', 'qd', { tieStart: true }), ...b3('C4', 'B3', 'C4')] },
+  { measure: 1, slurStart: 0, notes: [n('C4', 'hd', { tieStart: true }), ...b3('C4', 'B3', 'C4')] },
   { measure: 2, slurEnd: 2, notes: [n('G4', 'qd'), n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 3, slurStart: 0, notes: [...b3('C4', 'B3', 'C4'), ...b3('D4', 'E4', 'F4'), ...b3('G4', 'A4', 'B4')] },
   { measure: 4, slurEnd: 2, notes: [n('C5', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), ...b3('A4', 'G#4', 'A4')] },
+  { measure: 5, slurStart: 0, notes: [n('A4', 'hd', { tieStart: true }), ...b3('A4', 'G#4', 'A4')] },
   { measure: 6, slurEnd: 2, notes: [n('C5', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 7, slurStart: 0, notes: [...b3('A4', 'G#4', 'A4'), ...b3('B4', 'C5', 'A4'), ...b3('B4', 'C5', 'D5')] },
   { measure: 8, slurEnd: 0, notes: [n('E5', 'hd', { tieStart: true }), n('E5', 'qd', { tieStop: true })] },
-  { measure: 9, slurStart: 0, notes: [n('D4', 'qd', { tieStart: true }), ...b3('D4', 'C#4', 'D4')] },
+  { measure: 9, slurStart: 0, notes: [n('D4', 'hd', { tieStart: true }), ...b3('D4', 'C#4', 'D4')] },
   { measure: 10, slurEnd: 2, notes: [n('A4', 'qd'), n('F#4', 'qd', { tieStart: true }), n('F#4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 11, slurStart: 0, notes: [...b3('D4', 'C#4', 'D4'), ...b3('E4', 'F#4', 'G#4'), ...b3('A4', 'B4', 'C5')] },
   { measure: 12, slurEnd: 0, notes: [n('D5', 'hd', { tieStart: true }), n('D5', 'qd', { tieStop: true })] },
   { measure: 13, slurStart: 0, notes: [n('D5', 'qd'), ...b3('C5', 'Bb4', 'A4'), n('G4', 'q'), n('F4', 'e')] },
   { measure: 14, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'qd', { tieStop: true })] },
-  { measure: 15, notes: [...b3('G4', 'F4', 'E4'), ...b3('D4', 'C4', 'B3'), ...b3('C4', 'Bn3', 'D4')] },
+  { measure: 15, notes: [...b3('G4', 'F4', 'E4', { tieStart: true }), ...b3('E4', 'F4', 'D4', { tieStopIdx: 0, tieStart: true }), ...b3('D4', 'C4', 'Bn3', { tieStopIdx: 0 })] },
   { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
@@ -3116,16 +3116,16 @@ export const POZZOLI_SERIE10_EX21_MEASURES = [
   { measure: 2, slurEnd: 3, notes: [n('C4', 'qd', { tieStop: true }), n('C#4', 'qd'), n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 3, slurStart: 0, notes: [n('D4', 'wd', { tieStart: true })] },
   { measure: 4, slurEnd: 3, notes: [n('D4', 'qd', { tieStop: true }), n('D#4', 'qd'), n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), ...b3('E4', 'F#4', 'G#4'), n('A4', 'qd')] },
-  { measure: 6, slurEnd: 2, notes: [n('C5', 'qd'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 7, slurStart: 0, notes: [...b3('E4', 'F#4', 'G#4'), ...b3('A4', 'B4', 'C5'), ...b3('D5', 'C5', 'B4'), ...b3('A4', 'E4', 'F4')] },
+  { measure: 5, slurStart: 0, notes: [n('E4', 'hd', { tieStart: true }), ...b3('E4', 'F#4', 'G4'), ...b3('A4', 'B4', 'C5')] },
+  { measure: 6, slurEnd: 2, notes: [n('C5', 'qd'), n('D5', 'hd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 0, notes: [...b3('E4', 'F4', 'G#4'), ...b3('A4', 'B4', 'C5'), ...b3('D5', 'C5', 'B4'), ...b3('A4', 'E4', 'F4')] },
   { measure: 8, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 9, slurStart: 0, notes: [n('G4', 'wd', { tieStart: true })] },
   { measure: 10, slurEnd: 3, notes: [n('G4', 'qd', { tieStop: true }), n('F#4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 11, slurStart: 0, notes: [n('G4', 'wd', { tieStart: true })] },
-  { measure: 12, slurEnd: 2, notes: [n('A4', 'qd'), n('B4', 'qd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 12, slurEnd: 3, notes: [n('G4', 'qd', { tieStop: true }), n('B4', 'qd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 13, localSlurs: [[0, 3]], notes: [n('C5', 'qd'), n('B4', 'qd'), n('Bb4', 'qd'), n('A4', 'qd')] },
-  { measure: 14, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'qd', { tieStop: true }), n('D5', 'qd')] },
+  { measure: 14, slurStart: 0, notes: [n('C#5', 'qd'), n('D5', 'hd', { tieStart: true }), n('D5', 'qd', { tieStop: true })] },
   { measure: 15, notes: [...b3('E5', 'D5', 'C5'), ...b3('B4', 'A4', 'G4'), ...b3('F4', 'E4', 'D4'), ...b3('E4', 'F4', 'D4')] },
   { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
@@ -3135,65 +3135,65 @@ export const POZZOLI_SERIE10_EX21_MEASURES = [
  */
 export const POZZOLI_SERIE10_EX22_MEASURES = [
   { measure: 1, slurStart: 0, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'q', { tieStop: true }), n('D4', 'e'), n('E4', 'q'), n('F4', 'e'), n('G4', 'q'), n('A4', 'e')] },
-  { measure: 2, slurEnd: 1, notes: [n('B4', 'qd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 2, slurEnd: 2, notes: [n('B4', 'hd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 3, slurStart: 1, notes: [n('REST', 'r4'), n('REST', 'r8'), n('C4', 'q'), n('D4', 'e'), n('E4', 'q'), n('F4', 'e'), n('G4', 'q'), n('A4', 'e')] },
-  { measure: 4, slurEnd: 1, notes: [n('Bb4', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('D4', 'qd', { tieStart: true }), n('D4', 'q', { tieStop: true }), n('E4', 'e'), n('F4', 'q'), n('G4', 'e'), n('A4', 'q'), n('B4', 'e')] },
-  { measure: 6, slurEnd: 1, notes: [n('C#5', 'qd'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 4, slurEnd: 2, notes: [n('Bb4', 'hd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('D4', 'qd', { tieStart: true }), n('D4', 'q', { tieStop: true }), n('E4', 'e'), n('F4', 'q'), n('G4', 'e'), n('A4', 'q'), n('Bn4', 'e')] },
+  { measure: 6, slurEnd: 2, notes: [n('C#5', 'hd'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 7, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('D4', 'q'), n('E4', 'e'), n('F#4', 'q'), n('G4', 'e'), n('A4', 'q'), n('B4', 'e')] },
   { measure: 8, slurEnd: 0, notes: [n('C5', 'qd'), n('B4', 'qd'), n('A4', 'hd')] },
   { measure: 9, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'q'), n('E5', 'e')] },
-  { measure: 10, slurEnd: 2, notes: [n('F#5', 'qd'), n('G5', 'qd', { tieStart: true }), n('G5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 10, slurEnd: 2, notes: [n('F#5', 'hd'), n('G5', 'qd', { tieStart: true }), n('G5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 11, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'q'), n('E5', 'e')] },
   { measure: 12, slurEnd: 0, notes: [n('Fn5', 'qd'), n('E5', 'qd'), n('D5', 'hd')] },
-  { measure: 13, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...b3('C5', 'B4', 'A4'), n('G#4', 'qd')] },
-  { measure: 14, slurEnd: 1, notes: [n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...b3('C5', 'B4', 'A4'), n('Gn4', 'qd')] },
-  { measure: 16, slurEnd: 2, notes: [n('B4', 'qd'), n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
+  { measure: 13, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...b3('C5', 'B4', 'A4'), n('G#4', 'qd', { tieStart: true }), ...b3('G#4', 'A4', 'B4')] },
+  { measure: 14, slurEnd: 1, notes: [n('B4', 'hd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 15, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...b3('C5', 'B4', 'A4'), n('Gn4', 'qd', { tieStart: true }), ...b3('G4', 'A4', 'B4')] },
+  { measure: 16, slurEnd: 2, notes: [n('C5', 'qd'), n('C4', 'hd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
  * 10ª SÉRIE — EXERCÍCIO Nº 23 (12/8, 16 compassos)
  */
 export const POZZOLI_SERIE10_EX23_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'qd', { tieStop: true }), n('A4', 'qd'), n('E4', 'qd')] },
-  { measure: 2, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), ...b3('G4', 'C4', 'D4'), n('E4', 'qd', { tieStart: true }), n('E4', 'qd', { tieStop: true })] },
-  { measure: 4, slurEnd: 1, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, localSlurs: [[0, 4]], notes: [n('D4', 'qd', { tieStart: true }), ...b3('D4', 'E4', 'F4'), n('G4', 'hd')] },
-  { measure: 6, localSlurs: [[0, 4]], notes: [n('E4', 'qd', { tieStart: true }), ...b3('E4', 'F4', 'G4'), n('A4', 'hd')] },
-  { measure: 7, localSlurs: [[0, 4]], notes: [n('F#4', 'qd', { tieStart: true }), ...b3('F#4', 'G4', 'A4'), n('B4', 'qd'), n('D#4', 'qd')] },
-  { measure: 8, localSlurs: [[0, 1]], notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('B4', 'qd', { tieStart: true }), ...b3('B4', 'F#4', 'G#4'), n('C5', 'qd', { tieStart: true }), ...b3('C5', 'D5', 'C5')] },
-  { measure: 10, slurEnd: 1, notes: [n('B4', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), ...b3('A4', 'E#4', 'F#4'), n('A4', 'qd', { tieStart: true }), ...b3('A4', 'C5', 'B4')] },
-  { measure: 12, slurEnd: 1, notes: [n('A4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [n('G4', 'q'), n('F#4', 'e'), n('Fn4', 'q'), n('E4', 'e'), n('D4', 'qd'), n('A4', 'qd')] },
-  { measure: 14, slurEnd: 2, notes: [n('G4', 'qd'), n('G4', 'qd'), n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), ...b3('E4', 'D4', 'C4'), n('E4', 'qd', { tieStart: true }), ...b3('E4', 'F4', 'G4')] },
-  { measure: 16, slurEnd: 1, notes: [n('D4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
+  { measure: 1, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), ...b3('G4', 'E4', 'G4'), n('A4', 'qd', { tieStart: true }), ...b3('A4', 'E5', 'C5')] },
+  { measure: 2, slurEnd: 1, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('F4', 'qd', { tieStart: true }), ...b3('F4', 'D4', 'F4'), n('G4', 'qd', { tieStart: true }), ...b3('G4', 'D5', 'B4')] },
+  { measure: 4, slurEnd: 1, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 5, localSlurs: [[0, 4]], notes: [n('E4', 'qd', { tieStart: true }), ...b3('E4', 'F4', 'G4'), n('A4', 'hd')] },
+  { measure: 6, localSlurs: [[0, 4]], notes: [n('F4', 'qd', { tieStart: true }), ...b3('F4', 'G4', 'A4'), n('B4', 'hd')] },
+  { measure: 7, localSlurs: [[0, 4]], notes: [n('F#4', 'qd', { tieStart: true }), ...b3('F#4', 'G4', 'A4'), n('C5', 'qd'), n('D#4', 'qd')] },
+  { measure: 8, localSlurs: [[0, 1]], notes: [n('D#4', 'hd', { tieStart: true }), n('D#4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('B4', 'qd', { tieStart: true }), ...b3('B4', 'G#4', 'A4'), n('B4', 'qd', { tieStart: true }), ...b3('B4', 'E5', 'D5')] },
+  { measure: 10, slurEnd: 1, notes: [n('C5', 'hd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), ...b3('A4', 'F#4', 'G4'), n('A4', 'qd', { tieStart: true }), ...b3('A4', 'D5', 'C5')] },
+  { measure: 12, slurEnd: 2, notes: [n('B4', 'hd', { tieStart: true }), n('B4', 'qd', { tieStop: true, tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('G4', 'q'), n('G#4', 'e'), n('Gn4', 'q'), n('F4', 'e'), n('E4', 'qd'), n('A4', 'qd')] },
+  { measure: 14, slurEnd: 3, notes: [n('G4', 'qd'), n('G4', 'qd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), ...b3('E4', 'D4', 'C4'), n('E4', 'qd', { tieStart: true }), ...b3('E4', 'F4', 'D4')] },
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'hd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
 /**
  * 10ª SÉRIE — EXERCÍCIO Nº 24 (12/8, 16 compassos)
  */
 export const POZZOLI_SERIE10_EX24_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('C4', 'qd', { tieStart: true }), ...b3('C4', 'B3', 'C4'), ...b3('D4', 'E4', 'F4')] },
-  { measure: 2, slurEnd: 1, notes: [n('G4', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), ...b3('A4', 'G#4', 'A4'), ...b3('B4', 'C5', 'D5')] },
-  { measure: 4, slurEnd: 1, notes: [n('C5', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('C5', 'q'), n('B4', 'e'), n('A4', 'q'), n('G#4', 'e')] },
+  { measure: 1, slurStart: 0, notes: [n('C4', 'hd', { tieStart: true }), ...b3('C4', 'B3', 'C4'), ...b3('D4', 'E4', 'F4')] },
+  { measure: 2, slurEnd: 1, notes: [n('G4', 'hd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('A4', 'hd', { tieStart: true }), ...b3('A4', 'G#4', 'A4'), ...b3('B4', 'C5', 'D5')] },
+  { measure: 4, slurEnd: 1, notes: [n('C5', 'hd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('D5', 'hd', { tieStart: true }), n('D5', 'q', { tieStop: true }), n('Cn5', 'e'), n('A4', 'q'), n('G#4', 'e')] },
   { measure: 6, slurEnd: 3, notes: [n('A4', 'qd'), n('E4', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 7, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('Bb4', 'q'), n('A4', 'e'), n('G4', 'q'), n('F4', 'e')] },
-  { measure: 8, slurEnd: 2, notes: [n('E4', 'qd'), n('C#4', 'qd', { tieStart: true }), n('C#4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('D4', 'qd', { tieStart: true }), ...b3('D4', 'C#4', 'D4'), ...b3('E4', 'F4', 'G4')] },
-  { measure: 10, slurEnd: 1, notes: [n('A4', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('D4', 'qd', { tieStart: true }), ...b3('D4', 'E4', 'F4'), ...b3('G4', 'A4', 'Bb4')] },
-  { measure: 12, slurEnd: 1, notes: [n('A4', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('Bn4', 'q'), n('A4', 'e'), n('G4', 'q'), n('F4', 'e')] },
+  { measure: 7, slurStart: 0, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'q', { tieStop: true }), n('Bb4', 'e'), n('G4', 'q'), n('F4', 'e')] },
+  { measure: 8, slurEnd: 2, notes: [n('E4', 'hd'), n('C#4', 'qd', { tieStart: true }), n('C#4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('D4', 'hd', { tieStart: true }), ...b3('D4', 'C#4', 'D4'), ...b3('E4', 'F4', 'G4')] },
+  { measure: 10, slurEnd: 1, notes: [n('A4', 'hd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('D4', 'hd', { tieStart: true }), ...b3('D4', 'E4', 'F4'), ...b3('G4', 'A4', 'Bb4')] },
+  { measure: 12, slurEnd: 1, notes: [n('A4', 'hd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('C5', 'hd', { tieStart: true }), n('C5', 'q', { tieStop: true }), n('Bn4', 'e'), n('G4', 'q'), n('F4', 'e')] },
   { measure: 14, slurEnd: 3, notes: [n('G4', 'qd'), n('A4', 'qd'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [n('F4', 'qd', { tieStart: true }), ...b3('F4', 'E4', 'D4'), ...b3('E4', 'D4', 'B3')] },
-  { measure: 16, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
+  { measure: 15, slurStart: 0, notes: [n('F4', 'hd', { tieStart: true }), ...b3('F4', 'E4', 'D4'), ...b3('D4', 'C4', 'B3')] },
+  { measure: 16, slurEnd: 1, notes: [n('C4', 'hd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
 /**
@@ -3205,8 +3205,8 @@ export const POZZOLI_SERIE11_EX1_MEASURES = [
   { measure: 3, slurStart: 0, notes: [n('A4', 'h', { tieStart: true })] },
   { measure: 4, slurEnd: 2, notes: [n('A4', 'e', { tieStop: true }), n('B4', 'e'), n('C5', 'q')] },
   { measure: 5, slurStart: 1, notes: [n('REST', 'r8'), ...b3('E4', 'F#4', 'G#4')] },
-  { measure: 6, notes: [...b2('A4', 'B4'), n('E5', 'q', { tieStart: true })] },
-  { measure: 7, slurEnd: 0, notes: [n('E5', 'e', { tieStop: true }), n('D#5', 'q')] },
+  { measure: 6, notes: [...b2('A4', 'B4'), n('E5', 'q')] },
+  { measure: 7, slurEnd: 0, notes: [n('D#5', 'h')] },
   { measure: 8, localSlurs: [[0, 1]], notes: [n('E5', 'q', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8')] },
   { measure: 9, slurStart: 0, notes: [n('A4', 'h', { tieStart: true })] },
   { measure: 10, slurEnd: 2, notes: [n('A4', 'e', { tieStop: true }), n('Bb4', 'e'), n('A4', 'q')] },
@@ -3215,7 +3215,7 @@ export const POZZOLI_SERIE11_EX1_MEASURES = [
   { measure: 13, slurEnd: 1, notes: [n('E4', 'e'), n('REST', 'r8'), n('C5', 'q', { tieStart: true })] },
   { measure: 14, slurEnd: 3, notes: [...b2('C5', 'B4'), ...b2('A4', 'G4')] },
   { measure: 15, slurStart: 0, notes: [n('G#4', 'h', { tieStart: true })] },
-  { measure: 16, slurEnd: 1, notes: [n('G#4', 'e', { tieStop: true }), n('A4', 'e'), n('A4', 'e'), n('REST', 'r8')] }
+  { measure: 16, slurEnd: 1, notes: [n('G#4', 'e', { beam: 'start', tieStop: true }), n('B4', 'e', { beam: 'end' }), n('A4', 'e'), n('REST', 'r8')] }
 ];
 
 /**
@@ -3230,8 +3230,8 @@ export const POZZOLI_SERIE11_EX2_MEASURES = [
   { measure: 6, notes: [...eds('A4', 'B4'), n('Gn4', 'q', { tieStart: true })] },
   { measure: 7, notes: [...b2('G4', 'F#4'), ...b2('G4', 'E#4')] },
   { measure: 8, slurEnd: 1, notes: [n('F#4', 'q', { tieStart: true }), n('F#4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('F4', 'q', { tieStart: true })] },
-  { measure: 10, slurEnd: 2, notes: [...eds('F4', 'G#4'), n('A4', 'e'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('E4', 'q', { tieStart: true })] },
+  { measure: 10, slurEnd: 2, notes: [n('E4', 'ed', { beam: 'start', tieStop: true }), n('F#4', 's', { beam: 'end' }), n('G#4', 'e'), n('REST', 'r8')] },
   { measure: 11, slurStart: 1, notes: [n('REST', 'r8'), ...b3('E4', 'F#4', 'G#4')] },
   { measure: 12, slurEnd: 1, notes: [n('B4', 'q'), n('A4', 'e'), n('REST', 'r8')] },
   { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...b3('A4', 'B4', 'C#5')] },
@@ -3257,7 +3257,7 @@ export const POZZOLI_SERIE11_EX3_MEASURES = [
   { measure: 11, slurStart: 1, notes: [n('REST', 'r8'), ...s2('D4', 'E4'), n('F#4', 'q', { tieStart: true })] },
   { measure: 12, slurEnd: 2, notes: [...b2('F#4', 'C5'), n('Bn4', 'q')] },
   { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...s2('E4', 'F#4'), n('G#4', 'q', { tieStart: true })] },
-  { measure: 14, notes: [...b2('A4', 'B4'), n('C5', 'q', { tieStart: true })] },
+  { measure: 14, notes: [n('G#4', 'ed', { beam: 'start', tieStop: true }), n('B4', 's', { beam: 'end' }), n('C5', 'q', { tieStart: true })] },
   { measure: 15, notes: [...b2('C5', 'B4'), ...b2('A4', 'G#4')] },
   { measure: 16, slurEnd: 1, notes: [n('E4', 'q'), n('A3', 'e'), n('REST', 'r8')] }
 ];
@@ -3277,10 +3277,10 @@ export const POZZOLI_SERIE11_EX4_MEASURES = [
   { measure: 9, localSlurs: [[1, 3]], notes: [n('REST', 'r8'), ...b3('E4', 'Fn4', 'E4')] },
   { measure: 10, localSlurs: [[0, 1]], notes: [n('A4', 'q'), n('G#4', 'q', { tieStart: true })] },
   { measure: 11, slurStart: 0, notes: [...b2('G#4', 'A4'), n('B4', 'e'), n('C#5', 'e')] },
-  { measure: 12, slurEnd: 2, notes: [n('D5', 'q', { tieStart: true }), ...s2('D5', 'E5'), n('D5', 'q')] },
+  { measure: 12, slurEnd: 3, notes: [n('D5', 'e', { beam: 'start', tieStart: true }), n('D5', 's', { beam: 'mid', tieStop: true }), n('E5', 's', { beam: 'end' }), n('D5', 'q')] },
   { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...s2('D5', 'Cn5'), ...s4('B4', 'A4', 'G4', 'F4')] },
   { measure: 14, slurEnd: 1, notes: [n('E4', 'q'), n('A4', 'q', { tieStart: true })] },
-  { measure: 15, slurStart: 0, notes: [...b2('A4', 'G#4'), ...eds('F#4', 'G#4')] },
+  { measure: 15, slurStart: 0, notes: [n('A4', 'e', { beam: 'start', tieStop: true }), n('G#4', 's', { beam: 'mid' }), n('F#4', 's', { beam: 'end' }), ...eds('G#4', 'A4')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8')] }
 ];
 
@@ -3288,21 +3288,21 @@ export const POZZOLI_SERIE11_EX4_MEASURES = [
  * 11ª SÉRIE — EXERCÍCIO Nº 5 (3/4, 16 compassos)
  */
 export const POZZOLI_SERIE11_EX5_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('A4', 'q', { tieStart: true }), ...s4('A4', 'G#4', 'A4', 'B4'), ...s4('C5', 'B4', 'A4', 'G4')] },
+  { measure: 1, slurStart: 0, notes: [n('A4', 'qd'), ...s2('G#4', 'A4'), ...s4('B4', 'A4', 'G4', 'A4')] },
   { measure: 2, slurEnd: 1, notes: [n('C5', 'q'), n('B4', 'q'), n('REST', 'r4')] },
-  { measure: 3, slurStart: 0, notes: [n('A4', 'q', { tieStart: true }), ...s4('A4', 'G#4', 'A4', 'B4'), ...s4('C5', 'B4', 'A4', 'G4')] },
-  { measure: 4, slurEnd: 1, notes: [n('C5', 'q'), n('B4', 'q'), n('REST', 'r4')] },
-  { measure: 5, slurStart: 0, notes: [n('A4', 'q', { tieStart: true }), ...s4('A4', 'G#4', 'A4', 'B4'), ...s4('C5', 'B4', 'A4', 'G4')] },
+  { measure: 3, slurStart: 0, notes: [n('A4', 'qd'), ...s2('G#4', 'A4'), ...s4('B4', 'A4', 'G4', 'A4')] },
+  { measure: 4, slurEnd: 1, notes: [n('D5', 'q'), n('C5', 'q'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 0, notes: [n('A4', 'qd'), ...s2('G#4', 'A4'), ...s4('B4', 'A4', 'G4', 'A4')] },
   { measure: 6, notes: [n('E5', 'hd', { tieStart: true })] },
-  { measure: 7, notes: [...s2('E5', 'D5'), n('C5', 'e'), ...s4('B4', 'A4', 'Gn4', 'F4'), ...s4('E4', 'D4', 'C4', 'B3')] },
+  { measure: 7, notes: [n('E5', 'e', { beam: 'start', tieStop: true }), n('D5', 's', { beam: 'mid' }), n('C5', 's', { beam: 'end' }), ...s4('B4', 'A4', 'Gn4', 'F4'), ...s4('E4', 'D4', 'C4', 'B3')] },
   { measure: 8, slurEnd: 0, notes: [n('C4', 'e'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 0, notes: [n('D5', 'qd'), ...s4('C5', 'D5', 'E5', 'D5'), ...s2('C5', 'D5')] },
-  { measure: 10, slurEnd: 1, notes: [n('Bb4', 'q', { tieStart: true }), n('Bb4', 'q', { tieStop: true }), n('REST', 'r4')] },
-  { measure: 11, slurStart: 0, notes: [n('A4', 'q', { tieStart: true }), ...s4('A4', 'G#4', 'A4', 'Bb4'), ...s4('C5', 'B4', 'A4', 'G4')] },
+  { measure: 9, slurStart: 0, notes: [n('D5', 'qd'), ...s2('C5', 'D5'), ...s4('E5', 'D5', 'C5', 'D5')] },
+  { measure: 10, slurEnd: 1, notes: [n('Bb4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'qd'), ...s2('G#4', 'A4'), ...s4('Bb4', 'A4', 'G4', 'A4')] },
   { measure: 12, notes: [n('D5', 'hd', { tieStart: true })] },
-  { measure: 13, slurEnd: 4, notes: [...s2('D5', 'C5'), ...eds('B4', 'C5'), ...eds('A4', 'G4'), n('F4', 'q')] },
-  { measure: 14, slurStart: 0, notes: [n('C5', 'h', { tieStart: true }), ...s2('C5', 'B4'), n('A4', 'e')] },
-  { measure: 15, notes: [...s4('G#4', 'F4', 'E4', 'D4'), ...s4('C4', 'B3', 'A3', 'B3')] },
+  { measure: 13, slurEnd: 5, notes: [n('D5', 'e', { beam: 'start', tieStop: true }), n('C5', 'e', { beam: 'end' }), ...eds('Bn4', 'C5'), ...eds('A4', 'G4')] },
+  { measure: 14, slurStart: 0, notes: [n('F4', 'q'), n('C5', 'h', { tieStart: true })] },
+  { measure: 15, notes: [n('C5', 'e', { beam: 'start', tieStop: true }), n('B4', 's', { beam: 'mid' }), n('A4', 's', { beam: 'end' }), ...es2('G#4', 'F4', 'E4'), ...es2('D4', 'C4', 'B3')] },
   { measure: 16, slurEnd: 0, notes: [n('A3', 'e'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
@@ -3310,21 +3310,21 @@ export const POZZOLI_SERIE11_EX5_MEASURES = [
  * 11ª SÉRIE — EXERCÍCIO Nº 6 (3/4, 16 compassos)
  */
 export const POZZOLI_SERIE11_EX6_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('E4', 'q'), ...s4('F#4', 'G#4', 'A4', 'B4'), ...s4('C5', 'D5', 'E5', 'F5')] },
-  { measure: 2, slurEnd: 2, notes: [...eds('E5', 'D5'), n('C5', 'q'), n('REST', 'r4')] },
+  { measure: 1, slurStart: 0, notes: [n('E4', 'h'), ...s4('F#4', 'G#4', 'A4', 'B4')] },
+  { measure: 2, slurEnd: 2, notes: [...eds('C5', 'B4'), n('A4', 'q'), n('REST', 'r4')] },
   { measure: 3, slurStart: 1, notes: [n('REST', 'r8'), ...b3('E4', 'F#4', 'G#4'), ...b2('A4', 'B4')] },
   { measure: 4, slurEnd: 0, notes: [n('E5', 'hd')] },
-  { measure: 5, slurStart: 0, notes: [n('E4', 'q'), ...s4('Fn4', 'Gn4', 'A4', 'B4'), ...s4('C5', 'D5', 'E5', 'F5')] },
-  { measure: 6, notes: [...eds('E5', 'D5'), n('C5', 'q', { tieStart: true })] },
-  { measure: 7, notes: [...b2('C5', 'B4'), ...b2('A4', 'G4'), ...b2('F4', 'E4')] },
+  { measure: 5, slurStart: 0, notes: [n('E4', 'h'), ...s4('Fn4', 'Gn4', 'A4', 'B4')] },
+  { measure: 6, notes: [...eds('C5', 'B4'), n('A4', 'h', { tieStart: true })] },
+  { measure: 7, notes: [n('A4', 'e', { beam: 'start', tieStop: true }), n('G4', 'e', { beam: 'end' }), ...b2('E4', 'F4'), ...b2('D4', 'G4')] },
   { measure: 8, slurEnd: 0, notes: [n('C4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
   { measure: 9, slurStart: 0, notes: [n('D5', 'h'), ...s4('C5', 'B4', 'A4', 'G4')] },
   { measure: 10, slurEnd: 0, notes: [n('F4', 'hd')] },
   { measure: 11, slurStart: 0, notes: [n('C5', 'h'), ...s4('B4', 'A4', 'G4', 'F#4')] },
   { measure: 12, slurEnd: 0, notes: [n('E4', 'hd')] },
   { measure: 13, slurStart: 0, notes: [n('B4', 'h'), ...s4('A4', 'G#4', 'Gn4', 'F4')] },
-  { measure: 14, slurEnd: 0, notes: [n('E4', 'h')] },
-  { measure: 15, slurStart: 0, notes: [...s4('E#4', 'F#4', 'G#4', 'A4'), n('B4', 'q'), n('B4', 'q')] },
+  { measure: 14, slurEnd: 0, notes: [n('E4', 'hd')] },
+  { measure: 15, slurStart: 0, notes: [...s4('E#4', 'F#4', 'G4', 'A4'), n('B4', 'q'), n('A4', 'q')] },
   { measure: 16, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
@@ -3338,15 +3338,15 @@ export const POZZOLI_SERIE11_EX7_MEASURES = [
   { measure: 4, localSlurs: [[0, 1]], notes: [n('B4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
   { measure: 5, slurStart: 1, notes: [n('REST', 'r8'), n('A4', 'e'), ...b2('G#4', 'A4'), ...eds('C5', 'B4')] },
   { measure: 6, slurEnd: 1, notes: [n('REST', 'r8'), n('A4', 'e'), ...b2('G#4', 'A4'), ...eds('C5', 'B4')] },
-  { measure: 7, slurStart: 1, notes: [n('REST', 'r8'), n('B4', 'e'), ...s2('C5', 'B4'), ...s4('A4', 'Gn4', 'F#4', 'G#4')] },
+  { measure: 7, slurStart: 1, notes: [n('REST', 'r8'), n('B4', 'q'), ...s2('A4', 'Gn4'), ...es2('F#4', 'E4', 'D#4')] },
   { measure: 8, slurEnd: 0, notes: [n('E4', 'e'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
   { measure: 9, localSlurs: [[1, 3]], notes: [n('REST', 'r8'), n('E4', 'e'), n('Fn4', 'q'), n('G4', 'e'), n('REST', 'r8')] },
   { measure: 10, localSlurs: [[0, 1]], notes: [n('F4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
   { measure: 11, localSlurs: [[1, 3]], notes: [n('REST', 'r8'), n('E4', 'e'), n('F4', 'q'), n('G4', 'e'), n('REST', 'r8')] },
   { measure: 12, localSlurs: [[0, 1]], notes: [n('Bb4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
-  { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), n('A4', 'e'), n('Bn4', 'q'), n('C#5', 'e'), n('REST', 'r8')] },
-  { measure: 14, notes: [n('D5', 'q'), n('C5', 'q', { tieStart: true })] },
-  { measure: 15, slurEnd: 3, notes: [...s2('C5', 'Bn4'), ...eds('A4', 'G4'), ...eds('F#4', 'G#4')] },
+  { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), n('A4', 'q'), n('Bn4', 'q'), n('C#5', 'e')] },
+  { measure: 14, notes: [n('D5', 'q'), n('C5', 'h', { tieStart: true })] },
+  { measure: 15, slurEnd: 5, notes: [n('C5', 'e', { beam: 'start', tieStop: true }), n('Bn4', 'e', { beam: 'end' }), ...eds('A4', 'G4'), ...eds('F#4', 'G4')] },
   { measure: 16, localSlurs: [[0, 1]], notes: [n('A4', 'q', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] }
 ];
 
@@ -3358,9 +3358,9 @@ export const POZZOLI_SERIE11_EX8_MEASURES = [
   { measure: 2, slurEnd: 1, notes: [n('A4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
   { measure: 3, slurStart: 0, notes: [n('A4', 'qdd'), n('G#4', 's'), ...eds('A4', 'B4')] },
   { measure: 4, slurEnd: 1, notes: [n('C5', 'q'), n('B4', 'q'), n('REST', 'r4')] },
-  { measure: 5, slurStart: 0, notes: [n('E5', 'qd'), ...s2('D#5', 'E5'), ...eds('D5', 'C5')] },
+  { measure: 5, slurStart: 0, notes: [n('E5', 'qd'), ...s2('D#5', 'C#5'), ...eds('D5', 'B4')] },
   { measure: 6, slurEnd: 1, notes: [n('D5', 'h'), n('B4', 'q')] },
-  { measure: 7, slurStart: 0, notes: [n('C5', 'qdd', { accidental: 'n' }), n('B4', 's'), ...eds('C5', 'A4')] },
+  { measure: 7, slurStart: 0, notes: [n('C5', 'qdd', { accidental: 'n' }), n('B4', 's', { accidental: 'n' }), ...eds('C5', 'A4')] },
   { measure: 8, slurEnd: 0, notes: [n('G#4', 'hd')] },
   { measure: 9, slurStart: 0, notes: [n('A4', 'qdd'), n('G#4', 's'), ...eds('A4', 'B4')] },
   { measure: 10, slurEnd: 1, notes: [n('A4', 'q'), n('E4', 'q'), n('REST', 'r4')] },
@@ -3368,7 +3368,7 @@ export const POZZOLI_SERIE11_EX8_MEASURES = [
   { measure: 12, slurEnd: 0, notes: [n('D5', 'hd')] },
   { measure: 13, slurStart: 0, notes: [n('C#5', 'qdd'), n('Bn4', 's'), ...eds('C5', 'A4')] },
   { measure: 14, slurEnd: 1, notes: [n('D5', 'h'), ...b2('Cn5', 'B4')] },
-  { measure: 15, slurStart: 0, notes: [n('E4', 'qdd'), n('F#4', 's'), ...eds('G#4', 'F#4')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'qdd'), n('F#4', 's'), ...eds('A4', 'G#4')] },
   { measure: 16, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
@@ -3380,17 +3380,17 @@ export const POZZOLI_SERIE11_EX9_MEASURES = [
   { measure: 2, slurEnd: 3, notes: [...b2('E4', 'F#4'), ...b2('G#4', 'A4'), n('C5', 'q'), n('B4', 'q')] },
   { measure: 3, slurStart: 1, notes: [n('REST', 'r4'), n('C5', 'h', { tieStart: true }), n('E4', 'q', { tieStart: true })] },
   { measure: 4, slurEnd: 3, notes: [...b2('E4', 'F#4'), ...b2('G#4', 'A4'), n('D5', 'q'), n('C5', 'q')] },
-  { measure: 5, slurStart: 1, notes: [n('REST', 'r4'), n('E5', 'q'), ...eds('D5', 'B4')] },
-  { measure: 6, slurEnd: 1, notes: [n('C5', 'q'), n('A4', 'q'), n('E4', 'q', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 7, slurStart: 0, notes: [...b4('E4', 'F#4', 'G#4', 'A4'), ...b4('B4', 'A4', 'G#4', 'F#4')] },
-  { measure: 8, slurEnd: 1, notes: [n('G#4', 'h', { tieStart: true }), n('G#4', 'q', { tieStop: true }), n('REST', 'r4')] },
-  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('C5', 'h', { tieStart: true }), n('G4', 'q', { tieStart: true })] },
-  { measure: 10, slurEnd: 4, notes: [...b2('G4', 'A4'), ...s4('B4', 'C5', 'D5', 'E5'), n('F5', 'q'), n('REST', 'r4')] },
+  { measure: 5, slurStart: 1, notes: [n('REST', 'r4'), n('E5', 'h'), ...eds('D5', 'B4')] },
+  { measure: 6, slurEnd: 1, notes: [n('C5', 'h'), n('E4', 'h', { tieStart: true })] },
+  { measure: 7, slurStart: 0, notes: [n('E4', 'e', { beam: 'start', tieStop: true }), n('D#4', 'e', { beam: 'mid' }), n('E4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' }), ...b4('G#4', 'F4', 'E4', 'D4')] },
+  { measure: 8, slurEnd: 1, notes: [n('E4', 'h', { tieStart: true }), n('E4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('B4', 'h', { tieStart: true }), n('E4', 'q', { tieStart: true })] },
+  { measure: 10, slurEnd: 7, notes: [n('E4', 'e', { beam: 'start', tieStop: true }), n('F#4', 's', { beam: 'mid' }), n('G#4', 's', { beam: 'end' }), ...s4('A4', 'B4', 'C5', 'D5'), n('E5', 'q'), n('REST', 'r4')] },
   { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'h', { tieStart: true }), n('E4', 'q', { tieStart: true })] },
-  { measure: 12, slurEnd: 4, notes: [...s4('E4', 'F4', 'G#4', 'A4'), ...s4('B4', 'C5', 'D5', 'E5'), n('C5', 'q'), n('REST', 'r4')] },
+  { measure: 12, slurEnd: 7, notes: [n('E4', 'e', { beam: 'start', tieStop: true }), n('F4', 's', { beam: 'mid' }), n('G#4', 's', { beam: 'end' }), ...s4('A4', 'B4', 'C5', 'D5'), n('C5', 'q'), n('REST', 'r4')] },
   { measure: 13, slurStart: 0, notes: [n('D5', 'q', { tieStart: true }), ...s4('D5', 'C5', 'B4', 'A4'), n('G#4', 'q'), n('REST', 'r4')] },
   { measure: 14, slurStart: 0, notes: [n('C5', 'q', { tieStart: true }), ...s4('C5', 'B4', 'A4', 'G#4'), n('A4', 'q'), n('REST', 'r4')] },
-  { measure: 15, slurStart: 0, notes: [n('A4', 'q', { tieStart: true }), ...s4('A4', 'G#4', 'A4', 'B4'), ...s4('C5', 'D5', 'B4', 'C5')] },
+  { measure: 15, slurStart: 0, notes: [n('A4', 'h', { tieStart: true }), n('A4', 's', { beam: 'start', tieStop: true }), n('F#4', 's', { beam: 'mid' }), n('G#4', 's', { beam: 'mid' }), n('A4', 's', { beam: 'end' }), ...s4('B4', 'C5', 'D5', 'B4')] },
   { measure: 16, slurEnd: 0, notes: [n('A4', 'q'), n('REST', 'r4'), n('REST', 'r4'), n('REST', 'r4')] }
 ];
 
@@ -3403,16 +3403,16 @@ export const POZZOLI_SERIE11_EX10_MEASURES = [
   { measure: 3, notes: [n('REST', 'r8'), ...b3('E4', 'F#4', 'G#4'), ...b4('A4', 'B4', 'C5', 'D5')] },
   { measure: 4, localSlurs: [[0, 4]], notes: [n('E5', 'q', { tieStart: true }), ...s4('E5', 'F5', 'E5', 'D5'), n('E5', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 5, notes: [n('REST', 'r8'), ...b3('E5', 'D5', 'C5'), n('B4', 'q'), n('G#4', 'q')] },
-  { measure: 6, notes: [n('A4', 'e'), ...b3('F5', 'E5', 'D5'), n('C5', 'q'), n('A4', 'q')] },
-  { measure: 7, notes: [...b4('B4', 'D5', 'C5', 'B4'), ...b4('A4', 'G#4', 'F#4', 'E#4')] },
+  { measure: 6, notes: [n('A4', 'e'), ...b3('F5', 'E5', 'D5'), n('C5', 'q'), n('B4', 'q', { tieStart: true })] },
+  { measure: 7, notes: [n('B4', 'e', { beam: 'start', tieStop: true }), n('D5', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' }), ...b4('A4', 'G#4', 'F4', 'E#4')] },
   { measure: 8, localSlurs: [[0, 1]], notes: [n('F#4', 'h', { tieStart: true }), n('F#4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 9, notes: [n('REST', 'r8'), ...b3('C4', 'Dn4', 'E4'), ...b4('Fn4', 'G4', 'A4', 'B4')] },
   { measure: 10, localSlurs: [[0, 4]], notes: [n('C5', 'q', { tieStart: true }), ...s4('C5', 'B4', 'A4', 'D5'), n('C5', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 11, notes: [n('REST', 'r8'), ...b3('C4', 'D4', 'E4'), ...b4('F4', 'G4', 'A4', 'Bb4')] },
   { measure: 12, localSlurs: [[0, 4]], notes: [n('A4', 'q', { tieStart: true }), ...s4('A4', 'G4', 'F4', 'G4'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 13, notes: [n('REST', 'r8'), ...b3('D4', 'E4', 'F4'), ...b4('G4', 'A4', 'Bn4', 'C#5')] },
-  { measure: 14, notes: [n('D5', 'e'), n('REST', 'r8'), n('REST', 'r4'), n('D5', 'q', { tieStart: true })] },
-  { measure: 15, notes: [...b4('D5', 'Cn5', 'B4', 'A4'), ...b4('G#4', 'F#4', 'G#4', 'A4')] },
+  { measure: 14, notes: [n('D5', 'e'), n('REST', 'r8'), n('REST', 'r4'), n('D5', 'h', { tieStart: true })] },
+  { measure: 15, notes: [n('D5', 'e', { beam: 'start', tieStop: true }), n('Cn5', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' }), ...b4('G#4', 'F4', 'G#4', 'A4')] },
   { measure: 16, localSlurs: [[0, 4]], notes: [n('A4', 'q', { tieStart: true }), ...s4('A4', 'G#4', 'A4', 'B4'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r4')] }
 ];
 
@@ -3422,18 +3422,18 @@ export const POZZOLI_SERIE11_EX10_MEASURES = [
 export const POZZOLI_SERIE11_EX11_MEASURES = [
   { measure: 1, slurStart: 1, notes: [n('REST', 'r4'), n('C5', 'h'), ...eds('B4', 'G#4')] },
   { measure: 2, slurEnd: 1, notes: [n('A4', 'h'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 3, slurStart: 1, notes: [n('REST', 'r16'), ...s4('E4', 'F#4', 'G#4', 'A4'), ...s4('B4', 'A4', 'G#4', 'A4'), ...eds('C5', 'B4'), ...eds('C5', 'D5')] },
+  { measure: 3, slurStart: 1, notes: [n('REST', 'r16'), n('E4', 's', { beam: 'start' }), n('F#4', 's', { beam: 'mid' }), n('G#4', 's', { beam: 'end' }), ...s4('A4', 'G#4', 'A4', 'B4'), ...eds('C5', 'B4'), ...eds('C5', 'D5')] },
   { measure: 4, slurEnd: 1, notes: [n('E5', 'h'), n('E4', 'q'), n('REST', 'r4')] },
   { measure: 5, slurStart: 1, notes: [n('REST', 'r4'), n('E5', 'h'), ...eds('D5', 'B4')] },
   { measure: 6, slurEnd: 1, notes: [n('C5', 'h'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 7, slurStart: 1, notes: [n('REST', 'r8'), ...b3('C5', 'B4', 'A4'), ...s4('G#4', 'A4', 'Gn4', 'F4'), ...eds('E4', 'F4')] },
-  { measure: 8, slurEnd: 1, notes: [n('D4', 'q', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r4')] },
+  { measure: 7, slurStart: 1, notes: [n('REST', 'r8'), ...b3('C5', 'B4', 'A4'), ...s4('G#4', 'A4', 'Gn4', 'F4'), ...eds('E4', 'D4')] },
+  { measure: 8, slurEnd: 1, notes: [n('D4', 'h'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 9, slurStart: 1, notes: [n('REST', 'r4'), n('C5', 'h'), ...eds('Bb4', 'G4')] },
   { measure: 10, slurEnd: 1, notes: [n('A4', 'h'), n('F4', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 11, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'h'), ...eds('G4', 'F4')] },
   { measure: 12, slurEnd: 1, notes: [n('F4', 'qdd'), n('E4', 's'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 13, slurStart: 1, notes: [n('REST', 'r16'), ...s4('E4', 'F4', 'G4', 'A4'), ...s4('B4', 'C5', 'D5', 'C#5'), n('D5', 'h')] },
-  { measure: 14, slurStart: 1, notes: [n('REST', 'r16'), ...s4('E4', 'F#4', 'G#4', 'A4'), ...s4('B4', 'C5', 'D5', 'E5'), n('F5', 'h')] },
+  { measure: 13, slurStart: 1, notes: [n('REST', 'r16'), n('E4', 's', { beam: 'start' }), n('F4', 's', { beam: 'mid' }), n('G4', 's', { beam: 'end' }), ...s4('A4', 'B4', 'C5', 'C#5'), n('D5', 'h')] },
+  { measure: 14, slurStart: 1, notes: [n('REST', 'r16'), n('E4', 's', { beam: 'start' }), n('F#4', 's', { beam: 'mid' }), n('G#4', 's', { beam: 'end' }), ...s4('A4', 'B4', 'C5', 'D5'), n('E5', 'h')] },
   { measure: 15, slurStart: 1, notes: [n('REST', 'r4'), n('C5', 'h'), ...eds('A4', 'G#4')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] }
 ];
@@ -3443,19 +3443,19 @@ export const POZZOLI_SERIE11_EX11_MEASURES = [
  */
 export const POZZOLI_SERIE11_EX12_MEASURES = [
   { measure: 1, slurStart: 1, notes: [n('REST', 'r8'), n('E4', 'e'), ...b2('F4', 'E4'), ...b2('F#4', 'E4'), ...b2('G#4', 'E4')] },
-  { measure: 2, slurEnd: 2, notes: [n('A4', 'qdd'), ...s2('B4', 'C5'), n('E5', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
+  { measure: 2, slurEnd: 2, notes: [n('A4', 'qdd'), n('C5', 's'), n('E5', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 3, slurStart: 1, notes: [n('REST', 'r8'), n('E4', 'e'), ...b2('F#4', 'E4'), ...b2('G#4', 'E4'), ...b2('B4', 'E4')] },
-  { measure: 4, slurEnd: 2, notes: [n('B4', 'qdd'), ...s2('C5', 'D5'), n('E5', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
+  { measure: 4, slurEnd: 2, notes: [n('B4', 'qdd'), n('D5', 's'), n('E5', 'e'), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 5, slurStart: 1, notes: [n('REST', 'r8'), n('A4', 'e'), ...b2('B4', 'A4'), ...b2('C5', 'A4'), ...b2('D5', 'A4')] },
   { measure: 6, slurEnd: 1, notes: [n('E5', 'h'), n('D5', 'h', { tieStart: true })] },
-  { measure: 7, slurStart: 0, notes: [...b2('D5', 'C5'), ...b2('B4', 'A4'), n('B4', 'qdd'), ...s2('C5', 'D5')] },
+  { measure: 7, slurStart: 0, notes: [...b2('D5', 'C5'), ...b2('B4', 'A4'), n('B4', 'qdd'), n('D5', 's')] },
   { measure: 8, slurEnd: 1, notes: [n('C5', 'h', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
   { measure: 9, slurStart: 1, notes: [n('REST', 'r8'), ...b3('C5', 'B4', 'C5'), ...b4('Bb4', 'C5', 'A4', 'C5')] },
   { measure: 10, slurEnd: 1, notes: [n('G4', 'h'), n('A4', 'h')] },
   { measure: 11, slurStart: 1, notes: [n('REST', 'r8'), ...b3('D5', 'C#5', 'D5'), ...b4('Cn5', 'D5', 'B4', 'D5')] },
   { measure: 12, slurEnd: 1, notes: [n('A4', 'h'), n('B4', 'h')] },
   { measure: 13, slurStart: 1, notes: [n('REST', 'r8'), ...b3('E5', 'D#5', 'E5'), ...b4('Dn5', 'E5', 'C5', 'E5')] },
-  { measure: 14, slurEnd: 2, notes: [n('B4', 'h'), n('A4', 'q'), n('G4', 'q')] },
+  { measure: 14, slurEnd: 2, notes: [n('B4', 'h'), n('A4', 'q', { tieStart: true }), n('A4', 'q', { tieStop: true })] },
   { measure: 15, slurStart: 1, notes: [n('REST', 'r8'), ...b3('E4', 'F4', 'E4'), ...b4('F#4', 'E4', 'G#4', 'E4')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'h'), n('A3', 'q'), n('REST', 'r4')] }
 ];
@@ -3486,22 +3486,22 @@ export const POZZOLI_SERIE11_EX13_MEASURES = [
  * 11ª SÉRIE — EXERCÍCIO Nº 14 (6/8, 16 compassos)
  */
 export const POZZOLI_SERIE11_EX14_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [...b3('E4', 'F#4', 'G#4'), ...b3('A4', 'B4', 'C5')] },
-  { measure: 2, slurEnd: 3, notes: [...b3('D5', 'E5', 'F5'), n('G5', 'qd')] },
-  { measure: 3, slurStart: 0, notes: [...b3('G5', 'F5', 'E5'), ...b3('D5', 'C5', 'B4')] },
-  { measure: 4, slurEnd: 3, notes: [...b3('A4', 'G#4', 'B4'), n('E4', 'qd')] },
-  { measure: 5, slurStart: 0, notes: [...b3('E4', 'F#4', 'Gn4'), ...b3('A4', 'B4', 'C5')] },
-  { measure: 6, slurEnd: 3, notes: [...b3('D5', 'E5', 'F#5'), n('G5', 'qd')] },
-  { measure: 7, slurStart: 0, notes: [...b3('G5', 'Fn5', 'E5'), ...b3('D5', 'C5', 'B4')] },
-  { measure: 8, slurEnd: 3, notes: [...b3('C5', 'B4', 'D5'), n('C5', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [...b3('C5', 'Bb4', 'A4'), ...b3('G4', 'F4', 'E4')] },
-  { measure: 10, slurEnd: 3, notes: [...b3('D4', 'E4', 'F4'), n('Bb4', 'qd')] },
-  { measure: 11, slurStart: 0, notes: [...b3('Bb4', 'A4', 'G4'), ...b3('F4', 'E4', 'D4')] },
-  { measure: 12, slurEnd: 3, notes: [...b3('C4', 'D4', 'E4'), n('A4', 'qd')] },
-  { measure: 13, slurStart: 0, notes: [...b3('D5', 'C5', 'Bn4'), ...b3('A4', 'G4', 'F#4')] },
-  { measure: 14, slurEnd: 0, notes: [...b3('E5', 'D5', 'C5'), ...b3('B4', 'A4', 'G4')] },
-  { measure: 15, slurStart: 0, notes: [...b3('E4', 'F#4', 'G#4'), ...b3('A4', 'B4', 'C5')] },
-  { measure: 16, slurEnd: 3, notes: [...b3('D5', 'C5', 'B4'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
+  { measure: 1, slurStart: 0, notes: [n('E4', 'e', { beam: 'start' }), n('F#4', 'e', { beam: 'mid' }), n('G#4', 'e', { beam: 'end', tieStart: true }), n('G#4', 'e', { beam: 'start', tieStop: true }), n('A4', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end', tieStart: true })] },
+  { measure: 2, slurEnd: 3, notes: [n('B4', 'e', { beam: 'start', tieStop: true }), n('C5', 'e', { beam: 'mid' }), n('D5', 'e', { beam: 'end' }), n('E5', 'qd')] },
+  { measure: 3, slurStart: 0, notes: [n('E5', 'e', { beam: 'start' }), n('D5', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end', tieStart: true }), n('C5', 'e', { beam: 'start', tieStop: true }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end', tieStart: true })] },
+  { measure: 4, slurEnd: 3, notes: [n('A4', 'e', { beam: 'start', tieStop: true }), n('G#4', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' }), n('E4', 'qd')] },
+  { measure: 5, slurStart: 0, notes: [n('E4', 'e', { beam: 'start' }), n('F#4', 'e', { beam: 'mid' }), n('Gn4', 'e', { beam: 'end', tieStart: true }), n('G4', 'e', { beam: 'start', tieStop: true }), n('A4', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end', tieStart: true })] },
+  { measure: 6, notes: [n('B4', 'e', { beam: 'start', tieStop: true }), n('C5', 'e', { beam: 'mid' }), n('D#5', 'e', { beam: 'end' }), n('E5', 'qd', { tieStart: true })] },
+  { measure: 7, notes: [n('E5', 'e', { beam: 'start', tieStop: true }), n('Dn5', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end', tieStart: true }), n('C5', 'e', { beam: 'start', tieStop: true }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end', tieStart: true })] },
+  { measure: 8, slurEnd: 3, notes: [n('A4', 'e', { beam: 'start', tieStop: true }), n('G4', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' }), n('C5', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'e', { beam: 'start' }), n('Bb4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end', tieStart: true }), n('A4', 'e', { beam: 'start', tieStop: true }), n('G4', 'e', { beam: 'mid' }), n('F4', 'e', { beam: 'end', tieStart: true })] },
+  { measure: 10, slurEnd: 3, notes: [n('F4', 'e', { beam: 'start', tieStop: true }), n('E4', 'e', { beam: 'mid' }), n('G4', 'e', { beam: 'end' }), n('Bb4', 'qd')] },
+  { measure: 11, slurStart: 0, notes: [n('Bb4', 'e', { beam: 'start' }), n('A4', 'e', { beam: 'mid' }), n('G4', 'e', { beam: 'end', tieStart: true }), n('G4', 'e', { beam: 'start', tieStop: true }), n('F4', 'e', { beam: 'mid' }), n('E4', 'e', { beam: 'end', tieStart: true })] },
+  { measure: 12, slurEnd: 3, notes: [n('E4', 'e', { beam: 'start', tieStop: true }), n('D4', 'e', { beam: 'mid' }), n('F4', 'e', { beam: 'end' }), n('A4', 'qd')] },
+  { measure: 13, slurStart: 0, notes: [n('D5', 'e', { beam: 'start' }), n('C5', 'e', { beam: 'mid' }), n('Bn4', 'e', { beam: 'end', tieStart: true }), n('B4', 'e', { beam: 'start', tieStop: true }), n('A4', 'e', { beam: 'mid' }), n('G#4', 'e', { beam: 'end' })] },
+  { measure: 14, slurEnd: 0, notes: [n('E5', 'e', { beam: 'start' }), n('D5', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'end', tieStart: true }), n('C5', 'e', { beam: 'start', tieStop: true }), n('B4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' })] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'e', { beam: 'start' }), n('F#4', 'e', { beam: 'mid' }), n('G#4', 'e', { beam: 'end', tieStart: true }), n('G#4', 'e', { beam: 'start', tieStop: true }), n('A4', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end', tieStart: true })] },
+  { measure: 16, slurEnd: 3, notes: [n('B4', 'e', { beam: 'start', tieStop: true }), n('C5', 'e', { beam: 'mid' }), n('D5', 'e', { beam: 'end' }), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -3522,7 +3522,7 @@ export const POZZOLI_SERIE11_EX15_MEASURES = [
   { measure: 12, slurEnd: 1, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 13, slurStart: 0, notes: [n('D4', 'q'), n('F4', 'e'), n('A4', 'q'), n('D#5', 'e')] },
   { measure: 14, slurEnd: 1, notes: [n('E5', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [n('Bn4', 'qd'), ...b3('E4', 'F#4', 'G#4')] },
+  { measure: 15, slurStart: 0, notes: [n('Bn4', 'q'), n('E4', 'e', { tieStart: true }), n('E4', 'e', { beam: 'start', tieStop: true }), n('F#4', 'e', { beam: 'mid' }), n('G#4', 'e', { beam: 'end' })] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
@@ -3530,21 +3530,21 @@ export const POZZOLI_SERIE11_EX15_MEASURES = [
  * 11ª SÉRIE — EXERCÍCIO Nº 16 (6/8, 16 compassos)
  */
 export const POZZOLI_SERIE11_EX16_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), ...s4('A4', 'G#4', 'A4', 'B4'), n('A4', 'e')] },
-  { measure: 2, slurEnd: 1, notes: [n('A4', 'qd'), n('E5', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('E4', 'q'), ...s2('F#4', 'G#4'), n('A4', 'q'), ...s2('B4', 'C5')] },
+  { measure: 1, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { beam: 'start', tieStop: true }), n('G#4', 's', { beam: 'mid' }), n('A4', 's', { beam: 'mid' }), n('B4', 's', { beam: 'mid' }), n('A4', 's', { beam: 'end' })] },
+  { measure: 2, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'q'), ...s2('F#4', 'G#4'), n('A4', 'q'), ...s2('C5', 'E5')] },
   { measure: 4, slurEnd: 0, notes: [n('D5', 'hd')] },
-  { measure: 5, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), ...s4('D5', 'C5', 'B4', 'C5'), n('D5', 'e')] },
-  { measure: 6, slurEnd: 1, notes: [n('C5', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { beam: 'start', tieStop: true }), n('C5', 's', { beam: 'mid' }), n('B4', 's', { beam: 'mid' }), n('E5', 's', { beam: 'mid' }), n('D5', 's', { beam: 'end' })] },
+  { measure: 6, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 7, localSlurs: [[0, 2], [3, 5]], notes: [n('A4', 'q'), ...s2('G4', 'F4'), n('G4', 'q'), ...s2('F4', 'E4')] },
   { measure: 8, localSlurs: [[0, 1]], notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...s4('C5', 'B4', 'A4', 'G#4')] },
-  { measure: 10, slurEnd: 1, notes: [n('E5', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('E5', 'qd', { tieStart: true }), ...s4('E5', 'D5', 'C5', 'B4')] },
-  { measure: 12, slurEnd: 1, notes: [n('D5', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), ...s4('D5', 'C5', 'B4', 'A4')] },
+  { measure: 9, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { beam: 'start', tieStop: true }), n('B4', 's', { beam: 'mid' }), n('A4', 's', { beam: 'mid' }), n('G4', 's', { beam: 'mid' }), n('F#4', 's', { beam: 'end' })] },
+  { measure: 10, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('E5', 'qd', { tieStart: true }), n('E5', 'e', { beam: 'start', tieStop: true }), n('D5', 's', { beam: 'mid' }), n('C5', 's', { beam: 'mid' }), n('B4', 's', { beam: 'mid' }), n('A#4', 's', { beam: 'end' })] },
+  { measure: 12, slurEnd: 1, notes: [n('B4', 'qd', { tieStart: true }), n('B4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { beam: 'start', tieStop: true }), n('C5', 's', { beam: 'mid' }), n('B4', 's', { beam: 'mid' }), n('A4', 's', { beam: 'mid' }), n('G4', 's', { beam: 'end' })] },
   { measure: 14, slurEnd: 3, notes: [n('G#4', 'q'), ...s2('A4', 'B4'), n('C5', 'qd')] },
-  { measure: 15, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), ...s4('E4', 'F#4', 'G#4', 'A4'), ...s2('B4', 'C5')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { beam: 'start', tieStop: true }), n('F#4', 's', { beam: 'mid' }), n('G#4', 's', { beam: 'mid' }), n('C5', 's', { beam: 'mid' }), n('B4', 's', { beam: 'end' })] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'qd'), n('A3', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
@@ -3552,22 +3552,22 @@ export const POZZOLI_SERIE11_EX16_MEASURES = [
  * 11ª SÉRIE — EXERCÍCIO Nº 17 (9/8, 16 compassos)
  */
 export const POZZOLI_SERIE11_EX17_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'qd', { tieStop: true }), ...b3('G#4', 'F#4', 'G#4')] },
-  { measure: 2, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('E4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('B4', 'e'), n('C5', 'qd')] },
-  { measure: 4, slurEnd: 1, notes: [n('E5', 'qd', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'qd', { tieStop: true }), ...b3('C5', 'B4', 'C5')] },
-  { measure: 6, slurEnd: 1, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 7, slurStart: 0, notes: [n('G4', 'q'), n('B4', 'e'), n('C5', 'q'), n('D5', 'e'), n('E5', 'qd')] },
-  { measure: 8, slurEnd: 1, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('F5', 'qd', { tieStart: true }), n('F5', 'qd', { tieStop: true }), ...b3('E5', 'D#5', 'E5')] },
-  { measure: 10, slurEnd: 1, notes: [n('E5', 'qd', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 11, slurStart: 0, notes: [n('E5', 'qd', { tieStart: true }), n('E5', 'qd', { tieStop: true }), ...b3('D5', 'Cn5', 'B4')] },
-  { measure: 12, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [n('C5', 'qd'), n('B4', 'q'), n('A4', 'e'), n('G#4', 'qd', { tieStart: true })] },
-  { measure: 14, slurEnd: 0, notes: [n('G#4', 'qd', { tieStop: true }), n('E4', 'q'), n('F#4', 'e')] },
-  { measure: 15, slurStart: 0, notes: [n('G#4', 'q'), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'qd')] },
-  { measure: 16, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
+  { measure: 1, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'qd', { tieStop: true }), ...b3('A4', 'G#4', 'F#4')] },
+  { measure: 2, slurEnd: 1, notes: [n('G4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'q'), n('G#4', 'e'), n('F#4', 'q'), n('A4', 'e'), n('G4', 'q'), n('B4', 'e')] },
+  { measure: 4, slurEnd: 2, notes: [n('C5', 'qd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('D5', 'hd', { tieStart: true }), n('D5', 'qd', { tieStop: true })] },
+  { measure: 6, slurEnd: 4, notes: [...b3('D5', 'C5', 'B4'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 0, notes: [n('G4', 'q'), n('B4', 'e'), n('A4', 'q'), n('C5', 'e'), n('B4', 'q'), n('D5', 'e')] },
+  { measure: 8, slurEnd: 2, notes: [n('C5', 'qd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('E5', 'hd', { tieStart: true }), n('E5', 'qd', { tieStop: true })] },
+  { measure: 10, slurEnd: 4, notes: [...b3('E5', 'D#5', 'C#5'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 11, slurStart: 0, notes: [n('Dn5', 'hd', { tieStart: true }), n('Dn5', 'qd', { tieStop: true })] },
+  { measure: 12, slurEnd: 4, notes: [...b3('D5', 'Cn5', 'B4'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('C5', 'hd'), n('B4', 'q'), n('A4', 'e')] },
+  { measure: 14, slurEnd: 1, notes: [n('G#4', 'qd'), n('A4', 'hd')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'q'), n('G#4', 'e'), n('F#4', 'q'), n('A4', 'e'), n('G4', 'q'), n('B4', 'e')] },
+  { measure: 16, slurEnd: 2, notes: [n('C5', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -3575,21 +3575,21 @@ export const POZZOLI_SERIE11_EX17_MEASURES = [
  */
 export const POZZOLI_SERIE11_EX18_MEASURES = [
   { measure: 1, slurStart: 0, notes: [n('E4', 'qd'), n('A4', 'qd'), n('G#4', 'qd')] },
-  { measure: 2, slurEnd: 1, notes: [n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 2, slurEnd: 2, notes: [n('C5', 'qd'), n('C5', 'qd', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 3, slurStart: 0, notes: [n('E4', 'qd'), n('B4', 'qd'), n('A4', 'qd')] },
-  { measure: 4, slurEnd: 1, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('E5', 'qd', { tieStart: true }), ...b3('E5', 'D5', 'C5')] },
-  { measure: 6, slurEnd: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'hd', { tieStop: true })] },
-  { measure: 7, slurStart: 0, notes: [n('E5', 'qd', { tieStart: true }), ...b3('E5', 'D5', 'C5')] },
-  { measure: 8, slurEnd: 0, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'hd', { tieStop: true })] },
-  { measure: 9, slurStart: 0, notes: [n('C4', 'qd'), n('G4', 'qd'), n('F4', 'qd')] },
-  { measure: 10, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 4, slurEnd: 2, notes: [n('D5', 'qd'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 5, slurStart: 0, notes: [n('E5', 'hd'), ...b3('D5', 'B4', 'G4')] },
+  { measure: 6, slurEnd: 0, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'qd', { tieStop: true })] },
+  { measure: 7, slurStart: 0, notes: [n('E5', 'hd'), ...b3('D5', 'A4', 'F4')] },
+  { measure: 8, slurEnd: 0, notes: [n('F4', 'hd', { tieStart: true }), n('F4', 'qd', { tieStop: true })] },
+  { measure: 9, slurStart: 0, notes: [n('E4', 'qd'), n('G4', 'qd'), n('F4', 'qd')] },
+  { measure: 10, slurEnd: 2, notes: [n('A4', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 11, slurStart: 0, notes: [n('G4', 'qd'), n('Bb4', 'qd'), n('A4', 'qd')] },
-  { measure: 12, slurEnd: 1, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...b3('C5', 'B4', 'A4')] },
-  { measure: 14, slurEnd: 1, notes: [n('E4', 'qd'), n('D#4', 'hd')] },
+  { measure: 12, slurEnd: 2, notes: [n('D5', 'qd'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 0, notes: [n('C5', 'hd'), ...b3('B4', 'G4', 'E4')] },
+  { measure: 14, slurEnd: 1, notes: [n('E4', 'hd'), n('D#4', 'qd')] },
   { measure: 15, slurStart: 0, notes: [n('E4', 'qd'), n('A4', 'qd'), n('G#4', 'qd')] },
-  { measure: 16, slurEnd: 1, notes: [n('B4', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
+  { measure: 16, slurEnd: 2, notes: [n('B4', 'qd'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -3601,12 +3601,12 @@ export const POZZOLI_SERIE11_EX19_MEASURES = [
   { measure: 3, slurStart: 0, notes: [n('A3', 'qd', { tieStart: true }), ...b3('A3', 'C4', 'E4'), ...b3('A4', 'C5', 'B4')] },
   { measure: 4, slurEnd: 0, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'qd', { tieStop: true })] },
   { measure: 5, slurStart: 0, notes: [n('A3', 'qd', { tieStart: true }), ...b3('A3', 'D4', 'F4'), ...b3('B4', 'D5', 'C5')] },
-  { measure: 6, slurEnd: 2, notes: [n('A4', 'qd'), n('E4', 'qd', { tieStart: true }), n('E4', 'qd', { tieStop: true })] },
+  { measure: 6, slurEnd: 2, notes: [n('A4', 'hd'), n('E4', 'q', { tieStart: true }), n('E4', 'e', { tieStop: true })] },
   { measure: 7, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), ...b3('E4', 'G#4', 'B4'), ...b3('D5', 'C5', 'B4')] },
   { measure: 8, slurEnd: 0, notes: [n('E5', 'hd', { tieStart: true }), n('E5', 'qd', { tieStop: true })] },
   { measure: 9, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), ...b3('E4', 'Gn4', 'B4'), ...b3('D5', 'C5', 'B4')] },
   { measure: 10, slurEnd: 0, notes: [n('C5', 'hd', { tieStart: true }), n('C5', 'qd', { tieStop: true })] },
-  { measure: 11, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), ...b3('E4', 'A4', 'Bb4'), ...b3('D5', 'C5', 'B4')] },
+  { measure: 11, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { beam: 'start', tieStop: true }), n('G4', 'e', { beam: 'mid' }), n('Bb4', 'e', { beam: 'end' }), ...b3('D5', 'C5', 'B4')] },
   { measure: 12, slurEnd: 0, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'qd', { tieStop: true })] },
   { measure: 13, localSlurs: [[0, 4]], notes: [n('A3', 'qd', { tieStart: true }), ...b3('A3', 'D#4', 'F4'), n('A4', 'qd')] },
   { measure: 14, localSlurs: [[0, 4]], notes: [n('A3', 'qd', { tieStart: true }), ...b3('A3', 'D4', 'F4'), n('A4', 'qd')] },
@@ -3618,22 +3618,22 @@ export const POZZOLI_SERIE11_EX19_MEASURES = [
  * 11ª SÉRIE — EXERCÍCIO Nº 20 (9/8, 16 compassos)
  */
 export const POZZOLI_SERIE11_EX20_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [...b3('E4', 'C4', 'E4'), n('A4', 'hd', { tieStart: true })] },
-  { measure: 2, notes: [...b3('A4', 'B4', 'G#4'), n('A4', 'hd', { tieStart: true })] },
-  { measure: 3, slurEnd: 3, notes: [...b3('A4', 'F#4', 'G#4'), n('A4', 'hd', { tieStart: true })] },
-  { measure: 4, slurStart: 0, notes: [...b3('B4', 'C5', 'D5'), n('E5', 'hd')] },
+  { measure: 1, slurStart: 0, notes: [...b3('E4', 'C4', 'D4'), n('E4', 'hd', { tieStart: true })] },
+  { measure: 2, notes: [n('E4', 'e', { beam: 'start', tieStop: true }), n('F4', 'e', { beam: 'mid' }), n('D4', 'e', { beam: 'end' }), n('E4', 'hd', { tieStart: true })] },
+  { measure: 3, slurEnd: 3, notes: [n('E4', 'e', { beam: 'start', tieStop: true }), n('F#4', 'e', { beam: 'mid' }), n('G#4', 'e', { beam: 'end' }), n('A4', 'hd')] },
+  { measure: 4, slurStart: 0, notes: [...b3('A4', 'C5', 'B4'), n('B4', 'hd')] },
   { measure: 5, localSlurs: [[0, 4]], notes: [n('A4', 'q'), ...s2('G#4', 'A4'), n('B4', 'qd'), n('B4', 'qd')] },
   { measure: 6, localSlurs: [[0, 4]], notes: [n('A4', 'q'), ...s2('G#4', 'A4'), n('C5', 'qd'), n('C5', 'qd')] },
-  { measure: 7, slurStart: 0, notes: [n('E5', 'qd', { tieStart: true }), n('E5', 'qd', { tieStop: true }), n('D5', 'q'), n('C5', 'e')] },
-  { measure: 8, slurEnd: 2, notes: [n('B4', 'q'), n('A4', 'e'), n('G4', 'hd')] },
+  { measure: 7, slurStart: 0, notes: [n('E5', 'qd', { tieStart: true }), n('E5', 'q', { tieStop: true }), n('B4', 'e'), n('Gn4', 'q'), n('F#4', 'e')] },
+  { measure: 8, slurEnd: 0, notes: [n('G4', 'hd', { tieStart: true }), n('G4', 'qd', { tieStop: true })] },
   { measure: 9, slurStart: 0, notes: [...b3('G4', 'E4', 'G#4'), n('A4', 'hd', { tieStart: true })] },
-  { measure: 10, slurEnd: 3, notes: [...b3('A4', 'D5', 'A4'), n('G#4', 'hd', { tieStart: true })] },
-  { measure: 11, slurStart: 0, notes: [...b3('G#4', 'F#4', 'G#4'), ...b3('A4', 'G#4', 'A4'), ...b3('B4', 'A4', 'B4')] },
+  { measure: 10, slurEnd: 3, notes: [n('A4', 'e', { beam: 'start', tieStop: true }), n('D5', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' }), n('A4', 'hd', { tieStart: true })] },
+  { measure: 11, slurStart: 0, notes: [n('A4', 'e', { beam: 'start', tieStop: true }), n('G#4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'end' }), ...b3('F4', 'A4', 'C5'), ...b3('D5', 'C5', 'B4')] },
   { measure: 12, slurEnd: 0, notes: [n('C5', 'hd', { tieStart: true }), n('C5', 'qd', { tieStop: true })] },
-  { measure: 13, slurStart: 0, notes: [...b3('D5', 'C5', 'B4'), n('A4', 'qd'), ...s2('G#4', 'A4')] },
-  { measure: 14, notes: [n('A4', 'qd'), n('B4', 'qd'), ...b3('E4', 'F#4', 'G#4')] },
-  { measure: 15, notes: [...b3('A4', 'B4', 'C5'), ...b3('B4', 'C5', 'D5'), n('C5', 'qd')] },
-  { measure: 16, slurEnd: 0, notes: [n('A4', 'hd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8')] }
+  { measure: 13, slurStart: 0, notes: [n('D5', 'q'), ...s2('C5', 'B4'), n('C5', 'qd'), n('A4', 'qd')] },
+  { measure: 14, slurEnd: 4, notes: [n('B4', 'q'), ...s2('A4', 'G#4'), n('A4', 'qd'), n('F4', 'qd')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'qd', { tieStart: true }), n('E4', 'e', { beam: 'start', tieStop: true }), n('F#4', 'e', { beam: 'mid' }), n('G#4', 'e', { beam: 'end' }), ...b3('A4', 'C5', 'B4')] },
+  { measure: 16, slurEnd: 1, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] }
 ];
 
 /**
@@ -3652,9 +3652,9 @@ export const POZZOLI_SERIE11_EX21_MEASURES = [
   { measure: 10, localSlurs: [[0, 1]], notes: [n('G4', 'qd'), n('G#4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 11, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), ...b3('A4', 'G#4', 'A4'), n('B4', 'qd', { tieStart: true }), ...b3('B4', 'A4', 'B4')] },
   { measure: 12, slurEnd: 0, notes: [n('C5', 'hd'), n('C#5', 'hd')] },
-  { measure: 13, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), ...b3('D5', 'Cn5', 'B4'), ...b3('A4', 'G4', 'F4')] },
+  { measure: 13, slurStart: 0, notes: [n('D5', 'hd', { tieStart: true }), n('D5', 'e', { beam: 'start', tieStop: true }), n('Cn5', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' }), ...b3('A4', 'G4', 'F4')] },
   { measure: 14, slurEnd: 1, notes: [n('E4', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 15, slurStart: 0, notes: [n('E4', 'qd'), ...b3('F#4', 'G#4', 'A4'), ...b3('B4', 'C5', 'D5')] },
+  { measure: 15, slurStart: 0, notes: [n('E4', 'hd', { tieStart: true }), n('E4', 'e', { beam: 'start', tieStop: true }), n('F#4', 'e', { beam: 'mid' }), n('G#4', 'e', { beam: 'end' }), ...b3('A4', 'B4', 'C5')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
@@ -3664,11 +3664,11 @@ export const POZZOLI_SERIE11_EX21_MEASURES = [
 export const POZZOLI_SERIE11_EX22_MEASURES = [
   { measure: 1, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('E5', 'qd', { tieStart: true }), n('E5', 'hd', { tieStop: true })] },
   { measure: 2, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'qd', { tieStart: true }), n('C5', 'hd', { tieStop: true })] },
-  { measure: 3, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'e'), n('G#4', 'q'), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'q'), n('E5', 'e')] },
+  { measure: 3, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'e'), n('G#4', 'q'), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'q'), n('E5', 'e')] },
   { measure: 4, slurEnd: 1, notes: [n('C5', 'qd'), n('E5', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
   { measure: 5, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('E5', 'qd', { tieStart: true }), n('E5', 'hd', { tieStop: true })] },
   { measure: 6, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'qd', { tieStart: true }), n('C5', 'hd', { tieStop: true })] },
-  { measure: 7, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'e'), n('G#4', 'q'), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'q'), n('E5', 'e')] },
+  { measure: 7, slurStart: 1, notes: [n('REST', 'r4'), n('A4', 'e'), n('G#4', 'q'), n('A4', 'e'), n('B4', 'q'), n('C5', 'e'), n('D5', 'q'), n('E5', 'e')] },
   { measure: 8, slurEnd: 2, notes: [n('C5', 'qd'), n('B4', 'q'), n('A4', 'e'), n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 9, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'qd'), n('D5', 'hd')] },
   { measure: 10, slurEnd: 4, notes: [...b3('D5', 'C5', 'B4'), ...b3('C5', 'B4', 'A4'), n('G4', 'qd', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
@@ -3676,7 +3676,7 @@ export const POZZOLI_SERIE11_EX22_MEASURES = [
   { measure: 12, slurEnd: 4, notes: [...b3('C5', 'B4', 'A4'), ...b3('G#4', 'A4', 'B4'), n('E4', 'qd', { tieStart: true }), n('E4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 13, localSlurs: [[2, 3]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('F4', 'qd'), n('D5', 'hd')] },
   { measure: 14, localSlurs: [[0, 2]], notes: [n('Bb4', 'qd'), n('A4', 'qd'), n('G4', 'hd')] },
-  { measure: 15, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'e'), n('F#4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('B4', 'e'), n('C5', 'q'), n('D5', 'e')] },
+  { measure: 15, slurStart: 1, notes: [n('REST', 'r4'), n('E4', 'e'), n('F#4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('B4', 'e'), n('C5', 'q'), n('D5', 'e')] },
   { measure: 16, slurEnd: 1, notes: [n('B4', 'qd'), n('A4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
@@ -3684,20 +3684,20 @@ export const POZZOLI_SERIE11_EX22_MEASURES = [
  * 11ª SÉRIE — EXERCÍCIO Nº 23 (12/8, 16 compassos)
  */
 export const POZZOLI_SERIE11_EX23_MEASURES = [
-  { measure: 1, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'q', { tieStop: true }), ...s2('G4', 'A4'), n('B4', 'qd', { tieStart: true }), n('B4', 'q', { tieStop: true }), ...s2('C5', 'B4')] },
-  { measure: 2, slurEnd: 1, notes: [n('A4', 'qd'), n('E4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'qd', { tieStop: true }), ...b3('G#4', 'A4', 'B4')] },
+  { measure: 1, slurStart: 0, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'q', { tieStop: true }), ...s2('G4', 'A4'), n('A4', 'qd', { tieStart: true }), n('A4', 'q', { tieStop: true }), ...s2('C5', 'B4')] },
+  { measure: 2, slurEnd: 1, notes: [n('A4', 'qd'), n('A3', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 3, slurStart: 0, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'qd', { tieStop: true }), ...b3('G#4', 'A4', 'B4')] },
   { measure: 4, slurEnd: 1, notes: [n('C5', 'qd'), n('B4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'q', { tieStop: true }), ...s2('C5', 'D5'), n('E5', 'qd', { tieStart: true }), n('E5', 'q', { tieStop: true }), ...s2('D5', 'C5')] },
-  { measure: 6, slurEnd: 1, notes: [n('B4', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 7, slurStart: 0, notes: [n('C5', 'qd', { tieStart: true }), ...b3('C5', 'B4', 'A4'), ...b3('G4', 'F4', 'E4')] },
-  { measure: 8, slurEnd: 1, notes: [n('D4', 'qd', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), ...s2('F4', 'G4'), n('A4', 'qd', { tieStart: true }), n('A4', 'q', { tieStop: true }), ...s2('B4', 'A4')] },
-  { measure: 10, slurEnd: 1, notes: [n('G4', 'qd'), n('C5', 'hd')] },
-  { measure: 11, slurStart: 0, notes: [n('F#4', 'qd', { tieStart: true }), n('F#4', 'q', { tieStop: true }), ...s2('E4', 'F#4'), n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), ...s2('A4', 'G4')] },
-  { measure: 12, slurEnd: 1, notes: [n('A4', 'qd'), n('D5', 'hd')] },
-  { measure: 13, slurStart: 0, notes: [n('G#4', 'qd', { tieStart: true }), n('G#4', 'q', { tieStop: true }), ...s2('F#4', 'G#4'), n('A4', 'qd', { tieStart: true }), n('A4', 'q', { tieStop: true }), ...s2('B4', 'C5')] },
-  { measure: 14, slurEnd: 1, notes: [n('B4', 'qd'), n('E5', 'hd')] },
+  { measure: 5, slurStart: 0, notes: [n('D5', 'qd', { tieStart: true }), n('D5', 'q', { tieStop: true }), ...s2('C5', 'D5'), n('D5', 'qd', { tieStart: true }), n('D5', 'q', { tieStop: true }), ...s2('F5', 'E5')] },
+  { measure: 6, slurEnd: 1, notes: [n('D5', 'qd'), n('G4', 'e'), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 7, slurStart: 0, notes: [n('A4', 'hd', { tieStart: true }), n('A4', 'e', { beam: 'start', tieStop: true }), n('G4', 'e', { beam: 'mid' }), n('F4', 'e', { beam: 'end' }), ...b3('E4', 'E4', 'D4')] },
+  { measure: 8, slurEnd: 1, notes: [n('C4', 'qd', { tieStart: true }), n('C4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] },
+  { measure: 9, slurStart: 0, notes: [n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), ...s2('F4', 'G4'), n('G4', 'qd', { tieStart: true }), n('G4', 'q', { tieStop: true }), ...s2('A4', 'B4')] },
+  { measure: 10, slurEnd: 2, notes: [n('G4', 'qd'), n('C5', 'hd', { tieStart: true }), n('C5', 'qd', { tieStop: true })] },
+  { measure: 11, slurStart: 0, notes: [n('G#4', 'qd', { tieStart: true }), n('G#4', 'q', { tieStop: true }), ...s2('F4', 'G#4'), n('G#4', 'qd', { tieStart: true }), n('G#4', 'q', { tieStop: true }), ...s2('B4', 'C5')] },
+  { measure: 12, slurEnd: 2, notes: [n('A4', 'qd'), n('D5', 'hd', { tieStart: true }), n('D5', 'qd', { tieStop: true })] },
+  { measure: 13, slurStart: 0, notes: [n('G#4', 'qd', { tieStart: true }), n('G#4', 'q', { tieStop: true }), ...s2('F#4', 'G#4'), n('G#4', 'qd', { tieStart: true }), n('G#4', 'q', { tieStop: true }), ...s2('C5', 'D5')] },
+  { measure: 14, slurEnd: 2, notes: [n('A4', 'qd'), n('E5', 'hd', { tieStart: true }), n('E5', 'qd', { tieStop: true })] },
   { measure: 15, slurStart: 0, notes: [n('D5', 'q'), n('C5', 'e'), n('B4', 'q'), n('G#4', 'e'), n('A4', 'q'), n('B4', 'e'), n('C5', 'q'), n('B4', 'e')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
@@ -3710,17 +3710,17 @@ export const POZZOLI_SERIE11_EX24_MEASURES = [
   { measure: 2, slurEnd: 4, notes: [n('B4', 'q'), n('E4', 'e'), n('G#4', 'q'), n('E4', 'e'), n('A4', 'hd')] },
   { measure: 3, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('B4', 'q'), n('E4', 'e'), n('C5', 'q'), n('E4', 'e'), n('D5', 'q'), n('E4', 'e')] },
   { measure: 4, slurEnd: 4, notes: [n('C5', 'q'), n('E4', 'e'), n('G#4', 'q'), n('E4', 'e'), n('A4', 'hd')] },
-  { measure: 5, localSlurs: [[2, 5]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('E5', 'q'), n('E4', 'e'), n('D5', 'q'), n('E4', 'e'), n('E5', 'qd')] },
-  { measure: 6, localSlurs: [[2, 5]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('E5', 'q'), n('E4', 'e'), n('D5', 'q'), n('E4', 'e'), n('D5', 'qd')] },
+  { measure: 5, localSlurs: [[2, 6]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('E5', 'q'), n('G4', 'e'), n('D5', 'q'), n('G4', 'e'), n('C5', 'qd')] },
+  { measure: 6, localSlurs: [[2, 6]], notes: [n('REST', 'r4'), n('REST', 'r8'), n('E5', 'q'), n('G4', 'e'), n('D5', 'q'), n('G4', 'e'), n('B4', 'qd')] },
   { measure: 7, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('C5', 'q'), n('C4', 'e'), n('B4', 'q'), n('C4', 'e'), n('A4', 'q'), n('C4', 'e')] },
   { measure: 8, slurEnd: 3, notes: [n('G4', 'qd', { tieStart: true }), ...b3('G4', 'F4', 'E4'), n('D4', 'qd'), n('C4', 'e'), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 9, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('G4', 'q'), n('C4', 'e'), n('A4', 'q'), n('C4', 'e'), n('G4', 'q'), n('C4', 'e')] },
   { measure: 10, slurEnd: 3, notes: [n('F4', 'qd', { tieStart: true }), ...b3('F4', 'E4', 'F4'), n('D5', 'qd', { tieStart: true }), n('D5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
   { measure: 11, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'q'), n('D4', 'e'), n('B4', 'q'), n('D4', 'e'), n('A4', 'q'), n('D4', 'e')] },
-  { measure: 12, slurEnd: 3, notes: [n('G#4', 'qd', { tieStart: true }), ...b3('G#4', 'F#4', 'G#4'), n('E5', 'qd', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
-  { measure: 13, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('B4', 'q'), n('E4', 'e'), n('E5', 'q'), n('E4', 'e'), n('D5', 'q'), n('E4', 'e')] },
-  { measure: 14, slurEnd: 4, notes: [n('D5', 'qd', { tieStart: true }), ...b3('D5', 'C5', 'B4'), n('A4', 'qd'), n('G#4', 'qd')] },
-  { measure: 15, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('A4', 'q'), n('E4', 'e'), n('F#4', 'q'), n('E4', 'e'), n('G#4', 'q'), n('E4', 'e')] },
+  { measure: 12, slurEnd: 3, notes: [n('G4', 'qd', { tieStart: true }), ...b3('G4', 'F#4', 'G4'), n('E5', 'qd', { tieStart: true }), n('E5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8')] },
+  { measure: 13, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('B4', 'q'), n('E4', 'e'), n('C5', 'q'), n('E4', 'e'), n('B4', 'q'), n('E4', 'e')] },
+  { measure: 14, slurEnd: 4, notes: [n('D5', 'qd', { tieStart: true }), ...b3('D5', 'C5', 'B4'), n('G#4', 'qd', { tieStart: true }), n('G#4', 'qd', { tieStop: true })] },
+  { measure: 15, slurStart: 2, notes: [n('REST', 'r4'), n('REST', 'r8'), n('E4', 'q'), n('E4', 'e'), n('F#4', 'q'), n('E4', 'e'), n('G#4', 'q'), n('E4', 'e')] },
   { measure: 16, slurEnd: 1, notes: [n('A4', 'qd', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8'), n('REST', 'r4'), n('REST', 'r8')] }
 ];
 
@@ -3730,11 +3730,11 @@ export const POZZOLI_SERIE11_EX24_MEASURES = [
 export const POZZOLI_SERIE12_EX1_MEASURES = [
   { measure: 1, timeSignature: '2/4', keySignature: 'C', localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('A4', 'e'), n('REST', 'r8')] },
   { measure: 2, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('Ab4', 'e'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [...b2('G4', 'Gn4'), ...b2('G4', 'Ab4')] },
+  { measure: 3, slurStart: 0, notes: [...b2('G4', 'An4'), ...b2('G4', 'Ab4')] },
   { measure: 4, slurEnd: 1, notes: [n('G4', 'q', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8')] },
   { measure: 5, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('F#4', 'e'), n('REST', 'r8')] },
   { measure: 6, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('Fn4', 'e'), n('REST', 'r8')] },
-  { measure: 7, slurStart: 0, notes: [...b2('G4', 'F4'), ...b2('F4', 'Eb4')] },
+  { measure: 7, slurStart: 0, notes: [...b2('G4', 'F4'), ...b2('G4', 'Eb4')] },
   { measure: 8, slurEnd: 0, notes: [n('D4', 'h')] },
   { measure: 9, localSlurs: [[0, 1]], notes: [n('D4', 'q'), n('Eb4', 'e'), n('REST', 'r8')] },
   { measure: 10, localSlurs: [[0, 1]], notes: [n('D4', 'q'), n('En4', 'e'), n('REST', 'r8')] },
@@ -3750,15 +3750,15 @@ export const POZZOLI_SERIE12_EX1_MEASURES = [
  * 12ª SÉRIE — EXERCÍCIO Nº 2 (3/4, 16 compassos — Tom e semitom)
  */
 export const POZZOLI_SERIE12_EX2_MEASURES = [
-  {   measure: 1, timeSignature: '3/4', keySignature: 'C', slurStart: 0, notes: [n('G4', 'qd'), n('F#4', 'e'), ...b2('G4', 'F4')] },
+  {   measure: 1, timeSignature: '3/4', keySignature: 'C', slurStart: 0, notes: [n('G4', 'qd'), n('F#4', 'e'), ...b2('A4', 'G4')] },
   { measure: 2, slurEnd: 1, notes: [n('G4', 'h'), n('Fn4', 'q')] },
-  { measure: 3, slurStart: 0, notes: [n('E4', 'qd'), n('D#4', 'e'), ...b2('E4', 'D4')] },
+  { measure: 3, slurStart: 0, notes: [n('E4', 'qd'), n('D#4', 'e'), ...b2('F4', 'E4')] },
   { measure: 4, slurEnd: 1, notes: [n('E4', 'h'), n('Dn4', 'q')] },
-  { measure: 5, slurStart: 0, notes: [n('C4', 'qd'), n('B3', 'e'), ...b2('C4', 'B3')] },
-  { measure: 6, notes: [n('C4', 'qd'), n('Bb3', 'e'), ...b2('C4', 'B3')] },
+  { measure: 5, slurStart: 0, notes: [n('C4', 'qd'), n('B3', 'e'), ...b2('D4', 'C4')] },
+  { measure: 6, notes: [n('C4', 'qd'), n('Bb3', 'e'), ...b2('D4', 'C4')] },
   { measure: 7, notes: [n('A3', 'q'), n('Bn3', 'q'), n('C#4', 'q')] },
   { measure: 8, slurEnd: 1, notes: [n('D4', 'h', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8')] },
-  { measure: 9, slurStart: 0, notes: [n('D5', 'qd'), n('C#5', 'e'), ...b2('D5', 'C5')] },
+  { measure: 9, slurStart: 0, notes: [n('D5', 'qd'), n('C#5', 'e'), ...b2('D5', 'C#5')] },
   { measure: 10, notes: [n('D5', 'qd'), n('Cn5', 'e'), ...b2('D5', 'C5')] },
   { measure: 11, notes: [n('B4', 'qd'), n('A#4', 'e'), ...b2('B4', 'A4')] },
   { measure: 12, notes: [n('B4', 'qd'), n('An4', 'e'), ...b2('B4', 'A4')] },
@@ -3779,13 +3779,13 @@ export const POZZOLI_SERIE12_EX3_MEASURES = [
   { measure: 5, localSlurs: [[0, 2]], notes: [n('A4', 'qdd'), n('G#4', 's'), n('A4', 'q'), n('REST', 'r4')] },
   { measure: 6, localSlurs: [[0, 2]], notes: [n('A4', 'qdd'), n('Gn4', 's'), n('A4', 'q'), n('REST', 'r4')] },
   { measure: 7, slurStart: 0, notes: [n('A4', 'qdd'), n('Bb4', 's'), n('A4', 'qdd'), n('Bn4', 's')] },
-  { measure: 8, slurEnd: 4, notes: [...b4('A4', 'Bb4', 'A4', 'G#4'), n('C5', 'q'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 0, notes: [n('E4', 'qdd'), n('Eb4', 's'), ...eds('E4', 'D4'), ...eds('E4', 'D4')] },
-  { measure: 10, slurEnd: 2, notes: [n('E4', 'q'), n('Fn4', 'q', { tieStart: true }), n('Fn4', 'q', { tieStop: true }), n('REST', 'r4')] },
-  { measure: 11, slurStart: 0, notes: [n('F4', 'qdd'), n('E4', 's'), ...eds('F4', 'E4'), ...eds('F4', 'E4')] },
-  { measure: 12, slurEnd: 2, notes: [n('F4', 'q'), n('F#4', 'q', { tieStart: true }), n('F#4', 'q', { tieStop: true }), n('REST', 'r4')] },
-  { measure: 13, localSlurs: [[0, 2]], notes: [n('Gn4', 'qdd'), n('F#4', 's'), n('G4', 'q'), n('REST', 'r4')] },
-  { measure: 14, localSlurs: [[0, 2]], notes: [n('G#4', 'qdd'), n('A4', 's'), n('G#4', 'q'), n('REST', 'r4')] },
+  { measure: 8, slurEnd: 4, notes: [...b4('A4', 'Bb4', 'A4', 'C#5'), n('D5', 'q'), n('REST', 'r4')] },
+  { measure: 9, slurStart: 0, notes: [n('F4', 'qdd'), n('Gb4', 's'), ...eds('F4', 'Gb4'), ...eds('F4', 'Gb4')] },
+  { measure: 10, slurEnd: 2, notes: [n('F4', 'q'), n('Gn4', 'q'), n('F4', 'q'), n('REST', 'r4')] },
+  { measure: 11, slurStart: 0, notes: [n('G4', 'qdd'), n('A4', 's'), ...eds('G4', 'A4'), ...eds('G4', 'A4')] },
+  { measure: 12, slurEnd: 2, notes: [n('G4', 'q'), n('G#4', 'q', { tieStart: true }), n('G#4', 'q', { tieStop: true }), n('REST', 'r4')] },
+  { measure: 13, localSlurs: [[0, 2]], notes: [n('Gn4', 'qdd'), n('A4', 's'), n('A4', 'q'), n('REST', 'r4')] },
+  { measure: 14, localSlurs: [[0, 2]], notes: [n('G#4', 'qdd'), n('A4', 's'), n('A4', 'q'), n('REST', 'r4')] },
   { measure: 15, slurStart: 0, notes: [n('An4', 'qdd'), n('Bb4', 's'), n('A4', 'qdd'), n('Bn4', 's')] },
   { measure: 16, slurEnd: 4, notes: [...b4('A4', 'Bb4', 'A4', 'Bn4'), n('C5', 'q'), n('REST', 'r4')] }
 ];
@@ -3794,21 +3794,21 @@ export const POZZOLI_SERIE12_EX3_MEASURES = [
  * 12ª SÉRIE — EXERCÍCIO Nº 4 (4/4, 16 compassos — Tom e semitom)
  */
 export const POZZOLI_SERIE12_EX4_MEASURES = [
-  {   measure: 1, timeSignature: '4/4', keySignature: 'C', slurStart: 0, notes: [n('C5', 'q', { tieStart: true }), ...b4('C5', 'B4', 'C5', 'B4'), n('C5', 'q')] },
-  { measure: 2, slurEnd: 1, notes: [n('B4', 'q'), n('Bb4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
+  {   measure: 1, timeSignature: '4/4', keySignature: 'C', slurStart: 0, notes: [n('C5', 'h', { tieStart: true }), n('C5', 'e', { beam: 'start', tieStop: true }), n('B4', 'e', { beam: 'mid' }), n('C5', 'e', { beam: 'mid' }), n('B4', 'e', { beam: 'end' })] },
+  { measure: 2, slurEnd: 1, notes: [n('C5', 'h'), n('Bb4', 'q'), n('REST', 'r4')] },
   { measure: 3, slurStart: 0, notes: [n('A4', 'qd'), n('Bb4', 'e'), n('A4', 'qd'), n('Bn4', 'e')] },
   { measure: 4, slurEnd: 1, notes: [n('C5', 'h', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 5, slurStart: 0, notes: [n('G4', 'q', { tieStart: true }), ...b4('G4', 'F#4', 'G4', 'F4'), n('G4', 'q')] },
+  { measure: 5, slurStart: 0, notes: [n('G4', 'h', { tieStart: true }), n('G4', 'e', { beam: 'start', tieStop: true }), n('F#4', 'e', { beam: 'mid' }), n('G4', 'e', { beam: 'mid' }), n('F#4', 'e', { beam: 'end' })] },
   { measure: 6, slurEnd: 1, notes: [n('G4', 'h'), n('Fn4', 'q'), n('REST', 'r4')] },
   { measure: 7, slurStart: 0, notes: [n('E4', 'qd'), n('F4', 'e'), n('E4', 'qd'), n('F#4', 'e')] },
   { measure: 8, slurEnd: 1, notes: [n('G4', 'h', { tieStart: true }), n('G4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
-  { measure: 9, slurStart: 0, notes: [n('A4', 'q', { tieStart: true }), ...b4('A4', 'G#4', 'A4', 'G4'), n('A4', 'q')] },
+  { measure: 9, slurStart: 0, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'e', { beam: 'start', tieStop: true }), n('G#4', 'e', { beam: 'mid' }), n('A4', 'e', { beam: 'mid' }), n('G#4', 'e', { beam: 'end' })] },
   { measure: 10, slurEnd: 1, notes: [n('A4', 'h'), n('Gn4', 'q'), n('REST', 'r4')] },
-  { measure: 11, slurStart: 0, notes: [n('F4', 'q', { tieStart: true }), ...b4('F4', 'E4', 'F4', 'E4'), n('F4', 'q')] },
-  { measure: 12, slurEnd: 1, notes: [n('G4', 'h'), n('Eb4', 'q'), n('REST', 'r4')] },
-  { measure: 13, localSlurs: [[0, 2]], notes: [n('D4', 'qd'), n('D#4', 'e'), n('En4', 'q'), n('REST', 'r4')] },
-  { measure: 14, localSlurs: [[0, 2]], notes: [n('Fn4', 'qd'), n('F#4', 'e'), n('G4', 'q'), n('REST', 'r4')] },
-  { measure: 15, slurStart: 0, notes: [...b4('D4', 'E4', 'F4', 'Eb4'), n('D4', 'q'), n('Gn4', 'q')] },
+  { measure: 11, slurStart: 0, notes: [n('F4', 'qd', { tieStart: true }), n('F4', 'e', { tieStop: true }), n('G4', 'qd'), n('G#4', 'e')] },
+  { measure: 12, slurEnd: 1, notes: [n('A4', 'h', { tieStart: true }), n('A4', 'e', { tieStop: true }), n('REST', 'r8'), n('REST', 'r4')] },
+  { measure: 13, localSlurs: [[0, 2]], notes: [n('G4', 'qd'), n('F#4', 'e'), n('Gn4', 'q'), n('REST', 'r4')] },
+  { measure: 14, localSlurs: [[0, 2]], notes: [n('Fn4', 'qd'), n('G4', 'e'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 15, slurStart: 0, notes: [...b4('G4', 'A4', 'G4', 'Ab4'), n('G4', 'q'), n('Bn4', 'q')] },
   { measure: 16, slurEnd: 1, notes: [n('E4', 'h'), n('C4', 'q'), n('REST', 'r4')] }
 ];
 
@@ -3821,16 +3821,16 @@ export const POZZOLI_SERIE12_EX5_MEASURES = [
   { measure: 3, slurStart: 0, notes: [...b2('F4', 'E4'), ...b2('F4', 'Eb4')] },
   { measure: 4, slurEnd: 1, notes: [n('D4', 'q', { tieStart: true }), n('D4', 'e', { tieStop: true }), n('REST', 'r8')] },
   { measure: 5, localSlurs: [[0, 1], [2, 3]], notes: [...b2('En4', 'D#4'), ...b2('E4', 'F4')] },
-  { measure: 6, localSlurs: [[0, 1], [2, 3]], notes: [...b2('E4', 'Dn4'), ...b2('E4', 'D4')] },
-  { measure: 7, slurStart: 0, notes: [...b2('C4', 'C#4'), ...b2('D4', 'Dn4')] },
+  { measure: 6, localSlurs: [[0, 1], [2, 3]], notes: [...b2('E4', 'Dn4'), ...b2('D4', 'E4')] },
+  { measure: 7, slurStart: 0, notes: [...b2('C4', 'C#4'), ...b2('D4', 'Cn4')] },
   { measure: 8, slurEnd: 1, notes: [n('B3', 'q'), n('G4', 'e'), n('REST', 'r8')] },
-  { measure: 9, localSlurs: [[0, 1], [2, 3]], notes: [...b2('G4', 'Ab4'), ...b2('G4', 'A4')] },
+  { measure: 9, localSlurs: [[0, 1], [2, 3]], notes: [...b2('G4', 'Ab4'), ...b2('A4', 'G4')] },
   { measure: 10, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('C5', 'e'), n('REST', 'r8')] },
-  { measure: 11, localSlurs: [[0, 1], [2, 3]], notes: [...b2('G4', 'An4'), ...b2('G4', 'A4')] },
+  { measure: 11, localSlurs: [[0, 1], [2, 3]], notes: [...b2('G4', 'An4'), ...b2('A4', 'G4')] },
   { measure: 12, localSlurs: [[0, 1]], notes: [n('G4', 'q'), n('C5', 'e'), n('REST', 'r8')] },
-  { measure: 13, localSlurs: [[0, 1], [2, 3]], notes: [...b2('G4', 'Ab4'), ...b2('G4', 'A4')] },
+  { measure: 13, localSlurs: [[0, 1], [2, 3]], notes: [...b2('G4', 'Ab4'), ...b2('A4', 'G4')] },
   { measure: 14, localSlurs: [[0, 1], [2, 3]], notes: [...b2('G4', 'Bn4'), ...b2('An4', 'G4')] },
-  { measure: 15, slurStart: 0, notes: [...b2('C5', 'D5'), ...b2('D#5', 'E5')] },
+  { measure: 15, slurStart: 0, notes: [...b2('B4', 'C5'), ...b2('C#5', 'D5')] },
   { measure: 16, slurEnd: 1, notes: [n('Cn5', 'q', { tieStart: true }), n('C5', 'e', { tieStop: true }), n('REST', 'r8')] }
 ];
 
@@ -3843,10 +3843,10 @@ export const POZZOLI_SERIE12_EX6_MEASURES = [
   { measure: 3, slurStart: 0, notes: [n('C5', 'qd'), n('Bb4', 'e'), ...b2('A4', 'Bn4')] },
   { measure: 4, slurEnd: 0, notes: [n('C5', 'hd')] },
   { measure: 5, slurStart: 0, notes: [n('G4', 'qd'), n('F4', 'e'), ...b2('E4', 'F4')] },
-  { measure: 6, notes: [n('G4', 'qd'), n('F#4', 'e'), ...b2('E4', 'F4')] },
+  { measure: 6, notes: [n('G4', 'qd'), n('F#4', 'e'), ...b2('E4', 'F#4')] },
   { measure: 7, notes: [...b2('G4', 'Ab4'), ...b2('G4', 'An4'), ...b2('G4', 'B4')] },
   { measure: 8, slurEnd: 0, notes: [n('C5', 'hd')] },
-  { measure: 9, slurStart: 0, notes: [n('E5', 'qd'), n('D#5', 'e'), ...b2('C#5', 'D5')] },
+  { measure: 9, slurStart: 0, notes: [n('E5', 'qd'), n('D#5', 'e'), ...b2('C#5', 'D#5')] },
   { measure: 10, slurEnd: 0, notes: [n('E5', 'hd')] },
   { measure: 11, slurStart: 0, notes: [n('E5', 'qd'), n('Dn5', 'e'), ...b2('Cn5', 'D5')] },
   { measure: 12, slurEnd: 0, notes: [n('E5', 'hd')] },
@@ -3870,11 +3870,11 @@ export const POZZOLI_SERIE12_EX7_MEASURES = [
   { measure: 8, slurEnd: 1, notes: [n('F4', 'h'), n('D4', 'q'), n('REST', 'r4')] },
   { measure: 9, localSlurs: [[0, 3]], notes: [n('D4', 'q'), ...eds('E4', 'D4'), n('B3', 'q'), n('REST', 'r4')] },
   { measure: 10, localSlurs: [[0, 3]], notes: [n('D4', 'q'), ...eds('Eb4', 'D4'), n('B3', 'q'), n('REST', 'r4')] },
-  { measure: 11, localSlurs: [[0, 3]], notes: [n('Dn4', 'q'), ...eds('C#4', 'D4'), n('B3', 'q'), n('REST', 'r4')] },
-  { measure: 12, localSlurs: [[0, 3]], notes: [n('D4', 'q'), ...eds('Cn4', 'D4'), n('B3', 'q'), n('REST', 'r4')] },
-  { measure: 13, localSlurs: [[1, 3], [4, 7]], notes: [n('REST', 'r8'), ...b3('E4', 'D4', 'D#4'), ...b4('E4', 'F4', 'E4', 'F#4')] },
+  { measure: 11, localSlurs: [[0, 3]], notes: [n('En4', 'q'), ...eds('D#4', 'E4'), n('C4', 'q'), n('REST', 'r4')] },
+  { measure: 12, localSlurs: [[0, 3]], notes: [n('E4', 'q'), ...eds('Dn4', 'E4'), n('C4', 'q'), n('REST', 'r4')] },
+  { measure: 13, localSlurs: [[1, 3], [4, 7]], notes: [n('REST', 'r8'), ...b3('E4', 'E4', 'F#4'), ...b4('G4', 'G4', 'F4', 'G#4')] },
   { measure: 14, localSlurs: [[0, 1]], notes: [n('G4', 'h', { tieStart: true }), n('G4', 'q', { tieStop: true }), n('REST', 'r4')] },
-  { measure: 15, slurStart: 1, notes: [n('REST', 'r8'), ...b3('G4', 'F#4', 'G4'), ...b4('A4', 'G4', 'A4', 'F#4')] },
+  { measure: 15, slurStart: 1, notes: [n('REST', 'r8'), ...b3('G4', 'F#4', 'G4'), ...b4('A4', 'B4', 'G#4', 'A4')] },
   { measure: 16, slurEnd: 1, notes: [n('C5', 'h', { tieStart: true }), n('C5', 'q', { tieStop: true }), n('REST', 'r4')] }
 ];
 
@@ -3885,15 +3885,15 @@ export const POZZOLI_SERIE12_EX8_MEASURES = [
   {   measure: 1, timeSignature: '3/4', keySignature: 'C', slurStart: 0, notes: [...b2('E4', 'D4'), ...b2('E4', 'F4'), ...b2('G4', 'F4')] },
   { measure: 2, slurEnd: 1, notes: [n('E4', 'q'), n('C4', 'q'), n('REST', 'r4')] },
   { measure: 3, slurStart: 0, notes: [...b2('E4', 'D#4'), ...b2('E4', 'F4'), ...b2('G4', 'F4')] },
-  { measure: 4, slurEnd: 1, notes: [n('E4', 'q'), n('C#4', 'q'), n('REST', 'r4')] },
+  { measure: 4, slurEnd: 1, notes: [n('E4', 'q'), n('D#4', 'q'), n('REST', 'r4')] },
   { measure: 5, slurStart: 0, notes: [...b2('E4', 'D#4'), ...b2('E4', 'F#4'), ...b2('G4', 'F#4')] },
-  { measure: 6, notes: [...b2('E4', 'D#4'), ...b2('E4', 'F#4'), ...b2('G4', 'F4')] },
+  { measure: 6, notes: [...b2('E4', 'D#4'), ...b2('E4', 'F#4'), ...b2('G4', 'F#4')] },
   { measure: 7, notes: [...b2('E4', 'Dn4'), ...b2('E4', 'F#4'), ...b2('G4', 'A4')] },
   { measure: 8, slurEnd: 0, notes: [n('G4', 'q'), n('REST', 'r4'), n('REST', 'r4')] },
   { measure: 9, slurStart: 0, notes: [...b2('C5', 'B4'), ...b2('C5', 'D5'), ...b2('E5', 'D5')] },
-  { measure: 10, slurEnd: 1, notes: [n('C5', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 10, slurEnd: 1, notes: [n('C5', 'q'), n('B4', 'q'), n('REST', 'r4')] },
   { measure: 11, slurStart: 0, notes: [...b2('Bb4', 'A4'), ...b2('Bb4', 'C5'), ...b2('D5', 'C5')] },
-  { measure: 12, slurEnd: 1, notes: [n('Bb4', 'q'), n('G4', 'q'), n('REST', 'r4')] },
+  { measure: 12, slurEnd: 1, notes: [n('Bb4', 'q'), n('A4', 'q'), n('REST', 'r4')] },
   { measure: 13, slurStart: 0, notes: [...b2('G4', 'F#4'), ...b2('G4', 'A4'), ...b2('Bn4', 'A4')] },
   { measure: 14, notes: [...b2('G4', 'F#4'), ...b2('G4', 'A4'), ...b2('Bb4', 'A4')] },
   { measure: 15, notes: [...b2('G4', 'F#4'), ...b2('G4', 'A4'), ...b2('Bn4', 'G4')] },
@@ -3926,21 +3926,21 @@ export const POZZOLI_SERIE12_EX9_MEASURES = [
  * 12ª SÉRIE — EXERCÍCIO Nº 10 (2/4, 16 compassos — Tom e semitom)
  */
 export const POZZOLI_SERIE12_EX10_MEASURES = [
-  {   measure: 1, timeSignature: '2/4', keySignature: 'C', slurStart: 0, notes: [...s4('G4', 'F#4', 'G4', 'F4'), ...b2('G4', 'Fn4')] },
+  {   measure: 1, timeSignature: '2/4', keySignature: 'C', slurStart: 0, notes: [...s4('G4', 'F#4', 'G4', 'F#4'), ...b2('G4', 'Fn4')] },
   { measure: 2, slurEnd: 1, notes: [n('E4', 'q'), n('G4', 'e'), n('REST', 'r8')] },
-  { measure: 3, slurStart: 0, notes: [...s4('G4', 'F#4', 'G4', 'F4'), ...b2('G4', 'Fn4')] },
+  { measure: 3, slurStart: 0, notes: [...s4('G4', 'F#4', 'G4', 'F#4'), ...b2('G4', 'Fn4')] },
   { measure: 4, slurEnd: 1, notes: [n('C4', 'q'), n('G4', 'e'), n('REST', 'r8')] },
-  { measure: 5, slurStart: 0, notes: [...s4('G4', 'F#4', 'G4', 'F4'), ...b2('G4', 'Fn4')] },
+  { measure: 5, slurStart: 0, notes: [...s4('G4', 'F#4', 'G4', 'F#4'), ...b2('G4', 'Fn4')] },
   { measure: 6, slurEnd: 3, notes: [...b2('E4', 'G4'), ...b2('F#4', 'G4')] },
-  { measure: 7, localSlurs: [[0, 4]], notes: [...s4('D5', 'C#5', 'D5', 'C5'), ...b2('D5', 'Cn5')] },
+  { measure: 7, localSlurs: [[0, 4]], notes: [...s4('D5', 'C#5', 'D5', 'C#5'), ...b2('D5', 'Cn5')] },
   { measure: 8, localSlurs: [[0, 3]], notes: [...b2('B4', 'D5'), ...b2('C#5', 'D5')] },
   { measure: 9, slurStart: 0, notes: [n('E5', 'q', { tieStart: true }), ...s4('E5', 'D#5', 'E5', 'Dn5')] },
-  { measure: 10, slurEnd: 4, notes: [n('C5', 'q', { tieStart: true }), ...s4('C5', 'B4', 'C5', 'Bb4')] },
+  { measure: 10, slurEnd: 4, notes: [n('D5', 'q', { tieStart: true }), ...s4('D5', 'C5', 'D5', 'Bb4')] },
   { measure: 11, slurStart: 0, notes: [n('A4', 'q', { tieStart: true }), ...s4('A4', 'G#4', 'A4', 'Gn4')] },
   { measure: 12, slurEnd: 4, notes: [...s4('F4', 'E4', 'F4', 'G4'), n('E4', 'e'), n('REST', 'r8')] },
-  { measure: 13, localSlurs: [[0, 3]], notes: [...s2('G4', 'F#4'), n('G4', 'e'), ...s2('G4', 'F4'), n('G4', 'e')] },
-  { measure: 14, localSlurs: [[0, 3]], notes: [...s2('Gn4', 'F#4'), n('G4', 'e'), ...s2('F#4', 'E4'), n('F4', 'e')] },
-  { measure: 15, slurStart: 0, notes: [...s4('Fn4', 'E4', 'F4', 'D4'), ...b2('E4', 'G4')] },
+  { measure: 13, localSlurs: [[0, 3]], notes: [...s2('G4', 'F#4'), n('G4', 'e'), ...s2('G4', 'A4'), n('G4', 'e')] },
+  { measure: 14, localSlurs: [[0, 3]], notes: [...s2('Gn4', 'A4'), n('G4', 'e'), ...s2('F#4', 'G4'), n('F#4', 'e')] },
+  { measure: 15, slurStart: 0, notes: [...s4('Fn4', 'E4', 'F4', 'E4'), ...b2('D4', 'G4')] },
   { measure: 16, slurEnd: 1, notes: [n('C4', 'q'), n('C5', 'e'), n('REST', 'r8')] }
 ];
 
