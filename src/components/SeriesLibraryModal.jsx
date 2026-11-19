@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Folder, FolderOpen, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music, CheckCircle2, Monitor, Smartphone, Download, Share, PlusSquare, MoreVertical, X } from 'lucide-react';
+import { Folder, FolderOpen, Play, Heart, Wifi, ChevronDown, ChevronUp, Trash2, Video, Sparkles, Music, CheckCircle2, Monitor, Smartphone, Download, Share, PlusSquare, MoreVertical, X, ExternalLink } from 'lucide-react';
 import { SERIES_FOLDERS, isItemStudied, isItemFavorite } from '../utils/storage';
 
 export default function SeriesLibraryView({
@@ -227,6 +227,103 @@ export default function SeriesLibraryView({
           </button>
           </div>
         </div>
+
+        {/* Banner Promocional: Conheça também Pozzoli Rítmico */}
+        <a
+          href="https://www.pozzolinobolso.com.br/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            width: '100%',
+            maxWidth: '460px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+            padding: '10px 14px',
+            borderRadius: '14px',
+            background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%)',
+            border: '1.5px solid rgba(129, 140, 248, 0.4)',
+            boxShadow: '0 4px 16px rgba(49, 46, 129, 0.25)',
+            textDecoration: 'none',
+            color: '#ffffff',
+            marginTop: '2px',
+            marginBottom: '8px',
+            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+            boxSizing: 'border-box'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(49, 46, 129, 0.38)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'none';
+            e.currentTarget.style.boxShadow = '0 4px 16px rgba(49, 46, 129, 0.25)';
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                background: 'rgba(255, 255, 255, 0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                fontSize: '1.1rem'
+              }}
+            >
+              🥁
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, textAlign: 'left' }}>
+              <span
+                style={{
+                  fontSize: '0.68rem',
+                  fontWeight: 700,
+                  color: '#a5b4fc',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  lineHeight: 1.2
+                }}
+              >
+                Conheça também
+              </span>
+              <strong
+                style={{
+                  fontSize: '0.92rem',
+                  fontWeight: 800,
+                  color: '#ffffff',
+                  letterSpacing: '0.01em',
+                  lineHeight: 1.3
+                }}
+              >
+                Pozzoli Rítmico no Bolso
+              </strong>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              background: '#f97316',
+              color: '#ffffff',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              flexShrink: 0,
+              boxShadow: '0 2px 8px rgba(249, 115, 22, 0.4)'
+            }}
+          >
+            <span>Acessar</span>
+            <ExternalLink size={12} />
+          </div>
+        </a>
       </div>
 
       <div style={{ padding: '0 12px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
