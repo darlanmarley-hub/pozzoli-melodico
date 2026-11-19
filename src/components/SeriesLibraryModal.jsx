@@ -263,21 +263,6 @@ export default function SeriesLibraryView({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-            <div
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '10px',
-                background: 'rgba(255, 255, 255, 0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-                fontSize: '1.1rem'
-              }}
-            >
-              🥁
-            </div>
             <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, textAlign: 'left' }}>
               <span
                 style={{
