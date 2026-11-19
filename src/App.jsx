@@ -42,7 +42,14 @@ export default function App() {
     return [...INITIAL_SERIES, ...custom];
   });
 
-  const [currentSeriesIndex, setCurrentSeriesIndex] = useState(0);
+  const [currentSeriesIndex, setCurrentSeriesIndex] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pozzoli_last_series_idx');
+      return saved !== null ? parseInt(saved, 10) : 0;
+    } catch {
+      return 0;
+    }
+  });
   const [studied, setStudied] = useState(() => getStudied());
   const [favorites, setFavorites] = useState(() => getFavorites());
   const [profile, setProfile] = useState(() => getProfile());
@@ -53,10 +60,34 @@ export default function App() {
   });
   const [isDesktopMode, setIsDesktopMode] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(true);
-  const [activeTab, setActiveTab] = useState('library'); // 'library', 'saved', 'reader', 'stats', 'profile'
+  const [activeTab, setActiveTab] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pozzoli_last_active_tab');
+      return saved || 'library';
+    } catch {
+      return 'library';
+    }
+  });
   const [videoElement, setVideoElement] = useState(null);
   const [audioCurrentTime, setAudioCurrentTime] = useState(0);
   const [activeNoteInfo, setActiveNoteInfo] = useState(null);
+
+  // Lembra a última série e aba acessadas para retornar ao mesmo ponto ao reconectar
+  useEffect(() => {
+    try {
+      localStorage.setItem('pozzoli_last_series_idx', String(currentSeriesIndex));
+    } catch {
+      // ignore
+    }
+  }, [currentSeriesIndex]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('pozzoli_last_active_tab', activeTab);
+    } catch {
+      // ignore
+    }
+  }, [activeTab]);
 
   // Apply theme to document body and root
   useEffect(() => {
@@ -106,7 +137,7 @@ export default function App() {
           return;
         }
         await kickToLogin(
-          `Sua conta foi conectada em ${deviceCheck.replacedBy}. Este dispositivo foi desconectado.`,
+          null,
           deviceCheck.replacedBy
         );
         return;
@@ -211,14 +242,6 @@ export default function App() {
           await clearAuthUser(true);
           setAuthUser(null);
           return;
-        }
-        try {
-          sessionStorage.setItem(
-            'pozzoli_kicked_reason',
-            `Sua conta foi conectada em ${result.replacedBy}. Este dispositivo foi desconectado porque o acesso simultâneo não é permitido.`
-          );
-        } catch {
-          // ignore
         }
         await clearAuthUser(false, result.replacedBy);
         setAuthUser(null);

@@ -62,7 +62,9 @@ export default function LoginPage({ onLoginSuccess }) {
       setPausedDeviceInfo(getPausedDeviceUser());
       const kickedReason = sessionStorage.getItem('pozzoli_kicked_reason');
       if (kickedReason) {
-        setErrorMessage(kickedReason);
+        if (!getPausedDeviceUser()) {
+          setErrorMessage(kickedReason);
+        }
         sessionStorage.removeItem('pozzoli_kicked_reason');
       }
 
@@ -235,7 +237,13 @@ export default function LoginPage({ onLoginSuccess }) {
       const targetUser = pausedDeviceInfo.user;
 
       if (isSupabaseConfigured && supabase && targetUser.id) {
-        const { data: { session } } = await supabase.auth.getSession();
+        let { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) {
+          const refreshRes = await supabase.auth.refreshSession().catch(() => ({}));
+          if (refreshRes?.data?.session) {
+            session = refreshRes.data.session;
+          }
+        }
         if (!session?.user) {
           clearPausedDeviceUser();
           setPausedDeviceInfo(null);
@@ -373,22 +381,9 @@ export default function LoginPage({ onLoginSuccess }) {
           loginTime: new Date().toISOString()
         };
 
-        // Verifica se a conta já está conectada em outro dispositivo
-        const conflict = await checkActiveDeviceConflict(sbUser.id);
-        if (conflict.hasConflict) {
-          setIsLoading(false);
-          setDeviceConflictModal({
-            userId: sbUser.id,
-            user,
-            planName: null,
-            isFromValidation: false,
-            activeDevice: conflict.activeDevice
-          });
-          return;
-        }
-
+        // Conecta diretamente neste dispositivo e assume a sessão ativa (sem modal ou aviso bloqueante)
         await loadUserDataFromSupabase(sbUser.id);
-        await registerActiveDeviceSession(sbUser.id, false);
+        await registerActiveDeviceSession(sbUser.id);
         saveAuthUser(user);
         setIsLoading(false);
         setSuccessMessage('Login efetuado com sucesso!');
@@ -594,62 +589,137 @@ export default function LoginPage({ onLoginSuccess }) {
           <div
             style={{
               width: '100%',
-              background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(30, 22, 14, 0.95) 100%)',
-              border: '1.5px solid rgba(245, 158, 11, 0.55)',
-              borderRadius: '16px',
-              padding: '16px',
-              marginBottom: '16px',
-              boxShadow: '0 8px 26px rgba(0, 0, 0, 0.45)',
+              background: 'linear-gradient(135deg, rgba(30, 22, 14, 0.98) 0%, rgba(18, 13, 8, 0.98) 100%)',
+              border: '2px solid #f59e0b',
+              borderRadius: '20px',
+              padding: '24px 18px',
+              marginBottom: '20px',
+              boxShadow: '0 12px 36px rgba(245, 158, 11, 0.28)',
               textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '12px',
               fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
             }}
           >
             <div
               style={{
-                display: 'inline-flex',
+                width: '58px',
+                height: '58px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.15) 100%)',
+                border: '1.5px solid #f59e0b',
+                display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                justifyContent: 'center',
                 color: '#fbbf24',
-                fontWeight: 700,
-                fontSize: '0.88rem',
-                marginBottom: '6px'
+                boxShadow: '0 0 20px rgba(245, 158, 11, 0.35)'
               }}
             >
-              <Smartphone size={18} />
-              <span>Dispositivo Desconectado</span>
+              <Smartphone size={30} />
             </div>
 
-            <p style={{ fontSize: '0.82rem', color: '#efe6d5', lineHeight: 1.45, margin: '0 0 12px 0' }}>
-              A conta <strong>{pausedDeviceInfo.user.email}</strong> foi conectada em{' '}
-              <strong style={{ color: '#fbbf24' }}>{pausedDeviceInfo.replacedBy || 'outro aparelho'}</strong>.
-              Quando quiser voltar a usar neste dispositivo, basta clicar no botão abaixo:
-            </p>
+            <div>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  color: '#fbbf24',
+                  background: 'rgba(245, 158, 11, 0.18)',
+                  border: '1px solid rgba(245, 158, 11, 0.35)',
+                  padding: '3px 12px',
+                  borderRadius: '20px',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase'
+                }}
+              >
+                Sessão em Outro Aparelho
+              </span>
+              <h3
+                style={{
+                  fontSize: '1.2rem',
+                  fontWeight: 800,
+                  color: '#ffffff',
+                  margin: '8px 0 4px 0',
+                  lineHeight: 1.3
+                }}
+              >
+                Continuar neste dispositivo?
+              </h3>
+              <p style={{ fontSize: '0.86rem', color: '#d1c4b4', lineHeight: 1.5, margin: 0 }}>
+                A conta <strong>{pausedDeviceInfo.user.email}</strong> foi conectada recentemente em{' '}
+                <strong style={{ color: '#fbbf24' }}>
+                  {pausedDeviceInfo.replacedBy || 'outro aparelho'}
+                </strong>.
+              </p>
+            </div>
 
+            {/* BOTÃO PRINCIPAL: 1 TOQUE PARA RETOMAR */}
             <button
               type="button"
               onClick={handleQuickReconnectDevice}
               disabled={isQuickReconnecting}
-              className="validation-card-submit-btn"
               style={{
                 width: '100%',
+                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 60%, #b45309 100%)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '14px',
+                padding: '16px 20px',
+                fontSize: '0.96rem',
+                fontWeight: 900,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '8px',
-                padding: '13px 16px',
-                fontSize: '0.86rem',
-                fontWeight: 800,
-                cursor: 'pointer'
+                gap: '10px',
+                boxShadow: '0 6px 22px rgba(245, 158, 11, 0.45)',
+                cursor: 'pointer',
+                letterSpacing: '0.02em',
+                transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 26px rgba(245, 158, 11, 0.55)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'none';
+                e.currentTarget.style.boxShadow = '0 6px 22px rgba(245, 158, 11, 0.45)';
               }}
             >
               {isQuickReconnecting ? (
                 <span className="btn-spinner btn-spinner-dark"></span>
               ) : (
                 <>
-                  <Smartphone size={18} />
-                  <span>VOLTAR A ENTRAR NESTE DISPOSITIVO</span>
+                  <Smartphone size={20} />
+                  <span>CONTINUAR NESTE APARELHO</span>
                 </>
               )}
+            </button>
+
+            <span style={{ fontSize: '0.76rem', color: '#9e8f7c', lineHeight: 1.35 }}>
+              ⚡ Toque uma vez no botão acima para voltar a estudar neste aparelho imediatamente de onde parou.
+            </span>
+
+            {/* Link para entrar com outra conta se desejar */}
+            <button
+              type="button"
+              onClick={() => {
+                clearPausedDeviceUser();
+                setPausedDeviceInfo(null);
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#a89a88',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                marginTop: '4px'
+              }}
+            >
+              Entrar com outra conta
             </button>
           </div>
         )}
