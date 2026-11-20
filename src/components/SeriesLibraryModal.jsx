@@ -95,49 +95,6 @@ export default function SeriesLibraryView({
           POZZOLI <span className="melodico-highlight-lib">MELÓDICO</span> NO BOLSO
         </h1>
 
-
-        <div
-          className="wifi-tip-badge"
-          style={{
-            background: '#fff7ed',
-            border: '1px solid rgba(255, 102, 0, 0.28)',
-            borderLeft: '3px solid #ff6600',
-            borderRadius: '10px',
-            color: '#334155',
-            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            padding: '7px 14px 7px 10px',
-            fontSize: '0.8rem',
-            fontWeight: 500,
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '9px',
-            marginTop: '6px',
-            marginBottom: '2px',
-            lineHeight: 1.35,
-            textAlign: 'left',
-            boxShadow: '0 2px 10px rgba(15, 23, 42, 0.06)'
-          }}
-        >
-          <span
-            style={{
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              background: 'rgba(255, 102, 0, 0.14)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
-            }}
-          >
-            <Wifi size={13} style={{ color: '#ea580c' }} />
-          </span>
-          <span>
-            Conecte-se ao <strong style={{ color: '#ea580c', fontWeight: 700 }}>Wi-Fi</strong> para economizar seus dados
-          </span>
-        </div>
-
         {/* Título + 2 Botões: Adicionar App na Tela Inicial (Android & iOS) */}
         <div
           style={{
