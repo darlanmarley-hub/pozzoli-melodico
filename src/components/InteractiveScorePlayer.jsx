@@ -8491,282 +8491,291 @@ export default function InteractiveScorePlayer({
                 <span>{activePerRow === 1 ? '1 comp / linha' : '2 comp / linha'}</span>
               </button>
 
-              {/* Controle de Volume do Metrônomo (- / slider / +) com tamanho e visual idênticos ao BPM */}
+              {/* Grupo de Controles: BPM em cima e Volume do Metrônomo logo abaixo */}
               <div
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '3px 10px',
-                  borderRadius: '10px',
-                  border:
-                    metronomeEnabled && metronomeVolume > 0
-                      ? '1.5px solid #d97706'
-                      : '1px solid #d4c4ac',
-                  background:
-                    metronomeEnabled && metronomeVolume > 0
-                      ? 'rgba(217, 119, 6, 0.09)'
-                      : '#ffffff',
-                  minWidth: '220px'
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '6px'
                 }}
               >
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (!metronomeEnabled && metronomeVolume === 0) {
-                      setMetronomeVolume(1.0);
-                    }
-                    setMetronomeEnabled((v) => !v);
-                  }}
+                {/* 1. Controle de BPM (- / slider / +) */}
+                <div
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '4px',
-                    padding: '2px 5px',
-                    borderRadius: '6px',
-                    fontSize: '0.73rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    border: 'none',
-                    background: 'transparent',
-                    color:
-                      metronomeEnabled && metronomeVolume > 0 ? '#b45309' : '#574635'
+                    gap: '6px',
+                    padding: '3px 10px',
+                    borderRadius: '10px',
+                    border: '1.5px solid #d97706',
+                    background: 'rgba(217, 119, 6, 0.09)',
+                    minWidth: '220px'
                   }}
-                  title="Ativar / desativar som do metrônomo"
                 >
-                  {metronomeEnabled && metronomeVolume > 0 ? (
-                    <Volume2 size={14} />
-                  ) : (
-                    <VolumeX size={14} />
-                  )}
-                  <span>Volume</span>
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const ctx = ensureAudioContext();
+                      if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 5px',
+                      borderRadius: '6px',
+                      fontSize: '0.73rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      border: 'none',
+                      background: 'transparent',
+                      color: '#b45309'
+                    }}
+                    title="Andamento (BPM) - clique para ouvir o beat"
+                  >
+                    <Timer size={14} />
+                    <span>BPM</span>
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    const next = Math.max(0, Math.round((metronomeVolume - 0.1) * 10) / 10);
-                    metronomeVolumeRef.current = next;
-                    setMetronomeVolume(next);
-                    if (next === 0) {
-                      setMetronomeEnabled(false);
-                    } else {
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleBpmChange(currentBpm - 5);
+                      const ctx = ensureAudioContext();
+                      if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '6px',
+                      border: '1px solid #dccbb3',
+                      background: '#fffaf2',
+                      color: '#574635',
+                      cursor: 'pointer',
+                      padding: 0
+                    }}
+                    title="Diminuir andamento (-5 BPM)"
+                  >
+                    <Minus size={13} />
+                  </button>
+
+                  <input
+                    type="range"
+                    min={35}
+                    max={200}
+                    step={1}
+                    value={currentBpm}
+                    onChange={(e) => {
+                      handleBpmChange(parseInt(e.target.value, 10));
+                      const ctx = ensureAudioContext();
+                      if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                    }}
+                    style={{
+                      flex: 1,
+                      minWidth: '95px',
+                      maxWidth: '130px',
+                      height: '5px',
+                      accentColor: '#d97706',
+                      cursor: 'pointer'
+                    }}
+                    title={`Andamento: ${currentBpm} BPM`}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleBpmChange(currentBpm + 5);
+                      const ctx = ensureAudioContext();
+                      if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '6px',
+                      border: '1px solid #dccbb3',
+                      background: '#fffaf2',
+                      color: '#574635',
+                      cursor: 'pointer',
+                      padding: 0
+                    }}
+                    title="Aumentar andamento (+5 BPM)"
+                  >
+                    <Plus size={13} />
+                  </button>
+
+                  <span
+                    style={{
+                      fontSize: '0.68rem',
+                      fontWeight: 700,
+                      color: '#b45309',
+                      minWidth: '28px',
+                      textAlign: 'right'
+                    }}
+                  >
+                    {currentBpm}
+                  </span>
+                </div>
+
+                {/* 2. Controle de Volume do Metrônomo (- / slider / +) logo ABAIXO do BPM */}
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '3px 10px',
+                    borderRadius: '10px',
+                    border:
+                      metronomeEnabled && metronomeVolume > 0
+                        ? '1.5px solid #d97706'
+                        : '1px solid #d4c4ac',
+                    background:
+                      metronomeEnabled && metronomeVolume > 0
+                        ? 'rgba(217, 119, 6, 0.09)'
+                        : '#ffffff',
+                    minWidth: '220px'
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!metronomeEnabled && metronomeVolume === 0) {
+                        setMetronomeVolume(1.0);
+                      }
+                      setMetronomeEnabled((v) => !v);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 5px',
+                      borderRadius: '6px',
+                      fontSize: '0.73rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      border: 'none',
+                      background: 'transparent',
+                      color:
+                        metronomeEnabled && metronomeVolume > 0 ? '#b45309' : '#574635'
+                    }}
+                    title="Ativar / desativar som do metrônomo"
+                  >
+                    {metronomeEnabled && metronomeVolume > 0 ? (
+                      <Volume2 size={14} />
+                    ) : (
+                      <VolumeX size={14} />
+                    )}
+                    <span>Volume</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = Math.max(0, Math.round((metronomeVolume - 0.1) * 10) / 10);
+                      metronomeVolumeRef.current = next;
+                      setMetronomeVolume(next);
+                      if (next === 0) {
+                        setMetronomeEnabled(false);
+                      } else {
+                        setMetronomeEnabled(true);
+                        metronomeEnabledRef.current = true;
+                        const ctx = ensureAudioContext();
+                        if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
+                      }
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '6px',
+                      border: '1px solid #dccbb3',
+                      background: '#fffaf2',
+                      color: '#574635',
+                      cursor: 'pointer',
+                      padding: 0
+                    }}
+                    title="Diminuir volume (-10%)"
+                  >
+                    <Minus size={13} />
+                  </button>
+
+                  <input
+                    type="range"
+                    min={0}
+                    max={1.5}
+                    step={0.05}
+                    value={metronomeEnabled ? metronomeVolume : 0}
+                    onChange={(e) => {
+                      const val = parseFloat(e.target.value);
+                      metronomeVolumeRef.current = val;
+                      setMetronomeVolume(val);
+                      if (val <= 0) {
+                        setMetronomeEnabled(false);
+                      } else if (!metronomeEnabled) {
+                        setMetronomeEnabled(true);
+                        metronomeEnabledRef.current = true;
+                      }
+                    }}
+                    style={{
+                      flex: 1,
+                      minWidth: '95px',
+                      maxWidth: '130px',
+                      height: '5px',
+                      accentColor: '#d97706',
+                      cursor: 'pointer'
+                    }}
+                    title={`Volume do metrônomo: ${metronomeEnabled ? Math.round(metronomeVolume * 100) : 0}%`}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const base = metronomeEnabled ? metronomeVolume : 0;
+                      const next = Math.min(1.5, Math.round((base + 0.1) * 10) / 10);
+                      metronomeVolumeRef.current = next;
+                      setMetronomeVolume(next);
                       setMetronomeEnabled(true);
                       metronomeEnabledRef.current = true;
                       const ctx = ensureAudioContext();
                       if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
-                    }
-                  }}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '6px',
-                    border: '1px solid #dccbb3',
-                    background: '#fffaf2',
-                    color: '#574635',
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
-                  title="Diminuir volume (-10%)"
-                >
-                  <Minus size={13} />
-                </button>
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '6px',
+                      border: '1px solid #dccbb3',
+                      background: '#fffaf2',
+                      color: '#574635',
+                      cursor: 'pointer',
+                      padding: 0
+                    }}
+                    title="Aumentar volume (+10%)"
+                  >
+                    <Plus size={13} />
+                  </button>
 
-                <input
-                  type="range"
-                  min={0}
-                  max={1.5}
-                  step={0.05}
-                  value={metronomeEnabled ? metronomeVolume : 0}
-                  onChange={(e) => {
-                    const val = parseFloat(e.target.value);
-                    metronomeVolumeRef.current = val;
-                    setMetronomeVolume(val);
-                    if (val <= 0) {
-                      setMetronomeEnabled(false);
-                    } else if (!metronomeEnabled) {
-                      setMetronomeEnabled(true);
-                      metronomeEnabledRef.current = true;
-                    }
-                  }}
-                  style={{
-                    flex: 1,
-                    minWidth: '95px',
-                    maxWidth: '130px',
-                    height: '5px',
-                    accentColor: '#d97706',
-                    cursor: 'pointer'
-                  }}
-                  title={`Volume do metrônomo: ${metronomeEnabled ? Math.round(metronomeVolume * 100) : 0}%`}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    const base = metronomeEnabled ? metronomeVolume : 0;
-                    const next = Math.min(1.5, Math.round((base + 0.1) * 10) / 10);
-                    metronomeVolumeRef.current = next;
-                    setMetronomeVolume(next);
-                    setMetronomeEnabled(true);
-                    metronomeEnabledRef.current = true;
-                    const ctx = ensureAudioContext();
-                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
-                  }}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '6px',
-                    border: '1px solid #dccbb3',
-                    background: '#fffaf2',
-                    color: '#574635',
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
-                  title="Aumentar volume (+10%)"
-                >
-                  <Plus size={13} />
-                </button>
-
-                <span
-                  style={{
-                    fontSize: '0.68rem',
-                    fontWeight: 700,
-                    color: metronomeEnabled && metronomeVolume > 0 ? '#b45309' : '#8a7968',
-                    minWidth: '28px',
-                    textAlign: 'right'
-                  }}
-                >
-                  {metronomeEnabled ? `${Math.round(metronomeVolume * 100)}%` : '0%'}
-                </span>
-              </div>
-
-              {/* Controle de BPM (- / slider / +) para subir e diminuir o andamento */}
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '3px 10px',
-                  borderRadius: '10px',
-                  border: '1.5px solid #d97706',
-                  background: 'rgba(217, 119, 6, 0.09)',
-                  minWidth: '220px'
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    const ctx = ensureAudioContext();
-                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
-                  }}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    padding: '2px 5px',
-                    borderRadius: '6px',
-                    fontSize: '0.73rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    border: 'none',
-                    background: 'transparent',
-                    color: '#b45309'
-                  }}
-                  title="Andamento (BPM) - clique para ouvir o beat"
-                >
-                  <Timer size={14} />
-                  <span>BPM</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleBpmChange(currentBpm - 5);
-                    const ctx = ensureAudioContext();
-                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
-                  }}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '6px',
-                    border: '1px solid #dccbb3',
-                    background: '#fffaf2',
-                    color: '#574635',
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
-                  title="Diminuir andamento (-5 BPM)"
-                >
-                  <Minus size={13} />
-                </button>
-
-                <input
-                  type="range"
-                  min={35}
-                  max={200}
-                  step={1}
-                  value={currentBpm}
-                  onChange={(e) => {
-                    handleBpmChange(parseInt(e.target.value, 10));
-                    const ctx = ensureAudioContext();
-                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
-                  }}
-                  style={{
-                    flex: 1,
-                    minWidth: '95px',
-                    maxWidth: '130px',
-                    height: '5px',
-                    accentColor: '#d97706',
-                    cursor: 'pointer'
-                  }}
-                  title={`Andamento: ${currentBpm} BPM`}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleBpmChange(currentBpm + 5);
-                    const ctx = ensureAudioContext();
-                    if (ctx) playMetronomeClick(1, ctx.currentTime + 0.01, false);
-                  }}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '6px',
-                    border: '1px solid #dccbb3',
-                    background: '#fffaf2',
-                    color: '#574635',
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
-                  title="Aumentar andamento (+5 BPM)"
-                >
-                  <Plus size={13} />
-                </button>
-
-                <span
-                  style={{
-                    fontSize: '0.68rem',
-                    fontWeight: 700,
-                    color: '#b45309',
-                    minWidth: '28px',
-                    textAlign: 'right'
-                  }}
-                >
-                  {currentBpm}
-                </span>
+                  <span
+                    style={{
+                      fontSize: '0.68rem',
+                      fontWeight: 700,
+                      color: metronomeEnabled && metronomeVolume > 0 ? '#b45309' : '#8a7968',
+                      minWidth: '28px',
+                      textAlign: 'right'
+                    }}
+                  >
+                    {metronomeEnabled ? `${Math.round(metronomeVolume * 100)}%` : '0%'}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
