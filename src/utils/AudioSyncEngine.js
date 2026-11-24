@@ -320,7 +320,7 @@ export class AudioSyncEngine {
       const attackTime = 0.008;
       const releaseTime = Math.min(0.2, durationSec * 0.4);
 
-      gainNode.gain.setValueAtTime(0, startTimeCtx);
+      gainNode.gain.setValueAtTime(0.0001, startTimeCtx);
       gainNode.gain.linearRampToValueAtTime(vol, startTimeCtx + attackTime);
       gainNode.gain.exponentialRampToValueAtTime(0.0001, startTimeCtx + durationSec + releaseTime);
 

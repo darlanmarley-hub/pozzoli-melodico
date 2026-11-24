@@ -7653,6 +7653,8 @@ export default function InteractiveScorePlayer({
 
   // Refs para o motor de áudio em tempo real
   const audioCtxRef = useRef(null);
+  const masterCompressorRef = useRef(null);
+  const masterGainRef = useRef(null);
   const activeNodesRef = useRef([]);
   const isPlayingRef = useRef(false);
   const currentTimeRef = useRef(0);
@@ -7706,7 +7708,25 @@ export default function InteractiveScorePlayer({
     if (!audioCtxRef.current) {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
-        audioCtxRef.current = new AudioCtx();
+        const ctx = new AudioCtx();
+        audioCtxRef.current = ctx;
+
+        // Master Limiter / Compressor transparente para eliminar estalos e distorção por clipping
+        const comp = ctx.createDynamicsCompressor();
+        comp.threshold.setValueAtTime(-1.5, ctx.currentTime);
+        comp.knee.setValueAtTime(6, ctx.currentTime);
+        comp.ratio.setValueAtTime(14, ctx.currentTime);
+        comp.attack.setValueAtTime(0.003, ctx.currentTime);
+        comp.release.setValueAtTime(0.05, ctx.currentTime);
+
+        const mGain = ctx.createGain();
+        mGain.gain.setValueAtTime(0.88, ctx.currentTime);
+
+        comp.connect(mGain);
+        mGain.connect(ctx.destination);
+
+        masterCompressorRef.current = comp;
+        masterGainRef.current = mGain;
       }
     }
     if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
@@ -7716,9 +7736,33 @@ export default function InteractiveScorePlayer({
   }, []);
 
   const stopAllActiveSoundNodes = useCallback(() => {
-    activeNodesRef.current.forEach((node) => {
+    const ctx = audioCtxRef.current;
+    const now = ctx ? ctx.currentTime : 0;
+    activeNodesRef.current.forEach((item) => {
       try {
-        node.stop();
+        if (item && item.gainNode && ctx) {
+          // Fade-out anti-estalo suave em 10ms antes do stop
+          item.gainNode.gain.cancelScheduledValues(now);
+          item.gainNode.gain.setValueAtTime(item.gainNode.gain.value, now);
+          item.gainNode.gain.linearRampToValueAtTime(0.0001, now + 0.010);
+        }
+        if (item && item.oscNodes) {
+          item.oscNodes.forEach((osc) => {
+            try {
+              if (ctx) {
+                osc.stop(now + 0.014);
+              } else {
+                osc.stop();
+              }
+            } catch {}
+          });
+        } else if (item && typeof item.stop === 'function') {
+          if (ctx) {
+            item.stop(now + 0.014);
+          } else {
+            item.stop();
+          }
+        }
       } catch {
         // ignore
       }
@@ -7771,15 +7815,15 @@ export default function InteractiveScorePlayer({
       // 3. Filtros de Ressonância do Corpo de Madeira do Violino (Formantes + Lowpass aveludado)
       const bodyFormant1 = ctx.createBiquadFilter();
       bodyFormant1.type = 'peaking';
-      bodyFormant1.frequency.setValueAtTime(320, safeStart); // Ressonância da caixa acústica
+      bodyFormant1.frequency.setValueAtTime(320, safeStart);
       bodyFormant1.Q.setValueAtTime(1.5, safeStart);
-      bodyFormant1.gain.setValueAtTime(4.5, safeStart);
+      bodyFormant1.gain.setValueAtTime(3.2, safeStart);
 
       const bodyFormant2 = ctx.createBiquadFilter();
       bodyFormant2.type = 'peaking';
-      bodyFormant2.frequency.setValueAtTime(1100, safeStart); // Projeção doce do violino
-      bodyFormant2.Q.setValueAtTime(1.8, safeStart);
-      bodyFormant2.gain.setValueAtTime(3.5, safeStart);
+      bodyFormant2.frequency.setValueAtTime(1100, safeStart);
+      bodyFormant2.Q.setValueAtTime(1.6, safeStart);
+      bodyFormant2.gain.setValueAtTime(2.6, safeStart);
 
       const warmLowpass = ctx.createBiquadFilter();
       warmLowpass.type = 'lowpass';
@@ -7788,17 +7832,17 @@ export default function InteractiveScorePlayer({
 
       // Mixagem entre as cordas e o corpo fundamental
       const bowGain = ctx.createGain();
-      bowGain.gain.setValueAtTime(0.22, safeStart);
+      bowGain.gain.setValueAtTime(0.18, safeStart);
 
       const bodyGain = ctx.createGain();
-      bodyGain.gain.setValueAtTime(0.32, safeStart);
+      bodyGain.gain.setValueAtTime(0.26, safeStart);
 
       // 4. Envelope de Arco de Violino (ataque macio de arco, sustentação contínua cantabile e saída suave)
       const masterGain = ctx.createGain();
       const attack = Math.min(0.065, Math.max(0.025, realDurationSec * 0.16));
       const swell = Math.min(0.14, Math.max(0.03, realDurationSec * 0.22));
-      const peakLevel = 0.46;
-      const sustainLevel = 0.40;
+      const peakLevel = 0.38;
+      const sustainLevel = 0.32;
       const release = 0.085;
       const noteEnd = Math.max(
         safeStart + attack + swell + 0.01,
@@ -7808,7 +7852,7 @@ export default function InteractiveScorePlayer({
       masterGain.gain.setValueAtTime(0.0001, safeStart);
       masterGain.gain.linearRampToValueAtTime(peakLevel * 0.82, safeStart + attack);
       masterGain.gain.linearRampToValueAtTime(peakLevel, safeStart + attack + swell);
-      masterGain.gain.setValueAtTime(sustainLevel, noteEnd);
+      masterGain.gain.linearRampToValueAtTime(sustainLevel, noteEnd);
       masterGain.gain.exponentialRampToValueAtTime(0.0001, noteEnd + release);
 
       oscBow1.connect(bowGain);
@@ -7820,7 +7864,9 @@ export default function InteractiveScorePlayer({
       bodyFormant1.connect(bodyFormant2);
       bodyFormant2.connect(warmLowpass);
       warmLowpass.connect(masterGain);
-      masterGain.connect(ctx.destination);
+
+      const destinationNode = masterCompressorRef.current || ctx.destination;
+      masterGain.connect(destinationNode);
 
       const stopAt = noteEnd + release + 0.03;
       oscBow1.start(safeStart);
@@ -7833,13 +7879,16 @@ export default function InteractiveScorePlayer({
       oscBody.stop(stopAt);
       vibratoLfo.stop(stopAt);
 
-      activeNodesRef.current.push(oscBow1, oscBow2, oscBody, vibratoLfo);
+      activeNodesRef.current.push({
+        gainNode: masterGain,
+        oscNodes: [oscBow1, oscBow2, oscBody, vibratoLfo]
+      });
     } catch (err) {
       console.warn('Erro ao tocar nota de violino:', err);
     }
   }, []);
 
-  // Clique do metrônomo 9/8 de alta presença (madeira/woodblock nítido: forte no tempo 1, médio nos tempos 4 e 7, claro nas subdivisões)
+  // Clique do metrônomo nítido de alta presença (woodblock macio sem estalos nem distorções)
   const playMetronomeClick = useCallback((beatInMeasure1to9, startWallTime, isCountIn = false) => {
     const ctx = audioCtxRef.current;
     if (!ctx || isMutedRef.current) return;
@@ -7848,58 +7897,65 @@ export default function InteractiveScorePlayer({
     try {
       const safeStart = Math.max(ctx.currentTime + 0.005, startWallTime);
       const oscPrimary = ctx.createOscillator();
-      const oscTransient = ctx.createOscillator();
-      const filter = ctx.createBiquadFilter();
+      const oscHarmonic = ctx.createOscillator();
+      const bandpass = ctx.createBiquadFilter();
       const gain = ctx.createGain();
 
       const isDownbeat = beatInMeasure1to9 === 1;
       const isCompoundBeat =
         beatInMeasure1to9 === 4 || beatInMeasure1to9 === 7 || beatInMeasure1to9 === 10;
 
-      // Envelope de altura percussivo (efeito "tac" de metrônomo mecânico/woodblock)
-      const startFreq = isDownbeat ? 1850 : isCompoundBeat ? 1380 : 1020;
-      const endFreq = isDownbeat ? 1080 : isCompoundBeat ? 820 : 640;
-      const clickDur = isDownbeat ? 0.055 : isCompoundBeat ? 0.045 : 0.032;
+      // Frequências para ataque percussivo de woodblock acústico limpo
+      const startFreq = isDownbeat ? 1680 : isCompoundBeat ? 1280 : 960;
+      const endFreq = isDownbeat ? 920 : isCompoundBeat ? 740 : 580;
+      const clickDur = isDownbeat ? 0.048 : isCompoundBeat ? 0.038 : 0.028;
 
-      oscPrimary.type = 'triangle';
+      oscPrimary.type = 'sine';
       oscPrimary.frequency.setValueAtTime(startFreq, safeStart);
       oscPrimary.frequency.exponentialRampToValueAtTime(endFreq, safeStart + clickDur);
 
-      oscTransient.type = 'square';
-      oscTransient.frequency.setValueAtTime(startFreq * 1.5, safeStart);
-      oscTransient.frequency.exponentialRampToValueAtTime(endFreq, safeStart + 0.015);
+      // Harmônico superior suave para dar o "tock" nítido de madeira sem o ruído áspero de onda quadrada
+      oscHarmonic.type = 'triangle';
+      oscHarmonic.frequency.setValueAtTime(startFreq * 1.5, safeStart);
+      oscHarmonic.frequency.exponentialRampToValueAtTime(endFreq * 1.2, safeStart + 0.016);
 
-      filter.type = 'peaking';
-      filter.frequency.setValueAtTime(1400, safeStart);
-      filter.Q.setValueAtTime(1.8, safeStart);
-      filter.gain.setValueAtTime(6, safeStart);
+      bandpass.type = 'bandpass';
+      bandpass.frequency.setValueAtTime(isDownbeat ? 1350 : 1050, safeStart);
+      bandpass.Q.setValueAtTime(1.2, safeStart);
 
       // Volume controlado pelo usuário (0% a 150%)
       const userVolMultiplier = metronomeVolumeRef.current;
       if (userVolMultiplier <= 0.001) return;
 
-      const baseVol = (isDownbeat ? 0.92 : isCompoundBeat ? 0.70 : 0.44) * userVolMultiplier;
-      const vol = Math.min(1.35, isCountIn ? baseVol * 1.08 : baseVol);
+      const baseVol = (isDownbeat ? 0.44 : isCompoundBeat ? 0.33 : 0.22) * userVolMultiplier;
+      const vol = Math.min(0.62, isCountIn ? baseVol * 1.08 : baseVol);
 
-      const transientGain = ctx.createGain();
-      transientGain.gain.setValueAtTime(vol * 0.35, safeStart);
-      transientGain.gain.exponentialRampToValueAtTime(0.0001, safeStart + 0.016);
+      const harmonicGain = ctx.createGain();
+      harmonicGain.gain.setValueAtTime(0.0001, safeStart);
+      harmonicGain.gain.linearRampToValueAtTime(vol * 0.28, safeStart + 0.001);
+      harmonicGain.gain.exponentialRampToValueAtTime(0.0001, safeStart + 0.014);
 
       gain.gain.setValueAtTime(0.0001, safeStart);
-      gain.gain.linearRampToValueAtTime(vol, safeStart + 0.002);
+      gain.gain.linearRampToValueAtTime(vol, safeStart + 0.0015);
       gain.gain.exponentialRampToValueAtTime(0.0001, safeStart + clickDur);
 
-      oscPrimary.connect(filter);
-      oscTransient.connect(transientGain);
-      transientGain.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
+      oscPrimary.connect(bandpass);
+      oscHarmonic.connect(harmonicGain);
+      harmonicGain.connect(bandpass);
+      bandpass.connect(gain);
+
+      const destinationNode = masterCompressorRef.current || ctx.destination;
+      gain.connect(destinationNode);
 
       oscPrimary.start(safeStart);
-      oscTransient.start(safeStart);
-      oscPrimary.stop(safeStart + clickDur + 0.008);
-      oscTransient.stop(safeStart + 0.02);
-      activeNodesRef.current.push(oscPrimary, oscTransient);
+      oscHarmonic.start(safeStart);
+      oscPrimary.stop(safeStart + clickDur + 0.006);
+      oscHarmonic.stop(safeStart + 0.018);
+
+      activeNodesRef.current.push({
+        gainNode: gain,
+        oscNodes: [oscPrimary, oscHarmonic]
+      });
     } catch {
       // ignore
     }
@@ -8435,13 +8491,13 @@ export default function InteractiveScorePlayer({
                 <span>{activePerRow === 1 ? '1 comp / linha' : '2 comp / linha'}</span>
               </button>
 
-              {/* Controle de Volume do Metrônomo (- / slider / +) */}
+              {/* Controle de Volume do Metrônomo (- / slider / +) com tamanho e visual idênticos ao BPM */}
               <div
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
-                  padding: '3px 6px',
+                  gap: '6px',
+                  padding: '3px 10px',
                   borderRadius: '10px',
                   border:
                     metronomeEnabled && metronomeVolume > 0
@@ -8450,7 +8506,8 @@ export default function InteractiveScorePlayer({
                   background:
                     metronomeEnabled && metronomeVolume > 0
                       ? 'rgba(217, 119, 6, 0.09)'
-                      : '#ffffff'
+                      : '#ffffff',
+                  minWidth: '220px'
                 }}
               >
                 <button
@@ -8478,9 +8535,9 @@ export default function InteractiveScorePlayer({
                   title="Ativar / desativar som do metrônomo"
                 >
                   {metronomeEnabled && metronomeVolume > 0 ? (
-                    <Volume2 size={13} />
+                    <Volume2 size={14} />
                   ) : (
-                    <VolumeX size={13} />
+                    <VolumeX size={14} />
                   )}
                   <span>Volume</span>
                 </button>
@@ -8504,8 +8561,8 @@ export default function InteractiveScorePlayer({
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '22px',
-                    height: '22px',
+                    width: '24px',
+                    height: '24px',
                     borderRadius: '6px',
                     border: '1px solid #dccbb3',
                     background: '#fffaf2',
@@ -8513,9 +8570,9 @@ export default function InteractiveScorePlayer({
                     cursor: 'pointer',
                     padding: 0
                   }}
-                  title="Diminuir volume"
+                  title="Diminuir volume (-10%)"
                 >
-                  <Minus size={12} />
+                  <Minus size={13} />
                 </button>
 
                 <input
@@ -8536,12 +8593,14 @@ export default function InteractiveScorePlayer({
                     }
                   }}
                   style={{
-                    width: '54px',
-                    height: '4px',
+                    flex: 1,
+                    minWidth: '95px',
+                    maxWidth: '130px',
+                    height: '5px',
                     accentColor: '#d97706',
                     cursor: 'pointer'
                   }}
-                  title="Ajustar volume"
+                  title={`Volume do metrônomo: ${metronomeEnabled ? Math.round(metronomeVolume * 100) : 0}%`}
                 />
 
                 <button
@@ -8560,8 +8619,8 @@ export default function InteractiveScorePlayer({
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '22px',
-                    height: '22px',
+                    width: '24px',
+                    height: '24px',
                     borderRadius: '6px',
                     border: '1px solid #dccbb3',
                     background: '#fffaf2',
@@ -8569,9 +8628,9 @@ export default function InteractiveScorePlayer({
                     cursor: 'pointer',
                     padding: 0
                   }}
-                  title="Aumentar volume"
+                  title="Aumentar volume (+10%)"
                 >
-                  <Plus size={12} />
+                  <Plus size={13} />
                 </button>
 
                 <span

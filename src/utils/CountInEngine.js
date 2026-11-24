@@ -101,9 +101,10 @@ export class CountInEngine {
       // Frequência idêntica para todos os pulsos (1000 Hz sem acentuação)
       osc.frequency.setValueAtTime(1000, targetTime);
 
-      // Volume rigorosamente constante em 0.8
-      gain.gain.setValueAtTime(0.8, targetTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, targetTime + 0.04);
+      // Volume constante com micro-rampa de 2ms anti-estalo
+      gain.gain.setValueAtTime(0.0001, targetTime);
+      gain.gain.linearRampToValueAtTime(0.65, targetTime + 0.002);
+      gain.gain.exponentialRampToValueAtTime(0.0001, targetTime + 0.04);
 
       osc.connect(gain);
       gain.connect(this.audioCtx.destination);
