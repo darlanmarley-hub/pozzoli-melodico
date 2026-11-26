@@ -418,7 +418,7 @@ export default function LoginPage({ onLoginSuccess }) {
 
     try {
       const cleanEmail = validationEmail.trim().toLowerCase();
-      const res = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker', {
+      let res = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -427,7 +427,28 @@ export default function LoginPage({ onLoginSuccess }) {
         })
       });
 
-      const data = await res.json().catch(() => ({}));
+      let data = await res.json().catch(() => ({}));
+
+      // Se não encontrou no super-worker (404), tenta validar no clever-action (webhook-anual)
+      if (!res.ok && res.status === 404) {
+        try {
+          const resAnual = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/clever-action', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'validate_purchase_access',
+              email: cleanEmail
+            })
+          });
+          if (resAnual.ok) {
+            res = resAnual;
+            data = await resAnual.json().catch(() => ({}));
+          }
+        } catch {
+          // segue com a resposta original
+        }
+      }
+
       setValidationLoading(false);
 
       if (!res.ok) {
@@ -515,7 +536,7 @@ export default function LoginPage({ onLoginSuccess }) {
 
     setForgotLoading(true);
     try {
-      const res = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker', {
+      let res = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/super-worker', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -524,7 +545,28 @@ export default function LoginPage({ onLoginSuccess }) {
         })
       });
 
-      const data = await res.json().catch(() => null);
+      let data = await res.json().catch(() => null);
+
+      // Se não encontrou no super-worker (404), tenta disparar pelo clever-action (webhook-anual)
+      if (!res.ok && res.status === 404) {
+        try {
+          const resAnual = await fetch('https://ejjemzuvyzmxyjteeonz.supabase.co/functions/v1/clever-action', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'forgot_password',
+              email: targetEmail
+            })
+          });
+          if (resAnual.ok) {
+            res = resAnual;
+            data = await resAnual.json().catch(() => null);
+          }
+        } catch {
+          // segue com o fluxo original
+        }
+      }
+
       if (res.ok) {
         setForgotLoading(false);
         setForgotSent(true);

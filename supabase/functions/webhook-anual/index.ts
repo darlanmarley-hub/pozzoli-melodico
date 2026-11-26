@@ -8,7 +8,7 @@ const corsHeaders = {
 
 const APP_BASE_URL = 'https://pozzoli-melodico.vercel.app';
 const FIXED_PLAN: 'anual' = 'anual';
-const FALLBACK_PLAN_ID = '2a6c9492-b7a5-4d94-a578-9d257c3a8d6b';
+const FALLBACK_PLAN_ID = 'f39952e0-e370-4c07-8b21-08553ce6cb37';
 
 async function sha256Hex(value: string): Promise<string> {
   const bytes = new TextEncoder().encode(value);
