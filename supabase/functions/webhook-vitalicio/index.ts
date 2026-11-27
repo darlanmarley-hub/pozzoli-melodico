@@ -478,11 +478,15 @@ Deno.serve(async (req: Request) => {
       data?.client?.email ||
       data?.buyer?.email ||
       data?.payer?.email ||
+      data?.subscriber?.email ||
       data?.user?.email ||
       data?.email ||
       payload?.customer?.email ||
       payload?.client?.email ||
       payload?.buyer?.email ||
+      payload?.payer?.email ||
+      payload?.subscriber?.email ||
+      payload?.user?.email ||
       payload?.email ||
       '';
 
@@ -493,21 +497,30 @@ Deno.serve(async (req: Request) => {
         data?.client?.name ||
         data?.buyer?.name ||
         data?.payer?.name ||
+        data?.subscriber?.name ||
         data?.name ||
         payload?.customer?.name ||
         payload?.client?.name ||
+        payload?.buyer?.name ||
+        payload?.payer?.name ||
+        payload?.subscriber?.name ||
         payload?.name ||
         (email ? email.split('@')[0] : 'Aluno Pozzoli Melódico')
     ).trim();
 
+    const headerEvent = req.headers.get('x-subscription-event') || '';
     const rawStatus = String(
       payload?.action === 'refund'
         ? 'refunded'
-        : data?.status ||
+        : headerEvent ||
+          data?.status ||
           data?.payment_status ||
           data?.transaction_status ||
+          data?.event ||
+          data?.type ||
           payload?.status ||
           payload?.event ||
+          payload?.type ||
           ''
     )
       .trim()
@@ -524,7 +537,7 @@ Deno.serve(async (req: Request) => {
 
     await supabase.from('webhook_raw_events').insert({
       provider: `syncpay-${FIXED_PLAN}`,
-      event_type: String(payload?.event || rawStatus || 'unknown'),
+      event_type: String(headerEvent || payload?.event || rawStatus || 'unknown'),
       transaction_id: transactionId,
       email: email || null,
       status: rawStatus || null,
@@ -540,6 +553,11 @@ Deno.serve(async (req: Request) => {
 
     // 1) Reembolso / estorno / chargeback / cancelamento
     const revokedStatuses = [
+      'assinatura_cancelada',
+      'assinatura_expirada',
+      'assinatura_suspensa',
+      'assinatura_em_atraso',
+      'cobranca_falhou',
       'refunded',
       'refund',
       'chargedback',
@@ -623,8 +641,16 @@ Deno.serve(async (req: Request) => {
       'processing',
       'aguardando',
       'gerado',
+      'cobranca_gerada',
+      'assinatura_criada',
     ];
     const approvedStatuses = [
+      'cobranca_paga',
+      'assinatura_ativada',
+      'assinatura_renovada',
+      'assinatura_completada',
+      'paga',
+      'pago',
       'paid',
       'approved',
       'completed',
